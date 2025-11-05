@@ -11,6 +11,46 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import environ
+import os
+
+env = environ.Env()
+
+# Whether or not the app is running production mode.
+PRODUCTION = env.bool("DJANGO_PRODUCTION", default=False)
+
+# Used internally by Django to decide how much debugging context is sent to the browser when a failure occurs.
+# Cannot be True if PRODUCTION is True
+DEBUG = False if PRODUCTION else env.bool("DJANGO_DEBUG", default=True)
+
+def prod_required_env(key, default, method="str"):
+    """
+    Throw an exception if PRODUCTION is true and the environment key is not provided
+
+    :type key: str
+    :param key: Name of the environment variable to fetch
+    :type default: any
+    :param default: Default value for non-prod environments
+    :type method: str
+    :param method: django-environ instance method, used to type resulting data
+
+    .. seealso::
+       - `django-environ <https://github.com/joke2k/django-environ>`_
+       - `django-environ supported types <https://github.com/joke2k/django-environ#supported-types>`_
+    """
+    if PRODUCTION:
+        default = environ.Env.NOTSET
+    return getattr(env, method)(key, default)
+
+# Sets the list of valid HOST header values. Typically this is handled by a reverse proxy in front of the deploy Django application. In development, this is provided by the Caddy reverse proxy.
+ALLOWED_HOSTS = [prod_required_env("DJANGO_ALLOWED_HOST", default="*")]
+
+# Parses the DATABASE_URL environment variable into a Django databases dictionary.
+db_config = env.db_url("DATABASE_URL", default="postgres://postgres:postgres@db/postgres")
+DATABASES = {"default": db_config}
+
+# Use int64 pk fields
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +60,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=c3mpuvz&l0f&x)^tuqg&vl4w15ae4gffugjy5(t)$x-$@s#sg'
+SECRET_KEY = prod_required_env(
+    'DJANGO_SECRET_KEY',
+     default='django-insecure-=c3mpuvz&l0f&x)^tuqg&vl4w15ae4gffugjy5(t)$x-$@s#sg',
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -37,6 +78,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'backend'
 ]
 
 MIDDLEWARE = [
@@ -67,17 +110,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'backend.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 
 # Password validation
@@ -120,3 +152,28 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    "DEFAULT_RENDERER_CLASSES": (
+        "djangorestframework_camel_case.render.CamelCaseJSONRenderer",
+    ),
+    "DEFAULT_PARSER_CLASSES": (
+        "djangorestframework_camel_case.parser.CamelCaseFormParser",
+        "djangorestframework_camel_case.parser.CamelCaseMultiPartParser",
+        "djangorestframework_camel_case.parser.CamelCaseJSONParser",
+    ),
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": prod_required_env("DJANGO_REDIS_CACHE_URL", "redis://cache:6379/0"),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
+
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
