@@ -1,0 +1,16 @@
+FROM python:3.14
+
+RUN pip install -U pip poetry
+RUN poetry self add poetry-types
+
+WORKDIR /code
+
+COPY pyproject.toml poetry.lock ./
+
+RUN poetry install
+
+CMD poetry types update -n && \
+  poetry run python manage.py collectstatic --noinput && \
+  poetry run python manage.py migrate && \
+  poetry run python manage.py createcachetable && \
+  poetry run python manage.py runserver 0.0.0.0:3000
