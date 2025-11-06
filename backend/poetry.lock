@@ -901,6 +901,61 @@ dev = ["build", "hatch"]
 doc = ["sphinx"]
 
 [[package]]
+name = "types-gevent"
+version = "25.9.0.20251102"
+description = "Typing stubs for gevent"
+optional = false
+python-versions = ">=3.9"
+groups = ["types"]
+files = [
+    {file = "types_gevent-25.9.0.20251102-py3-none-any.whl", hash = "sha256:0f14b9977cb04bf3d94444b5ae6ec5d78ac30f74c4df83483e0facec86f19d8b"},
+    {file = "types_gevent-25.9.0.20251102.tar.gz", hash = "sha256:76f93513af63f4577bb4178c143676dd6c4780abc305f405a4e8ff8f1fa177f8"},
+]
+
+[package.dependencies]
+types-greenlet = "*"
+types-psutil = "*"
+
+[[package]]
+name = "types-greenlet"
+version = "3.2.0.20250915"
+description = "Typing stubs for greenlet"
+optional = false
+python-versions = ">=3.9"
+groups = ["types"]
+files = [
+    {file = "types_greenlet-3.2.0.20250915-py3-none-any.whl", hash = "sha256:59c8866b6ef8b1c62e289c01c90c8544aef37c610bfa13f93099d992327ae1c7"},
+    {file = "types_greenlet-3.2.0.20250915.tar.gz", hash = "sha256:831a390b1d4789b173b067ac546a4024fa9c43825db9f66194916dd0c85e3925"},
+]
+
+[[package]]
+name = "types-gunicorn"
+version = "23.0.0.20251031"
+description = "Typing stubs for gunicorn"
+optional = false
+python-versions = ">=3.9"
+groups = ["types"]
+files = [
+    {file = "types_gunicorn-23.0.0.20251031-py3-none-any.whl", hash = "sha256:7063608ae564baa6acbdc06e2d8f77f6dd39002c6535bfd22b2488d0a5accfe6"},
+    {file = "types_gunicorn-23.0.0.20251031.tar.gz", hash = "sha256:bec773f6b9608339bd3ff69ab00fe9d0edf8a15cfb652f7199abf491be134212"},
+]
+
+[package.dependencies]
+types-gevent = "*"
+
+[[package]]
+name = "types-psutil"
+version = "7.0.0.20251001"
+description = "Typing stubs for psutil"
+optional = false
+python-versions = ">=3.9"
+groups = ["types"]
+files = [
+    {file = "types_psutil-7.0.0.20251001-py3-none-any.whl", hash = "sha256:adc31de8386d31c61bd4123112fd51e2c700c7502a001cad72a3d56ba6b463d1"},
+    {file = "types_psutil-7.0.0.20251001.tar.gz", hash = "sha256:60d696200ddae28677e7d88cdebd6e960294e85adefbaafe0f6e5d0e7b4c1963"},
+]
+
+[[package]]
 name = "types-pyyaml"
 version = "6.0.12.20250915"
 description = "Typing stubs for PyYAML"
