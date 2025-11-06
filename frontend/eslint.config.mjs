@@ -1,51 +1,47 @@
-import { FlatCompat } from '@eslint/eslintrc';
-import { dirname } from 'path';
+import reactPlugin from 'eslint-plugin-react';
+import reactHooksPlugin from 'eslint-plugin-react-hooks';
+
+import nextPlugin from '@next/eslint-plugin-next';
+import prettierConfig from 'eslint-config-prettier';
+import jest from 'eslint-plugin-jest';
+import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
+import prettier from 'eslint-plugin-prettier';
+import globals from 'globals';
 import tseslint from 'typescript-eslint';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
 
 const eslintConfig = [
+  {
+    ignores: ['.next/**', 'node_modules/**', 'out/**', 'build/**', 'dist/**'],
+  },
   // Get type information
   {
     languageOptions: {
       parserOptions: {
         project: true,
         projectService: {
-          allowDefaultProject: ['*/ChatWidget.js'],
+          allowDefaultProject: ['*.js', '*.mjs', '*.cjs', '*/ChatWidget.js'],
         },
         tsconfigRootDir: import.meta.dirname,
       },
+      globals: {
+        ...globals.browser,
+        ...globals.jest,
+        React: 'writable',
+        describe: false,
+        jest: false,
+      },
     },
   },
-  ...compat.extends('next/core-web-vitals', 'next/typescript'),
   ...tseslint.configs.stylisticTypeChecked,
-  ...compat.config({
-    extends: [
-      'plugin:jest/recommended',
-      'plugin:prettier/recommended',
-      'next/core-web-vitals',
-      'next/typescript',
-    ],
-
-    plugins: ['react', 'react-hooks', 'prettier'],
-
-    env: {
-      browser: true,
-      jest: true,
-    },
-
-    globals: {
-      // React.js
-      React: 'writable',
-      // Jest
-      describe: false,
-      jest: false,
+  jest.configs['flat/recommended'],
+  prettierConfig,
+  {
+    plugins: {
+      react: reactPlugin,
+      'react-hooks': reactHooksPlugin,
+      'jsx-a11y': jsxA11yPlugin,
+      '@next/next': nextPlugin,
+      prettier,
     },
 
     rules: {
@@ -119,7 +115,7 @@ const eslintConfig = [
         },
       },
     },
-  }),
+  },
 ];
 
 export default eslintConfig;
