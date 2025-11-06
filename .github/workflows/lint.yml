@@ -1,0 +1,42 @@
+name: Lint and Test in Docker
+permissions:
+  contents: read
+
+on: push
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: lint
+
+    strategy:
+      matrix:
+        task:
+          - name: Lint (Frontend)
+            service: frontend
+            command: npm run lint
+
+          - name: Test (Frontend)
+            service: frontend
+            command: npm run test
+
+          - name: Lint (Backend)
+            service: backend
+            command: poetry run ruff check
+
+          - name: Type Check (Backend)
+            service: backend
+            command: poetry run mypy --follow-untyped-imports .
+
+          - name: Test (Backend)
+            service: backend
+            command: poetry run pytest -n auto
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Build and Spin Up Containers
+        run: docker compose up --build --wait
+
+      - name: ${{ matrix.task.name }}
+        run: docker compose exec ${{ matrix.task.service }} ${{ matrix.task.command }}
