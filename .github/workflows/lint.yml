@@ -6,9 +6,6 @@ on: push
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
-    name: lint
-
     strategy:
       matrix:
         task:
@@ -31,6 +28,9 @@ jobs:
           - name: Test (Backend)
             service: backend
             command: poetry run pytest -n auto
+
+    name: ${{ matrix.task.name }}
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v5
