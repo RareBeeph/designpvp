@@ -49,7 +49,9 @@ def prod_required_env(key, default, method="str"):
 ALLOWED_HOSTS = [prod_required_env("DJANGO_ALLOWED_HOST", default="*")]
 
 # Parses the DATABASE_URL environment variable into a Django databases dictionary.
-db_config = env.db_url("DATABASE_URL", default="postgres://postgres:postgres@database/postgres")
+db_config = env.db_url(
+    "DATABASE_URL", default="postgres://postgres:postgres@database/postgres"
+)
 DATABASES = {"default": db_config}
 
 # Use int64 pk fields
@@ -83,6 +85,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "backend",
+    "polls.apps.PollsConfig",
 ]
 
 MIDDLEWARE = [
@@ -180,3 +183,5 @@ CACHES = {
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+USE_X_FORWARDED_HOST = True
