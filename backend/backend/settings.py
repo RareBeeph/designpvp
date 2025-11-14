@@ -25,7 +25,7 @@ PRODUCTION = env.bool("DJANGO_PRODUCTION", default=False)
 DEBUG = False if PRODUCTION else env.bool("DJANGO_DEBUG", default=True)
 
 
-def prod_required_env(key, default, method="str"):
+def prod_required_env(key, default, method="str"):  # type: ignore[no-untyped-def]
     """
     Throw an exception if PRODUCTION is true and the environment key is not provided
 
