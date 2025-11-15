@@ -29,6 +29,10 @@ jobs:
             service: backend
             command: poetry run pytest -n auto
 
+          - name: Test (Backend, manage.py)
+            service: backend
+            command: poetry run python manage.py test polls
+
     name: ${{ matrix.task.name }}
     runs-on: ubuntu-latest
 
