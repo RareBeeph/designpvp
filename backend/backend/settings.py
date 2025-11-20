@@ -86,9 +86,11 @@ INSTALLED_APPS = [
     "rest_framework",
     "backend",
     "polls.apps.PollsConfig",
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -103,7 +105,7 @@ ROOT_URLCONF = "backend.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -185,3 +187,9 @@ SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 USE_X_FORWARDED_HOST = True
+
+INTERNAL_IPS = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK": "debug_toolbar.middleware.show_toolbar_with_docker"
+}
