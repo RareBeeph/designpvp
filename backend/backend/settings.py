@@ -15,6 +15,7 @@ import sys
 from pathlib import Path
 
 import environ
+from django.http import HttpRequest
 
 env = environ.Env()
 
@@ -195,8 +196,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 USE_X_FORWARDED_HOST = True
 
-INTERNAL_IPS = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
 
-DEBUG_TOOLBAR_CONFIG = {
-    "SHOW_TOOLBAR_CALLBACK": "debug_toolbar.middleware.show_toolbar_with_docker"
-}
+def show_toolbar(request: HttpRequest) -> bool:
+    return not PRODUCTION and not TESTING
+
+
+DEBUG_TOOLBAR_CONFIG = {"SHOW_TOOLBAR_CALLBACK": show_toolbar}
