@@ -1,11 +1,13 @@
-from django.urls import _AnyURL, path
+from django.urls import URLPattern, URLResolver, path
 from rest_framework.urlpatterns import format_suffix_patterns
 
 from snippets import views
 
+type _AnyURL = URLPattern | URLResolver
+
 urlpatterns: list[_AnyURL] = [
-    path("snippets/", views.snippet_list),
-    path("snippets/<int:pk>/", views.snippet_detail),
+    path("snippets/", views.SnippetList.as_view()),
+    path("snippets/<int:pk>/", views.SnippetDetail.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(
