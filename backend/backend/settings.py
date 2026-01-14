@@ -183,3 +183,5 @@ CACHES = {
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+USE_X_FORWARDED_HOST = True
