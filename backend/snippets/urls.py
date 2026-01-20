@@ -1,23 +1,10 @@
-from django.urls import URLPattern, URLResolver, path
-from rest_framework.urlpatterns import format_suffix_patterns
+from django.urls import include, path
+from rest_framework.routers import DefaultRouter
 
-from snippets import views
+from .views import SnippetViewSet, UserViewSet
 
-type _AnyURL = URLPattern | URLResolver
+router = DefaultRouter()
+router.register(r"snippets", SnippetViewSet, basename="snippet")
+router.register(r"users", UserViewSet, basename="user")
 
-urlpatterns: list[_AnyURL] = [
-    path("", views.api_root),
-    path("snippets/", views.SnippetList.as_view(), name="snippet-list"),
-    path("snippets/<int:pk>/", views.SnippetDetail.as_view(), name="snippet-detail"),
-    path(
-        "snippets/<int:pk>/highlight/",
-        views.SnippetHighlight.as_view(),
-        name="snippet-highlight",
-    ),
-    path("users/", views.UserList.as_view(), name="user-list"),
-    path("users/<int:pk>/", views.UserDetail.as_view(), name="user-detail"),
-]
-
-urlpatterns = format_suffix_patterns(
-    urlpatterns
-)  # Not sure if this works with the include() in backend/urls.py? .json seems to work but any other format 404s
+urlpatterns = [path("", include(router.urls))]
