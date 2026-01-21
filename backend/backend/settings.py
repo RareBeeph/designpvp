@@ -84,6 +84,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "drf_spectacular",
     "backend",
     "events",
 ]
@@ -168,6 +169,7 @@ REST_FRAMEWORK = {
         "djangorestframework_camel_case.parser.CamelCaseMultiPartParser",
         "djangorestframework_camel_case.parser.CamelCaseJSONParser",
     ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 CACHES = {
@@ -185,3 +187,11 @@ SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 USE_X_FORWARDED_HOST = True
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Designpvp API",
+    "DESCRIPTION": "artfight clone bluh",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    # OTHER SETTINGS
+}

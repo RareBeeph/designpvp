@@ -324,3 +324,4 @@ dist
 
 
 backend/staticfiles
+backend/schema.yml
