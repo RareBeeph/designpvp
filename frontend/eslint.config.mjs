@@ -11,7 +11,15 @@ import tseslint from 'typescript-eslint';
 
 const eslintConfig = [
   {
-    ignores: ['.next/**', 'node_modules/**', 'out/**', 'build/**', 'dist/**', 'next-env.d.ts'],
+    ignores: [
+      '.next/**',
+      'node_modules/**',
+      'out/**',
+      'build/**',
+      'dist/**',
+      'next-env.d.ts',
+      'api/backend.ts',
+    ],
   },
   // Get type information
   {
