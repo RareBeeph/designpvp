@@ -5,8 +5,24 @@
  * artfight clone bluh
  * OpenAPI spec version: 1.0.0
  */
+import { useMutation, useQuery } from '@tanstack/react-query';
+import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
+  MutationFunction,
+  QueryClient,
+  QueryFunction,
+  QueryKey,
+  UndefinedInitialDataOptions,
+  UseMutationOptions,
+  UseMutationResult,
+  UseQueryOptions,
+  UseQueryResult,
+} from '@tanstack/react-query';
+
 import axios from 'axios';
-import type { AxiosRequestConfig, AxiosResponse } from 'axios';
+import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 // https://stackoverflow.com/questions/49579094/typescript-conditional-types-filter-out-readonly-properties-pick-only-requir/49579497#49579497
 type IfEquals<X, Y, A = X, B = never> =
@@ -58,16 +74,110 @@ export interface Team {
   event: number;
 }
 
-export const eventsList = <TData = AxiosResponse<Event[]>>(
-  options?: AxiosRequestConfig,
-): Promise<TData> => {
+export const eventsList = (options?: AxiosRequestConfig): Promise<AxiosResponse<Event[]>> => {
   return axios.get(`/api/events/`, options);
 };
 
-export const eventsCreate = <TData = AxiosResponse<Event>>(
+export const getEventsListQueryKey = () => {
+  return [`/api/events/`] as const;
+};
+
+export const getEventsListQueryOptions = <
+  TData = Awaited<ReturnType<typeof eventsList>>,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof eventsList>>, TError, TData>>;
+  axios?: AxiosRequestConfig;
+}) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getEventsListQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof eventsList>>> = ({ signal }) =>
+    eventsList({ signal, ...axiosOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof eventsList>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type EventsListQueryResult = NonNullable<Awaited<ReturnType<typeof eventsList>>>;
+export type EventsListQueryError = AxiosError<unknown>;
+
+export function useEventsList<
+  TData = Awaited<ReturnType<typeof eventsList>>,
+  TError = AxiosError<unknown>,
+>(
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof eventsList>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof eventsList>>,
+          TError,
+          Awaited<ReturnType<typeof eventsList>>
+        >,
+        'initialData'
+      >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useEventsList<
+  TData = Awaited<ReturnType<typeof eventsList>>,
+  TError = AxiosError<unknown>,
+>(
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof eventsList>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof eventsList>>,
+          TError,
+          Awaited<ReturnType<typeof eventsList>>
+        >,
+        'initialData'
+      >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useEventsList<
+  TData = Awaited<ReturnType<typeof eventsList>>,
+  TError = AxiosError<unknown>,
+>(
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof eventsList>>, TError, TData>>;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useEventsList<
+  TData = Awaited<ReturnType<typeof eventsList>>,
+  TError = AxiosError<unknown>,
+>(
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof eventsList>>, TError, TData>>;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getEventsListQueryOptions(options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const eventsCreate = (
   event: NonReadonly<Event>,
   options?: AxiosRequestConfig,
-): Promise<TData> => {
+): Promise<AxiosResponse<Event>> => {
   const formUrlEncoded = new URLSearchParams();
   formUrlEncoded.append(`name`, event.name);
   formUrlEncoded.append(`starts`, event.starts);
@@ -76,18 +186,183 @@ export const eventsCreate = <TData = AxiosResponse<Event>>(
   return axios.post(`/api/events/`, formUrlEncoded, options);
 };
 
-export const eventsRetrieve = <TData = AxiosResponse<Event>>(
+export const getEventsCreateMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof eventsCreate>>,
+    TError,
+    { data: NonReadonly<Event> },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof eventsCreate>>,
+  TError,
+  { data: NonReadonly<Event> },
+  TContext
+> => {
+  const mutationKey = ['eventsCreate'];
+  const { mutation: mutationOptions, axios: axiosOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, axios: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof eventsCreate>>,
+    { data: NonReadonly<Event> }
+  > = props => {
+    const { data } = props ?? {};
+
+    return eventsCreate(data, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type EventsCreateMutationResult = NonNullable<Awaited<ReturnType<typeof eventsCreate>>>;
+export type EventsCreateMutationBody = NonReadonly<Event>;
+export type EventsCreateMutationError = AxiosError<unknown>;
+
+export const useEventsCreate = <TError = AxiosError<unknown>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof eventsCreate>>,
+      TError,
+      { data: NonReadonly<Event> },
+      TContext
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof eventsCreate>>,
+  TError,
+  { data: NonReadonly<Event> },
+  TContext
+> => {
+  const mutationOptions = getEventsCreateMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export const eventsRetrieve = (
   id: number,
   options?: AxiosRequestConfig,
-): Promise<TData> => {
+): Promise<AxiosResponse<Event>> => {
   return axios.get(`/api/events/${id}/`, options);
 };
 
-export const eventsUpdate = <TData = AxiosResponse<Event>>(
+export const getEventsRetrieveQueryKey = (id?: number) => {
+  return [`/api/events/${id}/`] as const;
+};
+
+export const getEventsRetrieveQueryOptions = <
+  TData = Awaited<ReturnType<typeof eventsRetrieve>>,
+  TError = AxiosError<unknown>,
+>(
+  id: number,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof eventsRetrieve>>, TError, TData>>;
+    axios?: AxiosRequestConfig;
+  },
+) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getEventsRetrieveQueryKey(id);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof eventsRetrieve>>> = ({ signal }) =>
+    eventsRetrieve(id, { signal, ...axiosOptions });
+
+  return { queryKey, queryFn, enabled: !!id, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof eventsRetrieve>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type EventsRetrieveQueryResult = NonNullable<Awaited<ReturnType<typeof eventsRetrieve>>>;
+export type EventsRetrieveQueryError = AxiosError<unknown>;
+
+export function useEventsRetrieve<
+  TData = Awaited<ReturnType<typeof eventsRetrieve>>,
+  TError = AxiosError<unknown>,
+>(
+  id: number,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof eventsRetrieve>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof eventsRetrieve>>,
+          TError,
+          Awaited<ReturnType<typeof eventsRetrieve>>
+        >,
+        'initialData'
+      >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useEventsRetrieve<
+  TData = Awaited<ReturnType<typeof eventsRetrieve>>,
+  TError = AxiosError<unknown>,
+>(
+  id: number,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof eventsRetrieve>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof eventsRetrieve>>,
+          TError,
+          Awaited<ReturnType<typeof eventsRetrieve>>
+        >,
+        'initialData'
+      >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useEventsRetrieve<
+  TData = Awaited<ReturnType<typeof eventsRetrieve>>,
+  TError = AxiosError<unknown>,
+>(
+  id: number,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof eventsRetrieve>>, TError, TData>>;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useEventsRetrieve<
+  TData = Awaited<ReturnType<typeof eventsRetrieve>>,
+  TError = AxiosError<unknown>,
+>(
+  id: number,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof eventsRetrieve>>, TError, TData>>;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getEventsRetrieveQueryOptions(id, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const eventsUpdate = (
   id: number,
   event: NonReadonly<Event>,
   options?: AxiosRequestConfig,
-): Promise<TData> => {
+): Promise<AxiosResponse<Event>> => {
   const formUrlEncoded = new URLSearchParams();
   formUrlEncoded.append(`name`, event.name);
   formUrlEncoded.append(`starts`, event.starts);
@@ -96,11 +371,73 @@ export const eventsUpdate = <TData = AxiosResponse<Event>>(
   return axios.put(`/api/events/${id}/`, formUrlEncoded, options);
 };
 
-export const eventsPartialUpdate = <TData = AxiosResponse<Event>>(
+export const getEventsUpdateMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof eventsUpdate>>,
+    TError,
+    { id: number; data: NonReadonly<Event> },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof eventsUpdate>>,
+  TError,
+  { id: number; data: NonReadonly<Event> },
+  TContext
+> => {
+  const mutationKey = ['eventsUpdate'];
+  const { mutation: mutationOptions, axios: axiosOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, axios: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof eventsUpdate>>,
+    { id: number; data: NonReadonly<Event> }
+  > = props => {
+    const { id, data } = props ?? {};
+
+    return eventsUpdate(id, data, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type EventsUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof eventsUpdate>>>;
+export type EventsUpdateMutationBody = NonReadonly<Event>;
+export type EventsUpdateMutationError = AxiosError<unknown>;
+
+export const useEventsUpdate = <TError = AxiosError<unknown>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof eventsUpdate>>,
+      TError,
+      { id: number; data: NonReadonly<Event> },
+      TContext
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof eventsUpdate>>,
+  TError,
+  { id: number; data: NonReadonly<Event> },
+  TContext
+> => {
+  const mutationOptions = getEventsUpdateMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export const eventsPartialUpdate = (
   id: number,
   patchedEvent: NonReadonly<PatchedEvent>,
   options?: AxiosRequestConfig,
-): Promise<TData> => {
+): Promise<AxiosResponse<Event>> => {
   const formUrlEncoded = new URLSearchParams();
   if (patchedEvent.name !== undefined) {
     formUrlEncoded.append(`name`, patchedEvent.name);
@@ -115,23 +452,243 @@ export const eventsPartialUpdate = <TData = AxiosResponse<Event>>(
   return axios.patch(`/api/events/${id}/`, formUrlEncoded, options);
 };
 
-export const eventsDestroy = <TData = AxiosResponse<void>>(
+export const getEventsPartialUpdateMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof eventsPartialUpdate>>,
+    TError,
+    { id: number; data: NonReadonly<PatchedEvent> },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof eventsPartialUpdate>>,
+  TError,
+  { id: number; data: NonReadonly<PatchedEvent> },
+  TContext
+> => {
+  const mutationKey = ['eventsPartialUpdate'];
+  const { mutation: mutationOptions, axios: axiosOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, axios: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof eventsPartialUpdate>>,
+    { id: number; data: NonReadonly<PatchedEvent> }
+  > = props => {
+    const { id, data } = props ?? {};
+
+    return eventsPartialUpdate(id, data, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type EventsPartialUpdateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof eventsPartialUpdate>>
+>;
+export type EventsPartialUpdateMutationBody = NonReadonly<PatchedEvent>;
+export type EventsPartialUpdateMutationError = AxiosError<unknown>;
+
+export const useEventsPartialUpdate = <TError = AxiosError<unknown>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof eventsPartialUpdate>>,
+      TError,
+      { id: number; data: NonReadonly<PatchedEvent> },
+      TContext
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof eventsPartialUpdate>>,
+  TError,
+  { id: number; data: NonReadonly<PatchedEvent> },
+  TContext
+> => {
+  const mutationOptions = getEventsPartialUpdateMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export const eventsDestroy = (
   id: number,
   options?: AxiosRequestConfig,
-): Promise<TData> => {
+): Promise<AxiosResponse<void>> => {
   return axios.delete(`/api/events/${id}/`, options);
 };
 
-export const teamsList = <TData = AxiosResponse<Team[]>>(
-  options?: AxiosRequestConfig,
-): Promise<TData> => {
+export const getEventsDestroyMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof eventsDestroy>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof eventsDestroy>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ['eventsDestroy'];
+  const { mutation: mutationOptions, axios: axiosOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, axios: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof eventsDestroy>>,
+    { id: number }
+  > = props => {
+    const { id } = props ?? {};
+
+    return eventsDestroy(id, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type EventsDestroyMutationResult = NonNullable<Awaited<ReturnType<typeof eventsDestroy>>>;
+
+export type EventsDestroyMutationError = AxiosError<unknown>;
+
+export const useEventsDestroy = <TError = AxiosError<unknown>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof eventsDestroy>>,
+      TError,
+      { id: number },
+      TContext
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof eventsDestroy>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationOptions = getEventsDestroyMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export const teamsList = (options?: AxiosRequestConfig): Promise<AxiosResponse<Team[]>> => {
   return axios.get(`/api/teams/`, options);
 };
 
-export const teamsCreate = <TData = AxiosResponse<Team>>(
+export const getTeamsListQueryKey = () => {
+  return [`/api/teams/`] as const;
+};
+
+export const getTeamsListQueryOptions = <
+  TData = Awaited<ReturnType<typeof teamsList>>,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof teamsList>>, TError, TData>>;
+  axios?: AxiosRequestConfig;
+}) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getTeamsListQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof teamsList>>> = ({ signal }) =>
+    teamsList({ signal, ...axiosOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof teamsList>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type TeamsListQueryResult = NonNullable<Awaited<ReturnType<typeof teamsList>>>;
+export type TeamsListQueryError = AxiosError<unknown>;
+
+export function useTeamsList<
+  TData = Awaited<ReturnType<typeof teamsList>>,
+  TError = AxiosError<unknown>,
+>(
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof teamsList>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof teamsList>>,
+          TError,
+          Awaited<ReturnType<typeof teamsList>>
+        >,
+        'initialData'
+      >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useTeamsList<
+  TData = Awaited<ReturnType<typeof teamsList>>,
+  TError = AxiosError<unknown>,
+>(
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof teamsList>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof teamsList>>,
+          TError,
+          Awaited<ReturnType<typeof teamsList>>
+        >,
+        'initialData'
+      >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useTeamsList<
+  TData = Awaited<ReturnType<typeof teamsList>>,
+  TError = AxiosError<unknown>,
+>(
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof teamsList>>, TError, TData>>;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useTeamsList<
+  TData = Awaited<ReturnType<typeof teamsList>>,
+  TError = AxiosError<unknown>,
+>(
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof teamsList>>, TError, TData>>;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getTeamsListQueryOptions(options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const teamsCreate = (
   team: NonReadonly<Team>,
   options?: AxiosRequestConfig,
-): Promise<TData> => {
+): Promise<AxiosResponse<Team>> => {
   const formUrlEncoded = new URLSearchParams();
   formUrlEncoded.append(`name`, team.name);
   formUrlEncoded.append(`event`, team.event.toString());
@@ -139,18 +696,183 @@ export const teamsCreate = <TData = AxiosResponse<Team>>(
   return axios.post(`/api/teams/`, formUrlEncoded, options);
 };
 
-export const teamsRetrieve = <TData = AxiosResponse<Team>>(
+export const getTeamsCreateMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof teamsCreate>>,
+    TError,
+    { data: NonReadonly<Team> },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof teamsCreate>>,
+  TError,
+  { data: NonReadonly<Team> },
+  TContext
+> => {
+  const mutationKey = ['teamsCreate'];
+  const { mutation: mutationOptions, axios: axiosOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, axios: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof teamsCreate>>,
+    { data: NonReadonly<Team> }
+  > = props => {
+    const { data } = props ?? {};
+
+    return teamsCreate(data, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type TeamsCreateMutationResult = NonNullable<Awaited<ReturnType<typeof teamsCreate>>>;
+export type TeamsCreateMutationBody = NonReadonly<Team>;
+export type TeamsCreateMutationError = AxiosError<unknown>;
+
+export const useTeamsCreate = <TError = AxiosError<unknown>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof teamsCreate>>,
+      TError,
+      { data: NonReadonly<Team> },
+      TContext
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof teamsCreate>>,
+  TError,
+  { data: NonReadonly<Team> },
+  TContext
+> => {
+  const mutationOptions = getTeamsCreateMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export const teamsRetrieve = (
   id: number,
   options?: AxiosRequestConfig,
-): Promise<TData> => {
+): Promise<AxiosResponse<Team>> => {
   return axios.get(`/api/teams/${id}/`, options);
 };
 
-export const teamsUpdate = <TData = AxiosResponse<Team>>(
+export const getTeamsRetrieveQueryKey = (id?: number) => {
+  return [`/api/teams/${id}/`] as const;
+};
+
+export const getTeamsRetrieveQueryOptions = <
+  TData = Awaited<ReturnType<typeof teamsRetrieve>>,
+  TError = AxiosError<unknown>,
+>(
+  id: number,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof teamsRetrieve>>, TError, TData>>;
+    axios?: AxiosRequestConfig;
+  },
+) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getTeamsRetrieveQueryKey(id);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof teamsRetrieve>>> = ({ signal }) =>
+    teamsRetrieve(id, { signal, ...axiosOptions });
+
+  return { queryKey, queryFn, enabled: !!id, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof teamsRetrieve>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type TeamsRetrieveQueryResult = NonNullable<Awaited<ReturnType<typeof teamsRetrieve>>>;
+export type TeamsRetrieveQueryError = AxiosError<unknown>;
+
+export function useTeamsRetrieve<
+  TData = Awaited<ReturnType<typeof teamsRetrieve>>,
+  TError = AxiosError<unknown>,
+>(
+  id: number,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof teamsRetrieve>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof teamsRetrieve>>,
+          TError,
+          Awaited<ReturnType<typeof teamsRetrieve>>
+        >,
+        'initialData'
+      >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useTeamsRetrieve<
+  TData = Awaited<ReturnType<typeof teamsRetrieve>>,
+  TError = AxiosError<unknown>,
+>(
+  id: number,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof teamsRetrieve>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof teamsRetrieve>>,
+          TError,
+          Awaited<ReturnType<typeof teamsRetrieve>>
+        >,
+        'initialData'
+      >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useTeamsRetrieve<
+  TData = Awaited<ReturnType<typeof teamsRetrieve>>,
+  TError = AxiosError<unknown>,
+>(
+  id: number,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof teamsRetrieve>>, TError, TData>>;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useTeamsRetrieve<
+  TData = Awaited<ReturnType<typeof teamsRetrieve>>,
+  TError = AxiosError<unknown>,
+>(
+  id: number,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof teamsRetrieve>>, TError, TData>>;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getTeamsRetrieveQueryOptions(id, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const teamsUpdate = (
   id: number,
   team: NonReadonly<Team>,
   options?: AxiosRequestConfig,
-): Promise<TData> => {
+): Promise<AxiosResponse<Team>> => {
   const formUrlEncoded = new URLSearchParams();
   formUrlEncoded.append(`name`, team.name);
   formUrlEncoded.append(`event`, team.event.toString());
@@ -158,11 +880,73 @@ export const teamsUpdate = <TData = AxiosResponse<Team>>(
   return axios.put(`/api/teams/${id}/`, formUrlEncoded, options);
 };
 
-export const teamsPartialUpdate = <TData = AxiosResponse<Team>>(
+export const getTeamsUpdateMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof teamsUpdate>>,
+    TError,
+    { id: number; data: NonReadonly<Team> },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof teamsUpdate>>,
+  TError,
+  { id: number; data: NonReadonly<Team> },
+  TContext
+> => {
+  const mutationKey = ['teamsUpdate'];
+  const { mutation: mutationOptions, axios: axiosOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, axios: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof teamsUpdate>>,
+    { id: number; data: NonReadonly<Team> }
+  > = props => {
+    const { id, data } = props ?? {};
+
+    return teamsUpdate(id, data, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type TeamsUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof teamsUpdate>>>;
+export type TeamsUpdateMutationBody = NonReadonly<Team>;
+export type TeamsUpdateMutationError = AxiosError<unknown>;
+
+export const useTeamsUpdate = <TError = AxiosError<unknown>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof teamsUpdate>>,
+      TError,
+      { id: number; data: NonReadonly<Team> },
+      TContext
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof teamsUpdate>>,
+  TError,
+  { id: number; data: NonReadonly<Team> },
+  TContext
+> => {
+  const mutationOptions = getTeamsUpdateMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export const teamsPartialUpdate = (
   id: number,
   patchedTeam: NonReadonly<PatchedTeam>,
   options?: AxiosRequestConfig,
-): Promise<TData> => {
+): Promise<AxiosResponse<Team>> => {
   const formUrlEncoded = new URLSearchParams();
   if (patchedTeam.name !== undefined) {
     formUrlEncoded.append(`name`, patchedTeam.name);
@@ -174,22 +958,135 @@ export const teamsPartialUpdate = <TData = AxiosResponse<Team>>(
   return axios.patch(`/api/teams/${id}/`, formUrlEncoded, options);
 };
 
-export const teamsDestroy = <TData = AxiosResponse<void>>(
+export const getTeamsPartialUpdateMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof teamsPartialUpdate>>,
+    TError,
+    { id: number; data: NonReadonly<PatchedTeam> },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof teamsPartialUpdate>>,
+  TError,
+  { id: number; data: NonReadonly<PatchedTeam> },
+  TContext
+> => {
+  const mutationKey = ['teamsPartialUpdate'];
+  const { mutation: mutationOptions, axios: axiosOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, axios: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof teamsPartialUpdate>>,
+    { id: number; data: NonReadonly<PatchedTeam> }
+  > = props => {
+    const { id, data } = props ?? {};
+
+    return teamsPartialUpdate(id, data, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type TeamsPartialUpdateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof teamsPartialUpdate>>
+>;
+export type TeamsPartialUpdateMutationBody = NonReadonly<PatchedTeam>;
+export type TeamsPartialUpdateMutationError = AxiosError<unknown>;
+
+export const useTeamsPartialUpdate = <TError = AxiosError<unknown>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof teamsPartialUpdate>>,
+      TError,
+      { id: number; data: NonReadonly<PatchedTeam> },
+      TContext
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof teamsPartialUpdate>>,
+  TError,
+  { id: number; data: NonReadonly<PatchedTeam> },
+  TContext
+> => {
+  const mutationOptions = getTeamsPartialUpdateMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export const teamsDestroy = (
   id: number,
   options?: AxiosRequestConfig,
-): Promise<TData> => {
+): Promise<AxiosResponse<void>> => {
   return axios.delete(`/api/teams/${id}/`, options);
 };
 
-export type EventsListResult = AxiosResponse<Event[]>;
-export type EventsCreateResult = AxiosResponse<Event>;
-export type EventsRetrieveResult = AxiosResponse<Event>;
-export type EventsUpdateResult = AxiosResponse<Event>;
-export type EventsPartialUpdateResult = AxiosResponse<Event>;
-export type EventsDestroyResult = AxiosResponse<void>;
-export type TeamsListResult = AxiosResponse<Team[]>;
-export type TeamsCreateResult = AxiosResponse<Team>;
-export type TeamsRetrieveResult = AxiosResponse<Team>;
-export type TeamsUpdateResult = AxiosResponse<Team>;
-export type TeamsPartialUpdateResult = AxiosResponse<Team>;
-export type TeamsDestroyResult = AxiosResponse<void>;
+export const getTeamsDestroyMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof teamsDestroy>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof teamsDestroy>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ['teamsDestroy'];
+  const { mutation: mutationOptions, axios: axiosOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, axios: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof teamsDestroy>>,
+    { id: number }
+  > = props => {
+    const { id } = props ?? {};
+
+    return teamsDestroy(id, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type TeamsDestroyMutationResult = NonNullable<Awaited<ReturnType<typeof teamsDestroy>>>;
+
+export type TeamsDestroyMutationError = AxiosError<unknown>;
+
+export const useTeamsDestroy = <TError = AxiosError<unknown>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof teamsDestroy>>,
+      TError,
+      { id: number },
+      TContext
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof teamsDestroy>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationOptions = getTeamsDestroyMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
