@@ -1,16 +1,16 @@
-'use client'
+'use client';
+
+import { QueryClient } from '@tanstack/react-query';
 
 import styles from './page.module.css';
+import { useEventsCreate, useEventsList } from '@/api/backend';
 import Image from 'next/image';
 
-import { useEventsCreate, useEventsList } from '@/api/backend';
-import { QueryClient, useMutation } from '@tanstack/react-query'
-
-let queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
 export default function Home() {
-  let response = useEventsList({}, queryClient)
-  let mutation = useEventsCreate({}, queryClient)
+  const response = useEventsList({}, queryClient);
+  const mutation = useEventsCreate({}, queryClient);
 
   return (
     <div className={styles.page}>
@@ -26,7 +26,19 @@ export default function Home() {
         <div className={styles.intro}>
           <h1>To get started, edit the page.tsx file.</h1>
           {JSON.stringify(response.data?.data.entries().toArray())}
-          <button onClick={() => mutation.mutate({data: {name: 'fromclient', starts: Date.now().toString(), ends: Date.now().toString()}})}>add</button>
+          <button
+            onClick={() =>
+              mutation.mutate({
+                data: {
+                  name: 'fromclient',
+                  starts: new Date().toISOString(),
+                  ends: new Date().toISOString(),
+                },
+              })
+            }
+          >
+            add
+          </button>
           <p>
             Looking for a starting point or more instructions? Head over to{' '}
             <a
