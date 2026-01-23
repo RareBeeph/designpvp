@@ -25,7 +25,7 @@ export default function Home() {
         />
         <div className={styles.intro}>
           <h1>To get started, edit the page.tsx file.</h1>
-          {JSON.stringify(response.data?.data.entries().toArray())}
+          {JSON.stringify(response.data)}
           <button
             onClick={() =>
               mutation.mutate({

@@ -1,4 +1,4 @@
-import Axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import Axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 
 interface CookieStore {
@@ -17,7 +17,7 @@ const client = Axios.create({
 export const customInstance = async <T>(
   config: AxiosRequestConfig,
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<T, any, {}>> => {
+): Promise<T> => {
   let cookieStore = Cookies as CookieStore;
   if (isServer) {
     const { cookies, headers } = await import('next/headers');
@@ -36,7 +36,7 @@ export const customInstance = async <T>(
     config.headers = { ...config.headers, 'X-CSRFToken': cookieStore.get('csrftoken') as string };
   }
 
-  return client({ ...config, ...options });
+  return (await client({ ...config, ...options })).data;
 };
 
 // In some case with react-query and swr you want to be able to override the return error type so you can also do it here like this

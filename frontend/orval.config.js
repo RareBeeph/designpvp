@@ -6,6 +6,7 @@ export default defineConfig({
     output: {
       target: './api/backend.ts',
       client: 'react-query',
+      httpClient: 'axios',
       override: {
         namingConvention: {
           enum: 'camelCase',
