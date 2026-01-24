@@ -3,14 +3,14 @@
 import { QueryClient } from '@tanstack/react-query';
 
 import styles from './page.module.css';
+import { Login, usePostAllauthClientV1AuthLogin } from '@/api/allauth';
 import { useEventsCreate, useEventsList } from '@/api/backend';
 import Image from 'next/image';
 
 const queryClient = new QueryClient();
 
 export default function Home() {
-  const response = useEventsList({}, queryClient);
-  const mutation = useEventsCreate({}, queryClient);
+  const mutation = usePostAllauthClientV1AuthLogin({}, queryClient);
 
   return (
     <div className={styles.page}>
@@ -25,14 +25,13 @@ export default function Home() {
         />
         <div className={styles.intro}>
           <h1>To get started, edit the page.tsx file.</h1>
-          {JSON.stringify(response.data)}
           <button
             onClick={() =>
               mutation.mutate({
+                client: 'browser',
                 data: {
-                  name: 'fromclient',
-                  starts: new Date().toISOString(),
-                  ends: new Date().toISOString(),
+                  username: 'admin',
+                  password: 'password',
                 },
               })
             }

@@ -21,4 +21,25 @@ export default defineConfig({
       afterAllFilesWrite: 'prettier --write',
     },
   },
+  allauth: {
+    input: '../backend/allauth-schema.yaml',
+    output: {
+      target: './api/allauth.ts',
+      client: 'react-query',
+      httpClient: 'axios',
+      baseUrl: '/api/',
+      override: {
+        namingConvention: {
+          enum: 'camelCase',
+        },
+        mutator: {
+          path: './api/mutator/custom-instance.ts',
+          name: 'customInstance',
+        },
+      },
+    },
+    hooks: {
+      afterAllFilesWrite: 'prettier --write',
+    },
+  },
 });

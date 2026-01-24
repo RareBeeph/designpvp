@@ -19,6 +19,7 @@ const eslintConfig = [
       'dist/**',
       'next-env.d.ts',
       'api/backend.ts',
+      'api/allauth.ts',
     ],
   },
   // Get type information

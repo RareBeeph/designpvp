@@ -83,6 +83,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "allauth.headless",
+    "allauth.account",
+    "allauth.socialaccount",
     "rest_framework",
     "drf_spectacular",
     "backend",
@@ -97,6 +100,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "backend.urls"
@@ -118,6 +122,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "backend.wsgi.application"
 
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -195,3 +203,20 @@ SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,
     "COMPONENT_SPLIT_REQUEST": True,
 }
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        "APP": {"client_id": "123", "secret": "456", "key": ""}
+    }
+}
+
+HEADLESS_FRONTEND_URLS = {
+    "account_confirm_email": "https://app.project.org/account/verify-email/{key}",
+    "account_reset_password_from_key": "https://app.org/account/password/reset/key/{key}",
+    "account_signup": "https://app.org/account/signup",
+}
+
+HEADLESS_ONLY = True
