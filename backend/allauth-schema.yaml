@@ -2,8 +2,9 @@ openapi: 3.0.3
 info:
   version: '1'
   title: 'django-allauth: Headless API'
-  description: |
-    $ref: "./description.md"
+  description: '$ref: "./description.md"
+
+    '
   contact:
     email: info@allauth.org
   license:
@@ -13,99 +14,121 @@ externalDocs:
   description: The django-allauth project.
   url: http://allauth.org
 tags:
-  - name: Configuration
-    description: |
-      Exposes information on the configuration of django-allauth.
-  - name: 'Authentication: Account'
-    description: |
-      All functionality related towards authenticating regular
-      username/email-password based accounts.
-  - name: 'Account: Email'
-    description: |
-      The API used for manipulating the email addresses attached to a given
-      account. This is intentionally modeled as one endpoint, representing the
-      collection of all the email addresses. Note that manipulating one email
-      address may affect another.  For example, marking one email address as
-      primary implies the previous primary email address is changed as
-      well. Also, if django-allauth is configured with `ACCOUNT_CHANGE_EMAIL =
-      True`, verifying the email address the user is changing to will cause the
-      previous email addres to be removed.
-  - name: 'Account: Phone'
-    description: |
-      The API used for manipulating the phone number attached to a given
-      account.
-  - name: 'Account: Password'
-    description: |
-      Endpoints that can be used to alter the password for a given account.
-  - name: 'Account: Providers'
-    description: |
-      Management of third-party provider accounts that are connected to the
-      authenticated account.
-  - name: 'Authentication: 2FA'
-    description: |
-      Endpoints related towards completing the Two-Factor Authentication stage
-      during the authentication cycle.
+- name: Configuration
+  description: 'Exposes information on the configuration of django-allauth.
+
+    '
+- name: 'Authentication: Account'
+  description: 'All functionality related towards authenticating regular
+
+    username/email-password based accounts.
+
+    '
+- name: 'Account: Email'
+  description: 'The API used for manipulating the email addresses attached to a given
+
+    account. This is intentionally modeled as one endpoint, representing the
+
+    collection of all the email addresses. Note that manipulating one email
+
+    address may affect another.  For example, marking one email address as
+
+    primary implies the previous primary email address is changed as
+
+    well. Also, if django-allauth is configured with `ACCOUNT_CHANGE_EMAIL =
+
+    True`, verifying the email address the user is changing to will cause the
+
+    previous email addres to be removed.
+
+    '
+- name: 'Account: Phone'
+  description: 'The API used for manipulating the phone number attached to a given
+
+    account.
+
+    '
+- name: 'Account: Password'
+  description: 'Endpoints that can be used to alter the password for a given account.
+
+    '
+- name: 'Account: Providers'
+  description: 'Management of third-party provider accounts that are connected to
+    the
+
+    authenticated account.
+
+    '
+- name: 'Authentication: 2FA'
+  description: 'Endpoints related towards completing the Two-Factor Authentication
+    stage
+
+    during the authentication cycle.
+
+    '
 x-tagGroups:
-  - name: Overall
-    tags:
-      - 'Configuration'
-  - name: Authentication
-    tags:
-      - 'Authentication: Current Session'
-      - 'Authentication: Account'
-      - 'Authentication: Password Reset'
-      - 'Authentication: Providers'
-      - 'Authentication: 2FA'
-      - 'Authentication: Login By Code'
-      - 'Authentication: WebAuthn: Login'
-      - 'Authentication: WebAuthn: Signup'
-  - name: Account
-    tags:
-      - 'Account: Email'
-      - 'Account: Password'
-      - 'Account: Phone'
-      - 'Account: Providers'
-      - 'Account: 2FA'
-      - 'Account: WebAuthn'
-  - name: Sessions
-    tags:
-      - 'Sessions'
-  - name: Tokens
-    tags:
-      - 'Tokens'
+- name: Overall
+  tags:
+  - Configuration
+- name: Authentication
+  tags:
+  - 'Authentication: Current Session'
+  - 'Authentication: Account'
+  - 'Authentication: Password Reset'
+  - 'Authentication: Providers'
+  - 'Authentication: 2FA'
+  - 'Authentication: Login By Code'
+  - 'Authentication: WebAuthn: Login'
+  - 'Authentication: WebAuthn: Signup'
+- name: Account
+  tags:
+  - 'Account: Email'
+  - 'Account: Password'
+  - 'Account: Phone'
+  - 'Account: Providers'
+  - 'Account: 2FA'
+  - 'Account: WebAuthn'
+- name: Sessions
+  tags:
+  - Sessions
+- name: Tokens
+  tags:
+  - Tokens
 paths:
-  ######################################################################
-  # Base
-  ######################################################################
   /_allauth/{client}/v1/config:
     get:
       summary: Get configuration
       tags:
-        - Configuration
-      description: |
-        There are many configuration options that alter the functionality
+      - Configuration
+      description: 'There are many configuration options that alter the functionality
+
         and behavior of django-allauth, some of which can also impact the
+
         frontend. Therefore, relevant configuration options are exposed via
+
         this endpoint. The data returned is not user/authentication
+
         dependent. Hence, it suffices to only fetch this data once at boot
+
         time of your application.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/Client'
       responses:
         '200':
           $ref: '#/components/responses/Configuration'
-  ######################################################################
-  # Authentication: Account
-  ######################################################################
+      operationId: getConfig
   /_allauth/{client}/v1/auth/login:
     post:
       tags:
-        - 'Authentication: Account'
+      - 'Authentication: Account'
       summary: Login
-      description: |
-        Login using a username-password or email-password combination.
+      description: 'Login using a username-password or email-password combination.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/Client'
       requestBody:
         $ref: '#/components/requestBodies/Login'
       responses:
@@ -123,8 +146,9 @@ paths:
                 password_mismatch:
                   $ref: '#/components/examples/PasswordMismatch'
         '401':
-          description: |
-            Not authenticated.
+          description: 'Not authenticated.
+
+            '
           content:
             application/json:
               schema:
@@ -135,32 +159,41 @@ paths:
                 pending_2fa:
                   $ref: '#/components/examples/UnauthenticatedPending2FA'
         '409':
-          description: |
-            Conflict. For example, when logging in when a user is already logged in.
+          description: 'Conflict. For example, when logging in when a user is already
+            logged in.
+
+            '
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConflictResponse'
+      operationId: postAuthLogin
   /_allauth/{client}/v1/auth/signup:
     post:
       tags:
-        - 'Authentication: Account'
+      - 'Authentication: Account'
       summary: Signup
-      description: |
-        Whether or not `username`, `email`, `phone` or combination of those are
+      description: 'Whether or not `username`, `email`, `phone` or combination of
+        those are
+
         required depends on the configuration of django-allauth. Additionally,
+
         if a custom signup form is used there may be other custom properties
+
         required.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/Client'
       requestBody:
         $ref: '#/components/requestBodies/Signup'
       responses:
         '200':
           $ref: '#/components/responses/AuthenticatedByPassword'
         '400':
-          description: |
-            An input error occurred.
+          description: 'An input error occurred.
+
+            '
           content:
             application/json:
               schema:
@@ -169,8 +202,9 @@ paths:
                 invalid_email:
                   $ref: '#/components/examples/InvalidEmail'
         '401':
-          description: |
-            Not authenticated.
+          description: 'Not authenticated.
+
+            '
           content:
             application/json:
               schema:
@@ -179,36 +213,44 @@ paths:
                 pending_email:
                   $ref: '#/components/examples/UnauthenticatedPendingEmailVerification'
         '403':
-          description: |
-            Forbidden. For example, when signup is closed.
+          description: 'Forbidden. For example, when signup is closed.
+
+            '
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ForbiddenResponse'
         '409':
-          description: |
-            Conflict. For example, when signing up while user is logged in.
+          description: 'Conflict. For example, when signing up while user is logged
+            in.
+
+            '
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConflictResponse'
+      operationId: postAuthSignup
   /_allauth/{client}/v1/auth/email/verify:
     get:
       tags:
-        - 'Authentication: Account'
+      - 'Authentication: Account'
       summary: Get email verification information
-      description: |
-        Obtain email verification information, given the token that was sent to
+      description: 'Obtain email verification information, given the token that was
+        sent to
+
         the user by email.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/EmailVerificationKey'
-        - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/EmailVerificationKey'
+      - $ref: '#/components/parameters/Client'
       responses:
         '200':
           $ref: '#/components/responses/EmailVerificationInfo'
         '400':
-          description: |
-            An input error occurred.
+          description: 'An input error occurred.
+
+            '
           content:
             application/json:
               schema:
@@ -217,38 +259,50 @@ paths:
                 invalid_email:
                   $ref: '#/components/examples/InvalidEmailVerificationKey'
         '409':
-          description: |
-            Conflict. The email verification (by code) flow is not pending.
+          description: 'Conflict. The email verification (by code) flow is not pending.
+
+            '
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConflictResponse'
+      operationId: getAuthEmailVerify
     post:
       tags:
-        - 'Authentication: Account'
+      - 'Authentication: Account'
       summary: Verify an email
-      description: |
-        Complete the email verification process. Depending on the configuration,
+      description: 'Complete the email verification process. Depending on the configuration,
+
         email addresses are either verified by opening a link that is sent to
+
         their email address, or, by inputting a code that is sent. On the API,
+
         both cases are handled identically. Meaning, the required key is either
+
         the one from the link, or, the code itself.
 
+
         Note that a status code of 401 does not imply failure. It indicates that
+
         the email verification was successful, yet, the user is still not signed
+
         in. For example, in case `ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION` is set to
+
         `False`, a 401 is returned when verifying as part of login/signup.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       requestBody:
         $ref: '#/components/requestBodies/VerifyEmail'
       responses:
         '200':
           $ref: '#/components/responses/Authenticated'
         '400':
-          description: |
-            An input error occurred.
+          description: 'An input error occurred.
+
+            '
           content:
             application/json:
               schema:
@@ -259,55 +313,66 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthenticated'
         '409':
-          description: |
-            Conflict. The email verification (by code) flow is not pending.
+          description: 'Conflict. The email verification (by code) flow is not pending.
+
+            '
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConflictResponse'
+      operationId: postAuthEmailVerify
   /_allauth/{client}/v1/auth/email/verify/resend:
     post:
       tags:
-        - 'Authentication: Account'
+      - 'Authentication: Account'
       summary: Resend email verification code
-      description: |
-        Requests a new email verification code.
+      description: 'Requests a new email verification code.
+
         Requires `ACCOUNT_EMAIL_VERIFICATION_SUPPORTS_RESEND = True`.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       responses:
         '200':
           $ref: '#/components/responses/StatusOK'
         '409':
-          description: |
-            Conflict. The email verification (by code) flow is not pending.
+          description: 'Conflict. The email verification (by code) flow is not pending.
+
+            '
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConflictResponse'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      operationId: postAuthEmailVerifyResend
   /_allauth/{client}/v1/auth/phone/verify:
     post:
       tags:
-        - 'Authentication: Account'
+      - 'Authentication: Account'
       summary: Verify a phone number
-      description: |
-        Complete the phone number verification process. Note that a status code
+      description: 'Complete the phone number verification process. Note that a status
+        code
+
         of 401 does not imply failure. It merely indicates that the phone number
+
         verification was successful, yet, the user is still not signed in.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       requestBody:
         $ref: '#/components/requestBodies/VerifyPhone'
       responses:
         '200':
           $ref: '#/components/responses/Authenticated'
         '400':
-          description: |
-            An input error occurred.
+          description: 'An input error occurred.
+
+            '
           content:
             application/json:
               schema:
@@ -315,50 +380,63 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthenticated'
         '409':
-          description: |
-            Conflict. The phone verification flow is not pending.
+          description: 'Conflict. The phone verification flow is not pending.
+
+            '
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConflictResponse'
+      operationId: postAuthPhoneVerify
   /_allauth/{client}/v1/auth/phone/verify/resend:
     post:
       tags:
-        - 'Authentication: Account'
+      - 'Authentication: Account'
       summary: Resend phone number verification code
-      description: |
-        Requests a new phone number verification code.
+      description: 'Requests a new phone number verification code.
+
         Requires `ACCOUNT_PHONE_VERIFICATION_SUPPORTS_RESEND = True`.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       responses:
         '200':
           $ref: '#/components/responses/StatusOK'
         '409':
-          description: |
-            Conflict. The phone verification flow is not pending.
+          description: 'Conflict. The phone verification flow is not pending.
+
+            '
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConflictResponse'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      operationId: postAuthPhoneVerifyResend
   /_allauth/{client}/v1/auth/reauthenticate:
     post:
       tags:
-        - 'Authentication: Account'
+      - 'Authentication: Account'
       summary: Reauthenticate
-      description: |
-        In order to safeguard the account, some actions require the user to be
+      description: 'In order to safeguard the account, some actions require the user
+        to be
+
         recently authenticated.  If you try to perform such an action without
+
         having been recently authenticated, a `401` status is returned, listing
+
         flows that can be performed to reauthenticate. One such flow is the flow
+
         with ID `reauthenticate`, which allows for the user to input the
+
         password. This is the endpoint related towards that flow.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       requestBody:
         $ref: '#/components/requestBodies/Reauthenticate'
       responses:
@@ -373,36 +451,45 @@ paths:
               examples:
                 invalid_email:
                   $ref: '#/components/examples/IncorrectPassword'
-  ######################################################################
-  # Authentication: Password
-  ######################################################################
+      operationId: postAuthReauthenticate
   /_allauth/{client}/v1/auth/password/request:
     post:
       summary: Request password
-      description: |
-        Initiates the password reset procedure. Depending on whether or not
+      description: 'Initiates the password reset procedure. Depending on whether or
+        not
+
         `ACCOUNT_PASSWORD_RESET_BY_CODE_ENABLED` is `True`, the procedure is
+
         either stateless or stateful.
 
+
         In case codes are used, it is stateful, and a new
+
         `password_reset_by_code` flow is started. In this case, on a successful
+
         password reset request, you will receive a 401 indicating the pending
+
         status of this flow.
 
+
         In case password reset is configured to use (stateless) links, you will
+
         receive a 200 on a successful password reset request.
+
+        '
       tags:
-        - 'Authentication: Password Reset'
+      - 'Authentication: Password Reset'
       parameters:
-        - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/Client'
       requestBody:
         $ref: '#/components/requestBodies/RequestPassword'
       responses:
         '200':
           $ref: '#/components/responses/StatusOK'
         '400':
-          description: |
-            An input error occurred.
+          description: 'An input error occurred.
+
+            '
           content:
             application/json:
               schema:
@@ -412,27 +499,35 @@ paths:
                   $ref: '#/components/examples/InvalidEmail'
         '401':
           $ref: '#/components/responses/Authentication'
+      operationId: postAuthPasswordRequest
   /_allauth/{client}/v1/auth/password/reset:
     get:
       summary: Get password reset information
-      description: |
-        Used to obtain information on and validate a password reset key.  The
+      description: 'Used to obtain information on and validate a password reset key.  The
+
         key passed is either the key encoded in the password reset URL that the
+
         user has received per email, or, the password reset code in case of
+
         `ACCOUNT_PASSWORD_RESET_BY_CODE_ENABLED`. Note that in case of a code,
+
         the number of requests you can make is limited (by
+
         `ACCOUNT_PASSWORD_RESET_BY_CODE_MAX_ATTEMPTS`).
+
+        '
       tags:
-        - 'Authentication: Password Reset'
+      - 'Authentication: Password Reset'
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/PasswordResetKey'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/PasswordResetKey'
       responses:
         '200':
           $ref: '#/components/responses/PasswordResetInfo'
         '400':
-          description: |
-            An input error occurred.
+          description: 'An input error occurred.
+
+            '
           content:
             application/json:
               schema:
@@ -441,25 +536,34 @@ paths:
                 password_reset_key_invalid:
                   $ref: '#/components/examples/InvalidPasswordResetKey'
         '409':
-          description: |
-            Conflict. There is no password reset (by code) flow pending.
+          description: 'Conflict. There is no password reset (by code) flow pending.
+
+            '
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConflictResponse'
+      operationId: getAuthPasswordReset
     post:
       summary: Reset password
-      description: |
-        Perform the password reset, by handing over the password reset key and
+      description: 'Perform the password reset, by handing over the password reset
+        key and
+
         the new password. After successfully completing the password reset, the
+
         user is either logged in (in case `ACCOUNT_LOGIN_ON_PASSWORD_RESET` is
+
         `True`), or, the user will need to proceed to the login page.  In case
+
         of the former, a `200` status code is returned, in case of the latter a
+
         401.
+
+        '
       tags:
-        - 'Authentication: Password Reset'
+      - 'Authentication: Password Reset'
       parameters:
-        - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/Client'
       requestBody:
         $ref: '#/components/requestBodies/ResetPassword'
       responses:
@@ -477,50 +581,63 @@ paths:
         '401':
           $ref: '#/components/responses/Authentication'
         '409':
-          description: |
-            Conflict. There is no password reset (by code) flow pending.
+          description: 'Conflict. There is no password reset (by code) flow pending.
+
+            '
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConflictResponse'
-  ######################################################################
-  # Authentication: Providers
-  ######################################################################
+      operationId: postAuthPasswordReset
   /_allauth/browser/v1/auth/provider/redirect:
     post:
       tags:
-        - 'Authentication: Providers'
+      - 'Authentication: Providers'
       summary: Provider redirect
-      description: |
-        Initiates the third-party provider authentication redirect flow. As calling
+      description: 'Initiates the third-party provider authentication redirect flow.
+        As calling
+
         this endpoint results in a user facing redirect (302), this call is only
+
         available in a browser, and must be called in a synchronous (non-XHR)
+
         manner.
+
+        '
       requestBody:
         $ref: '#/components/requestBodies/ProviderRedirect'
       responses:
         '302':
-          description: The provider authorization URL to which the client should be redirected.
+          description: The provider authorization URL to which the client should be
+            redirected.
           headers:
             location:
               schema:
                 type: string
               description: The redirect URL.
+      operationId: postBrowserAuthProviderRedirect
   /_allauth/{client}/v1/auth/provider/token:
     post:
       tags:
-        - 'Authentication: Providers'
+      - 'Authentication: Providers'
       summary: Provider token
-      description: |
-        Authenticates with a third-party provider using provider tokens received
+      description: 'Authenticates with a third-party provider using provider tokens
+        received
+
         by other means. For example, in case of a mobile app, the authentication
+
         flow runs completely on the device itself, without any interaction with
+
         the API. Then, when the (device) authentication completes and the mobile
+
         app receives an access and/or ID token, it can hand over these tokens
+
         via this endpoint to authenticate on the server.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       requestBody:
         $ref: '#/components/requestBodies/ProviderToken'
       responses:
@@ -547,47 +664,63 @@ paths:
                 unauthenticated_pending_email_verification:
                   $ref: '#/components/examples/UnauthenticatedPendingEmailVerification'
         '403':
-          description: |
-            Forbidden. For example, when signup is closed.
+          description: 'Forbidden. For example, when signup is closed.
+
+            '
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ForbiddenResponse'
+      operationId: postAuthProviderToken
   /_allauth/{client}/v1/auth/provider/signup:
     get:
       tags:
-        - 'Authentication: Providers'
+      - 'Authentication: Providers'
       summary: Provider signup information
-      description: |
-        If, while signing up using a third-party provider account, there is
+      description: 'If, while signing up using a third-party provider account, there
+        is
+
         insufficient information received from the provider to automatically
+
         complete the signup process, an additional step is needed to complete
+
         the missing data before the user is fully signed up and authenticated.
+
         The information available so far, such as the pending provider account,
+
         can be retrieved via this endpoint.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/Client'
       responses:
         '200':
           $ref: '#/components/responses/ProviderSignup'
         '409':
-          description: |
-            Conflict. The provider signup flow is not pending.
+          description: 'Conflict. The provider signup flow is not pending.
+
+            '
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConflictResponse'
+      operationId: getAuthProviderSignup
     post:
       tags:
-        - 'Authentication: Providers'
+      - 'Authentication: Providers'
       summary: Provider signup
-      description: |
-        If, while signing up using a third-party provider account, there is
+      description: 'If, while signing up using a third-party provider account, there
+        is
+
         insufficient information received from the provider to automatically
+
         complete the signup process, an additional step is needed to complete
+
         the missing data before the user is fully signed up and authenticated.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/Client'
       requestBody:
         $ref: '#/components/requestBodies/ProviderSignup'
       responses:
@@ -612,34 +745,39 @@ paths:
                 unauthenticated_pending_email_verification:
                   $ref: '#/components/examples/UnauthenticatedPendingEmailVerification'
         '403':
-          description: |
-            Forbidden. For example, when signup is closed.
+          description: 'Forbidden. For example, when signup is closed.
+
+            '
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ForbiddenResponse'
         '409':
-          description: |
-            Conflict. The provider signup flow is not pending.
+          description: 'Conflict. The provider signup flow is not pending.
+
+            '
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConflictResponse'
-  ######################################################################
-  # Authentication: 2FA
-  ######################################################################
+      operationId: postAuthProviderSignup
   /_allauth/{client}/v1/auth/2fa/authenticate:
     post:
       tags:
-        - 'Authentication: 2FA'
+      - 'Authentication: 2FA'
       summary: Two-factor authentication
-      description: |
-        If, during authentication,  a response with status 401 is encountered where one of the pending
-        flows has ID `mfa_authenticate`, that indicates that the Two-Factor Authentication stage needs to
+      description: 'If, during authentication,  a response with status 401 is encountered
+        where one of the pending
+
+        flows has ID `mfa_authenticate`, that indicates that the Two-Factor Authentication
+        stage needs to
+
         be completed.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       requestBody:
         $ref: '#/components/requestBodies/MFAAuthenticate'
       responses:
@@ -656,22 +794,31 @@ paths:
                   $ref: '#/components/examples/InvalidAuthenticatorCode'
         '401':
           $ref: '#/components/responses/Authentication'
+      operationId: postAuth2faAuthenticate
   /_allauth/{client}/v1/auth/2fa/reauthenticate:
     post:
       tags:
-        - 'Authentication: 2FA'
+      - 'Authentication: 2FA'
       summary: Reauthenticate using 2FA
-      description: |
-        In order to safeguard the account, some actions require the user to be
+      description: 'In order to safeguard the account, some actions require the user
+        to be
+
         recently authenticated.  If you try to perform such an action without
+
         having been recently authenticated, a `401` status is returned, listing
+
         flows that can be performed to reauthenticate. One such flow is the flow
+
         with ID `mfa_reauthenticate`, which allows for the user to input an
+
         authenticator code (e.g. TOTP or recovery code). This is the endpoint
+
         related towards that flow.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       requestBody:
         $ref: '#/components/requestBodies/MFAAuthenticate'
       responses:
@@ -686,18 +833,23 @@ paths:
               examples:
                 invalid_code:
                   $ref: '#/components/examples/InvalidAuthenticatorCode'
+      operationId: postAuth2faReauthenticate
   /_allauth/browser/v1/auth/2fa/trust:
     post:
       tags:
-        - 'Authentication: 2FA'
+      - 'Authentication: 2FA'
       summary: Trust this browser
-      description: |
-        If "Trust this browser?" is enabled (`MFA_TRUST_ENABLED`), the
+      description: 'If "Trust this browser?" is enabled (`MFA_TRUST_ENABLED`), the
+
         `mfa_trust` flow activates after the user completes the MFA
+
         authentication flow, offering to skip MFA for this particular
+
         browser. This endpoint is used to complete the `mfa_trust` flow.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/SessionToken'
       requestBody:
         $ref: '#/components/requestBodies/MFATrust'
       responses:
@@ -709,32 +861,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  ######################################################################
-  # Authentication: WebAuthn
-  ######################################################################
+      operationId: postBrowserAuth2faTrust
   /_allauth/{client}/v1/auth/webauthn/authenticate:
     get:
       tags:
-        - 'Authentication: WebAuthn: Login'
+      - 'Authentication: WebAuthn: Login'
       summary: Get WebAuthn credential request options for 2FA
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
-      description: |
-        Returns the WebAuthn credential request options, that can be
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
+      description: 'Returns the WebAuthn credential request options, that can be
+
         processed using `parseRequestOptionsFromJSON()` on the frontend.
+
+        '
       responses:
         '200':
           $ref: '#/components/responses/WebAuthnRequestOptionsResponse'
+      operationId: getAuthWebauthnAuthenticate
     post:
       tags:
-        - 'Authentication: WebAuthn: Login'
+      - 'Authentication: WebAuthn: Login'
       summary: Perform 2FA using WebAuthn
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
-      description: |
-        Perform Two-Factor Authentication using a WebAuthn credential.
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
+      description: 'Perform Two-Factor Authentication using a WebAuthn credential.
+
+        '
       requestBody:
         $ref: '#/components/requestBodies/AuthenticateWebAuthn'
       responses:
@@ -746,29 +900,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: postAuthWebauthnAuthenticate
   /_allauth/{client}/v1/auth/webauthn/reauthenticate:
     get:
       tags:
-        - 'Authentication: WebAuthn: Login'
+      - 'Authentication: WebAuthn: Login'
       summary: Get WebAuthn credential request options for reauthentication
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
-      description: |
-        Returns the WebAuthn credential request options, that can be
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
+      description: 'Returns the WebAuthn credential request options, that can be
+
         processed using `parseRequestOptionsFromJSON()` on the frontend.
+
+        '
       responses:
         '200':
           $ref: '#/components/responses/WebAuthnRequestOptionsResponse'
+      operationId: getAuthWebauthnReauthenticate
     post:
       tags:
-        - 'Authentication: WebAuthn: Login'
+      - 'Authentication: WebAuthn: Login'
       summary: Reauthenticate using WebAuthn
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
-      description: |
-        Reauthenticate the user using a WebAuthn credential.
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
+      description: 'Reauthenticate the user using a WebAuthn credential.
+
+        '
       requestBody:
         $ref: '#/components/requestBodies/ReauthenticateWebAuthn'
       responses:
@@ -780,32 +939,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: postAuthWebauthnReauthenticate
   /_allauth/{client}/v1/auth/webauthn/login:
     get:
       tags:
-        - 'Authentication: WebAuthn: Login'
+      - 'Authentication: WebAuthn: Login'
       summary: Get WebAuthn credential request options for login
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
-      description: |
-        Returns the WebAuthn credential request options, that can be
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
+      description: 'Returns the WebAuthn credential request options, that can be
+
         processed using `parseRequestOptionsFromJSON()` on the frontend.
+
+        '
       responses:
         '200':
           $ref: '#/components/responses/WebAuthnRequestOptionsResponse'
+      operationId: getAuthWebauthnLogin
     post:
       tags:
-        - 'Authentication: WebAuthn: Login'
+      - 'Authentication: WebAuthn: Login'
       summary: Login using WebAuthn
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
-      description: |
-        Login using a WebAuthn credential (Passkey). Both 200 and 401 can be
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
+      description: 'Login using a WebAuthn credential (Passkey). Both 200 and 401
+        can be
+
         expected after a successful request.  The 401 can, for example, occur
+
         when the credential passed was valid, but the email attached to the
+
         account still requires verification.
+
+        '
       requestBody:
         $ref: '#/components/requestBodies/LoginWebAuthn'
       responses:
@@ -818,8 +986,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
-          description: |
-            Not authenticated.
+          description: 'Not authenticated.
+
+            '
           content:
             application/json:
               schema:
@@ -827,25 +996,35 @@ paths:
               examples:
                 pending_email:
                   $ref: '#/components/examples/UnauthenticatedPendingEmailVerification'
+      operationId: postAuthWebauthnLogin
   /_allauth/{client}/v1/auth/webauthn/signup:
     post:
       tags:
-        - 'Authentication: WebAuthn: Signup'
+      - 'Authentication: WebAuthn: Signup'
       summary: Initiate the passkey signup flow
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
-      description: |
-        You initiate the passkey signup flow by inputting (`POST`) the required properties (e.g. email)
-        similar to the regular account signup, except that the `password` is to be left out.
-        The user will then be required to verify the email address, after which WebAuthn credential
-        creation options can be retrieved (`GET`) and used to actually complete (`PUT`) the flow.
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
+      description: 'You initiate the passkey signup flow by inputting (`POST`) the
+        required properties (e.g. email)
+
+        similar to the regular account signup, except that the `password` is to be
+        left out.
+
+        The user will then be required to verify the email address, after which WebAuthn
+        credential
+
+        creation options can be retrieved (`GET`) and used to actually complete (`PUT`)
+        the flow.
+
+        '
       requestBody:
         $ref: '#/components/requestBodies/PasskeySignup'
       responses:
         '400':
-          description: |
-            An input error occurred.
+          description: 'An input error occurred.
+
+            '
           content:
             application/json:
               schema:
@@ -854,8 +1033,9 @@ paths:
                 invalid_email:
                   $ref: '#/components/examples/InvalidEmail'
         '401':
-          description: |
-            Not authenticated, email verification pending.
+          description: 'Not authenticated, email verification pending.
+
+            '
           content:
             application/json:
               schema:
@@ -864,48 +1044,59 @@ paths:
                 pending_email:
                   $ref: '#/components/examples/UnauthenticatedPendingEmailVerification'
         '403':
-          description: |
-            Forbidden. For example, when signup is closed.
+          description: 'Forbidden. For example, when signup is closed.
+
+            '
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ForbiddenResponse'
         '409':
-          description: |
-            Conflict. For example, when signing up while user is logged in.
+          description: 'Conflict. For example, when signing up while user is logged
+            in.
+
+            '
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConflictResponse'
+      operationId: postAuthWebauthnSignup
     get:
       tags:
-        - 'Authentication: WebAuthn: Signup'
+      - 'Authentication: WebAuthn: Signup'
       summary: Get passkey credential request options
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
-      description: |
-        Returns the WebAuthn credential request options, that can be
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
+      description: 'Returns the WebAuthn credential request options, that can be
+
         processed using `parseRequestOptionsFromJSON()` on the frontend.
+
+        '
       responses:
         '200':
           $ref: '#/components/responses/WebAuthnRequestOptionsResponse'
         '409':
-          description: |
-            Conflict. For example, when the passkey signup flow is not pending.
+          description: 'Conflict. For example, when the passkey signup flow is not
+            pending.
+
+            '
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConflictResponse'
+      operationId: getAuthWebauthnSignup
     put:
       tags:
-        - 'Authentication: WebAuthn: Signup'
+      - 'Authentication: WebAuthn: Signup'
       summary: Complete the passkey signup flow
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
-      description: |
-        Complete the passkey signup flow by handing over the WebAuthn credential.
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
+      description: 'Complete the passkey signup flow by handing over the WebAuthn
+        credential.
+
+        '
       requestBody:
         $ref: '#/components/requestBodies/AddWebAuthnAuthenticator'
       responses:
@@ -918,8 +1109,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
-          description: |
-            Not authenticated.
+          description: 'Not authenticated.
+
+            '
           content:
             application/json:
               schema:
@@ -928,24 +1120,25 @@ paths:
                 pending_email:
                   $ref: '#/components/examples/UnauthenticatedPendingEmailVerification'
         '409':
-          description: |
-            Conflict. For example, when the passkey signup flow is not pending.
+          description: 'Conflict. For example, when the passkey signup flow is not
+            pending.
+
+            '
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConflictResponse'
-  ######################################################################
-  # Authentication: Login by Code
-  ######################################################################
+      operationId: putAuthWebauthnSignup
   /_allauth/{client}/v1/auth/code/request:
     post:
       tags:
-        - 'Authentication: Login By Code'
+      - 'Authentication: Login By Code'
       summary: Request login code
-      description: |
-        Request a "special" login code that is sent to the user by email.
+      description: 'Request a "special" login code that is sent to the user by email.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/Client'
       requestBody:
         $ref: '#/components/requestBodies/RequestLoginCode'
       responses:
@@ -959,8 +1152,9 @@ paths:
                 invalid_email:
                   $ref: '#/components/examples/InvalidEmail'
         '401':
-          description: |
-            Not authenticated.
+          description: 'Not authenticated.
+
+            '
           content:
             application/json:
               schema:
@@ -968,16 +1162,17 @@ paths:
               examples:
                 pending_login_by_code:
                   $ref: '#/components/examples/UnauthenticatedPendingLoginByCode'
-
+      operationId: postAuthCodeRequest
   /_allauth/{client}/v1/auth/code/confirm:
     post:
       tags:
-        - 'Authentication: Login By Code'
+      - 'Authentication: Login By Code'
       summary: Confirm login code
-      description: |
-        Use this endpoint to pass along the received "special" login code.
+      description: 'Use this endpoint to pass along the received "special" login code.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/Client'
       requestBody:
         $ref: '#/components/requestBodies/ConfirmLoginCode'
       responses:
@@ -993,8 +1188,9 @@ paths:
                 invalid_code:
                   $ref: '#/components/examples/InvalidAuthenticatorCode'
         '401':
-          description: |
-            Not authenticated.
+          description: 'Not authenticated.
+
+            '
           content:
             application/json:
               schema:
@@ -1003,40 +1199,44 @@ paths:
                 unauthenticated_pending_2fa:
                   $ref: '#/components/examples/UnauthenticatedPending2FA'
         '409':
-          description: |
-            Conflict. The "login by code" flow is not pending.
+          description: 'Conflict. The "login by code" flow is not pending.
+
+            '
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConflictResponse'
-
-  ######################################################################
-  # Account: Providers
-  ######################################################################
+      operationId: postAuthCodeConfirm
   /_allauth/{client}/v1/account/providers:
     get:
       tags:
-        - 'Account: Providers'
+      - 'Account: Providers'
       summary: List the connected third-party provider accounts
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       responses:
         '200':
           $ref: '#/components/responses/ProviderAccounts'
+      operationId: getAccountProviders
     delete:
       tags:
-        - 'Account: Providers'
-      summary: |
-        Disconnect a third-party provider account
-      description: |
-        Disconnect a third-party provider account, returning the remaining
+      - 'Account: Providers'
+      summary: 'Disconnect a third-party provider account
+
+        '
+      description: 'Disconnect a third-party provider account, returning the remaining
+
         accounts that are still connected. The disconnect is not allowed if it
+
         would leave the account unusable. For example, if no password was
+
         set up yet.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       requestBody:
         $ref: '#/components/requestBodies/ProviderAccount'
       responses:
@@ -1053,40 +1253,40 @@ paths:
                   $ref: '#/components/examples/DisconnectNotAllowedNoPassword'
                 no_email:
                   $ref: '#/components/examples/DisconnectNotAllowedNoVerifiedEmail'
-  ######################################################################
-  # Account: Email
-  ######################################################################
+      operationId: deleteAccountProviders
   /_allauth/{client}/v1/account/email:
     get:
       tags:
-        - 'Account: Email'
+      - 'Account: Email'
       summary: List email addresses
-      description: |
-        Retrieves the list of email addresses of the account.
+      description: 'Retrieves the list of email addresses of the account.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       responses:
         '200':
           $ref: '#/components/responses/EmailAddresses'
         '401':
           $ref: '#/components/responses/Authentication'
+      operationId: getAccountEmail
     post:
       tags:
-        - 'Account: Email'
-      summary: |
-        Add/Change email address
-      description: |
-        The following functionality is available:
+      - 'Account: Email'
+      summary: 'Add/Change email address
 
-          - Adding a new email address for an already signed in user (`ACCOUNT_CHANGE_EMAIL = False`).
-          - Change to a new email address for an already signed in user   (`ACCOUNT_CHANGE_EMAIL = True`).
-          - Change to a new email address during the email verification process at signup (`ACCOUNT_EMAIL_VERIFICATION_SUPPORTS_CHANGE = True`).
-
-        In all cases, an email verification mail will be sent containing a link or code that needs to be verified.
+        '
+      description: "The following functionality is available:\n\n  - Adding a new\
+        \ email address for an already signed in user (`ACCOUNT_CHANGE_EMAIL = False`).\n\
+        \  - Change to a new email address for an already signed in user   (`ACCOUNT_CHANGE_EMAIL\
+        \ = True`).\n  - Change to a new email address during the email verification\
+        \ process at signup (`ACCOUNT_EMAIL_VERIFICATION_SUPPORTS_CHANGE = True`).\n\
+        \nIn all cases, an email verification mail will be sent containing a link\
+        \ or code that needs to be verified.\n"
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       requestBody:
         $ref: '#/components/requestBodies/Email'
       responses:
@@ -1104,23 +1304,30 @@ paths:
         '401':
           $ref: '#/components/responses/AuthenticationOrReauthentication'
         '409':
-          description: |
-            Conflict. For example, when no user is authenticated and no email verification flow is pending.
+          description: 'Conflict. For example, when no user is authenticated and no
+            email verification flow is pending.
+
+            '
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConflictResponse'
+      operationId: postAccountEmail
     put:
       tags:
-        - 'Account: Email'
+      - 'Account: Email'
       summary: Request email verification
-      description: |
-        Requests for (another) email verification email to be sent. Note that
+      description: 'Requests for (another) email verification email to be sent. Note
+        that
+
         sending emails is rate limited, so when you send too many requests the
+
         email will not be sent.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       requestBody:
         $ref: '#/components/requestBodies/Email'
       responses:
@@ -1136,22 +1343,27 @@ paths:
                 invalid_code:
                   $ref: '#/components/examples/InvalidEmail'
         '403':
-          description: |
-            Too many email verification mails were already sent.
+          description: 'Too many email verification mails were already sent.
+
+            '
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ForbiddenResponse'
+      operationId: putAccountEmail
     patch:
       tags:
-        - 'Account: Email'
+      - 'Account: Email'
       summary: Change primary email address
-      description: |
-        Used to change primary email address to a different one. Note that only verified email addresses
+      description: 'Used to change primary email address to a different one. Note
+        that only verified email addresses
+
         can be marked as primary.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       requestBody:
         $ref: '#/components/requestBodies/MarkPrimaryEmail'
       responses:
@@ -1166,15 +1378,17 @@ paths:
               examples:
                 invalid_code:
                   $ref: '#/components/examples/InvalidEmail'
+      operationId: patchAccountEmail
     delete:
       tags:
-        - 'Account: Email'
+      - 'Account: Email'
       summary: Remove an email address
-      description: |
-        Used to remove an email address.
+      description: 'Used to remove an email address.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       requestBody:
         $ref: '#/components/requestBodies/Email'
       responses:
@@ -1189,44 +1403,43 @@ paths:
               examples:
                 invalid_code:
                   $ref: '#/components/examples/InvalidEmail'
-  ######################################################################
-  # Account: Phone
-  ######################################################################
+      operationId: deleteAccountEmail
   /_allauth/{client}/v1/account/phone:
     get:
       tags:
-        - 'Account: Phone'
+      - 'Account: Phone'
       summary: Get the phone number
-      description: |
-        Retrieves the phone number of the account, if any. Note that while the
+      description: 'Retrieves the phone number of the account, if any. Note that while
+        the
+
         endpoint returns a list of phone numbers, at most one entry is returned.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       responses:
         '200':
           $ref: '#/components/responses/PhoneNumbers'
         '401':
           $ref: '#/components/responses/Authentication'
+      operationId: getAccountPhone
     post:
       tags:
-        - 'Account: Phone'
-      summary: |
-        Change the phone number
-      description: |
-        The following functionality is available:
+      - 'Account: Phone'
+      summary: 'Change the phone number
 
-        - Initiate the phone number change process for signed in users.
-        - Change to a new phone number during the phone number verification
-          process at signup for unauthenticated users. Note that this requires:
-          `ACCOUNT_PHONE_VERIFICATION_SUPPORTS_CHANGE = True`.
-
-        In both cases, after posting a new phone number, proceed with the phone
-        verification endpoint to confirm the change of the phone number by
-        posting the verification code.
+        '
+      description: "The following functionality is available:\n\n- Initiate the phone\
+        \ number change process for signed in users.\n- Change to a new phone number\
+        \ during the phone number verification\n  process at signup for unauthenticated\
+        \ users. Note that this requires:\n  `ACCOUNT_PHONE_VERIFICATION_SUPPORTS_CHANGE\
+        \ = True`.\n\nIn both cases, after posting a new phone number, proceed with\
+        \ the phone\nverification endpoint to confirm the change of the phone number\
+        \ by\nposting the verification code.\n"
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       requestBody:
         $ref: '#/components/requestBodies/Phone'
       responses:
@@ -1245,23 +1458,23 @@ paths:
         '401':
           $ref: '#/components/responses/AuthenticationOrReauthentication'
         '409':
-          description: |
-            Conflict. For example, when no user is authenticated and no phone verification flow is pending.
+          description: 'Conflict. For example, when no user is authenticated and no
+            phone verification flow is pending.
+
+            '
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConflictResponse'
-  ######################################################################
-  # Account: 2FA
-  ######################################################################
+      operationId: postAccountPhone
   /_allauth/{client}/v1/account/authenticators:
     get:
       tags:
-        - 'Account: 2FA'
+      - 'Account: 2FA'
       summary: List authenticators
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       responses:
         '200':
           $ref: '#/components/responses/Authenticators'
@@ -1269,16 +1482,19 @@ paths:
           $ref: '#/components/responses/Authentication'
         '410':
           $ref: '#/components/responses/SessionGone'
+      operationId: getAccountAuthenticators
   /_allauth/{client}/v1/account/authenticators/totp:
     get:
       tags:
-        - 'Account: 2FA'
+      - 'Account: 2FA'
       summary: TOTP authenticator status
-      description: |
-        Retrieve the information about the current TOTP authenticator, if any.
+      description: 'Retrieve the information about the current TOTP authenticator,
+        if any.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       responses:
         '404':
           $ref: '#/components/responses/TOTPAuthenticatorNotFound'
@@ -1286,17 +1502,21 @@ paths:
           $ref: '#/components/responses/TOTPAuthenticator'
         '409':
           $ref: '#/components/responses/AddAuthenticatorConflict'
+      operationId: getAccountAuthenticatorsTotp
     post:
       tags:
-        - 'Account: 2FA'
+      - 'Account: 2FA'
       summary: Activate TOTP
-      description: |
-        The code should be provided from the consuming TOTP authenticator
+      description: 'The code should be provided from the consuming TOTP authenticator
+
         application which was generated using the TOTP authenticator secret
+
         retrieved from the TOTP authenticator status endpoint.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       requestBody:
         $ref: '#/components/requestBodies/SetupTOTP'
       responses:
@@ -1315,31 +1535,37 @@ paths:
           $ref: '#/components/responses/ReauthenticationRequired'
         '409':
           $ref: '#/components/responses/AddAuthenticatorConflict'
+      operationId: postAccountAuthenticatorsTotp
     delete:
       tags:
-        - 'Account: 2FA'
+      - 'Account: 2FA'
       summary: Deactivate TOTP
-      description: |
-        Deactivates TOTP authentication. If the user authentication is not
+      description: 'Deactivates TOTP authentication. If the user authentication is
+        not
+
         sufficiently recent, a reauthentication flow (`401`) will is presented.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       responses:
         '200':
           $ref: '#/components/responses/StatusOK'
         '401':
           $ref: '#/components/responses/ReauthenticationRequired'
+      operationId: deleteAccountAuthenticatorsTotp
   /_allauth/{client}/v1/account/authenticators/recovery-codes:
     get:
       tags:
-        - 'Account: 2FA'
+      - 'Account: 2FA'
       summary: List recovery codes
-      description: |
-        List recovery codes.
+      description: 'List recovery codes.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       responses:
         '200':
           $ref: '#/components/responses/RecoveryCodes'
@@ -1347,13 +1573,14 @@ paths:
           $ref: '#/components/responses/ReauthenticationRequired'
         '404':
           $ref: '#/components/responses/NotFound'
+      operationId: getAccountAuthenticatorsRecovery-codes
     post:
       tags:
-        - 'Account: 2FA'
+      - 'Account: 2FA'
       summary: Regenerate recovery codes
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       responses:
         '400':
           description: An input error occurred.
@@ -1366,22 +1593,23 @@ paths:
                   $ref: '#/components/examples/CannotGenerateRecoveryCodes'
         '401':
           $ref: '#/components/responses/ReauthenticationRequired'
-  ######################################################################
-  # Account: WebAuthn
-  ######################################################################
+      operationId: postAccountAuthenticatorsRecovery-codes
   /_allauth/{client}/v1/account/authenticators/webauthn:
     get:
       tags:
-        - 'Account: WebAuthn'
-      summary: |
-        Get WebAuthn credential creation options
+      - 'Account: WebAuthn'
+      summary: 'Get WebAuthn credential creation options
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
-        - $ref: '#/components/parameters/PasswordLess'
-      description: |
-        Returns the WebAuthn credential creation options, that can be
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/PasswordLess'
+      description: 'Returns the WebAuthn credential creation options, that can be
+
         processed using `parseCreationOptionsFromJSON()` on the frontend.
+
+        '
       responses:
         '200':
           $ref: '#/components/responses/WebAuthnCreationOptionsResponse'
@@ -1389,18 +1617,24 @@ paths:
           $ref: '#/components/responses/ReauthenticationRequired'
         '409':
           $ref: '#/components/responses/AddAuthenticatorConflict'
+      operationId: getAccountAuthenticatorsWebauthn
     put:
       tags:
-        - 'Account: WebAuthn'
-      summary: |
-        Rename a WebAuthn credential
-      description: |
-        You can alter the name of a WebAuthn credential by PUT'ting the ID and
+      - 'Account: WebAuthn'
+      summary: 'Rename a WebAuthn credential
+
+        '
+      description: 'You can alter the name of a WebAuthn credential by PUT''ting the
+        ID and
+
         name of the authenticator representing that credential. You can obtain
+
         the credentials via the "List authenticators" endpoint.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       requestBody:
         $ref: '#/components/requestBodies/UpdateWebAuthn'
       responses:
@@ -1408,14 +1642,16 @@ paths:
           $ref: '#/components/responses/WebAuthnAuthenticator'
         '401':
           $ref: '#/components/responses/ReauthenticationRequired'
+      operationId: putAccountAuthenticatorsWebauthn
     delete:
       tags:
-        - 'Account: WebAuthn'
-      summary: |
-        Delete a WebAuthn credential
+      - 'Account: WebAuthn'
+      summary: 'Delete a WebAuthn credential
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       requestBody:
         $ref: '#/components/requestBodies/DeleteWebAuthn'
       responses:
@@ -1423,14 +1659,16 @@ paths:
           $ref: '#/components/responses/StatusOK'
         '401':
           $ref: '#/components/responses/ReauthenticationRequired'
+      operationId: deleteAccountAuthenticatorsWebauthn
     post:
       tags:
-        - 'Account: WebAuthn'
-      summary: |
-        Add a WebAuthn credential
+      - 'Account: WebAuthn'
+      summary: 'Add a WebAuthn credential
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       requestBody:
         $ref: '#/components/requestBodies/AddWebAuthnAuthenticator'
       responses:
@@ -1440,21 +1678,22 @@ paths:
           $ref: '#/components/responses/ReauthenticationRequired'
         '409':
           $ref: '#/components/responses/AddAuthenticatorConflict'
-  ######################################################################
-  # Sessions
-  ######################################################################
+      operationId: postAccountAuthenticatorsWebauthn
   /_allauth/{client}/v1/auth/session:
     get:
       tags:
-        - 'Authentication: Current Session'
-      summary: |
-        Get authentication status
-      description: |
-        Retrieve information about the authentication status for the current
+      - 'Authentication: Current Session'
+      summary: 'Get authentication status
+
+        '
+      description: 'Retrieve information about the authentication status for the current
+
         session.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       responses:
         '200':
           $ref: '#/components/responses/Authenticated'
@@ -1462,30 +1701,33 @@ paths:
           $ref: '#/components/responses/Authentication'
         '410':
           $ref: '#/components/responses/SessionGone'
+      operationId: getAuthSession
     delete:
       tags:
-        - 'Authentication: Current Session'
+      - 'Authentication: Current Session'
       summary: Logout
-      description: |
-        Logs out the user from the current session.
+      description: 'Logs out the user from the current session.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       responses:
         '401':
           $ref: '#/components/responses/Unauthenticated'
-  ######################################################################
-  # Tokens
-  ######################################################################
+      operationId: deleteAuthSession
   /_allauth/app/v1/tokens/refresh:
     post:
       tags:
-        - 'Tokens'
-      summary: |
-        Refresh the access token
-      description: |
-        Used to retrieve a new access token. Depending on `settings.HEADLESS_JWT_ROTATE_REFRESH_TOKEN`,
+      - Tokens
+      summary: 'Refresh the access token
+
+        '
+      description: 'Used to retrieve a new access token. Depending on `settings.HEADLESS_JWT_ROTATE_REFRESH_TOKEN`,
+
         a new refresh token is returned as well.
+
+        '
       requestBody:
         $ref: '#/components/requestBodies/RefreshToken'
       responses:
@@ -1497,22 +1739,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  ######################################################################
-  # Account: Password
-  ######################################################################
+      operationId: postAppTokensRefresh
   /_allauth/{client}/v1/account/password/change:
     post:
       tags:
-        - 'Account: Password'
+      - 'Account: Password'
       summary: Change password
-      description: |
-        In order to change the password of an account, the current and new
+      description: 'In order to change the password of an account, the current and
+        new
+
         password must be provider.  However, accounts that were created by
+
         signing up using a third-party provider do not have a password set. In
+
         that case, the current password is not required.
+
+        '
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       requestBody:
         $ref: '#/components/requestBodies/ChangePassword'
       responses:
@@ -1520,27 +1765,26 @@ paths:
           $ref: '#/components/responses/Error'
         '401':
           $ref: '#/components/responses/Authentication'
-  ######################################################################
-  # Authentication: Current Sessions
-  ######################################################################
+      operationId: postAccountPasswordChange
   /_allauth/{client}/v1/auth/sessions:
     get:
       tags:
-        - 'Sessions'
+      - Sessions
       summary: List sessions
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       responses:
         '200':
           $ref: '#/components/responses/Sessions'
+      operationId: getAuthSessions
     delete:
       tags:
-        - 'Sessions'
+      - Sessions
       summary: End one or more sessions
       parameters:
-        - $ref: '#/components/parameters/Client'
-        - $ref: '#/components/parameters/SessionToken'
+      - $ref: '#/components/parameters/Client'
+      - $ref: '#/components/parameters/SessionToken'
       requestBody:
         $ref: '#/components/requestBodies/EndSessions'
       responses:
@@ -1548,284 +1792,294 @@ paths:
           $ref: '#/components/responses/Sessions'
         '401':
           $ref: '#/components/responses/Authentication'
+      operationId: deleteAuthSessions
 components:
-  ######################################################################
-  # Components: Examples
-  ######################################################################
   examples:
     User:
-      value: &user-example
+      value: &id001
         id: 123
         display: Magic Wizard
         has_usable_password: true
         email: email@domain.org
         username: wizard
     AuthenticatedByPassword:
-      summary: |
-        Authenticated by password.
+      summary: 'Authenticated by password.
+
+        '
       value:
         status: 200
         data:
-          user: *user-example
+          user: *id001
           methods:
-            - method: password
-              at: 1711555057.065702
-              email: email@domain.org
+          - method: password
+            at: 1711555057.065702
+            email: email@domain.org
         meta:
           is_authenticated: true
           session_token: ufwcig0zen9skyd545jc0fkq813ghar2
           access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdW
     AuthenticatedByCode:
-      summary: |
-        Authenticated by code.
+      summary: 'Authenticated by code.
+
+        '
       value:
         status: 200
         data:
-          user: *user-example
+          user: *id001
           methods:
-            - method: code
-              at: 1711555057.065702
-              email: email@domain.org
+          - method: code
+            at: 1711555057.065702
+            email: email@domain.org
         meta:
           is_authenticated: true
           session_token: ufwcig0zen9skyd545jc0fkq813ghar2
           access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdW
     AuthenticatedByPasswordAnd2FA:
-      summary: |
-        Fully authenticated using by password and 2FA.
+      summary: 'Fully authenticated using by password and 2FA.
+
+        '
       value:
         status: 200
         data:
-          user: *user-example
+          user: *id001
           methods:
-            - method: password
-              at: 1711555057.065702
-              email: email@domain.org
-            - method: mfa
-              at: 1711555060.9375854
-              id: 66
-              type: totp
+          - method: password
+            at: 1711555057.065702
+            email: email@domain.org
+          - method: mfa
+            at: 1711555060.9375854
+            id: 66
+            type: totp
         meta:
           is_authenticated: true
           session_token: ufwcig0zen9skyd545jc0fkq813ghar2
           access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdW
-
     CannotGenerateRecoveryCodes:
-      summary: |
-        Unable to generate recovery codes.
+      summary: 'Unable to generate recovery codes.
+
+        '
       value:
         status: 400
         errors:
-          - message: |
-              You cannot deactivate two-factor authentication.
-              code: cannot_generate_recovery_codes
+        - message: 'You cannot deactivate two-factor authentication.
+
+            code: cannot_generate_recovery_codes
+
+            '
     DisconnectNotAllowedNoPassword:
       summary: Account without a password.
       value:
         status: 400
         errors:
-          - message: Your account has no password set up.
-            code: no_password
-            param: account
+        - message: Your account has no password set up.
+          code: no_password
+          param: account
     DisconnectNotAllowedNoVerifiedEmail:
       summary: Account without a verified email.
       value:
         status: 400
         errors:
-          - message: Your account has no verified email address.
-            code: no_verified_email
-            param: account
+        - message: Your account has no verified email address.
+          code: no_verified_email
+          param: account
     InvalidAuthenticatorCode:
-      summary: |
-        An error response indicating that the provided code is incorrect.
+      summary: 'An error response indicating that the provided code is incorrect.
+
+        '
       value:
         status: 400
         errors:
-          - message: Incorrect code.
-            code: incorrect_code
-            param: code
+        - message: Incorrect code.
+          code: incorrect_code
+          param: code
     InvalidEmailVerificationKey:
-      summary: |
-        Email verification key invalid.
+      summary: 'Email verification key invalid.
+
+        '
       value:
         status: 400
         errors:
-          - message: Invalid or expired key.
-            code: invalid
-            param: key
+        - message: Invalid or expired key.
+          code: invalid
+          param: key
     InvalidEmail:
       value:
         status: 400
         errors:
-          - message: Enter a valid email address.
-            code: invalid
-            param: email
+        - message: Enter a valid email address.
+          code: invalid
+          param: email
     IncorrectPassword:
       value:
         status: 400
         errors:
-          - message: Incorrect password.
-            param: password
-            code: incorrect_password
+        - message: Incorrect password.
+          param: password
+          code: incorrect_password
     InvalidPasswordResetKey:
-      summary: |
-        Password reset key invalid.
+      summary: 'Password reset key invalid.
+
+        '
       value:
         status: 400
         errors:
-          - message: The password reset token was invalid.
-            code: token_invalid
-            param: key
+        - message: The password reset token was invalid.
+          code: token_invalid
+          param: key
     InvalidProviderToken:
-      summary: |
-        Provider token invalid.
+      summary: 'Provider token invalid.
+
+        '
       value:
         status: 400
         errors:
-          - message: The token was invalid.
-            code: invalid
-            param: token
+        - message: The token was invalid.
+          code: invalid
+          param: token
     PasswordMismatch:
       value:
         status: 400
         errors:
-          - message: The email address and/or password you specified are not correct.
-            code: email_password_mismatch
-            param: password
+        - message: The email address and/or password you specified are not correct.
+          code: email_password_mismatch
+          param: password
     UnauthenticatedInitial:
-      summary: |
-        Unauthenticated: Initial
+      summary: 'Unauthenticated: Initial
+
+        '
       value:
         status: 401
         data:
           flows:
-            - id: login
-            - id: signup
-            - id: provider_redirect
-              providers:
-                - facebook
-                - google
-                - telegram
-            - id: provider_token
-              providers:
-                - google
+          - id: login
+          - id: signup
+          - id: provider_redirect
+            providers:
+            - facebook
+            - google
+            - telegram
+          - id: provider_token
+            providers:
+            - google
         meta:
           is_authenticated: false
     UnauthenticatedPending2FA:
-      summary: |
-        Unauthenticated: pending 2FA
+      summary: 'Unauthenticated: pending 2FA
+
+        '
       value:
         status: 401
         data:
           flows:
-            - id: login
-            - id: signup
-            - id: provider_redirect
-              providers:
-                - facebook
-                - google
-                - telegram
-            - id: provider_token
-              providers:
-                - google
-            - id: mfa_authenticate
-              is_pending: true
+          - id: login
+          - id: signup
+          - id: provider_redirect
+            providers:
+            - facebook
+            - google
+            - telegram
+          - id: provider_token
+            providers:
+            - google
+          - id: mfa_authenticate
+            is_pending: true
         meta:
           is_authenticated: false
     UnauthenticatedPendingLoginByCode:
-      summary: |
-        Unauthenticated: pending login by code
+      summary: 'Unauthenticated: pending login by code
+
+        '
       value:
         status: 401
         data:
           flows:
-            - id: login
-            - id: signup
-            - id: provider_redirect
-              providers:
-                - facebook
-                - google
-                - telegram
-            - id: provider_token
-              providers:
-                - google
-            - id: mfa_authenticate
-            - id: login_by_code
-              is_pending: true
+          - id: login
+          - id: signup
+          - id: provider_redirect
+            providers:
+            - facebook
+            - google
+            - telegram
+          - id: provider_token
+            providers:
+            - google
+          - id: mfa_authenticate
+          - id: login_by_code
+            is_pending: true
         meta:
           is_authenticated: false
     UnauthenticatedPendingProviderSignup:
-      summary: |
-        Unauthenticated: pending provider signup
+      summary: 'Unauthenticated: pending provider signup
+
+        '
       value:
         status: 401
         data:
           flows:
-            - id: login
-            - id: signup
-            - id: provider_redirect
-              providers:
-                - facebook
-                - google
-                - telegram
-            - id: provider_token
-              providers:
-                - google
-            - id: provider_signup
-              provider:
-                id: google
-                name: Google
-                client_id: 123.apps.googleusercontent.com
-                flows:
-                  - provider_redirect
-                  - provider_token
-              is_pending: true
+          - id: login
+          - id: signup
+          - id: provider_redirect
+            providers:
+            - facebook
+            - google
+            - telegram
+          - id: provider_token
+            providers:
+            - google
+          - id: provider_signup
+            provider:
+              id: google
+              name: Google
+              client_id: 123.apps.googleusercontent.com
+              flows:
+              - provider_redirect
+              - provider_token
+            is_pending: true
         meta:
           is_authenticated: false
     UnauthenticatedPendingEmailVerification:
-      summary: |
-        Unauthenticated: pending email verification
+      summary: 'Unauthenticated: pending email verification
+
+        '
       value:
         status: 401
         data:
           flows:
-            - id: login
-            - id: signup
-            - id: provider_redirect
-              providers:
-                - facebook
-                - google
-                - telegram
-            - id: provider_token
-              providers:
-                - google
-            - id: verify_email
-              is_pending: true
+          - id: login
+          - id: signup
+          - id: provider_redirect
+            providers:
+            - facebook
+            - google
+            - telegram
+          - id: provider_token
+            providers:
+            - google
+          - id: verify_email
+            is_pending: true
         meta:
           is_authenticated: false
     ReauthenticationRequired:
-      summary: |
-        Reauthentication required
+      summary: 'Reauthentication required
+
+        '
       value:
         status: 401
         data:
-          user: *user-example
+          user: *id001
           methods:
-            - method: password
-              at: 1711555057.065702
-              email: email@domain.org
-            - method: mfa
-              at: 1711555060.9375854
-              id: 66
-              type: totp
+          - method: password
+            at: 1711555057.065702
+            email: email@domain.org
+          - method: mfa
+            at: 1711555060.9375854
+            id: 66
+            type: totp
           flows:
-            - id: reauthenticate
-            - id: mfa_reauthenticate
+          - id: reauthenticate
+          - id: mfa_reauthenticate
         meta:
           is_authenticated: true
-  ######################################################################
-  # Components: Request bodies
-  ######################################################################
   requestBodies:
     Login:
       description: Login.
@@ -1845,7 +2099,7 @@ components:
               credential:
                 $ref: '#/components/schemas/WebAuthnCredential'
             required:
-              - credential
+            - credential
     ReauthenticateWebAuthn:
       description: Reauthenticate using WebAuthn.
       required: true
@@ -1857,7 +2111,7 @@ components:
               credential:
                 $ref: '#/components/schemas/WebAuthnCredential'
             required:
-              - credential
+            - credential
     AuthenticateWebAuthn:
       description: Authenticate using WebAuthn.
       required: true
@@ -1869,7 +2123,7 @@ components:
               credential:
                 $ref: '#/components/schemas/WebAuthnCredential'
             required:
-              - credential
+            - credential
     MFAAuthenticate:
       required: true
       content:
@@ -1912,12 +2166,13 @@ components:
               account:
                 $ref: '#/components/schemas/ProviderAccountID'
             required:
-              - account
-              - provider
+            - account
+            - provider
     ProviderRedirect:
       required: true
-      description: |
-        Initiate the provider redirect flow.
+      description: 'Initiate the provider redirect flow.
+
+        '
       content:
         application/x-www-form-urlencoded:
           schema:
@@ -1951,7 +2206,7 @@ components:
               refresh_token:
                 $ref: '#/components/schemas/RefreshToken'
             required:
-              - refresh_token
+            - refresh_token
     RequestPassword:
       description: Request password.
       required: true
@@ -1975,7 +2230,7 @@ components:
               code:
                 $ref: '#/components/schemas/AuthenticatorCode'
             required:
-              - code
+            - code
     Signup:
       description: Signup
       required: true
@@ -1993,11 +2248,12 @@ components:
                 $ref: '#/components/schemas/Password'
               new_password:
                 type: string
-                description: |
-                  The current password.
+                description: 'The current password.
+
+                  '
                 example: Aberto!
             required:
-              - new_password
+            - new_password
     Email:
       content:
         application/json:
@@ -2007,7 +2263,7 @@ components:
               email:
                 $ref: '#/components/schemas/Email'
             required:
-              - email
+            - email
     MarkPrimaryEmail:
       content:
         application/json:
@@ -2016,18 +2272,20 @@ components:
             properties:
               email:
                 type: string
-                description: |
-                  An email address.
+                description: 'An email address.
+
+                  '
                 example: email@domain.org
               primary:
                 type: boolean
                 enum:
-                  - true
-                description: |
-                  Primary flag.
+                - true
+                description: 'Primary flag.
+
+                  '
             required:
-              - email
-              - primary
+            - email
+            - primary
     Phone:
       content:
         application/json:
@@ -2038,7 +2296,7 @@ components:
                 type: string
                 example: '+314159265359'
             required:
-              - phone
+            - phone
     ResetPassword:
       content:
         application/json:
@@ -2064,7 +2322,7 @@ components:
                 $ref: '#/components/schemas/AuthenticatorID'
               name:
                 type: string
-                example: 'Master key'
+                example: Master key
     AddWebAuthnAuthenticator:
       content:
         application/json:
@@ -2073,11 +2331,11 @@ components:
             properties:
               name:
                 type: string
-                example: 'Master key'
+                example: Master key
               credential:
                 $ref: '#/components/schemas/WebAuthnCredential'
             required:
-              - credential
+            - credential
     DeleteWebAuthn:
       content:
         application/json:
@@ -2085,17 +2343,14 @@ components:
             type: object
             properties:
               authenticators:
-                description: |
-                  The IDs of the authenticator that are to be deleted.
+                description: 'The IDs of the authenticator that are to be deleted.
+
+                  '
                 type: array
                 items:
                   $ref: '#/components/schemas/AuthenticatorID'
             required:
-              - authenticators
-
-  ######################################################################
-  # Components: Schemas
-  ######################################################################
+            - authenticators
   schemas:
     Session:
       type: object
@@ -2116,23 +2371,24 @@ components:
         last_seen_at:
           $ref: '#/components/schemas/Timestamp'
       required:
-        - user_agent
-        - ip
-        - created_at
-        - is_current
-        - id
+      - user_agent
+      - ip
+      - created_at
+      - is_current
+      - id
     AccountConfiguration:
       type: object
-      description: |
-        Configuration of the Django `allauth.account` app.
+      description: 'Configuration of the Django `allauth.account` app.
+
+        '
       properties:
         login_methods:
           type: array
           items:
             type: string
             enum:
-              - email
-              - username
+            - email
+            - username
         is_open_for_signup:
           type: boolean
         email_verification_by_code_enabled:
@@ -2142,19 +2398,20 @@ components:
         password_reset_by_code_enabled:
           type: boolean
       required:
-        - authentication_method
-        - email_verification_by_code_enabled
-        - is_open_for_signup
-        - login_by_code_enabled
+      - authentication_method
+      - email_verification_by_code_enabled
+      - is_open_for_signup
+      - login_by_code_enabled
     AuthenticationResponse:
       type: object
-      description: |
-        An authentication related response.
+      description: 'An authentication related response.
+
+        '
       properties:
         status:
           type: integer
           enum:
-            - 401
+          - 401
         data:
           type: object
           properties:
@@ -2163,47 +2420,49 @@ components:
               items:
                 $ref: '#/components/schemas/Flow'
           required:
-            - flows
+          - flows
         meta:
           $ref: '#/components/schemas/AuthenticationMeta'
       required:
-        - status
-        - data
-        - meta
+      - status
+      - data
+      - meta
     ForbiddenResponse:
       type: object
       properties:
         status:
           type: integer
           enum:
-            - 403
+          - 403
       required:
-        - status
+      - status
     ConflictResponse:
       type: object
       properties:
         status:
           type: integer
           enum:
-            - 409
+          - 409
       required:
-        - status
+      - status
     EndSessions:
       type: object
       properties:
         sessions:
-          description: |
-            The IDs of the sessions that are to be ended.
+          description: 'The IDs of the sessions that are to be ended.
+
+            '
           type: array
           items:
             type: integer
             example: 123
       required:
-        - sessions
+      - sessions
     PhoneNumber:
       type: object
-      description: |
-        A phone number.
+      description: 'A phone number.
+
+        '
       properties:
         phone:
           type: string
@@ -2211,8 +2470,8 @@ components:
         verified:
           type: boolean
       required:
-        - phone
-        - verified
+      - phone
+      - verified
     PhoneNumbersResponse:
       type: object
       properties:
@@ -2223,8 +2482,8 @@ components:
           items:
             $ref: '#/components/schemas/PhoneNumber'
       required:
-        - status
-        - data
+      - status
+      - data
     PhoneNumberChangeResponse:
       type: object
       properties:
@@ -2235,114 +2494,120 @@ components:
           items:
             $ref: '#/components/schemas/PhoneNumber'
       required:
-        - status
-        - data
+      - status
+      - data
       example:
         status: 202
         data:
-          - phone: '+314159265359'
-            verified: false
+        - phone: '+314159265359'
+          verified: false
     ReauthenticationResponse:
       type: object
-      description: |
-        A response indicating reauthentication is required.
+      description: 'A response indicating reauthentication is required.
+
+        '
       properties:
         status:
           type: integer
           enum:
-            - 401
+          - 401
         data:
           $ref: '#/components/schemas/ReauthenticationRequired'
         meta:
           $ref: '#/components/schemas/AuthenticatedMeta'
       required:
-        - status
-        - data
-        - meta
+      - status
+      - data
+      - meta
     SessionGoneResponse:
       type: object
-      description: |
-        The session is expired or invalid.
+      description: 'The session is expired or invalid.
+
+        '
       properties:
         status:
           type: integer
           enum:
-            - 410
+          - 410
         data:
           type: object
         meta:
           $ref: '#/components/schemas/AuthenticationMeta'
       required:
-        - status
-        - data
-        - meta
+      - status
+      - data
+      - meta
     BaseAuthenticationMeta:
       type: object
       properties:
         session_token:
           type: string
-          description: |
-            The session token (`app` clients only).
+          description: 'The session token (`app` clients only).
+
+            '
           example: ufwcig0zen9skyd545jc0fkq813ghar2
         access_token:
           type: string
-          description: |
-            The access token (`app` clients only).
+          description: 'The access token (`app` clients only).
+
+            '
           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdW
     AuthenticationMeta:
       allOf:
-        - $ref: '#/components/schemas/BaseAuthenticationMeta'
-        - type: object
-          description: |
-            Metadata available in an authentication related response.
-          properties:
-            is_authenticated:
-              type: boolean
-          required:
-            - is_authenticated
+      - $ref: '#/components/schemas/BaseAuthenticationMeta'
+      - type: object
+        description: 'Metadata available in an authentication related response.
+
+          '
+        properties:
+          is_authenticated:
+            type: boolean
+        required:
+        - is_authenticated
     AuthenticatedMeta:
       allOf:
-        - $ref: '#/components/schemas/BaseAuthenticationMeta'
-        - type: object
-          description: |
-            Metadata available in an re-authentication related response.
-          properties:
-            is_authenticated:
-              type: boolean
-              enum:
-                - true
-          required:
-            - is_authenticated
+      - $ref: '#/components/schemas/BaseAuthenticationMeta'
+      - type: object
+        description: 'Metadata available in an re-authentication related response.
+
+          '
+        properties:
+          is_authenticated:
+            type: boolean
+            enum:
+            - true
+        required:
+        - is_authenticated
     Flow:
       type: object
       properties:
         id:
           type: string
           enum:
-            - login
-            - login_by_code
-            - mfa_authenticate
-            - mfa_reauthenticate
-            - provider_redirect
-            - provider_signup
-            - provider_token
-            - reauthenticate
-            - signup
-            - verify_email
-            - verify_phone
+          - login
+          - login_by_code
+          - mfa_authenticate
+          - mfa_reauthenticate
+          - provider_redirect
+          - provider_signup
+          - provider_token
+          - reauthenticate
+          - signup
+          - verify_email
+          - verify_phone
         provider:
           $ref: '#/components/schemas/Provider'
         is_pending:
           type: boolean
           enum:
-            - true
+          - true
         types:
           type: array
           description: Matches `settings.MFA_SUPPORTED_TYPES`.
           items:
             $ref: '#/components/schemas/AuthenticatorType'
       required:
-        - id
+      - id
     Authenticated:
       type: object
       properties:
@@ -2350,13 +2615,14 @@ components:
           $ref: '#/components/schemas/User'
         methods:
           type: array
-          description: |
-            A list of methods used to authenticate.
+          description: 'A list of methods used to authenticate.
+
+            '
           items:
             $ref: '#/components/schemas/AuthenticationMethod'
       required:
-        - user
-        - methods
+      - user
+      - methods
     ReauthenticationRequired:
       properties:
         flows:
@@ -2367,138 +2633,146 @@ components:
           $ref: '#/components/schemas/User'
         methods:
           type: array
-          description: |
-            A list of methods used to authenticate.
+          description: 'A list of methods used to authenticate.
+
+            '
           items:
             $ref: '#/components/schemas/AuthenticationMethod'
       required:
-        - flows
-        - user
-        - methods
+      - flows
+      - user
+      - methods
       type: object
     AuthenticationMethod:
       oneOf:
-        - type: object
-          title: |
-            Authenticated by username/email login
-          properties:
-            method:
-              type: string
-              enum:
-                - password
-            at:
-              $ref: '#/components/schemas/Timestamp'
-            email:
-              $ref: '#/components/schemas/Email'
-            username:
-              $ref: '#/components/schemas/Username'
-          required:
-            - method
-            - at
-        - type: object
-          title: |
-            Authenticated after password reset
-          properties:
-            method:
-              type: string
-              enum:
-                - password_reset
-            at:
-              $ref: '#/components/schemas/Timestamp'
-            email:
-              $ref: '#/components/schemas/Email'
-          required:
-            - at
-            - email
-            - method
-        - type: object
-          title: |
-            Authenticated by confirming a code sent by email.
-          properties:
-            method:
-              type: string
-              enum:
-                - code
-            at:
-              $ref: '#/components/schemas/Timestamp'
-            email:
-              $ref: '#/components/schemas/Email'
-          required:
-            - at
-            - email
-            - method
-        - type: object
-          title: |
-            Authenticated by confirming a code sent by phone.
-          properties:
-            method:
-              type: string
-              enum:
-                - code
-            at:
-              $ref: '#/components/schemas/Timestamp'
-            phone:
-              $ref: '#/components/schemas/Phone'
-          required:
-            - at
-            - method
-            - phone
-        - type: object
-          title: |
-            Reauthenticated by password
-          properties:
-            method:
-              type: string
-              enum:
-                - password
-            at:
-              $ref: '#/components/schemas/Timestamp'
-            reauthenticated:
-              type: boolean
-              enum:
-                - true
-          required:
-            - method
-            - reauthenticated
-            - at
-        - type: object
-          title: |
-            Authenticated by third-party provider
-          properties:
-            method:
-              type: string
-              enum:
-                - socialaccount
-            at:
-              $ref: '#/components/schemas/Timestamp'
-            provider:
-              $ref: '#/components/schemas/ProviderID'
-            uid:
-              $ref: '#/components/schemas/ProviderAccountID'
-          required:
-            - method
-            - reauthenticated
-            - at
-            - provider
-            - uid
-        - type: object
-          title: |
-            (Re)authenticated by 2FA
-          properties:
-            method:
-              type: string
-              enum:
-                - mfa
-            at:
-              $ref: '#/components/schemas/Timestamp'
-            type:
-              $ref: '#/components/schemas/AuthenticatorType'
-            reauthenticated:
-              type: boolean
-          required:
-            - method
-            - at
-            - type
+      - type: object
+        title: 'Authenticated by username/email login
+
+          '
+        properties:
+          method:
+            type: string
+            enum:
+            - password
+          at:
+            $ref: '#/components/schemas/Timestamp'
+          email:
+            $ref: '#/components/schemas/Email'
+          username:
+            $ref: '#/components/schemas/Username'
+        required:
+        - method
+        - at
+      - type: object
+        title: 'Authenticated after password reset
+
+          '
+        properties:
+          method:
+            type: string
+            enum:
+            - password_reset
+          at:
+            $ref: '#/components/schemas/Timestamp'
+          email:
+            $ref: '#/components/schemas/Email'
+        required:
+        - at
+        - email
+        - method
+      - type: object
+        title: 'Authenticated by confirming a code sent by email.
+
+          '
+        properties:
+          method:
+            type: string
+            enum:
+            - code
+          at:
+            $ref: '#/components/schemas/Timestamp'
+          email:
+            $ref: '#/components/schemas/Email'
+        required:
+        - at
+        - email
+        - method
+      - type: object
+        title: 'Authenticated by confirming a code sent by phone.
+
+          '
+        properties:
+          method:
+            type: string
+            enum:
+            - code
+          at:
+            $ref: '#/components/schemas/Timestamp'
+          phone:
+            $ref: '#/components/schemas/Phone'
+        required:
+        - at
+        - method
+        - phone
+      - type: object
+        title: 'Reauthenticated by password
+
+          '
+        properties:
+          method:
+            type: string
+            enum:
+            - password
+          at:
+            $ref: '#/components/schemas/Timestamp'
+          reauthenticated:
+            type: boolean
+            enum:
+            - true
+        required:
+        - method
+        - reauthenticated
+        - at
+      - type: object
+        title: 'Authenticated by third-party provider
+
+          '
+        properties:
+          method:
+            type: string
+            enum:
+            - socialaccount
+          at:
+            $ref: '#/components/schemas/Timestamp'
+          provider:
+            $ref: '#/components/schemas/ProviderID'
+          uid:
+            $ref: '#/components/schemas/ProviderAccountID'
+        required:
+        - method
+        - reauthenticated
+        - at
+        - provider
+        - uid
+      - type: object
+        title: '(Re)authenticated by 2FA
+
+          '
+        properties:
+          method:
+            type: string
+            enum:
+            - mfa
+          at:
+            $ref: '#/components/schemas/Timestamp'
+          type:
+            $ref: '#/components/schemas/AuthenticatorType'
+          reauthenticated:
+            type: boolean
+        required:
+        - method
+        - at
+        - type
     AuthenticatedResponse:
       type: object
       properties:
@@ -2509,34 +2783,35 @@ components:
         meta:
           $ref: '#/components/schemas/AuthenticationMeta'
       required:
-        - status
-        - data
-        - meta
+      - status
+      - data
+      - meta
     MFAAuthenticate:
       type: object
       properties:
         code:
           $ref: '#/components/schemas/AuthenticatorCode'
       required:
-        - code
+      - code
     MFATrust:
       type: object
       properties:
         trust:
           type: boolean
       required:
-        - trust
+      - trust
     ConfirmLoginCode:
       type: object
       properties:
         code:
           $ref: '#/components/schemas/Code'
       required:
-        - code
+      - code
     ClientID:
       type: string
-      description: |
-        The client ID (in case of OAuth2 or OpenID Connect based providers)
+      description: 'The client ID (in case of OAuth2 or OpenID Connect based providers)
+
+        '
       example: 123.apps.googleusercontent.com
     ProviderToken:
       type: object
@@ -2546,28 +2821,31 @@ components:
         process:
           $ref: '#/components/schemas/Process'
         token:
-          description: |
-            The token.
+          description: 'The token.
+
+            '
           type: object
           properties:
             client_id:
               $ref: '#/components/schemas/ClientID'
             id_token:
               type: string
-              description: |
-                The ID token.
+              description: 'The ID token.
+
+                '
               example: eyJhbGciOiJI
             access_token:
               type: string
-              description: |
-                The access token.
+              description: 'The access token.
+
+                '
               example: 36POk6yJV_adQs
           required:
-            - client_id
+          - client_id
       required:
-        - provider
-        - process
-        - token
+      - provider
+      - process
+      - token
     ProviderRedirect:
       type: object
       properties:
@@ -2575,77 +2853,69 @@ components:
           $ref: '#/components/schemas/ProviderID'
         callback_url:
           type: string
-          description: |
-            The URL to return to after the redirect flow is complete.
-
-            Note that this is not to be mistaken with the callback URL that you
-            configure over at the OAuth provider during the OAuth app/client
-            setup. The flow is as follows:
-
-              1. Your frontend redirects to the headless provider redirect
-                 endpoint in a synchronous (non-XHR) manner, informing allauth
-                 (by means of `callback_url`) where to redirect to after the
-                 provider handshake is completed.
-
-              2. Headless will redirect to the (OAuth) identity provider to
-                 initiate the handshake, passing along a different callback URL
-                 to the provider: one that points to an allauth backend URL.
-                 This is the URL that you need to have setup at your OAuth
-                 app/client configuration. Note that this must be a backend URL
-                 as providers can use POST requests to perform their callbacks,
-                 which is something a frontend would not be able to handle.
-
-              3. After the authorization at the provider is completed, the
-                 provider redirects to the *backend* allauth callback URL, which
-                 will then redirect back to the *frontend* callback URL.
-
-              4. Your frontend is now expected to fetch the current session to
-                 determine what the next course of action is. The user could be
-                 authenticated at this point, or another flow is pending
-                 (e.g. email verification, or, provider signup). In case of
-                 errors a `?error=` is passed to the frontend callback URL.
+          description: "The URL to return to after the redirect flow is complete.\n\
+            \nNote that this is not to be mistaken with the callback URL that you\n\
+            configure over at the OAuth provider during the OAuth app/client\nsetup.\
+            \ The flow is as follows:\n\n  1. Your frontend redirects to the headless\
+            \ provider redirect\n     endpoint in a synchronous (non-XHR) manner,\
+            \ informing allauth\n     (by means of `callback_url`) where to redirect\
+            \ to after the\n     provider handshake is completed.\n\n  2. Headless\
+            \ will redirect to the (OAuth) identity provider to\n     initiate the\
+            \ handshake, passing along a different callback URL\n     to the provider:\
+            \ one that points to an allauth backend URL.\n     This is the URL that\
+            \ you need to have setup at your OAuth\n     app/client configuration.\
+            \ Note that this must be a backend URL\n     as providers can use POST\
+            \ requests to perform their callbacks,\n     which is something a frontend\
+            \ would not be able to handle.\n\n  3. After the authorization at the\
+            \ provider is completed, the\n     provider redirects to the *backend*\
+            \ allauth callback URL, which\n     will then redirect back to the *frontend*\
+            \ callback URL.\n\n  4. Your frontend is now expected to fetch the current\
+            \ session to\n     determine what the next course of action is. The user\
+            \ could be\n     authenticated at this point, or another flow is pending\n\
+            \     (e.g. email verification, or, provider signup). In case of\n   \
+            \  errors a `?error=` is passed to the frontend callback URL.\n"
           example: https://app.project.org/account/provider/callback
         process:
           $ref: '#/components/schemas/Process'
       required:
-        - provider
-        - process
-        - callback_url
+      - provider
+      - process
+      - callback_url
     RequestPassword:
       type: object
       properties:
         email:
           $ref: '#/components/schemas/Email'
       required:
-        - email
+      - email
     RequestLoginCode:
       type: object
       anyOf:
-        - title: Request login code (phone)
-          properties:
-            phone:
-              $ref: '#/components/schemas/Phone'
-          required:
-            - phone
-        - title: Request login code (email)
-          properties:
-            email:
-              $ref: '#/components/schemas/Email'
-          required:
-            - email
+      - title: Request login code (phone)
+        properties:
+          phone:
+            $ref: '#/components/schemas/Phone'
+        required:
+        - phone
+      - title: Request login code (email)
+        properties:
+          email:
+            $ref: '#/components/schemas/Email'
+        required:
+        - email
     Reauthenticate:
       type: object
       properties:
         password:
           $ref: '#/components/schemas/Password'
       required:
-        - password
+      - password
     ProviderSignup:
       allOf:
-        - $ref: '#/components/schemas/BaseSignup'
+      - $ref: '#/components/schemas/BaseSignup'
     PasskeySignup:
       allOf:
-        - $ref: '#/components/schemas/BaseSignup'
+      - $ref: '#/components/schemas/BaseSignup'
     BaseSignup:
       type: object
       properties:
@@ -2657,111 +2927,122 @@ components:
           $ref: '#/components/schemas/Username'
     Signup:
       allOf:
-        - $ref: '#/components/schemas/BaseSignup'
-        - type: object
-          properties:
-            password:
-              $ref: '#/components/schemas/Password'
-          required:
-            - password
+      - $ref: '#/components/schemas/BaseSignup'
+      - type: object
+        properties:
+          password:
+            $ref: '#/components/schemas/Password'
+        required:
+        - password
     Username:
       type: string
-      description: |
-        The username.
+      description: 'The username.
+
+        '
       example: wizard
     Email:
       type: string
-      description: |
-        The email address.
+      description: 'The email address.
+
+        '
       example: email@domain.org
     Phone:
       type: string
-      description: |
-        The phone number.
+      description: 'The phone number.
+
+        '
       example: '+314159265359'
     AccessToken:
       type: string
-      description: |
-        The access token.
+      description: 'The access token.
+
+        '
       example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdW
     RefreshToken:
       type: string
-      description: |
-        The refresh token.
+      description: 'The refresh token.
+
+        '
       example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.QV30
     Login:
       allOf:
-        - type: object
+      - type: object
+        properties:
+          password:
+            $ref: '#/components/schemas/Password'
+        required:
+        - password
+      - anyOf:
+        - title: Login by username
           properties:
-            password:
-              $ref: '#/components/schemas/Password'
+            username:
+              $ref: '#/components/schemas/Username'
           required:
-            - password
-        - anyOf:
-            - title: Login by username
-              properties:
-                username:
-                  $ref: '#/components/schemas/Username'
-              required:
-                - username
-            - title: Login by email
-              properties:
-                email:
-                  $ref: '#/components/schemas/Email'
-              required:
-                - email
-            - title: Login by phone
-              properties:
-                phone:
-                  $ref: '#/components/schemas/Phone'
-              required:
-                - phone
+          - username
+        - title: Login by email
+          properties:
+            email:
+              $ref: '#/components/schemas/Email'
+          required:
+          - email
+        - title: Login by phone
+          properties:
+            phone:
+              $ref: '#/components/schemas/Phone'
+          required:
+          - phone
     StatusOK:
       type: integer
       enum:
-        - 200
+      - 200
     StatusAccepted:
       type: integer
       enum:
-        - 202
+      - 202
     AuthenticatorID:
       type: integer
-      description: |
-        Authenticator ID.
+      description: 'Authenticator ID.
+
+        '
       example: 123
     SocialAccountConfiguration:
       type: object
-      description: |
-        Configuration of the Django `allauth.socialaccount` app.
+      description: 'Configuration of the Django `allauth.socialaccount` app.
+
+        '
       properties:
         providers:
           $ref: '#/components/schemas/ProviderList'
       required:
-        - providers
+      - providers
     MFAConfiguration:
       type: object
-      description: |
-        Configuration of the Django `allauth.mfa` app.
+      description: 'Configuration of the Django `allauth.mfa` app.
+
+        '
       properties:
         supported_types:
           type: array
-          description: |
-            Matches `settings.MFA_SUPPORTED_TYPES`.
+          description: 'Matches `settings.MFA_SUPPORTED_TYPES`.
+
+            '
           items:
             $ref: '#/components/schemas/AuthenticatorType'
       required:
-        - supported_types
+      - supported_types
     UserSessionsConfiguration:
       type: object
-      description: |
-        Configuration of the Django `allauth.usersessions` app.
+      description: 'Configuration of the Django `allauth.usersessions` app.
+
+        '
       properties:
         track_activity:
           type: boolean
-          description: |
-            Matches `settings.USERSESSIONS_TRACK_ACTIVITY`.
+          description: 'Matches `settings.USERSESSIONS_TRACK_ACTIVITY`.
+
+            '
       required:
-        - track_activity
+      - track_activity
     ConfigurationResponse:
       type: object
       properties:
@@ -2777,12 +3058,12 @@ components:
             usersessions:
               $ref: '#/components/schemas/UserSessionsConfiguration'
           required:
-            - account
+          - account
         status:
           $ref: '#/components/schemas/StatusOK'
       required:
-        - status
-        - data
+      - status
+      - data
       example:
         status: 200
         data:
@@ -2790,17 +3071,17 @@ components:
             authentication_method: email
           socialaccount:
             providers:
-              - id: 'google'
-                name: 'Google'
-                flows:
-                  - 'provider_redirect'
-                  - 'provider_token'
-                client_id: '123.apps.googleusercontent.com'
-                openid_configuration_url: https://accounts.google.com/.well-known/openid-configuration
+            - id: google
+              name: Google
+              flows:
+              - provider_redirect
+              - provider_token
+              client_id: 123.apps.googleusercontent.com
+              openid_configuration_url: https://accounts.google.com/.well-known/openid-configuration
           mfa:
             supported_types:
-              - 'recovery_codes'
-              - 'totp'
+            - recovery_codes
+            - totp
           usersessions:
             track_activity: false
     ResetPassword:
@@ -2813,8 +3094,8 @@ components:
         password:
           $ref: '#/components/schemas/Password'
       required:
-        - key
-        - password
+      - key
+      - password
     VerifyEmail:
       type: object
       properties:
@@ -2823,7 +3104,7 @@ components:
           description: The email verification key
           example: 2f-c4nqd4-e07d9bc694f9f28cd4fe92569d495333
       required:
-        - key
+      - key
     VerifyPhone:
       type: object
       properties:
@@ -2832,37 +3113,42 @@ components:
           description: The phone verification code
           example: 4S3H82
       required:
-        - code
+      - code
     OptionalTimestamp:
       nullable: true
       $ref: '#/components/schemas/Timestamp'
     Timestamp:
       type: number
-      description: |
-        An epoch based timestamp (trivial to parse using: `new Date(value)*1000`)
+      description: 'An epoch based timestamp (trivial to parse using: `new Date(value)*1000`)
+
+        '
       example: 1711555057.065702
     AuthenticatorCode:
       type: string
-      description: |
-        An authenticator code.
+      description: 'An authenticator code.
+
+        '
       example: '314159'
     Code:
       type: string
-      description: |
-        An one-time code.
-      example: 'NQ3TM5'
+      description: 'An one-time code.
+
+        '
+      example: NQ3TM5
     AuthenticatorType:
       type: string
       enum:
-        - recovery_codes
-        - totp
-        - webauthn
-      description: |
-        The type of authenticator.
+      - recovery_codes
+      - totp
+      - webauthn
+      description: 'The type of authenticator.
+
+        '
     Password:
       type: string
-      description: |
-        The password.
+      description: 'The password.
+
+        '
       example: Alohomora!
     ErrorResponse:
       type: object
@@ -2870,7 +3156,7 @@ components:
         status:
           type: integer
           enum:
-            - 400
+          - 400
           example: 400
         errors:
           type: array
@@ -2880,64 +3166,78 @@ components:
               code:
                 type: string
                 example: invalid
-                description: |
-                  An error code.
+                description: 'An error code.
+
+                  '
               param:
                 type: string
                 example: email
-                description: |
-                  The name of the input parameter that was incorrect.
+                description: 'The name of the input parameter that was incorrect.
+
+                  '
               message:
                 type: string
                 example: Enter a valid email address.
-                description: |
-                  A human readable error message.
+                description: 'A human readable error message.
+
+                  '
             required:
-              - code
-              - message
+            - code
+            - message
     Process:
       type: string
-      description: |
-        The process to be executed when the user successfully
+      description: 'The process to be executed when the user successfully
+
         authenticates. When set to `login`, the user will be logged into the
+
         account to which the provider account is connected, or if no such
+
         account exists, a signup will occur. If set to `connect`, the provider
+
         account will be connected to the list of provider accounts for the
+
         currently authenticated user.
+
+        '
       enum:
-        - login
-        - connect
+      - login
+      - connect
       example: login
     ProviderID:
       type: string
-      description: |
-        The provider ID.
+      description: 'The provider ID.
+
+        '
       example: google
     ProviderAccountID:
       type: string
-      description: |
-        The provider specific account ID.
+      description: 'The provider specific account ID.
+
+        '
       example: goo12345
     User:
       type: object
       properties:
         id:
-          description: |
-            The user ID.
+          description: 'The user ID.
+
+            '
           oneOf:
-            - type: integer
-              example: 123
-            - type: string
-              example: 89d3f9a0-51a5-49dd-8b97-7536641958e9
+          - type: integer
+            example: 123
+          - type: string
+            example: 89d3f9a0-51a5-49dd-8b97-7536641958e9
         display:
           type: string
-          description: |
-            The display name for the user.
+          description: 'The display name for the user.
+
+            '
           example: Magic Wizard
         has_usable_password:
           type: boolean
-          description: |
-            Whether or not the account has a password set.
+          description: 'Whether or not the account has a password set.
+
+            '
           example: true
         email:
           $ref: '#/components/schemas/Email'
@@ -2955,9 +3255,9 @@ components:
           type: boolean
           example: false
       required:
-        - email
-        - primary
-        - verified
+      - email
+      - primary
+      - verified
     BaseAuthenticator:
       type: object
       properties:
@@ -2966,86 +3266,92 @@ components:
         created_at:
           $ref: '#/components/schemas/Timestamp'
       required:
-        - created_at
-        - last_used_at
+      - created_at
+      - last_used_at
     TOTPAuthenticator:
       allOf:
-        - $ref: '#/components/schemas/BaseAuthenticator'
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - totp
-          required:
-            - type
+      - $ref: '#/components/schemas/BaseAuthenticator'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - totp
+        required:
+        - type
     WebAuthnAuthenticator:
       allOf:
-        - $ref: '#/components/schemas/BaseAuthenticator'
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - webauthn
-            id:
-              $ref: '#/components/schemas/AuthenticatorID'
-            name:
-              type: string
-              example: 'Master key'
-            is_passwordless:
-              type: boolean
-              description: |
-                Whether or not this authenticator represents a passkey. Absent if it is not specified.
-          required:
-            - type
-            - id
-            - name
+      - $ref: '#/components/schemas/BaseAuthenticator'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - webauthn
+          id:
+            $ref: '#/components/schemas/AuthenticatorID'
+          name:
+            type: string
+            example: Master key
+          is_passwordless:
+            type: boolean
+            description: 'Whether or not this authenticator represents a passkey.
+              Absent if it is not specified.
+
+              '
+        required:
+        - type
+        - id
+        - name
     RecoveryCodesAuthenticator:
       allOf:
-        - $ref: '#/components/schemas/BaseAuthenticator'
-        - type: object
-          properties:
-            type:
-              type: string
-              description: |
-                The authenticator type.
-              enum:
-                - recovery_codes
-            total_code_count:
-              type: integer
-              description: |
-                The total number of recovery codes that initially were available.
-              example: 10
-            unused_code_count:
-              type: integer
-              description: |
-                The number of recovery codes that are unused.
-              example: 7
-          required:
-            - type
-            - total_code_count
-            - unused_code_count
+      - $ref: '#/components/schemas/BaseAuthenticator'
+      - type: object
+        properties:
+          type:
+            type: string
+            description: 'The authenticator type.
+
+              '
+            enum:
+            - recovery_codes
+          total_code_count:
+            type: integer
+            description: 'The total number of recovery codes that initially were available.
+
+              '
+            example: 10
+          unused_code_count:
+            type: integer
+            description: 'The number of recovery codes that are unused.
+
+              '
+            example: 7
+        required:
+        - type
+        - total_code_count
+        - unused_code_count
     SensitiveRecoveryCodesAuthenticator:
       allOf:
-        - $ref: '#/components/schemas/RecoveryCodesAuthenticator'
-        - type: object
-          properties:
-            unused_codes:
-              type: array
-              description: |
-                The list of unused codes.
-              items:
-                $ref: '#/components/schemas/AuthenticatorCode'
-          required:
-            - unused_codes
+      - $ref: '#/components/schemas/RecoveryCodesAuthenticator'
+      - type: object
+        properties:
+          unused_codes:
+            type: array
+            description: 'The list of unused codes.
+
+              '
+            items:
+              $ref: '#/components/schemas/AuthenticatorCode'
+        required:
+        - unused_codes
     AuthenticatorList:
       type: array
       items:
         oneOf:
-          - $ref: '#/components/schemas/TOTPAuthenticator'
-          - $ref: '#/components/schemas/RecoveryCodesAuthenticator'
-          - $ref: '#/components/schemas/WebAuthnAuthenticator'
+        - $ref: '#/components/schemas/TOTPAuthenticator'
+        - $ref: '#/components/schemas/RecoveryCodesAuthenticator'
+        - $ref: '#/components/schemas/WebAuthnAuthenticator'
     ProviderList:
       type: array
       items:
@@ -3056,36 +3362,42 @@ components:
         id:
           type: string
           example: google
-          description: |
-            The provider ID.
+          description: 'The provider ID.
+
+            '
         name:
           type: string
-          description: |
-            The name of the provider.
+          description: 'The name of the provider.
+
+            '
           example: Google
         client_id:
           type: string
-          description: |
-            The client ID (in case of OAuth2 or OpenID Connect based providers)
+          description: 'The client ID (in case of OAuth2 or OpenID Connect based providers)
+
+            '
           example: 123.apps.googleusercontent.com
         openid_configuration_url:
           type: string
-          description: |
-            The OIDC discovery or well-known URL (in case of OAuth2 or OpenID Connect based providers)
+          description: 'The OIDC discovery or well-known URL (in case of OAuth2 or
+            OpenID Connect based providers)
+
+            '
           example: https://accounts.google.com/.well-known/openid-configuration
         flows:
           type: array
-          description: |
-            The authentication flows the provider integration supports.
+          description: 'The authentication flows the provider integration supports.
+
+            '
           items:
             type: string
             enum:
-              - provider_redirect
-              - provider_token
+            - provider_redirect
+            - provider_token
       required:
-        - id
-        - name
-        - flows
+      - id
+      - name
+      - flows
     ProviderAccount:
       type: object
       properties:
@@ -3093,15 +3405,16 @@ components:
           $ref: '#/components/schemas/ProviderAccountID'
         display:
           type: string
-          description: |
-            A name derived from the third-party provider account data.
+          description: 'A name derived from the third-party provider account data.
+
+            '
           example: Wizzkid
         provider:
           $ref: '#/components/schemas/Provider'
       required:
-        - uid
-        - provider
-        - display
+      - uid
+      - provider
+      - display
     EmailVerificationInfo:
       type: object
       properties:
@@ -3115,90 +3428,65 @@ components:
             user:
               $ref: '#/components/schemas/User'
           required:
-            - email
-            - user
+          - email
+          - user
         meta:
           type: object
           properties:
             is_authenticating:
               type: boolean
           required:
-            - is_authenticating
+          - is_authenticating
       required:
-        - status
-        - data
-        - meta
+      - status
+      - data
+      - meta
     WebAuthnCredentialRequestOptions:
       type: object
       properties:
         request_options:
           type: object
           example:
-            {
-              'status': 200,
-              'data':
-                {
-                  'request_options':
-                    {
-                      'publicKey':
-                        {
-                          'challenge': 'aOecJJtLA2e-Dj2WU-zbRoJewbQqSUPxoA9EzsUL72o',
-                          'rpId': 'localhost',
-                          'allowCredentials': [],
-                          'userVerification': 'preferred',
-                        },
-                    },
-                },
-            }
+            status: 200
+            data:
+              request_options:
+                publicKey:
+                  challenge: aOecJJtLA2e-Dj2WU-zbRoJewbQqSUPxoA9EzsUL72o
+                  rpId: localhost
+                  allowCredentials: []
+                  userVerification: preferred
       required:
-        - request_options
+      - request_options
     WebAuthnCredentialCreationOptions:
       type: object
       properties:
         creation_options:
           type: object
           example:
-            {
-              'status': 200,
-              'data':
-                {
-                  'request_options':
-                    {
-                      'publicKey':
-                        {
-                          'challenge': 'aOecJJtLA2e-Dj2WU-zbRoJewbQqSUPxoA9EzsUL72o',
-                          'rpId': 'localhost',
-                          'allowCredentials': [],
-                          'userVerification': 'preferred',
-                        },
-                    },
-                },
-            }
+            status: 200
+            data:
+              request_options:
+                publicKey:
+                  challenge: aOecJJtLA2e-Dj2WU-zbRoJewbQqSUPxoA9EzsUL72o
+                  rpId: localhost
+                  allowCredentials: []
+                  userVerification: preferred
       required:
-        - creation_options
+      - creation_options
     WebAuthnCredential:
       type: object
       example:
-        {
-          'credential':
-            {
-              'type': 'public-key',
-              'id': '-J4JNfPfnLyRSMK4R...',
-              'rawId': '-J4JNfPfnLyRSMK4R...',
-              'authenticatorAttachment': 'cross-platform',
-              'response':
-                {
-                  'clientDataJSON': 'eyJjaGFsbGVuZ2UiOi...',
-                  'authenticatorData': 'SZYN5YgO...',
-                  'signature': 'MEUCIE-7sqILygPqGbrRZ4j2nqeqUU...',
-                  'userHandle': 'Mg...',
-                },
-              'clientExtensionResults': {},
-            },
-        }
-  ######################################################################
-  # Components: Parameters
-  ######################################################################
+        credential:
+          type: public-key
+          id: -J4JNfPfnLyRSMK4R...
+          rawId: -J4JNfPfnLyRSMK4R...
+          authenticatorAttachment: cross-platform
+          response:
+            clientDataJSON: eyJjaGFsbGVuZ2UiOi...
+            authenticatorData: SZYN5YgO...
+            signature: MEUCIE-7sqILygPqGbrRZ4j2nqeqUU...
+            userHandle: Mg...
+          clientExtensionResults: {}
   parameters:
     Client:
       name: client
@@ -3208,8 +3496,8 @@ components:
       schema:
         type: string
         enum:
-          - app
-          - browser
+        - app
+        - browser
     EmailVerificationKey:
       in: header
       name: X-Email-Verification-Key
@@ -3228,8 +3516,9 @@ components:
       in: header
       name: X-Session-Token
       required: false
-      description: |
-        Session token. Only needed when `client` is equal to `app`.
+      description: 'Session token. Only needed when `client` is equal to `app`.
+
+        '
       schema:
         type: string
     PasswordLess:
@@ -3239,16 +3528,19 @@ components:
       schema:
         type: boolean
       allowEmptyValue: true
-      description: |
-        When present (regardless of its value), enables passwordless sign-in via a WebAuthn credential (Passkey),
-        but may enforce additional multi-factor authentication (MFA) requirements. Omit the parameter to disable.
-  ######################################################################
-  # Components: Responses
-  ######################################################################
+      description: 'When present (regardless of its value), enables passwordless sign-in
+        via a WebAuthn credential (Passkey),
+
+        but may enforce additional multi-factor authentication (MFA) requirements.
+        Omit the parameter to disable.
+
+        '
   responses:
     AddAuthenticatorConflict:
-      description: |
-        The account prohibits adding an authenticator, e.g. because of an unverified email address.
+      description: 'The account prohibits adding an authenticator, e.g. because of
+        an unverified email address.
+
+        '
       content:
         application/json:
           schema:
@@ -3270,10 +3562,10 @@ components:
               $ref: '#/components/examples/UnauthenticatedPendingEmailVerification'
             reauthentication_required:
               $ref: '#/components/examples/ReauthenticationRequired'
-
     Authenticators:
-      description: |
-        List of authenticators.
+      description: 'List of authenticators.
+
+        '
       content:
         application/json:
           schema:
@@ -3284,11 +3576,12 @@ components:
               data:
                 $ref: '#/components/schemas/AuthenticatorList'
             required:
-              - status
-              - data
+            - status
+            - data
     AuthenticatedByPassword:
-      description: |
-        Authenticated by password.
+      description: 'Authenticated by password.
+
+        '
       content:
         application/json:
           schema:
@@ -3297,8 +3590,9 @@ components:
             authenticated:
               $ref: '#/components/examples/AuthenticatedByPassword'
     AuthenticatedByCode:
-      description: |
-        Authenticated by code.
+      description: 'Authenticated by code.
+
+        '
       content:
         application/json:
           schema:
@@ -3307,8 +3601,9 @@ components:
             authenticated:
               $ref: '#/components/examples/AuthenticatedByCode'
     AuthenticatedByPasswordAnd2FA:
-      description: |
-        Authenticated by password and 2FA.
+      description: 'Authenticated by password and 2FA.
+
+        '
       content:
         application/json:
           schema:
@@ -3317,24 +3612,28 @@ components:
             authenticated:
               $ref: '#/components/examples/AuthenticatedByPasswordAnd2FA'
     AuthenticationOrReauthentication:
-      description: |
-        The response indicates authentication or re-authentication is required.
+      description: 'The response indicates authentication or re-authentication is
+        required.
+
+        '
       content:
         application/json:
           schema:
             oneOf:
-              - $ref: '#/components/schemas/AuthenticationResponse'
-              - $ref: '#/components/schemas/ReauthenticationResponse'
+            - $ref: '#/components/schemas/AuthenticationResponse'
+            - $ref: '#/components/schemas/ReauthenticationResponse'
     Configuration:
-      description: |
-        The django-allauth configuration.
+      description: 'The django-allauth configuration.
+
+        '
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ConfigurationResponse'
     EmailAddresses:
-      description: |
-        List of email addresses.
+      description: 'List of email addresses.
+
+        '
       content:
         application/json:
           schema:
@@ -3347,8 +3646,8 @@ components:
                 items:
                   $ref: '#/components/schemas/EmailAddress'
             required:
-              - status
-              - data
+            - status
+            - data
     EmailVerificationInfo:
       description: Email verification information.
       content:
@@ -3362,15 +3661,17 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
     Forbidden:
-      description: |
-        A forbidden response.
+      description: 'A forbidden response.
+
+        '
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ForbiddenResponse'
     NotFound:
-      description: |
-        Not found.
+      description: 'Not found.
+
+        '
       content:
         application/json:
           schema:
@@ -3379,9 +3680,9 @@ components:
               status:
                 type: integer
                 enum:
-                  - 404
+                - 404
             required:
-              - status
+            - status
     PasswordResetInfo:
       description: Information about the password reset key.
       content:
@@ -3397,18 +3698,20 @@ components:
                   user:
                     $ref: '#/components/schemas/User'
             required:
-              - status
-              - data
+            - status
+            - data
     PhoneNumbers:
-      description: |
-        List of phone numbers.
+      description: 'List of phone numbers.
+
+        '
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/PhoneNumbersResponse'
     ProviderAccounts:
-      description: |
-        List of third-party provider accounts.
+      description: 'List of third-party provider accounts.
+
+        '
       content:
         application/json:
           schema:
@@ -3421,11 +3724,12 @@ components:
                 items:
                   $ref: '#/components/schemas/ProviderAccount'
             required:
-              - status
-              - data
+            - status
+            - data
     ProviderSignup:
-      description: |
-        Information relating to the pending provider signup.
+      description: 'Information relating to the pending provider signup.
+
+        '
       content:
         application/json:
           schema:
@@ -3445,43 +3749,46 @@ components:
                   user:
                     $ref: '#/components/schemas/User'
                 required:
-                  - email
-                  - account
-                  - user
+                - email
+                - account
+                - user
             required:
-              - status
-              - data
+            - status
+            - data
     ReauthenticationRequired:
-      description: |
-        The response indicates reauthentication is required.
+      description: 'The response indicates reauthentication is required.
+
+        '
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ReauthenticationResponse'
           examples:
             reauthentication_required:
-              summary: |
-                Reauthentication required
+              summary: 'Reauthentication required
+
+                '
               value:
                 status: 401
                 data:
-                  user: *user-example
+                  user: *id001
                   methods:
-                    - method: password
-                      at: 1711555057.065702
-                      email: email@domain.org
-                    - method: mfa
-                      at: 1711555060.9375854
-                      id: 66
-                      type: totp
+                  - method: password
+                    at: 1711555057.065702
+                    email: email@domain.org
+                  - method: mfa
+                    at: 1711555060.9375854
+                    id: 66
+                    type: totp
                   flows:
-                    - id: reauthenticate
-                    - id: mfa_reauthenticate
+                  - id: reauthenticate
+                  - id: mfa_reauthenticate
                 meta:
                   is_authenticated: true
     RecoveryCodes:
-      description: |
-        Information on the recovery codes.
+      description: 'Information on the recovery codes.
+
+        '
       content:
         application/json:
           schema:
@@ -3492,8 +3799,8 @@ components:
               data:
                 $ref: '#/components/schemas/SensitiveRecoveryCodesAuthenticator'
             required:
-              - status
-              - data
+            - status
+            - data
     RefreshToken:
       description: A new access token (and optionally new refresh token).
       content:
@@ -3511,13 +3818,14 @@ components:
                   refresh_token:
                     $ref: '#/components/schemas/RefreshToken'
                 required:
-                  - access_token
+                - access_token
             required:
-              - data
-              - status
+            - data
+            - status
     Sessions:
-      description: |
-        List of sessions.
+      description: 'List of sessions.
+
+        '
       content:
         application/json:
           schema:
@@ -3530,11 +3838,12 @@ components:
                 items:
                   $ref: '#/components/schemas/Session'
             required:
-              - status
-              - data
+            - status
+            - data
     SessionGone:
-      description: |
-        The response indicates session is invalid or no longer exists.
+      description: 'The response indicates session is invalid or no longer exists.
+
+        '
       content:
         application/json:
           schema:
@@ -3543,8 +3852,9 @@ components:
             unauth:
               $ref: '#/components/examples/UnauthenticatedInitial'
     StatusOK:
-      description: |
-        A success response.
+      description: 'A success response.
+
+        '
       content:
         application/json:
           schema:
@@ -3553,10 +3863,11 @@ components:
               status:
                 $ref: '#/components/schemas/StatusOK'
             required:
-              - status
+            - status
     TooManyRequests:
-      description: |
-        Too many requests.
+      description: 'Too many requests.
+
+        '
       content:
         application/json:
           schema:
@@ -3565,12 +3876,13 @@ components:
               status:
                 type: integer
                 enum:
-                  - 429
+                - 429
             required:
-              - status
+            - status
     TOTPAuthenticator:
-      description: |
-        Information on the TOTP authenticator.
+      description: 'Information on the TOTP authenticator.
+
+        '
       content:
         application/json:
           schema:
@@ -3587,11 +3899,12 @@ components:
               data:
                 $ref: '#/components/schemas/TOTPAuthenticator'
             required:
-              - status
-              - data
+            - status
+            - data
     TOTPAuthenticatorNotFound:
-      description: |
-        No TOTP authenticator has been set up.
+      description: 'No TOTP authenticator has been set up.
+
+        '
       content:
         application/json:
           schema:
@@ -3600,29 +3913,33 @@ components:
               status:
                 type: integer
                 enum:
-                  - 404
+                - 404
               meta:
                 type: object
                 properties:
                   secret:
                     type: string
-                    description: |
-                      A TOTP secret that can be used to setup a new authenticator.
+                    description: 'A TOTP secret that can be used to setup a new authenticator.
+
+                      '
                     example: J4ZKKXTK7NOVU7EPUVY23LCDV4T2QZYM
                   totp_url:
                     type: string
-                    description: |
-                      otpauth URI from which a QR code can be generated and scanned by OTP clients.
+                    description: 'otpauth URI from which a QR code can be generated
+                      and scanned by OTP clients.
+
+                      '
                     example: otpauth://totp/Example:alice@fsf.org?secret=JBSWY3DPEHPK3PXP&issuer=Example
                 required:
-                  - secret
-                  - totp_url
+                - secret
+                - totp_url
             required:
-              - status
-              - meta
+            - status
+            - meta
     Unauthenticated:
-      description: |
-        There is no authenticated session.
+      description: 'There is no authenticated session.
+
+        '
       content:
         application/json:
           schema:
@@ -3648,8 +3965,8 @@ components:
               data:
                 $ref: '#/components/schemas/WebAuthnCredentialRequestOptions'
             required:
-              - status
-              - data
+            - status
+            - data
     WebAuthnCreationOptionsResponse:
       description: WebAuthn credential creation options.
       content:
@@ -3662,8 +3979,8 @@ components:
               data:
                 $ref: '#/components/schemas/WebAuthnCredentialCreationOptions'
             required:
-              - status
-              - data
+            - status
+            - data
     WebAuthnAuthenticator:
       description: A WebAuthn authenticator.
       content:
@@ -3676,8 +3993,8 @@ components:
               data:
                 $ref: '#/components/schemas/WebAuthnAuthenticator'
             required:
-              - status
-              - data
+            - status
+            - data
     AddWebAuthnAuthenticator:
       description: A WebAuthn authenticator.
       content:
@@ -3694,9 +4011,10 @@ components:
                 properties:
                   recovery_codes_generated:
                     type: boolean
-                    description: |
-                      Whether or not recovery codes where generated automatically.
+                    description: 'Whether or not recovery codes where generated automatically.
+
+                      '
             required:
-              - status
-              - data
-              - meta
+            - status
+            - data
+            - meta

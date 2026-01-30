@@ -1185,7 +1185,7 @@ but may enforce additional multi-factor authentication (MFA) requirements. Omit 
  */
 export type PasswordLessParameter = boolean;
 
-export type GetAllauthClientV1AccountAuthenticatorsWebauthnParams = {
+export type GetAccountAuthenticatorsWebauthnParams = {
   /**
  * When present (regardless of its value), enables passwordless sign-in via a WebAuthn credential (Passkey),
 but may enforce additional multi-factor authentication (MFA) requirements. Omit the parameter to disable.
@@ -1206,7 +1206,7 @@ time of your application.
 
  * @summary Get configuration
  */
-export const getAllauthClientV1Config = (
+export const getConfig = (
   client: 'app' | 'browser',
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -1217,56 +1217,49 @@ export const getAllauthClientV1Config = (
   );
 };
 
-export const getGetAllauthClientV1ConfigQueryKey = (client?: 'app' | 'browser') => {
+export const getGetConfigQueryKey = (client?: 'app' | 'browser') => {
   return [`/api/_allauth/${client}/v1/config`] as const;
 };
 
-export const getGetAllauthClientV1ConfigQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAllauthClientV1Config>>,
+export const getGetConfigQueryOptions = <
+  TData = Awaited<ReturnType<typeof getConfig>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1Config>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getConfig>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
   },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetAllauthClientV1ConfigQueryKey(client);
+  const queryKey = queryOptions?.queryKey ?? getGetConfigQueryKey(client);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllauthClientV1Config>>> = ({
-    signal,
-  }) => getAllauthClientV1Config(client, requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getConfig>>> = ({ signal }) =>
+    getConfig(client, requestOptions, signal);
 
   return { queryKey, queryFn, enabled: !!client, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAllauthClientV1Config>>,
+    Awaited<ReturnType<typeof getConfig>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetAllauthClientV1ConfigQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAllauthClientV1Config>>
->;
-export type GetAllauthClientV1ConfigQueryError = ErrorType<unknown>;
+export type GetConfigQueryResult = NonNullable<Awaited<ReturnType<typeof getConfig>>>;
+export type GetConfigQueryError = ErrorType<unknown>;
 
-export function useGetAllauthClientV1Config<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1Config>>,
+export function useGetConfig<
+  TData = Awaited<ReturnType<typeof getConfig>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options: {
-    query: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1Config>>, TError, TData>
-    > &
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getConfig>>, TError, TData>> &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1Config>>,
+          Awaited<ReturnType<typeof getConfig>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1Config>>
+          Awaited<ReturnType<typeof getConfig>>
         >,
         'initialData'
       >;
@@ -1274,20 +1267,18 @@ export function useGetAllauthClientV1Config<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1Config<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1Config>>,
+export function useGetConfig<
+  TData = Awaited<ReturnType<typeof getConfig>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1Config>>, TError, TData>
-    > &
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getConfig>>, TError, TData>> &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1Config>>,
+          Awaited<ReturnType<typeof getConfig>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1Config>>
+          Awaited<ReturnType<typeof getConfig>>
         >,
         'initialData'
       >;
@@ -1295,15 +1286,13 @@ export function useGetAllauthClientV1Config<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1Config<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1Config>>,
+export function useGetConfig<
+  TData = Awaited<ReturnType<typeof getConfig>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1Config>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getConfig>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
@@ -1312,20 +1301,18 @@ export function useGetAllauthClientV1Config<
  * @summary Get configuration
  */
 
-export function useGetAllauthClientV1Config<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1Config>>,
+export function useGetConfig<
+  TData = Awaited<ReturnType<typeof getConfig>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1Config>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getConfig>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetAllauthClientV1ConfigQueryOptions(client, options);
+  const queryOptions = getGetConfigQueryOptions(client, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;
@@ -1341,7 +1328,7 @@ export function useGetAllauthClientV1Config<
 
  * @summary Login
  */
-export const postAllauthClientV1AuthLogin = (
+export const postAuthLogin = (
   client: 'app' | 'browser',
   loginBody: BodyType<LoginBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -1359,24 +1346,24 @@ export const postAllauthClientV1AuthLogin = (
   );
 };
 
-export const getPostAllauthClientV1AuthLoginMutationOptions = <
+export const getPostAuthLoginMutationOptions = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse | ConflictResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthLogin>>,
+    Awaited<ReturnType<typeof postAuthLogin>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<LoginBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthLogin>>,
+  Awaited<ReturnType<typeof postAuthLogin>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<LoginBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1AuthLogin'];
+  const mutationKey = ['postAuthLogin'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -1384,35 +1371,33 @@ export const getPostAllauthClientV1AuthLoginMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthLogin>>,
+    Awaited<ReturnType<typeof postAuthLogin>>,
     { client: 'app' | 'browser'; data: BodyType<LoginBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return postAllauthClientV1AuthLogin(client, data, requestOptions);
+    return postAuthLogin(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1AuthLoginMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthLogin>>
->;
-export type PostAllauthClientV1AuthLoginMutationBody = BodyType<LoginBody>;
-export type PostAllauthClientV1AuthLoginMutationError = ErrorType<
+export type PostAuthLoginMutationResult = NonNullable<Awaited<ReturnType<typeof postAuthLogin>>>;
+export type PostAuthLoginMutationBody = BodyType<LoginBody>;
+export type PostAuthLoginMutationError = ErrorType<
   ErrorResponse | AuthenticationResponse | ConflictResponse
 >;
 
 /**
  * @summary Login
  */
-export const usePostAllauthClientV1AuthLogin = <
+export const usePostAuthLogin = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse | ConflictResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1AuthLogin>>,
+      Awaited<ReturnType<typeof postAuthLogin>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<LoginBody> },
       TContext
@@ -1421,12 +1406,12 @@ export const usePostAllauthClientV1AuthLogin = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthLogin>>,
+  Awaited<ReturnType<typeof postAuthLogin>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<LoginBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthClientV1AuthLoginMutationOptions(options);
+  const mutationOptions = getPostAuthLoginMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -1439,7 +1424,7 @@ required.
 
  * @summary Signup
  */
-export const postAllauthClientV1AuthSignup = (
+export const postAuthSignup = (
   client: 'app' | 'browser',
   signupBody: BodyType<SignupBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -1457,24 +1442,24 @@ export const postAllauthClientV1AuthSignup = (
   );
 };
 
-export const getPostAllauthClientV1AuthSignupMutationOptions = <
+export const getPostAuthSignupMutationOptions = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse | ForbiddenResponse | ConflictResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthSignup>>,
+    Awaited<ReturnType<typeof postAuthSignup>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<SignupBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthSignup>>,
+  Awaited<ReturnType<typeof postAuthSignup>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<SignupBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1AuthSignup'];
+  const mutationKey = ['postAuthSignup'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -1482,35 +1467,33 @@ export const getPostAllauthClientV1AuthSignupMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthSignup>>,
+    Awaited<ReturnType<typeof postAuthSignup>>,
     { client: 'app' | 'browser'; data: BodyType<SignupBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return postAllauthClientV1AuthSignup(client, data, requestOptions);
+    return postAuthSignup(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1AuthSignupMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthSignup>>
->;
-export type PostAllauthClientV1AuthSignupMutationBody = BodyType<SignupBody>;
-export type PostAllauthClientV1AuthSignupMutationError = ErrorType<
+export type PostAuthSignupMutationResult = NonNullable<Awaited<ReturnType<typeof postAuthSignup>>>;
+export type PostAuthSignupMutationBody = BodyType<SignupBody>;
+export type PostAuthSignupMutationError = ErrorType<
   ErrorResponse | AuthenticationResponse | ForbiddenResponse | ConflictResponse
 >;
 
 /**
  * @summary Signup
  */
-export const usePostAllauthClientV1AuthSignup = <
+export const usePostAuthSignup = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse | ForbiddenResponse | ConflictResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1AuthSignup>>,
+      Awaited<ReturnType<typeof postAuthSignup>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<SignupBody> },
       TContext
@@ -1519,12 +1502,12 @@ export const usePostAllauthClientV1AuthSignup = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthSignup>>,
+  Awaited<ReturnType<typeof postAuthSignup>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<SignupBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthClientV1AuthSignupMutationOptions(options);
+  const mutationOptions = getPostAuthSignupMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -1535,7 +1518,7 @@ the user by email.
 
  * @summary Get email verification information
  */
-export const getAllauthClientV1AuthEmailVerify = (
+export const getAuthEmailVerify = (
   client: 'app' | 'browser',
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -1546,58 +1529,51 @@ export const getAllauthClientV1AuthEmailVerify = (
   );
 };
 
-export const getGetAllauthClientV1AuthEmailVerifyQueryKey = (client?: 'app' | 'browser') => {
+export const getGetAuthEmailVerifyQueryKey = (client?: 'app' | 'browser') => {
   return [`/api/_allauth/${client}/v1/auth/email/verify`] as const;
 };
 
-export const getGetAllauthClientV1AuthEmailVerifyQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthEmailVerify>>,
+export const getGetAuthEmailVerifyQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAuthEmailVerify>>,
   TError = ErrorType<ErrorResponse | ConflictResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AuthEmailVerify>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuthEmailVerify>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
   },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetAllauthClientV1AuthEmailVerifyQueryKey(client);
+  const queryKey = queryOptions?.queryKey ?? getGetAuthEmailVerifyQueryKey(client);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllauthClientV1AuthEmailVerify>>> = ({
-    signal,
-  }) => getAllauthClientV1AuthEmailVerify(client, requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAuthEmailVerify>>> = ({ signal }) =>
+    getAuthEmailVerify(client, requestOptions, signal);
 
   return { queryKey, queryFn, enabled: !!client, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAllauthClientV1AuthEmailVerify>>,
+    Awaited<ReturnType<typeof getAuthEmailVerify>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetAllauthClientV1AuthEmailVerifyQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAllauthClientV1AuthEmailVerify>>
+export type GetAuthEmailVerifyQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAuthEmailVerify>>
 >;
-export type GetAllauthClientV1AuthEmailVerifyQueryError = ErrorType<
-  ErrorResponse | ConflictResponse
->;
+export type GetAuthEmailVerifyQueryError = ErrorType<ErrorResponse | ConflictResponse>;
 
-export function useGetAllauthClientV1AuthEmailVerify<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthEmailVerify>>,
+export function useGetAuthEmailVerify<
+  TData = Awaited<ReturnType<typeof getAuthEmailVerify>>,
   TError = ErrorType<ErrorResponse | ConflictResponse>,
 >(
   client: 'app' | 'browser',
   options: {
-    query: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AuthEmailVerify>>, TError, TData>
-    > &
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuthEmailVerify>>, TError, TData>> &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AuthEmailVerify>>,
+          Awaited<ReturnType<typeof getAuthEmailVerify>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AuthEmailVerify>>
+          Awaited<ReturnType<typeof getAuthEmailVerify>>
         >,
         'initialData'
       >;
@@ -1605,20 +1581,20 @@ export function useGetAllauthClientV1AuthEmailVerify<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AuthEmailVerify<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthEmailVerify>>,
+export function useGetAuthEmailVerify<
+  TData = Awaited<ReturnType<typeof getAuthEmailVerify>>,
   TError = ErrorType<ErrorResponse | ConflictResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AuthEmailVerify>>, TError, TData>
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthEmailVerify>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AuthEmailVerify>>,
+          Awaited<ReturnType<typeof getAuthEmailVerify>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AuthEmailVerify>>
+          Awaited<ReturnType<typeof getAuthEmailVerify>>
         >,
         'initialData'
       >;
@@ -1626,15 +1602,13 @@ export function useGetAllauthClientV1AuthEmailVerify<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AuthEmailVerify<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthEmailVerify>>,
+export function useGetAuthEmailVerify<
+  TData = Awaited<ReturnType<typeof getAuthEmailVerify>>,
   TError = ErrorType<ErrorResponse | ConflictResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AuthEmailVerify>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuthEmailVerify>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
@@ -1643,20 +1617,18 @@ export function useGetAllauthClientV1AuthEmailVerify<
  * @summary Get email verification information
  */
 
-export function useGetAllauthClientV1AuthEmailVerify<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthEmailVerify>>,
+export function useGetAuthEmailVerify<
+  TData = Awaited<ReturnType<typeof getAuthEmailVerify>>,
   TError = ErrorType<ErrorResponse | ConflictResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AuthEmailVerify>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuthEmailVerify>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetAllauthClientV1AuthEmailVerifyQueryOptions(client, options);
+  const queryOptions = getGetAuthEmailVerifyQueryOptions(client, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;
@@ -1681,7 +1653,7 @@ in. For example, in case `ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION` is set to
 
  * @summary Verify an email
  */
-export const postAllauthClientV1AuthEmailVerify = (
+export const postAuthEmailVerify = (
   client: 'app' | 'browser',
   verifyEmailBody: BodyType<VerifyEmailBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -1699,24 +1671,24 @@ export const postAllauthClientV1AuthEmailVerify = (
   );
 };
 
-export const getPostAllauthClientV1AuthEmailVerifyMutationOptions = <
+export const getPostAuthEmailVerifyMutationOptions = <
   TError = ErrorType<ErrorResponse | UnauthenticatedResponse | ConflictResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthEmailVerify>>,
+    Awaited<ReturnType<typeof postAuthEmailVerify>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<VerifyEmailBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthEmailVerify>>,
+  Awaited<ReturnType<typeof postAuthEmailVerify>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<VerifyEmailBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1AuthEmailVerify'];
+  const mutationKey = ['postAuthEmailVerify'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -1724,35 +1696,35 @@ export const getPostAllauthClientV1AuthEmailVerifyMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthEmailVerify>>,
+    Awaited<ReturnType<typeof postAuthEmailVerify>>,
     { client: 'app' | 'browser'; data: BodyType<VerifyEmailBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return postAllauthClientV1AuthEmailVerify(client, data, requestOptions);
+    return postAuthEmailVerify(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1AuthEmailVerifyMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthEmailVerify>>
+export type PostAuthEmailVerifyMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAuthEmailVerify>>
 >;
-export type PostAllauthClientV1AuthEmailVerifyMutationBody = BodyType<VerifyEmailBody>;
-export type PostAllauthClientV1AuthEmailVerifyMutationError = ErrorType<
+export type PostAuthEmailVerifyMutationBody = BodyType<VerifyEmailBody>;
+export type PostAuthEmailVerifyMutationError = ErrorType<
   ErrorResponse | UnauthenticatedResponse | ConflictResponse
 >;
 
 /**
  * @summary Verify an email
  */
-export const usePostAllauthClientV1AuthEmailVerify = <
+export const usePostAuthEmailVerify = <
   TError = ErrorType<ErrorResponse | UnauthenticatedResponse | ConflictResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1AuthEmailVerify>>,
+      Awaited<ReturnType<typeof postAuthEmailVerify>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<VerifyEmailBody> },
       TContext
@@ -1761,12 +1733,12 @@ export const usePostAllauthClientV1AuthEmailVerify = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthEmailVerify>>,
+  Awaited<ReturnType<typeof postAuthEmailVerify>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<VerifyEmailBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthClientV1AuthEmailVerifyMutationOptions(options);
+  const mutationOptions = getPostAuthEmailVerifyMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -1777,7 +1749,7 @@ Requires `ACCOUNT_EMAIL_VERIFICATION_SUPPORTS_RESEND = True`.
 
  * @summary Resend email verification code
  */
-export const postAllauthClientV1AuthEmailVerifyResend = (
+export const postAuthEmailVerifyResend = (
   client: 'app' | 'browser',
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -1788,24 +1760,24 @@ export const postAllauthClientV1AuthEmailVerifyResend = (
   );
 };
 
-export const getPostAllauthClientV1AuthEmailVerifyResendMutationOptions = <
+export const getPostAuthEmailVerifyResendMutationOptions = <
   TError = ErrorType<ConflictResponse | TooManyRequestsResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthEmailVerifyResend>>,
+    Awaited<ReturnType<typeof postAuthEmailVerifyResend>>,
     TError,
     { client: 'app' | 'browser' },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthEmailVerifyResend>>,
+  Awaited<ReturnType<typeof postAuthEmailVerifyResend>>,
   TError,
   { client: 'app' | 'browser' },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1AuthEmailVerifyResend'];
+  const mutationKey = ['postAuthEmailVerifyResend'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -1813,35 +1785,35 @@ export const getPostAllauthClientV1AuthEmailVerifyResendMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthEmailVerifyResend>>,
+    Awaited<ReturnType<typeof postAuthEmailVerifyResend>>,
     { client: 'app' | 'browser' }
   > = props => {
     const { client } = props ?? {};
 
-    return postAllauthClientV1AuthEmailVerifyResend(client, requestOptions);
+    return postAuthEmailVerifyResend(client, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1AuthEmailVerifyResendMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthEmailVerifyResend>>
+export type PostAuthEmailVerifyResendMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAuthEmailVerifyResend>>
 >;
 
-export type PostAllauthClientV1AuthEmailVerifyResendMutationError = ErrorType<
+export type PostAuthEmailVerifyResendMutationError = ErrorType<
   ConflictResponse | TooManyRequestsResponse
 >;
 
 /**
  * @summary Resend email verification code
  */
-export const usePostAllauthClientV1AuthEmailVerifyResend = <
+export const usePostAuthEmailVerifyResend = <
   TError = ErrorType<ConflictResponse | TooManyRequestsResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1AuthEmailVerifyResend>>,
+      Awaited<ReturnType<typeof postAuthEmailVerifyResend>>,
       TError,
       { client: 'app' | 'browser' },
       TContext
@@ -1850,12 +1822,12 @@ export const usePostAllauthClientV1AuthEmailVerifyResend = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthEmailVerifyResend>>,
+  Awaited<ReturnType<typeof postAuthEmailVerifyResend>>,
   TError,
   { client: 'app' | 'browser' },
   TContext
 > => {
-  const mutationOptions = getPostAllauthClientV1AuthEmailVerifyResendMutationOptions(options);
+  const mutationOptions = getPostAuthEmailVerifyResendMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -1867,7 +1839,7 @@ verification was successful, yet, the user is still not signed in.
 
  * @summary Verify a phone number
  */
-export const postAllauthClientV1AuthPhoneVerify = (
+export const postAuthPhoneVerify = (
   client: 'app' | 'browser',
   verifyPhoneBody: BodyType<VerifyPhoneBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -1885,24 +1857,24 @@ export const postAllauthClientV1AuthPhoneVerify = (
   );
 };
 
-export const getPostAllauthClientV1AuthPhoneVerifyMutationOptions = <
+export const getPostAuthPhoneVerifyMutationOptions = <
   TError = ErrorType<ErrorResponse | UnauthenticatedResponse | ConflictResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthPhoneVerify>>,
+    Awaited<ReturnType<typeof postAuthPhoneVerify>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<VerifyPhoneBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthPhoneVerify>>,
+  Awaited<ReturnType<typeof postAuthPhoneVerify>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<VerifyPhoneBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1AuthPhoneVerify'];
+  const mutationKey = ['postAuthPhoneVerify'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -1910,35 +1882,35 @@ export const getPostAllauthClientV1AuthPhoneVerifyMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthPhoneVerify>>,
+    Awaited<ReturnType<typeof postAuthPhoneVerify>>,
     { client: 'app' | 'browser'; data: BodyType<VerifyPhoneBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return postAllauthClientV1AuthPhoneVerify(client, data, requestOptions);
+    return postAuthPhoneVerify(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1AuthPhoneVerifyMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthPhoneVerify>>
+export type PostAuthPhoneVerifyMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAuthPhoneVerify>>
 >;
-export type PostAllauthClientV1AuthPhoneVerifyMutationBody = BodyType<VerifyPhoneBody>;
-export type PostAllauthClientV1AuthPhoneVerifyMutationError = ErrorType<
+export type PostAuthPhoneVerifyMutationBody = BodyType<VerifyPhoneBody>;
+export type PostAuthPhoneVerifyMutationError = ErrorType<
   ErrorResponse | UnauthenticatedResponse | ConflictResponse
 >;
 
 /**
  * @summary Verify a phone number
  */
-export const usePostAllauthClientV1AuthPhoneVerify = <
+export const usePostAuthPhoneVerify = <
   TError = ErrorType<ErrorResponse | UnauthenticatedResponse | ConflictResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1AuthPhoneVerify>>,
+      Awaited<ReturnType<typeof postAuthPhoneVerify>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<VerifyPhoneBody> },
       TContext
@@ -1947,12 +1919,12 @@ export const usePostAllauthClientV1AuthPhoneVerify = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthPhoneVerify>>,
+  Awaited<ReturnType<typeof postAuthPhoneVerify>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<VerifyPhoneBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthClientV1AuthPhoneVerifyMutationOptions(options);
+  const mutationOptions = getPostAuthPhoneVerifyMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -1963,7 +1935,7 @@ Requires `ACCOUNT_PHONE_VERIFICATION_SUPPORTS_RESEND = True`.
 
  * @summary Resend phone number verification code
  */
-export const postAllauthClientV1AuthPhoneVerifyResend = (
+export const postAuthPhoneVerifyResend = (
   client: 'app' | 'browser',
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -1974,24 +1946,24 @@ export const postAllauthClientV1AuthPhoneVerifyResend = (
   );
 };
 
-export const getPostAllauthClientV1AuthPhoneVerifyResendMutationOptions = <
+export const getPostAuthPhoneVerifyResendMutationOptions = <
   TError = ErrorType<ConflictResponse | TooManyRequestsResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthPhoneVerifyResend>>,
+    Awaited<ReturnType<typeof postAuthPhoneVerifyResend>>,
     TError,
     { client: 'app' | 'browser' },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthPhoneVerifyResend>>,
+  Awaited<ReturnType<typeof postAuthPhoneVerifyResend>>,
   TError,
   { client: 'app' | 'browser' },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1AuthPhoneVerifyResend'];
+  const mutationKey = ['postAuthPhoneVerifyResend'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -1999,35 +1971,35 @@ export const getPostAllauthClientV1AuthPhoneVerifyResendMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthPhoneVerifyResend>>,
+    Awaited<ReturnType<typeof postAuthPhoneVerifyResend>>,
     { client: 'app' | 'browser' }
   > = props => {
     const { client } = props ?? {};
 
-    return postAllauthClientV1AuthPhoneVerifyResend(client, requestOptions);
+    return postAuthPhoneVerifyResend(client, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1AuthPhoneVerifyResendMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthPhoneVerifyResend>>
+export type PostAuthPhoneVerifyResendMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAuthPhoneVerifyResend>>
 >;
 
-export type PostAllauthClientV1AuthPhoneVerifyResendMutationError = ErrorType<
+export type PostAuthPhoneVerifyResendMutationError = ErrorType<
   ConflictResponse | TooManyRequestsResponse
 >;
 
 /**
  * @summary Resend phone number verification code
  */
-export const usePostAllauthClientV1AuthPhoneVerifyResend = <
+export const usePostAuthPhoneVerifyResend = <
   TError = ErrorType<ConflictResponse | TooManyRequestsResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1AuthPhoneVerifyResend>>,
+      Awaited<ReturnType<typeof postAuthPhoneVerifyResend>>,
       TError,
       { client: 'app' | 'browser' },
       TContext
@@ -2036,12 +2008,12 @@ export const usePostAllauthClientV1AuthPhoneVerifyResend = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthPhoneVerifyResend>>,
+  Awaited<ReturnType<typeof postAuthPhoneVerifyResend>>,
   TError,
   { client: 'app' | 'browser' },
   TContext
 > => {
-  const mutationOptions = getPostAllauthClientV1AuthPhoneVerifyResendMutationOptions(options);
+  const mutationOptions = getPostAuthPhoneVerifyResendMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -2056,7 +2028,7 @@ password. This is the endpoint related towards that flow.
 
  * @summary Reauthenticate
  */
-export const postAllauthClientV1AuthReauthenticate = (
+export const postAuthReauthenticate = (
   client: 'app' | 'browser',
   reauthenticateBody: BodyType<ReauthenticateBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -2074,24 +2046,24 @@ export const postAllauthClientV1AuthReauthenticate = (
   );
 };
 
-export const getPostAllauthClientV1AuthReauthenticateMutationOptions = <
+export const getPostAuthReauthenticateMutationOptions = <
   TError = ErrorType<ErrorResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthReauthenticate>>,
+    Awaited<ReturnType<typeof postAuthReauthenticate>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<ReauthenticateBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthReauthenticate>>,
+  Awaited<ReturnType<typeof postAuthReauthenticate>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<ReauthenticateBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1AuthReauthenticate'];
+  const mutationKey = ['postAuthReauthenticate'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -2099,33 +2071,30 @@ export const getPostAllauthClientV1AuthReauthenticateMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthReauthenticate>>,
+    Awaited<ReturnType<typeof postAuthReauthenticate>>,
     { client: 'app' | 'browser'; data: BodyType<ReauthenticateBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return postAllauthClientV1AuthReauthenticate(client, data, requestOptions);
+    return postAuthReauthenticate(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1AuthReauthenticateMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthReauthenticate>>
+export type PostAuthReauthenticateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAuthReauthenticate>>
 >;
-export type PostAllauthClientV1AuthReauthenticateMutationBody = BodyType<ReauthenticateBody>;
-export type PostAllauthClientV1AuthReauthenticateMutationError = ErrorType<ErrorResponse>;
+export type PostAuthReauthenticateMutationBody = BodyType<ReauthenticateBody>;
+export type PostAuthReauthenticateMutationError = ErrorType<ErrorResponse>;
 
 /**
  * @summary Reauthenticate
  */
-export const usePostAllauthClientV1AuthReauthenticate = <
-  TError = ErrorType<ErrorResponse>,
-  TContext = unknown,
->(
+export const usePostAuthReauthenticate = <TError = ErrorType<ErrorResponse>, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1AuthReauthenticate>>,
+      Awaited<ReturnType<typeof postAuthReauthenticate>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<ReauthenticateBody> },
       TContext
@@ -2134,12 +2103,12 @@ export const usePostAllauthClientV1AuthReauthenticate = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthReauthenticate>>,
+  Awaited<ReturnType<typeof postAuthReauthenticate>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<ReauthenticateBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthClientV1AuthReauthenticateMutationOptions(options);
+  const mutationOptions = getPostAuthReauthenticateMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -2159,7 +2128,7 @@ receive a 200 on a successful password reset request.
 
  * @summary Request password
  */
-export const postAllauthClientV1AuthPasswordRequest = (
+export const postAuthPasswordRequest = (
   client: 'app' | 'browser',
   requestPasswordBody: BodyType<RequestPasswordBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -2177,24 +2146,24 @@ export const postAllauthClientV1AuthPasswordRequest = (
   );
 };
 
-export const getPostAllauthClientV1AuthPasswordRequestMutationOptions = <
+export const getPostAuthPasswordRequestMutationOptions = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthPasswordRequest>>,
+    Awaited<ReturnType<typeof postAuthPasswordRequest>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<RequestPasswordBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthPasswordRequest>>,
+  Awaited<ReturnType<typeof postAuthPasswordRequest>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<RequestPasswordBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1AuthPasswordRequest'];
+  const mutationKey = ['postAuthPasswordRequest'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -2202,35 +2171,35 @@ export const getPostAllauthClientV1AuthPasswordRequestMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthPasswordRequest>>,
+    Awaited<ReturnType<typeof postAuthPasswordRequest>>,
     { client: 'app' | 'browser'; data: BodyType<RequestPasswordBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return postAllauthClientV1AuthPasswordRequest(client, data, requestOptions);
+    return postAuthPasswordRequest(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1AuthPasswordRequestMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthPasswordRequest>>
+export type PostAuthPasswordRequestMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAuthPasswordRequest>>
 >;
-export type PostAllauthClientV1AuthPasswordRequestMutationBody = BodyType<RequestPasswordBody>;
-export type PostAllauthClientV1AuthPasswordRequestMutationError = ErrorType<
+export type PostAuthPasswordRequestMutationBody = BodyType<RequestPasswordBody>;
+export type PostAuthPasswordRequestMutationError = ErrorType<
   ErrorResponse | AuthenticationResponse
 >;
 
 /**
  * @summary Request password
  */
-export const usePostAllauthClientV1AuthPasswordRequest = <
+export const usePostAuthPasswordRequest = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1AuthPasswordRequest>>,
+      Awaited<ReturnType<typeof postAuthPasswordRequest>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<RequestPasswordBody> },
       TContext
@@ -2239,12 +2208,12 @@ export const usePostAllauthClientV1AuthPasswordRequest = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthPasswordRequest>>,
+  Awaited<ReturnType<typeof postAuthPasswordRequest>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<RequestPasswordBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthClientV1AuthPasswordRequestMutationOptions(options);
+  const mutationOptions = getPostAuthPasswordRequestMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -2259,7 +2228,7 @@ the number of requests you can make is limited (by
 
  * @summary Get password reset information
  */
-export const getAllauthClientV1AuthPasswordReset = (
+export const getAuthPasswordReset = (
   client: 'app' | 'browser',
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -2270,66 +2239,55 @@ export const getAllauthClientV1AuthPasswordReset = (
   );
 };
 
-export const getGetAllauthClientV1AuthPasswordResetQueryKey = (client?: 'app' | 'browser') => {
+export const getGetAuthPasswordResetQueryKey = (client?: 'app' | 'browser') => {
   return [`/api/_allauth/${client}/v1/auth/password/reset`] as const;
 };
 
-export const getGetAllauthClientV1AuthPasswordResetQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthPasswordReset>>,
+export const getGetAuthPasswordResetQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAuthPasswordReset>>,
   TError = ErrorType<ErrorResponse | ConflictResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthPasswordReset>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthPasswordReset>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetAllauthClientV1AuthPasswordResetQueryKey(client);
+  const queryKey = queryOptions?.queryKey ?? getGetAuthPasswordResetQueryKey(client);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllauthClientV1AuthPasswordReset>>> = ({
-    signal,
-  }) => getAllauthClientV1AuthPasswordReset(client, requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAuthPasswordReset>>> = ({ signal }) =>
+    getAuthPasswordReset(client, requestOptions, signal);
 
   return { queryKey, queryFn, enabled: !!client, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAllauthClientV1AuthPasswordReset>>,
+    Awaited<ReturnType<typeof getAuthPasswordReset>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetAllauthClientV1AuthPasswordResetQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAllauthClientV1AuthPasswordReset>>
+export type GetAuthPasswordResetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAuthPasswordReset>>
 >;
-export type GetAllauthClientV1AuthPasswordResetQueryError = ErrorType<
-  ErrorResponse | ConflictResponse
->;
+export type GetAuthPasswordResetQueryError = ErrorType<ErrorResponse | ConflictResponse>;
 
-export function useGetAllauthClientV1AuthPasswordReset<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthPasswordReset>>,
+export function useGetAuthPasswordReset<
+  TData = Awaited<ReturnType<typeof getAuthPasswordReset>>,
   TError = ErrorType<ErrorResponse | ConflictResponse>,
 >(
   client: 'app' | 'browser',
   options: {
     query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthPasswordReset>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthPasswordReset>>, TError, TData>
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AuthPasswordReset>>,
+          Awaited<ReturnType<typeof getAuthPasswordReset>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AuthPasswordReset>>
+          Awaited<ReturnType<typeof getAuthPasswordReset>>
         >,
         'initialData'
       >;
@@ -2337,24 +2295,20 @@ export function useGetAllauthClientV1AuthPasswordReset<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AuthPasswordReset<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthPasswordReset>>,
+export function useGetAuthPasswordReset<
+  TData = Awaited<ReturnType<typeof getAuthPasswordReset>>,
   TError = ErrorType<ErrorResponse | ConflictResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthPasswordReset>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthPasswordReset>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AuthPasswordReset>>,
+          Awaited<ReturnType<typeof getAuthPasswordReset>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AuthPasswordReset>>
+          Awaited<ReturnType<typeof getAuthPasswordReset>>
         >,
         'initialData'
       >;
@@ -2362,18 +2316,14 @@ export function useGetAllauthClientV1AuthPasswordReset<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AuthPasswordReset<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthPasswordReset>>,
+export function useGetAuthPasswordReset<
+  TData = Awaited<ReturnType<typeof getAuthPasswordReset>>,
   TError = ErrorType<ErrorResponse | ConflictResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthPasswordReset>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthPasswordReset>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -2383,24 +2333,20 @@ export function useGetAllauthClientV1AuthPasswordReset<
  * @summary Get password reset information
  */
 
-export function useGetAllauthClientV1AuthPasswordReset<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthPasswordReset>>,
+export function useGetAuthPasswordReset<
+  TData = Awaited<ReturnType<typeof getAuthPasswordReset>>,
   TError = ErrorType<ErrorResponse | ConflictResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthPasswordReset>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthPasswordReset>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetAllauthClientV1AuthPasswordResetQueryOptions(client, options);
+  const queryOptions = getGetAuthPasswordResetQueryOptions(client, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;
@@ -2421,7 +2367,7 @@ of the former, a `200` status code is returned, in case of the latter a
 
  * @summary Reset password
  */
-export const postAllauthClientV1AuthPasswordReset = (
+export const postAuthPasswordReset = (
   client: 'app' | 'browser',
   resetPasswordBody: BodyType<ResetPasswordBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -2439,24 +2385,24 @@ export const postAllauthClientV1AuthPasswordReset = (
   );
 };
 
-export const getPostAllauthClientV1AuthPasswordResetMutationOptions = <
+export const getPostAuthPasswordResetMutationOptions = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse | ConflictResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthPasswordReset>>,
+    Awaited<ReturnType<typeof postAuthPasswordReset>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<ResetPasswordBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthPasswordReset>>,
+  Awaited<ReturnType<typeof postAuthPasswordReset>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<ResetPasswordBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1AuthPasswordReset'];
+  const mutationKey = ['postAuthPasswordReset'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -2464,35 +2410,35 @@ export const getPostAllauthClientV1AuthPasswordResetMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthPasswordReset>>,
+    Awaited<ReturnType<typeof postAuthPasswordReset>>,
     { client: 'app' | 'browser'; data: BodyType<ResetPasswordBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return postAllauthClientV1AuthPasswordReset(client, data, requestOptions);
+    return postAuthPasswordReset(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1AuthPasswordResetMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthPasswordReset>>
+export type PostAuthPasswordResetMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAuthPasswordReset>>
 >;
-export type PostAllauthClientV1AuthPasswordResetMutationBody = BodyType<ResetPasswordBody>;
-export type PostAllauthClientV1AuthPasswordResetMutationError = ErrorType<
+export type PostAuthPasswordResetMutationBody = BodyType<ResetPasswordBody>;
+export type PostAuthPasswordResetMutationError = ErrorType<
   ErrorResponse | AuthenticationResponse | ConflictResponse
 >;
 
 /**
  * @summary Reset password
  */
-export const usePostAllauthClientV1AuthPasswordReset = <
+export const usePostAuthPasswordReset = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse | ConflictResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1AuthPasswordReset>>,
+      Awaited<ReturnType<typeof postAuthPasswordReset>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<ResetPasswordBody> },
       TContext
@@ -2501,12 +2447,12 @@ export const usePostAllauthClientV1AuthPasswordReset = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthPasswordReset>>,
+  Awaited<ReturnType<typeof postAuthPasswordReset>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<ResetPasswordBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthClientV1AuthPasswordResetMutationOptions(options);
+  const mutationOptions = getPostAuthPasswordResetMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -2519,7 +2465,7 @@ manner.
 
  * @summary Provider redirect
  */
-export const postAllauthBrowserV1AuthProviderRedirect = (
+export const postBrowserAuthProviderRedirect = (
   providerRedirectBody: BodyType<ProviderRedirectBody>,
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -2541,24 +2487,24 @@ export const postAllauthBrowserV1AuthProviderRedirect = (
   );
 };
 
-export const getPostAllauthBrowserV1AuthProviderRedirectMutationOptions = <
+export const getPostBrowserAuthProviderRedirectMutationOptions = <
   TError = ErrorType<void>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthBrowserV1AuthProviderRedirect>>,
+    Awaited<ReturnType<typeof postBrowserAuthProviderRedirect>>,
     TError,
     { data: BodyType<ProviderRedirectBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthBrowserV1AuthProviderRedirect>>,
+  Awaited<ReturnType<typeof postBrowserAuthProviderRedirect>>,
   TError,
   { data: BodyType<ProviderRedirectBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthBrowserV1AuthProviderRedirect'];
+  const mutationKey = ['postBrowserAuthProviderRedirect'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -2566,33 +2512,30 @@ export const getPostAllauthBrowserV1AuthProviderRedirectMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthBrowserV1AuthProviderRedirect>>,
+    Awaited<ReturnType<typeof postBrowserAuthProviderRedirect>>,
     { data: BodyType<ProviderRedirectBody> }
   > = props => {
     const { data } = props ?? {};
 
-    return postAllauthBrowserV1AuthProviderRedirect(data, requestOptions);
+    return postBrowserAuthProviderRedirect(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthBrowserV1AuthProviderRedirectMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthBrowserV1AuthProviderRedirect>>
+export type PostBrowserAuthProviderRedirectMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postBrowserAuthProviderRedirect>>
 >;
-export type PostAllauthBrowserV1AuthProviderRedirectMutationBody = BodyType<ProviderRedirectBody>;
-export type PostAllauthBrowserV1AuthProviderRedirectMutationError = ErrorType<void>;
+export type PostBrowserAuthProviderRedirectMutationBody = BodyType<ProviderRedirectBody>;
+export type PostBrowserAuthProviderRedirectMutationError = ErrorType<void>;
 
 /**
  * @summary Provider redirect
  */
-export const usePostAllauthBrowserV1AuthProviderRedirect = <
-  TError = ErrorType<void>,
-  TContext = unknown,
->(
+export const usePostBrowserAuthProviderRedirect = <TError = ErrorType<void>, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthBrowserV1AuthProviderRedirect>>,
+      Awaited<ReturnType<typeof postBrowserAuthProviderRedirect>>,
       TError,
       { data: BodyType<ProviderRedirectBody> },
       TContext
@@ -2601,12 +2544,12 @@ export const usePostAllauthBrowserV1AuthProviderRedirect = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthBrowserV1AuthProviderRedirect>>,
+  Awaited<ReturnType<typeof postBrowserAuthProviderRedirect>>,
   TError,
   { data: BodyType<ProviderRedirectBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthBrowserV1AuthProviderRedirectMutationOptions(options);
+  const mutationOptions = getPostBrowserAuthProviderRedirectMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -2621,7 +2564,7 @@ via this endpoint to authenticate on the server.
 
  * @summary Provider token
  */
-export const postAllauthClientV1AuthProviderToken = (
+export const postAuthProviderToken = (
   client: 'app' | 'browser',
   providerTokenBody: BodyType<ProviderTokenBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -2639,24 +2582,24 @@ export const postAllauthClientV1AuthProviderToken = (
   );
 };
 
-export const getPostAllauthClientV1AuthProviderTokenMutationOptions = <
+export const getPostAuthProviderTokenMutationOptions = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse | ForbiddenResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthProviderToken>>,
+    Awaited<ReturnType<typeof postAuthProviderToken>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<ProviderTokenBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthProviderToken>>,
+  Awaited<ReturnType<typeof postAuthProviderToken>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<ProviderTokenBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1AuthProviderToken'];
+  const mutationKey = ['postAuthProviderToken'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -2664,35 +2607,35 @@ export const getPostAllauthClientV1AuthProviderTokenMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthProviderToken>>,
+    Awaited<ReturnType<typeof postAuthProviderToken>>,
     { client: 'app' | 'browser'; data: BodyType<ProviderTokenBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return postAllauthClientV1AuthProviderToken(client, data, requestOptions);
+    return postAuthProviderToken(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1AuthProviderTokenMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthProviderToken>>
+export type PostAuthProviderTokenMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAuthProviderToken>>
 >;
-export type PostAllauthClientV1AuthProviderTokenMutationBody = BodyType<ProviderTokenBody>;
-export type PostAllauthClientV1AuthProviderTokenMutationError = ErrorType<
+export type PostAuthProviderTokenMutationBody = BodyType<ProviderTokenBody>;
+export type PostAuthProviderTokenMutationError = ErrorType<
   ErrorResponse | AuthenticationResponse | ForbiddenResponse
 >;
 
 /**
  * @summary Provider token
  */
-export const usePostAllauthClientV1AuthProviderToken = <
+export const usePostAuthProviderToken = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse | ForbiddenResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1AuthProviderToken>>,
+      Awaited<ReturnType<typeof postAuthProviderToken>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<ProviderTokenBody> },
       TContext
@@ -2701,12 +2644,12 @@ export const usePostAllauthClientV1AuthProviderToken = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthProviderToken>>,
+  Awaited<ReturnType<typeof postAuthProviderToken>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<ProviderTokenBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthClientV1AuthProviderTokenMutationOptions(options);
+  const mutationOptions = getPostAuthProviderTokenMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -2721,7 +2664,7 @@ can be retrieved via this endpoint.
 
  * @summary Provider signup information
  */
-export const getAllauthClientV1AuthProviderSignup = (
+export const getAuthProviderSignup = (
   client: 'app' | 'browser',
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -2732,65 +2675,55 @@ export const getAllauthClientV1AuthProviderSignup = (
   );
 };
 
-export const getGetAllauthClientV1AuthProviderSignupQueryKey = (client?: 'app' | 'browser') => {
+export const getGetAuthProviderSignupQueryKey = (client?: 'app' | 'browser') => {
   return [`/api/_allauth/${client}/v1/auth/provider/signup`] as const;
 };
 
-export const getGetAllauthClientV1AuthProviderSignupQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthProviderSignup>>,
+export const getGetAuthProviderSignupQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAuthProviderSignup>>,
   TError = ErrorType<ConflictResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthProviderSignup>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthProviderSignup>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getGetAllauthClientV1AuthProviderSignupQueryKey(client);
+  const queryKey = queryOptions?.queryKey ?? getGetAuthProviderSignupQueryKey(client);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getAllauthClientV1AuthProviderSignup>>
-  > = ({ signal }) => getAllauthClientV1AuthProviderSignup(client, requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAuthProviderSignup>>> = ({ signal }) =>
+    getAuthProviderSignup(client, requestOptions, signal);
 
   return { queryKey, queryFn, enabled: !!client, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAllauthClientV1AuthProviderSignup>>,
+    Awaited<ReturnType<typeof getAuthProviderSignup>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetAllauthClientV1AuthProviderSignupQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAllauthClientV1AuthProviderSignup>>
+export type GetAuthProviderSignupQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAuthProviderSignup>>
 >;
-export type GetAllauthClientV1AuthProviderSignupQueryError = ErrorType<ConflictResponse>;
+export type GetAuthProviderSignupQueryError = ErrorType<ConflictResponse>;
 
-export function useGetAllauthClientV1AuthProviderSignup<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthProviderSignup>>,
+export function useGetAuthProviderSignup<
+  TData = Awaited<ReturnType<typeof getAuthProviderSignup>>,
   TError = ErrorType<ConflictResponse>,
 >(
   client: 'app' | 'browser',
   options: {
     query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthProviderSignup>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthProviderSignup>>, TError, TData>
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AuthProviderSignup>>,
+          Awaited<ReturnType<typeof getAuthProviderSignup>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AuthProviderSignup>>
+          Awaited<ReturnType<typeof getAuthProviderSignup>>
         >,
         'initialData'
       >;
@@ -2798,24 +2731,20 @@ export function useGetAllauthClientV1AuthProviderSignup<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AuthProviderSignup<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthProviderSignup>>,
+export function useGetAuthProviderSignup<
+  TData = Awaited<ReturnType<typeof getAuthProviderSignup>>,
   TError = ErrorType<ConflictResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthProviderSignup>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthProviderSignup>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AuthProviderSignup>>,
+          Awaited<ReturnType<typeof getAuthProviderSignup>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AuthProviderSignup>>
+          Awaited<ReturnType<typeof getAuthProviderSignup>>
         >,
         'initialData'
       >;
@@ -2823,18 +2752,14 @@ export function useGetAllauthClientV1AuthProviderSignup<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AuthProviderSignup<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthProviderSignup>>,
+export function useGetAuthProviderSignup<
+  TData = Awaited<ReturnType<typeof getAuthProviderSignup>>,
   TError = ErrorType<ConflictResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthProviderSignup>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthProviderSignup>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -2844,24 +2769,20 @@ export function useGetAllauthClientV1AuthProviderSignup<
  * @summary Provider signup information
  */
 
-export function useGetAllauthClientV1AuthProviderSignup<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthProviderSignup>>,
+export function useGetAuthProviderSignup<
+  TData = Awaited<ReturnType<typeof getAuthProviderSignup>>,
   TError = ErrorType<ConflictResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthProviderSignup>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthProviderSignup>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetAllauthClientV1AuthProviderSignupQueryOptions(client, options);
+  const queryOptions = getGetAuthProviderSignupQueryOptions(client, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;
@@ -2880,7 +2801,7 @@ the missing data before the user is fully signed up and authenticated.
 
  * @summary Provider signup
  */
-export const postAllauthClientV1AuthProviderSignup = (
+export const postAuthProviderSignup = (
   client: 'app' | 'browser',
   providerSignupBody: BodyType<ProviderSignupBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -2898,24 +2819,24 @@ export const postAllauthClientV1AuthProviderSignup = (
   );
 };
 
-export const getPostAllauthClientV1AuthProviderSignupMutationOptions = <
+export const getPostAuthProviderSignupMutationOptions = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse | ForbiddenResponse | ConflictResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthProviderSignup>>,
+    Awaited<ReturnType<typeof postAuthProviderSignup>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<ProviderSignupBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthProviderSignup>>,
+  Awaited<ReturnType<typeof postAuthProviderSignup>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<ProviderSignupBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1AuthProviderSignup'];
+  const mutationKey = ['postAuthProviderSignup'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -2923,35 +2844,35 @@ export const getPostAllauthClientV1AuthProviderSignupMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthProviderSignup>>,
+    Awaited<ReturnType<typeof postAuthProviderSignup>>,
     { client: 'app' | 'browser'; data: BodyType<ProviderSignupBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return postAllauthClientV1AuthProviderSignup(client, data, requestOptions);
+    return postAuthProviderSignup(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1AuthProviderSignupMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthProviderSignup>>
+export type PostAuthProviderSignupMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAuthProviderSignup>>
 >;
-export type PostAllauthClientV1AuthProviderSignupMutationBody = BodyType<ProviderSignupBody>;
-export type PostAllauthClientV1AuthProviderSignupMutationError = ErrorType<
+export type PostAuthProviderSignupMutationBody = BodyType<ProviderSignupBody>;
+export type PostAuthProviderSignupMutationError = ErrorType<
   ErrorResponse | AuthenticationResponse | ForbiddenResponse | ConflictResponse
 >;
 
 /**
  * @summary Provider signup
  */
-export const usePostAllauthClientV1AuthProviderSignup = <
+export const usePostAuthProviderSignup = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse | ForbiddenResponse | ConflictResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1AuthProviderSignup>>,
+      Awaited<ReturnType<typeof postAuthProviderSignup>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<ProviderSignupBody> },
       TContext
@@ -2960,12 +2881,12 @@ export const usePostAllauthClientV1AuthProviderSignup = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthProviderSignup>>,
+  Awaited<ReturnType<typeof postAuthProviderSignup>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<ProviderSignupBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthClientV1AuthProviderSignupMutationOptions(options);
+  const mutationOptions = getPostAuthProviderSignupMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -2977,7 +2898,7 @@ be completed.
 
  * @summary Two-factor authentication
  */
-export const postAllauthClientV1Auth2faAuthenticate = (
+export const postAuth2faAuthenticate = (
   client: 'app' | 'browser',
   mFAAuthenticateBody: BodyType<MFAAuthenticateBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -2995,24 +2916,24 @@ export const postAllauthClientV1Auth2faAuthenticate = (
   );
 };
 
-export const getPostAllauthClientV1Auth2faAuthenticateMutationOptions = <
+export const getPostAuth2faAuthenticateMutationOptions = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1Auth2faAuthenticate>>,
+    Awaited<ReturnType<typeof postAuth2faAuthenticate>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<MFAAuthenticateBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1Auth2faAuthenticate>>,
+  Awaited<ReturnType<typeof postAuth2faAuthenticate>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<MFAAuthenticateBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1Auth2faAuthenticate'];
+  const mutationKey = ['postAuth2faAuthenticate'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -3020,35 +2941,35 @@ export const getPostAllauthClientV1Auth2faAuthenticateMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1Auth2faAuthenticate>>,
+    Awaited<ReturnType<typeof postAuth2faAuthenticate>>,
     { client: 'app' | 'browser'; data: BodyType<MFAAuthenticateBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return postAllauthClientV1Auth2faAuthenticate(client, data, requestOptions);
+    return postAuth2faAuthenticate(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1Auth2faAuthenticateMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1Auth2faAuthenticate>>
+export type PostAuth2faAuthenticateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAuth2faAuthenticate>>
 >;
-export type PostAllauthClientV1Auth2faAuthenticateMutationBody = BodyType<MFAAuthenticateBody>;
-export type PostAllauthClientV1Auth2faAuthenticateMutationError = ErrorType<
+export type PostAuth2faAuthenticateMutationBody = BodyType<MFAAuthenticateBody>;
+export type PostAuth2faAuthenticateMutationError = ErrorType<
   ErrorResponse | AuthenticationResponse
 >;
 
 /**
  * @summary Two-factor authentication
  */
-export const usePostAllauthClientV1Auth2faAuthenticate = <
+export const usePostAuth2faAuthenticate = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1Auth2faAuthenticate>>,
+      Awaited<ReturnType<typeof postAuth2faAuthenticate>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<MFAAuthenticateBody> },
       TContext
@@ -3057,12 +2978,12 @@ export const usePostAllauthClientV1Auth2faAuthenticate = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1Auth2faAuthenticate>>,
+  Awaited<ReturnType<typeof postAuth2faAuthenticate>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<MFAAuthenticateBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthClientV1Auth2faAuthenticateMutationOptions(options);
+  const mutationOptions = getPostAuth2faAuthenticateMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -3078,7 +2999,7 @@ related towards that flow.
 
  * @summary Reauthenticate using 2FA
  */
-export const postAllauthClientV1Auth2faReauthenticate = (
+export const postAuth2faReauthenticate = (
   client: 'app' | 'browser',
   mFAAuthenticateBody: BodyType<MFAAuthenticateBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -3096,24 +3017,24 @@ export const postAllauthClientV1Auth2faReauthenticate = (
   );
 };
 
-export const getPostAllauthClientV1Auth2faReauthenticateMutationOptions = <
+export const getPostAuth2faReauthenticateMutationOptions = <
   TError = ErrorType<ErrorResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1Auth2faReauthenticate>>,
+    Awaited<ReturnType<typeof postAuth2faReauthenticate>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<MFAAuthenticateBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1Auth2faReauthenticate>>,
+  Awaited<ReturnType<typeof postAuth2faReauthenticate>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<MFAAuthenticateBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1Auth2faReauthenticate'];
+  const mutationKey = ['postAuth2faReauthenticate'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -3121,33 +3042,30 @@ export const getPostAllauthClientV1Auth2faReauthenticateMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1Auth2faReauthenticate>>,
+    Awaited<ReturnType<typeof postAuth2faReauthenticate>>,
     { client: 'app' | 'browser'; data: BodyType<MFAAuthenticateBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return postAllauthClientV1Auth2faReauthenticate(client, data, requestOptions);
+    return postAuth2faReauthenticate(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1Auth2faReauthenticateMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1Auth2faReauthenticate>>
+export type PostAuth2faReauthenticateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAuth2faReauthenticate>>
 >;
-export type PostAllauthClientV1Auth2faReauthenticateMutationBody = BodyType<MFAAuthenticateBody>;
-export type PostAllauthClientV1Auth2faReauthenticateMutationError = ErrorType<ErrorResponse>;
+export type PostAuth2faReauthenticateMutationBody = BodyType<MFAAuthenticateBody>;
+export type PostAuth2faReauthenticateMutationError = ErrorType<ErrorResponse>;
 
 /**
  * @summary Reauthenticate using 2FA
  */
-export const usePostAllauthClientV1Auth2faReauthenticate = <
-  TError = ErrorType<ErrorResponse>,
-  TContext = unknown,
->(
+export const usePostAuth2faReauthenticate = <TError = ErrorType<ErrorResponse>, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1Auth2faReauthenticate>>,
+      Awaited<ReturnType<typeof postAuth2faReauthenticate>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<MFAAuthenticateBody> },
       TContext
@@ -3156,12 +3074,12 @@ export const usePostAllauthClientV1Auth2faReauthenticate = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1Auth2faReauthenticate>>,
+  Awaited<ReturnType<typeof postAuth2faReauthenticate>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<MFAAuthenticateBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthClientV1Auth2faReauthenticateMutationOptions(options);
+  const mutationOptions = getPostAuth2faReauthenticateMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -3174,7 +3092,7 @@ browser. This endpoint is used to complete the `mfa_trust` flow.
 
  * @summary Trust this browser
  */
-export const postAllauthBrowserV1Auth2faTrust = (
+export const postBrowserAuth2faTrust = (
   mFATrustBody: BodyType<MFATrustBody>,
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -3191,24 +3109,24 @@ export const postAllauthBrowserV1Auth2faTrust = (
   );
 };
 
-export const getPostAllauthBrowserV1Auth2faTrustMutationOptions = <
+export const getPostBrowserAuth2faTrustMutationOptions = <
   TError = ErrorType<ErrorResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthBrowserV1Auth2faTrust>>,
+    Awaited<ReturnType<typeof postBrowserAuth2faTrust>>,
     TError,
     { data: BodyType<MFATrustBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthBrowserV1Auth2faTrust>>,
+  Awaited<ReturnType<typeof postBrowserAuth2faTrust>>,
   TError,
   { data: BodyType<MFATrustBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthBrowserV1Auth2faTrust'];
+  const mutationKey = ['postBrowserAuth2faTrust'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -3216,33 +3134,30 @@ export const getPostAllauthBrowserV1Auth2faTrustMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthBrowserV1Auth2faTrust>>,
+    Awaited<ReturnType<typeof postBrowserAuth2faTrust>>,
     { data: BodyType<MFATrustBody> }
   > = props => {
     const { data } = props ?? {};
 
-    return postAllauthBrowserV1Auth2faTrust(data, requestOptions);
+    return postBrowserAuth2faTrust(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthBrowserV1Auth2faTrustMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthBrowserV1Auth2faTrust>>
+export type PostBrowserAuth2faTrustMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postBrowserAuth2faTrust>>
 >;
-export type PostAllauthBrowserV1Auth2faTrustMutationBody = BodyType<MFATrustBody>;
-export type PostAllauthBrowserV1Auth2faTrustMutationError = ErrorType<ErrorResponse>;
+export type PostBrowserAuth2faTrustMutationBody = BodyType<MFATrustBody>;
+export type PostBrowserAuth2faTrustMutationError = ErrorType<ErrorResponse>;
 
 /**
  * @summary Trust this browser
  */
-export const usePostAllauthBrowserV1Auth2faTrust = <
-  TError = ErrorType<ErrorResponse>,
-  TContext = unknown,
->(
+export const usePostBrowserAuth2faTrust = <TError = ErrorType<ErrorResponse>, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthBrowserV1Auth2faTrust>>,
+      Awaited<ReturnType<typeof postBrowserAuth2faTrust>>,
       TError,
       { data: BodyType<MFATrustBody> },
       TContext
@@ -3251,12 +3166,12 @@ export const usePostAllauthBrowserV1Auth2faTrust = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthBrowserV1Auth2faTrust>>,
+  Awaited<ReturnType<typeof postBrowserAuth2faTrust>>,
   TError,
   { data: BodyType<MFATrustBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthBrowserV1Auth2faTrustMutationOptions(options);
+  const mutationOptions = getPostBrowserAuth2faTrustMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -3267,7 +3182,7 @@ processed using `parseRequestOptionsFromJSON()` on the frontend.
 
  * @summary Get WebAuthn credential request options for 2FA
  */
-export const getAllauthClientV1AuthWebauthnAuthenticate = (
+export const getAuthWebauthnAuthenticate = (
   client: 'app' | 'browser',
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -3278,67 +3193,56 @@ export const getAllauthClientV1AuthWebauthnAuthenticate = (
   );
 };
 
-export const getGetAllauthClientV1AuthWebauthnAuthenticateQueryKey = (
-  client?: 'app' | 'browser',
-) => {
+export const getGetAuthWebauthnAuthenticateQueryKey = (client?: 'app' | 'browser') => {
   return [`/api/_allauth/${client}/v1/auth/webauthn/authenticate`] as const;
 };
 
-export const getGetAllauthClientV1AuthWebauthnAuthenticateQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnAuthenticate>>,
+export const getGetAuthWebauthnAuthenticateQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAuthWebauthnAuthenticate>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnAuthenticate>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthWebauthnAuthenticate>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getGetAllauthClientV1AuthWebauthnAuthenticateQueryKey(client);
+  const queryKey = queryOptions?.queryKey ?? getGetAuthWebauthnAuthenticateQueryKey(client);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnAuthenticate>>
-  > = ({ signal }) => getAllauthClientV1AuthWebauthnAuthenticate(client, requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAuthWebauthnAuthenticate>>> = ({
+    signal,
+  }) => getAuthWebauthnAuthenticate(client, requestOptions, signal);
 
   return { queryKey, queryFn, enabled: !!client, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnAuthenticate>>,
+    Awaited<ReturnType<typeof getAuthWebauthnAuthenticate>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetAllauthClientV1AuthWebauthnAuthenticateQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnAuthenticate>>
+export type GetAuthWebauthnAuthenticateQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAuthWebauthnAuthenticate>>
 >;
-export type GetAllauthClientV1AuthWebauthnAuthenticateQueryError = ErrorType<unknown>;
+export type GetAuthWebauthnAuthenticateQueryError = ErrorType<unknown>;
 
-export function useGetAllauthClientV1AuthWebauthnAuthenticate<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnAuthenticate>>,
+export function useGetAuthWebauthnAuthenticate<
+  TData = Awaited<ReturnType<typeof getAuthWebauthnAuthenticate>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options: {
     query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnAuthenticate>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthWebauthnAuthenticate>>, TError, TData>
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnAuthenticate>>,
+          Awaited<ReturnType<typeof getAuthWebauthnAuthenticate>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnAuthenticate>>
+          Awaited<ReturnType<typeof getAuthWebauthnAuthenticate>>
         >,
         'initialData'
       >;
@@ -3346,24 +3250,20 @@ export function useGetAllauthClientV1AuthWebauthnAuthenticate<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AuthWebauthnAuthenticate<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnAuthenticate>>,
+export function useGetAuthWebauthnAuthenticate<
+  TData = Awaited<ReturnType<typeof getAuthWebauthnAuthenticate>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnAuthenticate>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthWebauthnAuthenticate>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnAuthenticate>>,
+          Awaited<ReturnType<typeof getAuthWebauthnAuthenticate>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnAuthenticate>>
+          Awaited<ReturnType<typeof getAuthWebauthnAuthenticate>>
         >,
         'initialData'
       >;
@@ -3371,18 +3271,14 @@ export function useGetAllauthClientV1AuthWebauthnAuthenticate<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AuthWebauthnAuthenticate<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnAuthenticate>>,
+export function useGetAuthWebauthnAuthenticate<
+  TData = Awaited<ReturnType<typeof getAuthWebauthnAuthenticate>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnAuthenticate>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthWebauthnAuthenticate>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -3392,24 +3288,20 @@ export function useGetAllauthClientV1AuthWebauthnAuthenticate<
  * @summary Get WebAuthn credential request options for 2FA
  */
 
-export function useGetAllauthClientV1AuthWebauthnAuthenticate<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnAuthenticate>>,
+export function useGetAuthWebauthnAuthenticate<
+  TData = Awaited<ReturnType<typeof getAuthWebauthnAuthenticate>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnAuthenticate>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthWebauthnAuthenticate>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetAllauthClientV1AuthWebauthnAuthenticateQueryOptions(client, options);
+  const queryOptions = getGetAuthWebauthnAuthenticateQueryOptions(client, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;
@@ -3425,7 +3317,7 @@ export function useGetAllauthClientV1AuthWebauthnAuthenticate<
 
  * @summary Perform 2FA using WebAuthn
  */
-export const postAllauthClientV1AuthWebauthnAuthenticate = (
+export const postAuthWebauthnAuthenticate = (
   client: 'app' | 'browser',
   authenticateWebAuthnBody: BodyType<AuthenticateWebAuthnBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -3443,24 +3335,24 @@ export const postAllauthClientV1AuthWebauthnAuthenticate = (
   );
 };
 
-export const getPostAllauthClientV1AuthWebauthnAuthenticateMutationOptions = <
+export const getPostAuthWebauthnAuthenticateMutationOptions = <
   TError = ErrorType<ErrorResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnAuthenticate>>,
+    Awaited<ReturnType<typeof postAuthWebauthnAuthenticate>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<AuthenticateWebAuthnBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnAuthenticate>>,
+  Awaited<ReturnType<typeof postAuthWebauthnAuthenticate>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<AuthenticateWebAuthnBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1AuthWebauthnAuthenticate'];
+  const mutationKey = ['postAuthWebauthnAuthenticate'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -3468,34 +3360,33 @@ export const getPostAllauthClientV1AuthWebauthnAuthenticateMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnAuthenticate>>,
+    Awaited<ReturnType<typeof postAuthWebauthnAuthenticate>>,
     { client: 'app' | 'browser'; data: BodyType<AuthenticateWebAuthnBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return postAllauthClientV1AuthWebauthnAuthenticate(client, data, requestOptions);
+    return postAuthWebauthnAuthenticate(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1AuthWebauthnAuthenticateMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnAuthenticate>>
+export type PostAuthWebauthnAuthenticateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAuthWebauthnAuthenticate>>
 >;
-export type PostAllauthClientV1AuthWebauthnAuthenticateMutationBody =
-  BodyType<AuthenticateWebAuthnBody>;
-export type PostAllauthClientV1AuthWebauthnAuthenticateMutationError = ErrorType<ErrorResponse>;
+export type PostAuthWebauthnAuthenticateMutationBody = BodyType<AuthenticateWebAuthnBody>;
+export type PostAuthWebauthnAuthenticateMutationError = ErrorType<ErrorResponse>;
 
 /**
  * @summary Perform 2FA using WebAuthn
  */
-export const usePostAllauthClientV1AuthWebauthnAuthenticate = <
+export const usePostAuthWebauthnAuthenticate = <
   TError = ErrorType<ErrorResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnAuthenticate>>,
+      Awaited<ReturnType<typeof postAuthWebauthnAuthenticate>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<AuthenticateWebAuthnBody> },
       TContext
@@ -3504,12 +3395,12 @@ export const usePostAllauthClientV1AuthWebauthnAuthenticate = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnAuthenticate>>,
+  Awaited<ReturnType<typeof postAuthWebauthnAuthenticate>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<AuthenticateWebAuthnBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthClientV1AuthWebauthnAuthenticateMutationOptions(options);
+  const mutationOptions = getPostAuthWebauthnAuthenticateMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -3520,7 +3411,7 @@ processed using `parseRequestOptionsFromJSON()` on the frontend.
 
  * @summary Get WebAuthn credential request options for reauthentication
  */
-export const getAllauthClientV1AuthWebauthnReauthenticate = (
+export const getAuthWebauthnReauthenticate = (
   client: 'app' | 'browser',
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -3531,67 +3422,56 @@ export const getAllauthClientV1AuthWebauthnReauthenticate = (
   );
 };
 
-export const getGetAllauthClientV1AuthWebauthnReauthenticateQueryKey = (
-  client?: 'app' | 'browser',
-) => {
+export const getGetAuthWebauthnReauthenticateQueryKey = (client?: 'app' | 'browser') => {
   return [`/api/_allauth/${client}/v1/auth/webauthn/reauthenticate`] as const;
 };
 
-export const getGetAllauthClientV1AuthWebauthnReauthenticateQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnReauthenticate>>,
+export const getGetAuthWebauthnReauthenticateQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAuthWebauthnReauthenticate>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnReauthenticate>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthWebauthnReauthenticate>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getGetAllauthClientV1AuthWebauthnReauthenticateQueryKey(client);
+  const queryKey = queryOptions?.queryKey ?? getGetAuthWebauthnReauthenticateQueryKey(client);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnReauthenticate>>
-  > = ({ signal }) => getAllauthClientV1AuthWebauthnReauthenticate(client, requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAuthWebauthnReauthenticate>>> = ({
+    signal,
+  }) => getAuthWebauthnReauthenticate(client, requestOptions, signal);
 
   return { queryKey, queryFn, enabled: !!client, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnReauthenticate>>,
+    Awaited<ReturnType<typeof getAuthWebauthnReauthenticate>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetAllauthClientV1AuthWebauthnReauthenticateQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnReauthenticate>>
+export type GetAuthWebauthnReauthenticateQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAuthWebauthnReauthenticate>>
 >;
-export type GetAllauthClientV1AuthWebauthnReauthenticateQueryError = ErrorType<unknown>;
+export type GetAuthWebauthnReauthenticateQueryError = ErrorType<unknown>;
 
-export function useGetAllauthClientV1AuthWebauthnReauthenticate<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnReauthenticate>>,
+export function useGetAuthWebauthnReauthenticate<
+  TData = Awaited<ReturnType<typeof getAuthWebauthnReauthenticate>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options: {
     query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnReauthenticate>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthWebauthnReauthenticate>>, TError, TData>
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnReauthenticate>>,
+          Awaited<ReturnType<typeof getAuthWebauthnReauthenticate>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnReauthenticate>>
+          Awaited<ReturnType<typeof getAuthWebauthnReauthenticate>>
         >,
         'initialData'
       >;
@@ -3599,24 +3479,20 @@ export function useGetAllauthClientV1AuthWebauthnReauthenticate<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AuthWebauthnReauthenticate<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnReauthenticate>>,
+export function useGetAuthWebauthnReauthenticate<
+  TData = Awaited<ReturnType<typeof getAuthWebauthnReauthenticate>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnReauthenticate>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthWebauthnReauthenticate>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnReauthenticate>>,
+          Awaited<ReturnType<typeof getAuthWebauthnReauthenticate>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnReauthenticate>>
+          Awaited<ReturnType<typeof getAuthWebauthnReauthenticate>>
         >,
         'initialData'
       >;
@@ -3624,18 +3500,14 @@ export function useGetAllauthClientV1AuthWebauthnReauthenticate<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AuthWebauthnReauthenticate<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnReauthenticate>>,
+export function useGetAuthWebauthnReauthenticate<
+  TData = Awaited<ReturnType<typeof getAuthWebauthnReauthenticate>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnReauthenticate>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthWebauthnReauthenticate>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -3645,24 +3517,20 @@ export function useGetAllauthClientV1AuthWebauthnReauthenticate<
  * @summary Get WebAuthn credential request options for reauthentication
  */
 
-export function useGetAllauthClientV1AuthWebauthnReauthenticate<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnReauthenticate>>,
+export function useGetAuthWebauthnReauthenticate<
+  TData = Awaited<ReturnType<typeof getAuthWebauthnReauthenticate>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnReauthenticate>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthWebauthnReauthenticate>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetAllauthClientV1AuthWebauthnReauthenticateQueryOptions(client, options);
+  const queryOptions = getGetAuthWebauthnReauthenticateQueryOptions(client, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;
@@ -3678,7 +3546,7 @@ export function useGetAllauthClientV1AuthWebauthnReauthenticate<
 
  * @summary Reauthenticate using WebAuthn
  */
-export const postAllauthClientV1AuthWebauthnReauthenticate = (
+export const postAuthWebauthnReauthenticate = (
   client: 'app' | 'browser',
   reauthenticateWebAuthnBody: BodyType<ReauthenticateWebAuthnBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -3696,24 +3564,24 @@ export const postAllauthClientV1AuthWebauthnReauthenticate = (
   );
 };
 
-export const getPostAllauthClientV1AuthWebauthnReauthenticateMutationOptions = <
+export const getPostAuthWebauthnReauthenticateMutationOptions = <
   TError = ErrorType<ErrorResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnReauthenticate>>,
+    Awaited<ReturnType<typeof postAuthWebauthnReauthenticate>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<ReauthenticateWebAuthnBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnReauthenticate>>,
+  Awaited<ReturnType<typeof postAuthWebauthnReauthenticate>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<ReauthenticateWebAuthnBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1AuthWebauthnReauthenticate'];
+  const mutationKey = ['postAuthWebauthnReauthenticate'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -3721,34 +3589,33 @@ export const getPostAllauthClientV1AuthWebauthnReauthenticateMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnReauthenticate>>,
+    Awaited<ReturnType<typeof postAuthWebauthnReauthenticate>>,
     { client: 'app' | 'browser'; data: BodyType<ReauthenticateWebAuthnBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return postAllauthClientV1AuthWebauthnReauthenticate(client, data, requestOptions);
+    return postAuthWebauthnReauthenticate(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1AuthWebauthnReauthenticateMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnReauthenticate>>
+export type PostAuthWebauthnReauthenticateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAuthWebauthnReauthenticate>>
 >;
-export type PostAllauthClientV1AuthWebauthnReauthenticateMutationBody =
-  BodyType<ReauthenticateWebAuthnBody>;
-export type PostAllauthClientV1AuthWebauthnReauthenticateMutationError = ErrorType<ErrorResponse>;
+export type PostAuthWebauthnReauthenticateMutationBody = BodyType<ReauthenticateWebAuthnBody>;
+export type PostAuthWebauthnReauthenticateMutationError = ErrorType<ErrorResponse>;
 
 /**
  * @summary Reauthenticate using WebAuthn
  */
-export const usePostAllauthClientV1AuthWebauthnReauthenticate = <
+export const usePostAuthWebauthnReauthenticate = <
   TError = ErrorType<ErrorResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnReauthenticate>>,
+      Awaited<ReturnType<typeof postAuthWebauthnReauthenticate>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<ReauthenticateWebAuthnBody> },
       TContext
@@ -3757,12 +3624,12 @@ export const usePostAllauthClientV1AuthWebauthnReauthenticate = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnReauthenticate>>,
+  Awaited<ReturnType<typeof postAuthWebauthnReauthenticate>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<ReauthenticateWebAuthnBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthClientV1AuthWebauthnReauthenticateMutationOptions(options);
+  const mutationOptions = getPostAuthWebauthnReauthenticateMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -3773,7 +3640,7 @@ processed using `parseRequestOptionsFromJSON()` on the frontend.
 
  * @summary Get WebAuthn credential request options for login
  */
-export const getAllauthClientV1AuthWebauthnLogin = (
+export const getAuthWebauthnLogin = (
   client: 'app' | 'browser',
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -3784,64 +3651,55 @@ export const getAllauthClientV1AuthWebauthnLogin = (
   );
 };
 
-export const getGetAllauthClientV1AuthWebauthnLoginQueryKey = (client?: 'app' | 'browser') => {
+export const getGetAuthWebauthnLoginQueryKey = (client?: 'app' | 'browser') => {
   return [`/api/_allauth/${client}/v1/auth/webauthn/login`] as const;
 };
 
-export const getGetAllauthClientV1AuthWebauthnLoginQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnLogin>>,
+export const getGetAuthWebauthnLoginQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAuthWebauthnLogin>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnLogin>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthWebauthnLogin>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetAllauthClientV1AuthWebauthnLoginQueryKey(client);
+  const queryKey = queryOptions?.queryKey ?? getGetAuthWebauthnLoginQueryKey(client);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnLogin>>> = ({
-    signal,
-  }) => getAllauthClientV1AuthWebauthnLogin(client, requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAuthWebauthnLogin>>> = ({ signal }) =>
+    getAuthWebauthnLogin(client, requestOptions, signal);
 
   return { queryKey, queryFn, enabled: !!client, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnLogin>>,
+    Awaited<ReturnType<typeof getAuthWebauthnLogin>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetAllauthClientV1AuthWebauthnLoginQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnLogin>>
+export type GetAuthWebauthnLoginQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAuthWebauthnLogin>>
 >;
-export type GetAllauthClientV1AuthWebauthnLoginQueryError = ErrorType<unknown>;
+export type GetAuthWebauthnLoginQueryError = ErrorType<unknown>;
 
-export function useGetAllauthClientV1AuthWebauthnLogin<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnLogin>>,
+export function useGetAuthWebauthnLogin<
+  TData = Awaited<ReturnType<typeof getAuthWebauthnLogin>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options: {
     query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnLogin>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthWebauthnLogin>>, TError, TData>
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnLogin>>,
+          Awaited<ReturnType<typeof getAuthWebauthnLogin>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnLogin>>
+          Awaited<ReturnType<typeof getAuthWebauthnLogin>>
         >,
         'initialData'
       >;
@@ -3849,24 +3707,20 @@ export function useGetAllauthClientV1AuthWebauthnLogin<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AuthWebauthnLogin<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnLogin>>,
+export function useGetAuthWebauthnLogin<
+  TData = Awaited<ReturnType<typeof getAuthWebauthnLogin>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnLogin>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthWebauthnLogin>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnLogin>>,
+          Awaited<ReturnType<typeof getAuthWebauthnLogin>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnLogin>>
+          Awaited<ReturnType<typeof getAuthWebauthnLogin>>
         >,
         'initialData'
       >;
@@ -3874,18 +3728,14 @@ export function useGetAllauthClientV1AuthWebauthnLogin<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AuthWebauthnLogin<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnLogin>>,
+export function useGetAuthWebauthnLogin<
+  TData = Awaited<ReturnType<typeof getAuthWebauthnLogin>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnLogin>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthWebauthnLogin>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -3895,24 +3745,20 @@ export function useGetAllauthClientV1AuthWebauthnLogin<
  * @summary Get WebAuthn credential request options for login
  */
 
-export function useGetAllauthClientV1AuthWebauthnLogin<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnLogin>>,
+export function useGetAuthWebauthnLogin<
+  TData = Awaited<ReturnType<typeof getAuthWebauthnLogin>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnLogin>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthWebauthnLogin>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetAllauthClientV1AuthWebauthnLoginQueryOptions(client, options);
+  const queryOptions = getGetAuthWebauthnLoginQueryOptions(client, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;
@@ -3931,7 +3777,7 @@ account still requires verification.
 
  * @summary Login using WebAuthn
  */
-export const postAllauthClientV1AuthWebauthnLogin = (
+export const postAuthWebauthnLogin = (
   client: 'app' | 'browser',
   loginWebAuthnBody: BodyType<LoginWebAuthnBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -3949,24 +3795,24 @@ export const postAllauthClientV1AuthWebauthnLogin = (
   );
 };
 
-export const getPostAllauthClientV1AuthWebauthnLoginMutationOptions = <
+export const getPostAuthWebauthnLoginMutationOptions = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnLogin>>,
+    Awaited<ReturnType<typeof postAuthWebauthnLogin>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<LoginWebAuthnBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnLogin>>,
+  Awaited<ReturnType<typeof postAuthWebauthnLogin>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<LoginWebAuthnBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1AuthWebauthnLogin'];
+  const mutationKey = ['postAuthWebauthnLogin'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -3974,35 +3820,33 @@ export const getPostAllauthClientV1AuthWebauthnLoginMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnLogin>>,
+    Awaited<ReturnType<typeof postAuthWebauthnLogin>>,
     { client: 'app' | 'browser'; data: BodyType<LoginWebAuthnBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return postAllauthClientV1AuthWebauthnLogin(client, data, requestOptions);
+    return postAuthWebauthnLogin(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1AuthWebauthnLoginMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnLogin>>
+export type PostAuthWebauthnLoginMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAuthWebauthnLogin>>
 >;
-export type PostAllauthClientV1AuthWebauthnLoginMutationBody = BodyType<LoginWebAuthnBody>;
-export type PostAllauthClientV1AuthWebauthnLoginMutationError = ErrorType<
-  ErrorResponse | AuthenticationResponse
->;
+export type PostAuthWebauthnLoginMutationBody = BodyType<LoginWebAuthnBody>;
+export type PostAuthWebauthnLoginMutationError = ErrorType<ErrorResponse | AuthenticationResponse>;
 
 /**
  * @summary Login using WebAuthn
  */
-export const usePostAllauthClientV1AuthWebauthnLogin = <
+export const usePostAuthWebauthnLogin = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnLogin>>,
+      Awaited<ReturnType<typeof postAuthWebauthnLogin>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<LoginWebAuthnBody> },
       TContext
@@ -4011,12 +3855,12 @@ export const usePostAllauthClientV1AuthWebauthnLogin = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnLogin>>,
+  Awaited<ReturnType<typeof postAuthWebauthnLogin>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<LoginWebAuthnBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthClientV1AuthWebauthnLoginMutationOptions(options);
+  const mutationOptions = getPostAuthWebauthnLoginMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -4029,7 +3873,7 @@ creation options can be retrieved (`GET`) and used to actually complete (`PUT`) 
 
  * @summary Initiate the passkey signup flow
  */
-export const postAllauthClientV1AuthWebauthnSignup = (
+export const postAuthWebauthnSignup = (
   client: 'app' | 'browser',
   passkeySignupBody: BodyType<PasskeySignupBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -4047,24 +3891,24 @@ export const postAllauthClientV1AuthWebauthnSignup = (
   );
 };
 
-export const getPostAllauthClientV1AuthWebauthnSignupMutationOptions = <
+export const getPostAuthWebauthnSignupMutationOptions = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse | ForbiddenResponse | ConflictResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnSignup>>,
+    Awaited<ReturnType<typeof postAuthWebauthnSignup>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<PasskeySignupBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnSignup>>,
+  Awaited<ReturnType<typeof postAuthWebauthnSignup>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<PasskeySignupBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1AuthWebauthnSignup'];
+  const mutationKey = ['postAuthWebauthnSignup'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -4072,35 +3916,35 @@ export const getPostAllauthClientV1AuthWebauthnSignupMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnSignup>>,
+    Awaited<ReturnType<typeof postAuthWebauthnSignup>>,
     { client: 'app' | 'browser'; data: BodyType<PasskeySignupBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return postAllauthClientV1AuthWebauthnSignup(client, data, requestOptions);
+    return postAuthWebauthnSignup(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1AuthWebauthnSignupMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnSignup>>
+export type PostAuthWebauthnSignupMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAuthWebauthnSignup>>
 >;
-export type PostAllauthClientV1AuthWebauthnSignupMutationBody = BodyType<PasskeySignupBody>;
-export type PostAllauthClientV1AuthWebauthnSignupMutationError = ErrorType<
+export type PostAuthWebauthnSignupMutationBody = BodyType<PasskeySignupBody>;
+export type PostAuthWebauthnSignupMutationError = ErrorType<
   ErrorResponse | AuthenticationResponse | ForbiddenResponse | ConflictResponse
 >;
 
 /**
  * @summary Initiate the passkey signup flow
  */
-export const usePostAllauthClientV1AuthWebauthnSignup = <
+export const usePostAuthWebauthnSignup = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse | ForbiddenResponse | ConflictResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnSignup>>,
+      Awaited<ReturnType<typeof postAuthWebauthnSignup>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<PasskeySignupBody> },
       TContext
@@ -4109,12 +3953,12 @@ export const usePostAllauthClientV1AuthWebauthnSignup = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthWebauthnSignup>>,
+  Awaited<ReturnType<typeof postAuthWebauthnSignup>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<PasskeySignupBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthClientV1AuthWebauthnSignupMutationOptions(options);
+  const mutationOptions = getPostAuthWebauthnSignupMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -4125,7 +3969,7 @@ processed using `parseRequestOptionsFromJSON()` on the frontend.
 
  * @summary Get passkey credential request options
  */
-export const getAllauthClientV1AuthWebauthnSignup = (
+export const getAuthWebauthnSignup = (
   client: 'app' | 'browser',
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -4136,65 +3980,55 @@ export const getAllauthClientV1AuthWebauthnSignup = (
   );
 };
 
-export const getGetAllauthClientV1AuthWebauthnSignupQueryKey = (client?: 'app' | 'browser') => {
+export const getGetAuthWebauthnSignupQueryKey = (client?: 'app' | 'browser') => {
   return [`/api/_allauth/${client}/v1/auth/webauthn/signup`] as const;
 };
 
-export const getGetAllauthClientV1AuthWebauthnSignupQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnSignup>>,
+export const getGetAuthWebauthnSignupQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAuthWebauthnSignup>>,
   TError = ErrorType<ConflictResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnSignup>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthWebauthnSignup>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getGetAllauthClientV1AuthWebauthnSignupQueryKey(client);
+  const queryKey = queryOptions?.queryKey ?? getGetAuthWebauthnSignupQueryKey(client);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnSignup>>
-  > = ({ signal }) => getAllauthClientV1AuthWebauthnSignup(client, requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAuthWebauthnSignup>>> = ({ signal }) =>
+    getAuthWebauthnSignup(client, requestOptions, signal);
 
   return { queryKey, queryFn, enabled: !!client, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnSignup>>,
+    Awaited<ReturnType<typeof getAuthWebauthnSignup>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetAllauthClientV1AuthWebauthnSignupQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnSignup>>
+export type GetAuthWebauthnSignupQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAuthWebauthnSignup>>
 >;
-export type GetAllauthClientV1AuthWebauthnSignupQueryError = ErrorType<ConflictResponse>;
+export type GetAuthWebauthnSignupQueryError = ErrorType<ConflictResponse>;
 
-export function useGetAllauthClientV1AuthWebauthnSignup<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnSignup>>,
+export function useGetAuthWebauthnSignup<
+  TData = Awaited<ReturnType<typeof getAuthWebauthnSignup>>,
   TError = ErrorType<ConflictResponse>,
 >(
   client: 'app' | 'browser',
   options: {
     query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnSignup>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthWebauthnSignup>>, TError, TData>
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnSignup>>,
+          Awaited<ReturnType<typeof getAuthWebauthnSignup>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnSignup>>
+          Awaited<ReturnType<typeof getAuthWebauthnSignup>>
         >,
         'initialData'
       >;
@@ -4202,24 +4036,20 @@ export function useGetAllauthClientV1AuthWebauthnSignup<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AuthWebauthnSignup<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnSignup>>,
+export function useGetAuthWebauthnSignup<
+  TData = Awaited<ReturnType<typeof getAuthWebauthnSignup>>,
   TError = ErrorType<ConflictResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnSignup>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthWebauthnSignup>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnSignup>>,
+          Awaited<ReturnType<typeof getAuthWebauthnSignup>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnSignup>>
+          Awaited<ReturnType<typeof getAuthWebauthnSignup>>
         >,
         'initialData'
       >;
@@ -4227,18 +4057,14 @@ export function useGetAllauthClientV1AuthWebauthnSignup<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AuthWebauthnSignup<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnSignup>>,
+export function useGetAuthWebauthnSignup<
+  TData = Awaited<ReturnType<typeof getAuthWebauthnSignup>>,
   TError = ErrorType<ConflictResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnSignup>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthWebauthnSignup>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -4248,24 +4074,20 @@ export function useGetAllauthClientV1AuthWebauthnSignup<
  * @summary Get passkey credential request options
  */
 
-export function useGetAllauthClientV1AuthWebauthnSignup<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnSignup>>,
+export function useGetAuthWebauthnSignup<
+  TData = Awaited<ReturnType<typeof getAuthWebauthnSignup>>,
   TError = ErrorType<ConflictResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AuthWebauthnSignup>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAuthWebauthnSignup>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetAllauthClientV1AuthWebauthnSignupQueryOptions(client, options);
+  const queryOptions = getGetAuthWebauthnSignupQueryOptions(client, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;
@@ -4281,7 +4103,7 @@ export function useGetAllauthClientV1AuthWebauthnSignup<
 
  * @summary Complete the passkey signup flow
  */
-export const putAllauthClientV1AuthWebauthnSignup = (
+export const putAuthWebauthnSignup = (
   client: 'app' | 'browser',
   addWebAuthnAuthenticatorBody: BodyType<AddWebAuthnAuthenticatorBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -4297,24 +4119,24 @@ export const putAllauthClientV1AuthWebauthnSignup = (
   );
 };
 
-export const getPutAllauthClientV1AuthWebauthnSignupMutationOptions = <
+export const getPutAuthWebauthnSignupMutationOptions = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse | ConflictResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof putAllauthClientV1AuthWebauthnSignup>>,
+    Awaited<ReturnType<typeof putAuthWebauthnSignup>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<AddWebAuthnAuthenticatorBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof putAllauthClientV1AuthWebauthnSignup>>,
+  Awaited<ReturnType<typeof putAuthWebauthnSignup>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<AddWebAuthnAuthenticatorBody> },
   TContext
 > => {
-  const mutationKey = ['putAllauthClientV1AuthWebauthnSignup'];
+  const mutationKey = ['putAuthWebauthnSignup'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -4322,36 +4144,35 @@ export const getPutAllauthClientV1AuthWebauthnSignupMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof putAllauthClientV1AuthWebauthnSignup>>,
+    Awaited<ReturnType<typeof putAuthWebauthnSignup>>,
     { client: 'app' | 'browser'; data: BodyType<AddWebAuthnAuthenticatorBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return putAllauthClientV1AuthWebauthnSignup(client, data, requestOptions);
+    return putAuthWebauthnSignup(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PutAllauthClientV1AuthWebauthnSignupMutationResult = NonNullable<
-  Awaited<ReturnType<typeof putAllauthClientV1AuthWebauthnSignup>>
+export type PutAuthWebauthnSignupMutationResult = NonNullable<
+  Awaited<ReturnType<typeof putAuthWebauthnSignup>>
 >;
-export type PutAllauthClientV1AuthWebauthnSignupMutationBody =
-  BodyType<AddWebAuthnAuthenticatorBody>;
-export type PutAllauthClientV1AuthWebauthnSignupMutationError = ErrorType<
+export type PutAuthWebauthnSignupMutationBody = BodyType<AddWebAuthnAuthenticatorBody>;
+export type PutAuthWebauthnSignupMutationError = ErrorType<
   ErrorResponse | AuthenticationResponse | ConflictResponse
 >;
 
 /**
  * @summary Complete the passkey signup flow
  */
-export const usePutAllauthClientV1AuthWebauthnSignup = <
+export const usePutAuthWebauthnSignup = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse | ConflictResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof putAllauthClientV1AuthWebauthnSignup>>,
+      Awaited<ReturnType<typeof putAuthWebauthnSignup>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<AddWebAuthnAuthenticatorBody> },
       TContext
@@ -4360,12 +4181,12 @@ export const usePutAllauthClientV1AuthWebauthnSignup = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof putAllauthClientV1AuthWebauthnSignup>>,
+  Awaited<ReturnType<typeof putAuthWebauthnSignup>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<AddWebAuthnAuthenticatorBody> },
   TContext
 > => {
-  const mutationOptions = getPutAllauthClientV1AuthWebauthnSignupMutationOptions(options);
+  const mutationOptions = getPutAuthWebauthnSignupMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -4375,7 +4196,7 @@ export const usePutAllauthClientV1AuthWebauthnSignup = <
 
  * @summary Request login code
  */
-export const postAllauthClientV1AuthCodeRequest = (
+export const postAuthCodeRequest = (
   client: 'app' | 'browser',
   requestLoginCodeBody: BodyType<RequestLoginCodeBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -4393,24 +4214,24 @@ export const postAllauthClientV1AuthCodeRequest = (
   );
 };
 
-export const getPostAllauthClientV1AuthCodeRequestMutationOptions = <
+export const getPostAuthCodeRequestMutationOptions = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthCodeRequest>>,
+    Awaited<ReturnType<typeof postAuthCodeRequest>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<RequestLoginCodeBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthCodeRequest>>,
+  Awaited<ReturnType<typeof postAuthCodeRequest>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<RequestLoginCodeBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1AuthCodeRequest'];
+  const mutationKey = ['postAuthCodeRequest'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -4418,35 +4239,33 @@ export const getPostAllauthClientV1AuthCodeRequestMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthCodeRequest>>,
+    Awaited<ReturnType<typeof postAuthCodeRequest>>,
     { client: 'app' | 'browser'; data: BodyType<RequestLoginCodeBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return postAllauthClientV1AuthCodeRequest(client, data, requestOptions);
+    return postAuthCodeRequest(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1AuthCodeRequestMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthCodeRequest>>
+export type PostAuthCodeRequestMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAuthCodeRequest>>
 >;
-export type PostAllauthClientV1AuthCodeRequestMutationBody = BodyType<RequestLoginCodeBody>;
-export type PostAllauthClientV1AuthCodeRequestMutationError = ErrorType<
-  ErrorResponse | AuthenticationResponse
->;
+export type PostAuthCodeRequestMutationBody = BodyType<RequestLoginCodeBody>;
+export type PostAuthCodeRequestMutationError = ErrorType<ErrorResponse | AuthenticationResponse>;
 
 /**
  * @summary Request login code
  */
-export const usePostAllauthClientV1AuthCodeRequest = <
+export const usePostAuthCodeRequest = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1AuthCodeRequest>>,
+      Awaited<ReturnType<typeof postAuthCodeRequest>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<RequestLoginCodeBody> },
       TContext
@@ -4455,12 +4274,12 @@ export const usePostAllauthClientV1AuthCodeRequest = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthCodeRequest>>,
+  Awaited<ReturnType<typeof postAuthCodeRequest>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<RequestLoginCodeBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthClientV1AuthCodeRequestMutationOptions(options);
+  const mutationOptions = getPostAuthCodeRequestMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -4470,7 +4289,7 @@ export const usePostAllauthClientV1AuthCodeRequest = <
 
  * @summary Confirm login code
  */
-export const postAllauthClientV1AuthCodeConfirm = (
+export const postAuthCodeConfirm = (
   client: 'app' | 'browser',
   confirmLoginCodeBody: BodyType<ConfirmLoginCodeBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -4488,24 +4307,24 @@ export const postAllauthClientV1AuthCodeConfirm = (
   );
 };
 
-export const getPostAllauthClientV1AuthCodeConfirmMutationOptions = <
+export const getPostAuthCodeConfirmMutationOptions = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse | ConflictResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthCodeConfirm>>,
+    Awaited<ReturnType<typeof postAuthCodeConfirm>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<ConfirmLoginCodeBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthCodeConfirm>>,
+  Awaited<ReturnType<typeof postAuthCodeConfirm>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<ConfirmLoginCodeBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1AuthCodeConfirm'];
+  const mutationKey = ['postAuthCodeConfirm'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -4513,35 +4332,35 @@ export const getPostAllauthClientV1AuthCodeConfirmMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1AuthCodeConfirm>>,
+    Awaited<ReturnType<typeof postAuthCodeConfirm>>,
     { client: 'app' | 'browser'; data: BodyType<ConfirmLoginCodeBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return postAllauthClientV1AuthCodeConfirm(client, data, requestOptions);
+    return postAuthCodeConfirm(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1AuthCodeConfirmMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthCodeConfirm>>
+export type PostAuthCodeConfirmMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAuthCodeConfirm>>
 >;
-export type PostAllauthClientV1AuthCodeConfirmMutationBody = BodyType<ConfirmLoginCodeBody>;
-export type PostAllauthClientV1AuthCodeConfirmMutationError = ErrorType<
+export type PostAuthCodeConfirmMutationBody = BodyType<ConfirmLoginCodeBody>;
+export type PostAuthCodeConfirmMutationError = ErrorType<
   ErrorResponse | AuthenticationResponse | ConflictResponse
 >;
 
 /**
  * @summary Confirm login code
  */
-export const usePostAllauthClientV1AuthCodeConfirm = <
+export const usePostAuthCodeConfirm = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse | ConflictResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1AuthCodeConfirm>>,
+      Awaited<ReturnType<typeof postAuthCodeConfirm>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<ConfirmLoginCodeBody> },
       TContext
@@ -4550,12 +4369,12 @@ export const usePostAllauthClientV1AuthCodeConfirm = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1AuthCodeConfirm>>,
+  Awaited<ReturnType<typeof postAuthCodeConfirm>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<ConfirmLoginCodeBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthClientV1AuthCodeConfirmMutationOptions(options);
+  const mutationOptions = getPostAuthCodeConfirmMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -4563,7 +4382,7 @@ export const usePostAllauthClientV1AuthCodeConfirm = <
 /**
  * @summary List the connected third-party provider accounts
  */
-export const getAllauthClientV1AccountProviders = (
+export const getAccountProviders = (
   client: 'app' | 'browser',
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -4574,56 +4393,55 @@ export const getAllauthClientV1AccountProviders = (
   );
 };
 
-export const getGetAllauthClientV1AccountProvidersQueryKey = (client?: 'app' | 'browser') => {
+export const getGetAccountProvidersQueryKey = (client?: 'app' | 'browser') => {
   return [`/api/_allauth/${client}/v1/account/providers`] as const;
 };
 
-export const getGetAllauthClientV1AccountProvidersQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountProviders>>,
+export const getGetAccountProvidersQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAccountProviders>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AccountProviders>>, TError, TData>
+      UseQueryOptions<Awaited<ReturnType<typeof getAccountProviders>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetAllauthClientV1AccountProvidersQueryKey(client);
+  const queryKey = queryOptions?.queryKey ?? getGetAccountProvidersQueryKey(client);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllauthClientV1AccountProviders>>> = ({
-    signal,
-  }) => getAllauthClientV1AccountProviders(client, requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAccountProviders>>> = ({ signal }) =>
+    getAccountProviders(client, requestOptions, signal);
 
   return { queryKey, queryFn, enabled: !!client, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAllauthClientV1AccountProviders>>,
+    Awaited<ReturnType<typeof getAccountProviders>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetAllauthClientV1AccountProvidersQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAllauthClientV1AccountProviders>>
+export type GetAccountProvidersQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAccountProviders>>
 >;
-export type GetAllauthClientV1AccountProvidersQueryError = ErrorType<unknown>;
+export type GetAccountProvidersQueryError = ErrorType<unknown>;
 
-export function useGetAllauthClientV1AccountProviders<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountProviders>>,
+export function useGetAccountProviders<
+  TData = Awaited<ReturnType<typeof getAccountProviders>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options: {
     query: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AccountProviders>>, TError, TData>
+      UseQueryOptions<Awaited<ReturnType<typeof getAccountProviders>>, TError, TData>
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AccountProviders>>,
+          Awaited<ReturnType<typeof getAccountProviders>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AccountProviders>>
+          Awaited<ReturnType<typeof getAccountProviders>>
         >,
         'initialData'
       >;
@@ -4631,20 +4449,20 @@ export function useGetAllauthClientV1AccountProviders<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AccountProviders<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountProviders>>,
+export function useGetAccountProviders<
+  TData = Awaited<ReturnType<typeof getAccountProviders>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AccountProviders>>, TError, TData>
+      UseQueryOptions<Awaited<ReturnType<typeof getAccountProviders>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AccountProviders>>,
+          Awaited<ReturnType<typeof getAccountProviders>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AccountProviders>>
+          Awaited<ReturnType<typeof getAccountProviders>>
         >,
         'initialData'
       >;
@@ -4652,14 +4470,14 @@ export function useGetAllauthClientV1AccountProviders<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AccountProviders<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountProviders>>,
+export function useGetAccountProviders<
+  TData = Awaited<ReturnType<typeof getAccountProviders>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AccountProviders>>, TError, TData>
+      UseQueryOptions<Awaited<ReturnType<typeof getAccountProviders>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -4669,20 +4487,20 @@ export function useGetAllauthClientV1AccountProviders<
  * @summary List the connected third-party provider accounts
  */
 
-export function useGetAllauthClientV1AccountProviders<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountProviders>>,
+export function useGetAccountProviders<
+  TData = Awaited<ReturnType<typeof getAccountProviders>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AccountProviders>>, TError, TData>
+      UseQueryOptions<Awaited<ReturnType<typeof getAccountProviders>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetAllauthClientV1AccountProvidersQueryOptions(client, options);
+  const queryOptions = getGetAccountProvidersQueryOptions(client, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;
@@ -4702,7 +4520,7 @@ set up yet.
  * @summary Disconnect a third-party provider account
 
  */
-export const deleteAllauthClientV1AccountProviders = (
+export const deleteAccountProviders = (
   client: 'app' | 'browser',
   providerAccountBody: BodyType<ProviderAccountBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -4718,24 +4536,24 @@ export const deleteAllauthClientV1AccountProviders = (
   );
 };
 
-export const getDeleteAllauthClientV1AccountProvidersMutationOptions = <
+export const getDeleteAccountProvidersMutationOptions = <
   TError = ErrorType<ErrorResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteAllauthClientV1AccountProviders>>,
+    Awaited<ReturnType<typeof deleteAccountProviders>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<ProviderAccountBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof deleteAllauthClientV1AccountProviders>>,
+  Awaited<ReturnType<typeof deleteAccountProviders>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<ProviderAccountBody> },
   TContext
 > => {
-  const mutationKey = ['deleteAllauthClientV1AccountProviders'];
+  const mutationKey = ['deleteAccountProviders'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -4743,34 +4561,31 @@ export const getDeleteAllauthClientV1AccountProvidersMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof deleteAllauthClientV1AccountProviders>>,
+    Awaited<ReturnType<typeof deleteAccountProviders>>,
     { client: 'app' | 'browser'; data: BodyType<ProviderAccountBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return deleteAllauthClientV1AccountProviders(client, data, requestOptions);
+    return deleteAccountProviders(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type DeleteAllauthClientV1AccountProvidersMutationResult = NonNullable<
-  Awaited<ReturnType<typeof deleteAllauthClientV1AccountProviders>>
+export type DeleteAccountProvidersMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteAccountProviders>>
 >;
-export type DeleteAllauthClientV1AccountProvidersMutationBody = BodyType<ProviderAccountBody>;
-export type DeleteAllauthClientV1AccountProvidersMutationError = ErrorType<ErrorResponse>;
+export type DeleteAccountProvidersMutationBody = BodyType<ProviderAccountBody>;
+export type DeleteAccountProvidersMutationError = ErrorType<ErrorResponse>;
 
 /**
  * @summary Disconnect a third-party provider account
 
  */
-export const useDeleteAllauthClientV1AccountProviders = <
-  TError = ErrorType<ErrorResponse>,
-  TContext = unknown,
->(
+export const useDeleteAccountProviders = <TError = ErrorType<ErrorResponse>, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof deleteAllauthClientV1AccountProviders>>,
+      Awaited<ReturnType<typeof deleteAccountProviders>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<ProviderAccountBody> },
       TContext
@@ -4779,12 +4594,12 @@ export const useDeleteAllauthClientV1AccountProviders = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof deleteAllauthClientV1AccountProviders>>,
+  Awaited<ReturnType<typeof deleteAccountProviders>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<ProviderAccountBody> },
   TContext
 > => {
-  const mutationOptions = getDeleteAllauthClientV1AccountProvidersMutationOptions(options);
+  const mutationOptions = getDeleteAccountProvidersMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -4794,7 +4609,7 @@ export const useDeleteAllauthClientV1AccountProviders = <
 
  * @summary List email addresses
  */
-export const getAllauthClientV1AccountEmail = (
+export const getAccountEmail = (
   client: 'app' | 'browser',
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -4805,56 +4620,49 @@ export const getAllauthClientV1AccountEmail = (
   );
 };
 
-export const getGetAllauthClientV1AccountEmailQueryKey = (client?: 'app' | 'browser') => {
+export const getGetAccountEmailQueryKey = (client?: 'app' | 'browser') => {
   return [`/api/_allauth/${client}/v1/account/email`] as const;
 };
 
-export const getGetAllauthClientV1AccountEmailQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountEmail>>,
+export const getGetAccountEmailQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAccountEmail>>,
   TError = ErrorType<AuthenticationResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AccountEmail>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAccountEmail>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
   },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetAllauthClientV1AccountEmailQueryKey(client);
+  const queryKey = queryOptions?.queryKey ?? getGetAccountEmailQueryKey(client);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllauthClientV1AccountEmail>>> = ({
-    signal,
-  }) => getAllauthClientV1AccountEmail(client, requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAccountEmail>>> = ({ signal }) =>
+    getAccountEmail(client, requestOptions, signal);
 
   return { queryKey, queryFn, enabled: !!client, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAllauthClientV1AccountEmail>>,
+    Awaited<ReturnType<typeof getAccountEmail>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetAllauthClientV1AccountEmailQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAllauthClientV1AccountEmail>>
->;
-export type GetAllauthClientV1AccountEmailQueryError = ErrorType<AuthenticationResponse>;
+export type GetAccountEmailQueryResult = NonNullable<Awaited<ReturnType<typeof getAccountEmail>>>;
+export type GetAccountEmailQueryError = ErrorType<AuthenticationResponse>;
 
-export function useGetAllauthClientV1AccountEmail<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountEmail>>,
+export function useGetAccountEmail<
+  TData = Awaited<ReturnType<typeof getAccountEmail>>,
   TError = ErrorType<AuthenticationResponse>,
 >(
   client: 'app' | 'browser',
   options: {
-    query: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AccountEmail>>, TError, TData>
-    > &
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAccountEmail>>, TError, TData>> &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AccountEmail>>,
+          Awaited<ReturnType<typeof getAccountEmail>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AccountEmail>>
+          Awaited<ReturnType<typeof getAccountEmail>>
         >,
         'initialData'
       >;
@@ -4862,20 +4670,18 @@ export function useGetAllauthClientV1AccountEmail<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AccountEmail<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountEmail>>,
+export function useGetAccountEmail<
+  TData = Awaited<ReturnType<typeof getAccountEmail>>,
   TError = ErrorType<AuthenticationResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AccountEmail>>, TError, TData>
-    > &
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAccountEmail>>, TError, TData>> &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AccountEmail>>,
+          Awaited<ReturnType<typeof getAccountEmail>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AccountEmail>>
+          Awaited<ReturnType<typeof getAccountEmail>>
         >,
         'initialData'
       >;
@@ -4883,15 +4689,13 @@ export function useGetAllauthClientV1AccountEmail<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AccountEmail<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountEmail>>,
+export function useGetAccountEmail<
+  TData = Awaited<ReturnType<typeof getAccountEmail>>,
   TError = ErrorType<AuthenticationResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AccountEmail>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAccountEmail>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
@@ -4900,20 +4704,18 @@ export function useGetAllauthClientV1AccountEmail<
  * @summary List email addresses
  */
 
-export function useGetAllauthClientV1AccountEmail<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountEmail>>,
+export function useGetAccountEmail<
+  TData = Awaited<ReturnType<typeof getAccountEmail>>,
   TError = ErrorType<AuthenticationResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AccountEmail>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAccountEmail>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetAllauthClientV1AccountEmailQueryOptions(client, options);
+  const queryOptions = getGetAccountEmailQueryOptions(client, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;
@@ -4936,7 +4738,7 @@ In all cases, an email verification mail will be sent containing a link or code 
  * @summary Add/Change email address
 
  */
-export const postAllauthClientV1AccountEmail = (
+export const postAccountEmail = (
   client: 'app' | 'browser',
   emailBody: BodyType<EmailBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -4954,24 +4756,24 @@ export const postAllauthClientV1AccountEmail = (
   );
 };
 
-export const getPostAllauthClientV1AccountEmailMutationOptions = <
+export const getPostAccountEmailMutationOptions = <
   TError = ErrorType<ErrorResponse | AuthenticationOrReauthenticationResponse | ConflictResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1AccountEmail>>,
+    Awaited<ReturnType<typeof postAccountEmail>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<EmailBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1AccountEmail>>,
+  Awaited<ReturnType<typeof postAccountEmail>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<EmailBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1AccountEmail'];
+  const mutationKey = ['postAccountEmail'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -4979,22 +4781,22 @@ export const getPostAllauthClientV1AccountEmailMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1AccountEmail>>,
+    Awaited<ReturnType<typeof postAccountEmail>>,
     { client: 'app' | 'browser'; data: BodyType<EmailBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return postAllauthClientV1AccountEmail(client, data, requestOptions);
+    return postAccountEmail(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1AccountEmailMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1AccountEmail>>
+export type PostAccountEmailMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAccountEmail>>
 >;
-export type PostAllauthClientV1AccountEmailMutationBody = BodyType<EmailBody>;
-export type PostAllauthClientV1AccountEmailMutationError = ErrorType<
+export type PostAccountEmailMutationBody = BodyType<EmailBody>;
+export type PostAccountEmailMutationError = ErrorType<
   ErrorResponse | AuthenticationOrReauthenticationResponse | ConflictResponse
 >;
 
@@ -5002,13 +4804,13 @@ export type PostAllauthClientV1AccountEmailMutationError = ErrorType<
  * @summary Add/Change email address
 
  */
-export const usePostAllauthClientV1AccountEmail = <
+export const usePostAccountEmail = <
   TError = ErrorType<ErrorResponse | AuthenticationOrReauthenticationResponse | ConflictResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1AccountEmail>>,
+      Awaited<ReturnType<typeof postAccountEmail>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<EmailBody> },
       TContext
@@ -5017,12 +4819,12 @@ export const usePostAllauthClientV1AccountEmail = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1AccountEmail>>,
+  Awaited<ReturnType<typeof postAccountEmail>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<EmailBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthClientV1AccountEmailMutationOptions(options);
+  const mutationOptions = getPostAccountEmailMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -5034,7 +4836,7 @@ email will not be sent.
 
  * @summary Request email verification
  */
-export const putAllauthClientV1AccountEmail = (
+export const putAccountEmail = (
   client: 'app' | 'browser',
   emailBody: BodyType<EmailBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -5050,24 +4852,24 @@ export const putAllauthClientV1AccountEmail = (
   );
 };
 
-export const getPutAllauthClientV1AccountEmailMutationOptions = <
+export const getPutAccountEmailMutationOptions = <
   TError = ErrorType<ErrorResponse | ForbiddenResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof putAllauthClientV1AccountEmail>>,
+    Awaited<ReturnType<typeof putAccountEmail>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<EmailBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof putAllauthClientV1AccountEmail>>,
+  Awaited<ReturnType<typeof putAccountEmail>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<EmailBody> },
   TContext
 > => {
-  const mutationKey = ['putAllauthClientV1AccountEmail'];
+  const mutationKey = ['putAccountEmail'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -5075,35 +4877,33 @@ export const getPutAllauthClientV1AccountEmailMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof putAllauthClientV1AccountEmail>>,
+    Awaited<ReturnType<typeof putAccountEmail>>,
     { client: 'app' | 'browser'; data: BodyType<EmailBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return putAllauthClientV1AccountEmail(client, data, requestOptions);
+    return putAccountEmail(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PutAllauthClientV1AccountEmailMutationResult = NonNullable<
-  Awaited<ReturnType<typeof putAllauthClientV1AccountEmail>>
+export type PutAccountEmailMutationResult = NonNullable<
+  Awaited<ReturnType<typeof putAccountEmail>>
 >;
-export type PutAllauthClientV1AccountEmailMutationBody = BodyType<EmailBody>;
-export type PutAllauthClientV1AccountEmailMutationError = ErrorType<
-  ErrorResponse | ForbiddenResponse
->;
+export type PutAccountEmailMutationBody = BodyType<EmailBody>;
+export type PutAccountEmailMutationError = ErrorType<ErrorResponse | ForbiddenResponse>;
 
 /**
  * @summary Request email verification
  */
-export const usePutAllauthClientV1AccountEmail = <
+export const usePutAccountEmail = <
   TError = ErrorType<ErrorResponse | ForbiddenResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof putAllauthClientV1AccountEmail>>,
+      Awaited<ReturnType<typeof putAccountEmail>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<EmailBody> },
       TContext
@@ -5112,12 +4912,12 @@ export const usePutAllauthClientV1AccountEmail = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof putAllauthClientV1AccountEmail>>,
+  Awaited<ReturnType<typeof putAccountEmail>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<EmailBody> },
   TContext
 > => {
-  const mutationOptions = getPutAllauthClientV1AccountEmailMutationOptions(options);
+  const mutationOptions = getPutAccountEmailMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -5128,7 +4928,7 @@ can be marked as primary.
 
  * @summary Change primary email address
  */
-export const patchAllauthClientV1AccountEmail = (
+export const patchAccountEmail = (
   client: 'app' | 'browser',
   markPrimaryEmailBody: BodyType<MarkPrimaryEmailBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -5144,24 +4944,24 @@ export const patchAllauthClientV1AccountEmail = (
   );
 };
 
-export const getPatchAllauthClientV1AccountEmailMutationOptions = <
+export const getPatchAccountEmailMutationOptions = <
   TError = ErrorType<ErrorResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof patchAllauthClientV1AccountEmail>>,
+    Awaited<ReturnType<typeof patchAccountEmail>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<MarkPrimaryEmailBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof patchAllauthClientV1AccountEmail>>,
+  Awaited<ReturnType<typeof patchAccountEmail>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<MarkPrimaryEmailBody> },
   TContext
 > => {
-  const mutationKey = ['patchAllauthClientV1AccountEmail'];
+  const mutationKey = ['patchAccountEmail'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -5169,33 +4969,30 @@ export const getPatchAllauthClientV1AccountEmailMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof patchAllauthClientV1AccountEmail>>,
+    Awaited<ReturnType<typeof patchAccountEmail>>,
     { client: 'app' | 'browser'; data: BodyType<MarkPrimaryEmailBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return patchAllauthClientV1AccountEmail(client, data, requestOptions);
+    return patchAccountEmail(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PatchAllauthClientV1AccountEmailMutationResult = NonNullable<
-  Awaited<ReturnType<typeof patchAllauthClientV1AccountEmail>>
+export type PatchAccountEmailMutationResult = NonNullable<
+  Awaited<ReturnType<typeof patchAccountEmail>>
 >;
-export type PatchAllauthClientV1AccountEmailMutationBody = BodyType<MarkPrimaryEmailBody>;
-export type PatchAllauthClientV1AccountEmailMutationError = ErrorType<ErrorResponse>;
+export type PatchAccountEmailMutationBody = BodyType<MarkPrimaryEmailBody>;
+export type PatchAccountEmailMutationError = ErrorType<ErrorResponse>;
 
 /**
  * @summary Change primary email address
  */
-export const usePatchAllauthClientV1AccountEmail = <
-  TError = ErrorType<ErrorResponse>,
-  TContext = unknown,
->(
+export const usePatchAccountEmail = <TError = ErrorType<ErrorResponse>, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof patchAllauthClientV1AccountEmail>>,
+      Awaited<ReturnType<typeof patchAccountEmail>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<MarkPrimaryEmailBody> },
       TContext
@@ -5204,12 +5001,12 @@ export const usePatchAllauthClientV1AccountEmail = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof patchAllauthClientV1AccountEmail>>,
+  Awaited<ReturnType<typeof patchAccountEmail>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<MarkPrimaryEmailBody> },
   TContext
 > => {
-  const mutationOptions = getPatchAllauthClientV1AccountEmailMutationOptions(options);
+  const mutationOptions = getPatchAccountEmailMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -5219,7 +5016,7 @@ export const usePatchAllauthClientV1AccountEmail = <
 
  * @summary Remove an email address
  */
-export const deleteAllauthClientV1AccountEmail = (
+export const deleteAccountEmail = (
   client: 'app' | 'browser',
   emailBody: BodyType<EmailBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -5235,24 +5032,24 @@ export const deleteAllauthClientV1AccountEmail = (
   );
 };
 
-export const getDeleteAllauthClientV1AccountEmailMutationOptions = <
+export const getDeleteAccountEmailMutationOptions = <
   TError = ErrorType<ErrorResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteAllauthClientV1AccountEmail>>,
+    Awaited<ReturnType<typeof deleteAccountEmail>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<EmailBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof deleteAllauthClientV1AccountEmail>>,
+  Awaited<ReturnType<typeof deleteAccountEmail>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<EmailBody> },
   TContext
 > => {
-  const mutationKey = ['deleteAllauthClientV1AccountEmail'];
+  const mutationKey = ['deleteAccountEmail'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -5260,33 +5057,30 @@ export const getDeleteAllauthClientV1AccountEmailMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof deleteAllauthClientV1AccountEmail>>,
+    Awaited<ReturnType<typeof deleteAccountEmail>>,
     { client: 'app' | 'browser'; data: BodyType<EmailBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return deleteAllauthClientV1AccountEmail(client, data, requestOptions);
+    return deleteAccountEmail(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type DeleteAllauthClientV1AccountEmailMutationResult = NonNullable<
-  Awaited<ReturnType<typeof deleteAllauthClientV1AccountEmail>>
+export type DeleteAccountEmailMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteAccountEmail>>
 >;
-export type DeleteAllauthClientV1AccountEmailMutationBody = BodyType<EmailBody>;
-export type DeleteAllauthClientV1AccountEmailMutationError = ErrorType<ErrorResponse>;
+export type DeleteAccountEmailMutationBody = BodyType<EmailBody>;
+export type DeleteAccountEmailMutationError = ErrorType<ErrorResponse>;
 
 /**
  * @summary Remove an email address
  */
-export const useDeleteAllauthClientV1AccountEmail = <
-  TError = ErrorType<ErrorResponse>,
-  TContext = unknown,
->(
+export const useDeleteAccountEmail = <TError = ErrorType<ErrorResponse>, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof deleteAllauthClientV1AccountEmail>>,
+      Awaited<ReturnType<typeof deleteAccountEmail>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<EmailBody> },
       TContext
@@ -5295,12 +5089,12 @@ export const useDeleteAllauthClientV1AccountEmail = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof deleteAllauthClientV1AccountEmail>>,
+  Awaited<ReturnType<typeof deleteAccountEmail>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<EmailBody> },
   TContext
 > => {
-  const mutationOptions = getDeleteAllauthClientV1AccountEmailMutationOptions(options);
+  const mutationOptions = getDeleteAccountEmailMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -5311,7 +5105,7 @@ endpoint returns a list of phone numbers, at most one entry is returned.
 
  * @summary Get the phone number
  */
-export const getAllauthClientV1AccountPhone = (
+export const getAccountPhone = (
   client: 'app' | 'browser',
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -5322,56 +5116,49 @@ export const getAllauthClientV1AccountPhone = (
   );
 };
 
-export const getGetAllauthClientV1AccountPhoneQueryKey = (client?: 'app' | 'browser') => {
+export const getGetAccountPhoneQueryKey = (client?: 'app' | 'browser') => {
   return [`/api/_allauth/${client}/v1/account/phone`] as const;
 };
 
-export const getGetAllauthClientV1AccountPhoneQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountPhone>>,
+export const getGetAccountPhoneQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAccountPhone>>,
   TError = ErrorType<AuthenticationResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AccountPhone>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAccountPhone>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
   },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetAllauthClientV1AccountPhoneQueryKey(client);
+  const queryKey = queryOptions?.queryKey ?? getGetAccountPhoneQueryKey(client);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllauthClientV1AccountPhone>>> = ({
-    signal,
-  }) => getAllauthClientV1AccountPhone(client, requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAccountPhone>>> = ({ signal }) =>
+    getAccountPhone(client, requestOptions, signal);
 
   return { queryKey, queryFn, enabled: !!client, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAllauthClientV1AccountPhone>>,
+    Awaited<ReturnType<typeof getAccountPhone>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetAllauthClientV1AccountPhoneQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAllauthClientV1AccountPhone>>
->;
-export type GetAllauthClientV1AccountPhoneQueryError = ErrorType<AuthenticationResponse>;
+export type GetAccountPhoneQueryResult = NonNullable<Awaited<ReturnType<typeof getAccountPhone>>>;
+export type GetAccountPhoneQueryError = ErrorType<AuthenticationResponse>;
 
-export function useGetAllauthClientV1AccountPhone<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountPhone>>,
+export function useGetAccountPhone<
+  TData = Awaited<ReturnType<typeof getAccountPhone>>,
   TError = ErrorType<AuthenticationResponse>,
 >(
   client: 'app' | 'browser',
   options: {
-    query: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AccountPhone>>, TError, TData>
-    > &
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAccountPhone>>, TError, TData>> &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AccountPhone>>,
+          Awaited<ReturnType<typeof getAccountPhone>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AccountPhone>>
+          Awaited<ReturnType<typeof getAccountPhone>>
         >,
         'initialData'
       >;
@@ -5379,20 +5166,18 @@ export function useGetAllauthClientV1AccountPhone<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AccountPhone<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountPhone>>,
+export function useGetAccountPhone<
+  TData = Awaited<ReturnType<typeof getAccountPhone>>,
   TError = ErrorType<AuthenticationResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AccountPhone>>, TError, TData>
-    > &
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAccountPhone>>, TError, TData>> &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AccountPhone>>,
+          Awaited<ReturnType<typeof getAccountPhone>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AccountPhone>>
+          Awaited<ReturnType<typeof getAccountPhone>>
         >,
         'initialData'
       >;
@@ -5400,15 +5185,13 @@ export function useGetAllauthClientV1AccountPhone<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AccountPhone<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountPhone>>,
+export function useGetAccountPhone<
+  TData = Awaited<ReturnType<typeof getAccountPhone>>,
   TError = ErrorType<AuthenticationResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AccountPhone>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAccountPhone>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
@@ -5417,20 +5200,18 @@ export function useGetAllauthClientV1AccountPhone<
  * @summary Get the phone number
  */
 
-export function useGetAllauthClientV1AccountPhone<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountPhone>>,
+export function useGetAccountPhone<
+  TData = Awaited<ReturnType<typeof getAccountPhone>>,
   TError = ErrorType<AuthenticationResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AccountPhone>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAccountPhone>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetAllauthClientV1AccountPhoneQueryOptions(client, options);
+  const queryOptions = getGetAccountPhoneQueryOptions(client, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;
@@ -5456,7 +5237,7 @@ posting the verification code.
  * @summary Change the phone number
 
  */
-export const postAllauthClientV1AccountPhone = (
+export const postAccountPhone = (
   client: 'app' | 'browser',
   phoneBody: BodyType<PhoneBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -5474,24 +5255,24 @@ export const postAllauthClientV1AccountPhone = (
   );
 };
 
-export const getPostAllauthClientV1AccountPhoneMutationOptions = <
+export const getPostAccountPhoneMutationOptions = <
   TError = ErrorType<ErrorResponse | AuthenticationOrReauthenticationResponse | ConflictResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1AccountPhone>>,
+    Awaited<ReturnType<typeof postAccountPhone>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<PhoneBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1AccountPhone>>,
+  Awaited<ReturnType<typeof postAccountPhone>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<PhoneBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1AccountPhone'];
+  const mutationKey = ['postAccountPhone'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -5499,22 +5280,22 @@ export const getPostAllauthClientV1AccountPhoneMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1AccountPhone>>,
+    Awaited<ReturnType<typeof postAccountPhone>>,
     { client: 'app' | 'browser'; data: BodyType<PhoneBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return postAllauthClientV1AccountPhone(client, data, requestOptions);
+    return postAccountPhone(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1AccountPhoneMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1AccountPhone>>
+export type PostAccountPhoneMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAccountPhone>>
 >;
-export type PostAllauthClientV1AccountPhoneMutationBody = BodyType<PhoneBody>;
-export type PostAllauthClientV1AccountPhoneMutationError = ErrorType<
+export type PostAccountPhoneMutationBody = BodyType<PhoneBody>;
+export type PostAccountPhoneMutationError = ErrorType<
   ErrorResponse | AuthenticationOrReauthenticationResponse | ConflictResponse
 >;
 
@@ -5522,13 +5303,13 @@ export type PostAllauthClientV1AccountPhoneMutationError = ErrorType<
  * @summary Change the phone number
 
  */
-export const usePostAllauthClientV1AccountPhone = <
+export const usePostAccountPhone = <
   TError = ErrorType<ErrorResponse | AuthenticationOrReauthenticationResponse | ConflictResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1AccountPhone>>,
+      Awaited<ReturnType<typeof postAccountPhone>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<PhoneBody> },
       TContext
@@ -5537,12 +5318,12 @@ export const usePostAllauthClientV1AccountPhone = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1AccountPhone>>,
+  Awaited<ReturnType<typeof postAccountPhone>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<PhoneBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthClientV1AccountPhoneMutationOptions(options);
+  const mutationOptions = getPostAccountPhoneMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -5550,7 +5331,7 @@ export const usePostAllauthClientV1AccountPhone = <
 /**
  * @summary List authenticators
  */
-export const getAllauthClientV1AccountAuthenticators = (
+export const getAccountAuthenticators = (
   client: 'app' | 'browser',
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -5561,67 +5342,58 @@ export const getAllauthClientV1AccountAuthenticators = (
   );
 };
 
-export const getGetAllauthClientV1AccountAuthenticatorsQueryKey = (client?: 'app' | 'browser') => {
+export const getGetAccountAuthenticatorsQueryKey = (client?: 'app' | 'browser') => {
   return [`/api/_allauth/${client}/v1/account/authenticators`] as const;
 };
 
-export const getGetAllauthClientV1AccountAuthenticatorsQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticators>>,
+export const getGetAccountAuthenticatorsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAccountAuthenticators>>,
   TError = ErrorType<AuthenticationResponse | SessionGoneResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticators>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAccountAuthenticators>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getGetAllauthClientV1AccountAuthenticatorsQueryKey(client);
+  const queryKey = queryOptions?.queryKey ?? getGetAccountAuthenticatorsQueryKey(client);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticators>>
-  > = ({ signal }) => getAllauthClientV1AccountAuthenticators(client, requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAccountAuthenticators>>> = ({
+    signal,
+  }) => getAccountAuthenticators(client, requestOptions, signal);
 
   return { queryKey, queryFn, enabled: !!client, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticators>>,
+    Awaited<ReturnType<typeof getAccountAuthenticators>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetAllauthClientV1AccountAuthenticatorsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticators>>
+export type GetAccountAuthenticatorsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAccountAuthenticators>>
 >;
-export type GetAllauthClientV1AccountAuthenticatorsQueryError = ErrorType<
+export type GetAccountAuthenticatorsQueryError = ErrorType<
   AuthenticationResponse | SessionGoneResponse
 >;
 
-export function useGetAllauthClientV1AccountAuthenticators<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticators>>,
+export function useGetAccountAuthenticators<
+  TData = Awaited<ReturnType<typeof getAccountAuthenticators>>,
   TError = ErrorType<AuthenticationResponse | SessionGoneResponse>,
 >(
   client: 'app' | 'browser',
   options: {
     query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticators>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAccountAuthenticators>>, TError, TData>
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticators>>,
+          Awaited<ReturnType<typeof getAccountAuthenticators>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticators>>
+          Awaited<ReturnType<typeof getAccountAuthenticators>>
         >,
         'initialData'
       >;
@@ -5629,24 +5401,20 @@ export function useGetAllauthClientV1AccountAuthenticators<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AccountAuthenticators<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticators>>,
+export function useGetAccountAuthenticators<
+  TData = Awaited<ReturnType<typeof getAccountAuthenticators>>,
   TError = ErrorType<AuthenticationResponse | SessionGoneResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticators>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAccountAuthenticators>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticators>>,
+          Awaited<ReturnType<typeof getAccountAuthenticators>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticators>>
+          Awaited<ReturnType<typeof getAccountAuthenticators>>
         >,
         'initialData'
       >;
@@ -5654,18 +5422,14 @@ export function useGetAllauthClientV1AccountAuthenticators<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AccountAuthenticators<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticators>>,
+export function useGetAccountAuthenticators<
+  TData = Awaited<ReturnType<typeof getAccountAuthenticators>>,
   TError = ErrorType<AuthenticationResponse | SessionGoneResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticators>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAccountAuthenticators>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -5675,24 +5439,20 @@ export function useGetAllauthClientV1AccountAuthenticators<
  * @summary List authenticators
  */
 
-export function useGetAllauthClientV1AccountAuthenticators<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticators>>,
+export function useGetAccountAuthenticators<
+  TData = Awaited<ReturnType<typeof getAccountAuthenticators>>,
   TError = ErrorType<AuthenticationResponse | SessionGoneResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticators>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAccountAuthenticators>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetAllauthClientV1AccountAuthenticatorsQueryOptions(client, options);
+  const queryOptions = getGetAccountAuthenticatorsQueryOptions(client, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;
@@ -5708,7 +5468,7 @@ export function useGetAllauthClientV1AccountAuthenticators<
 
  * @summary TOTP authenticator status
  */
-export const getAllauthClientV1AccountAuthenticatorsTotp = (
+export const getAccountAuthenticatorsTotp = (
   client: 'app' | 'browser',
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -5719,69 +5479,58 @@ export const getAllauthClientV1AccountAuthenticatorsTotp = (
   );
 };
 
-export const getGetAllauthClientV1AccountAuthenticatorsTotpQueryKey = (
-  client?: 'app' | 'browser',
-) => {
+export const getGetAccountAuthenticatorsTotpQueryKey = (client?: 'app' | 'browser') => {
   return [`/api/_allauth/${client}/v1/account/authenticators/totp`] as const;
 };
 
-export const getGetAllauthClientV1AccountAuthenticatorsTotpQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsTotp>>,
+export const getGetAccountAuthenticatorsTotpQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAccountAuthenticatorsTotp>>,
   TError = ErrorType<TOTPAuthenticatorNotFoundResponse | AddAuthenticatorConflictResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsTotp>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAccountAuthenticatorsTotp>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getGetAllauthClientV1AccountAuthenticatorsTotpQueryKey(client);
+  const queryKey = queryOptions?.queryKey ?? getGetAccountAuthenticatorsTotpQueryKey(client);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsTotp>>
-  > = ({ signal }) => getAllauthClientV1AccountAuthenticatorsTotp(client, requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAccountAuthenticatorsTotp>>> = ({
+    signal,
+  }) => getAccountAuthenticatorsTotp(client, requestOptions, signal);
 
   return { queryKey, queryFn, enabled: !!client, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsTotp>>,
+    Awaited<ReturnType<typeof getAccountAuthenticatorsTotp>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetAllauthClientV1AccountAuthenticatorsTotpQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsTotp>>
+export type GetAccountAuthenticatorsTotpQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAccountAuthenticatorsTotp>>
 >;
-export type GetAllauthClientV1AccountAuthenticatorsTotpQueryError = ErrorType<
+export type GetAccountAuthenticatorsTotpQueryError = ErrorType<
   TOTPAuthenticatorNotFoundResponse | AddAuthenticatorConflictResponse
 >;
 
-export function useGetAllauthClientV1AccountAuthenticatorsTotp<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsTotp>>,
+export function useGetAccountAuthenticatorsTotp<
+  TData = Awaited<ReturnType<typeof getAccountAuthenticatorsTotp>>,
   TError = ErrorType<TOTPAuthenticatorNotFoundResponse | AddAuthenticatorConflictResponse>,
 >(
   client: 'app' | 'browser',
   options: {
     query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsTotp>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAccountAuthenticatorsTotp>>, TError, TData>
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsTotp>>,
+          Awaited<ReturnType<typeof getAccountAuthenticatorsTotp>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsTotp>>
+          Awaited<ReturnType<typeof getAccountAuthenticatorsTotp>>
         >,
         'initialData'
       >;
@@ -5789,24 +5538,20 @@ export function useGetAllauthClientV1AccountAuthenticatorsTotp<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AccountAuthenticatorsTotp<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsTotp>>,
+export function useGetAccountAuthenticatorsTotp<
+  TData = Awaited<ReturnType<typeof getAccountAuthenticatorsTotp>>,
   TError = ErrorType<TOTPAuthenticatorNotFoundResponse | AddAuthenticatorConflictResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsTotp>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAccountAuthenticatorsTotp>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsTotp>>,
+          Awaited<ReturnType<typeof getAccountAuthenticatorsTotp>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsTotp>>
+          Awaited<ReturnType<typeof getAccountAuthenticatorsTotp>>
         >,
         'initialData'
       >;
@@ -5814,18 +5559,14 @@ export function useGetAllauthClientV1AccountAuthenticatorsTotp<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AccountAuthenticatorsTotp<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsTotp>>,
+export function useGetAccountAuthenticatorsTotp<
+  TData = Awaited<ReturnType<typeof getAccountAuthenticatorsTotp>>,
   TError = ErrorType<TOTPAuthenticatorNotFoundResponse | AddAuthenticatorConflictResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsTotp>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAccountAuthenticatorsTotp>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -5835,24 +5576,20 @@ export function useGetAllauthClientV1AccountAuthenticatorsTotp<
  * @summary TOTP authenticator status
  */
 
-export function useGetAllauthClientV1AccountAuthenticatorsTotp<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsTotp>>,
+export function useGetAccountAuthenticatorsTotp<
+  TData = Awaited<ReturnType<typeof getAccountAuthenticatorsTotp>>,
   TError = ErrorType<TOTPAuthenticatorNotFoundResponse | AddAuthenticatorConflictResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsTotp>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAccountAuthenticatorsTotp>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetAllauthClientV1AccountAuthenticatorsTotpQueryOptions(client, options);
+  const queryOptions = getGetAccountAuthenticatorsTotpQueryOptions(client, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;
@@ -5870,7 +5607,7 @@ retrieved from the TOTP authenticator status endpoint.
 
  * @summary Activate TOTP
  */
-export const postAllauthClientV1AccountAuthenticatorsTotp = (
+export const postAccountAuthenticatorsTotp = (
   client: 'app' | 'browser',
   setupTOTPBody: BodyType<SetupTOTPBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -5888,26 +5625,26 @@ export const postAllauthClientV1AccountAuthenticatorsTotp = (
   );
 };
 
-export const getPostAllauthClientV1AccountAuthenticatorsTotpMutationOptions = <
+export const getPostAccountAuthenticatorsTotpMutationOptions = <
   TError = ErrorType<
     ErrorResponse | ReauthenticationRequiredResponse | AddAuthenticatorConflictResponse
   >,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1AccountAuthenticatorsTotp>>,
+    Awaited<ReturnType<typeof postAccountAuthenticatorsTotp>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<SetupTOTPBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1AccountAuthenticatorsTotp>>,
+  Awaited<ReturnType<typeof postAccountAuthenticatorsTotp>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<SetupTOTPBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1AccountAuthenticatorsTotp'];
+  const mutationKey = ['postAccountAuthenticatorsTotp'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -5915,29 +5652,29 @@ export const getPostAllauthClientV1AccountAuthenticatorsTotpMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1AccountAuthenticatorsTotp>>,
+    Awaited<ReturnType<typeof postAccountAuthenticatorsTotp>>,
     { client: 'app' | 'browser'; data: BodyType<SetupTOTPBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return postAllauthClientV1AccountAuthenticatorsTotp(client, data, requestOptions);
+    return postAccountAuthenticatorsTotp(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1AccountAuthenticatorsTotpMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1AccountAuthenticatorsTotp>>
+export type PostAccountAuthenticatorsTotpMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAccountAuthenticatorsTotp>>
 >;
-export type PostAllauthClientV1AccountAuthenticatorsTotpMutationBody = BodyType<SetupTOTPBody>;
-export type PostAllauthClientV1AccountAuthenticatorsTotpMutationError = ErrorType<
+export type PostAccountAuthenticatorsTotpMutationBody = BodyType<SetupTOTPBody>;
+export type PostAccountAuthenticatorsTotpMutationError = ErrorType<
   ErrorResponse | ReauthenticationRequiredResponse | AddAuthenticatorConflictResponse
 >;
 
 /**
  * @summary Activate TOTP
  */
-export const usePostAllauthClientV1AccountAuthenticatorsTotp = <
+export const usePostAccountAuthenticatorsTotp = <
   TError = ErrorType<
     ErrorResponse | ReauthenticationRequiredResponse | AddAuthenticatorConflictResponse
   >,
@@ -5945,7 +5682,7 @@ export const usePostAllauthClientV1AccountAuthenticatorsTotp = <
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1AccountAuthenticatorsTotp>>,
+      Awaited<ReturnType<typeof postAccountAuthenticatorsTotp>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<SetupTOTPBody> },
       TContext
@@ -5954,12 +5691,12 @@ export const usePostAllauthClientV1AccountAuthenticatorsTotp = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1AccountAuthenticatorsTotp>>,
+  Awaited<ReturnType<typeof postAccountAuthenticatorsTotp>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<SetupTOTPBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthClientV1AccountAuthenticatorsTotpMutationOptions(options);
+  const mutationOptions = getPostAccountAuthenticatorsTotpMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -5970,7 +5707,7 @@ sufficiently recent, a reauthentication flow (`401`) will is presented.
 
  * @summary Deactivate TOTP
  */
-export const deleteAllauthClientV1AccountAuthenticatorsTotp = (
+export const deleteAccountAuthenticatorsTotp = (
   client: 'app' | 'browser',
   options?: SecondParameter<typeof customInstance>,
 ) => {
@@ -5980,24 +5717,24 @@ export const deleteAllauthClientV1AccountAuthenticatorsTotp = (
   );
 };
 
-export const getDeleteAllauthClientV1AccountAuthenticatorsTotpMutationOptions = <
+export const getDeleteAccountAuthenticatorsTotpMutationOptions = <
   TError = ErrorType<ReauthenticationRequiredResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteAllauthClientV1AccountAuthenticatorsTotp>>,
+    Awaited<ReturnType<typeof deleteAccountAuthenticatorsTotp>>,
     TError,
     { client: 'app' | 'browser' },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof deleteAllauthClientV1AccountAuthenticatorsTotp>>,
+  Awaited<ReturnType<typeof deleteAccountAuthenticatorsTotp>>,
   TError,
   { client: 'app' | 'browser' },
   TContext
 > => {
-  const mutationKey = ['deleteAllauthClientV1AccountAuthenticatorsTotp'];
+  const mutationKey = ['deleteAccountAuthenticatorsTotp'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -6005,34 +5742,34 @@ export const getDeleteAllauthClientV1AccountAuthenticatorsTotpMutationOptions = 
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof deleteAllauthClientV1AccountAuthenticatorsTotp>>,
+    Awaited<ReturnType<typeof deleteAccountAuthenticatorsTotp>>,
     { client: 'app' | 'browser' }
   > = props => {
     const { client } = props ?? {};
 
-    return deleteAllauthClientV1AccountAuthenticatorsTotp(client, requestOptions);
+    return deleteAccountAuthenticatorsTotp(client, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type DeleteAllauthClientV1AccountAuthenticatorsTotpMutationResult = NonNullable<
-  Awaited<ReturnType<typeof deleteAllauthClientV1AccountAuthenticatorsTotp>>
+export type DeleteAccountAuthenticatorsTotpMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteAccountAuthenticatorsTotp>>
 >;
 
-export type DeleteAllauthClientV1AccountAuthenticatorsTotpMutationError =
+export type DeleteAccountAuthenticatorsTotpMutationError =
   ErrorType<ReauthenticationRequiredResponse>;
 
 /**
  * @summary Deactivate TOTP
  */
-export const useDeleteAllauthClientV1AccountAuthenticatorsTotp = <
+export const useDeleteAccountAuthenticatorsTotp = <
   TError = ErrorType<ReauthenticationRequiredResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof deleteAllauthClientV1AccountAuthenticatorsTotp>>,
+      Awaited<ReturnType<typeof deleteAccountAuthenticatorsTotp>>,
       TError,
       { client: 'app' | 'browser' },
       TContext
@@ -6041,12 +5778,12 @@ export const useDeleteAllauthClientV1AccountAuthenticatorsTotp = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof deleteAllauthClientV1AccountAuthenticatorsTotp>>,
+  Awaited<ReturnType<typeof deleteAccountAuthenticatorsTotp>>,
   TError,
   { client: 'app' | 'browser' },
   TContext
 > => {
-  const mutationOptions = getDeleteAllauthClientV1AccountAuthenticatorsTotpMutationOptions(options);
+  const mutationOptions = getDeleteAccountAuthenticatorsTotpMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -6056,7 +5793,7 @@ export const useDeleteAllauthClientV1AccountAuthenticatorsTotp = <
 
  * @summary List recovery codes
  */
-export const getAllauthClientV1AccountAuthenticatorsRecoveryCodes = (
+export const getAccountAuthenticatorsRecoveryCodes = (
   client: 'app' | 'browser',
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -6071,21 +5808,19 @@ export const getAllauthClientV1AccountAuthenticatorsRecoveryCodes = (
   );
 };
 
-export const getGetAllauthClientV1AccountAuthenticatorsRecoveryCodesQueryKey = (
-  client?: 'app' | 'browser',
-) => {
+export const getGetAccountAuthenticatorsRecoveryCodesQueryKey = (client?: 'app' | 'browser') => {
   return [`/api/_allauth/${client}/v1/account/authenticators/recovery-codes`] as const;
 };
 
-export const getGetAllauthClientV1AccountAuthenticatorsRecoveryCodesQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsRecoveryCodes>>,
+export const getGetAccountAuthenticatorsRecoveryCodesQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAccountAuthenticatorsRecoveryCodes>>,
   TError = ErrorType<ReauthenticationRequiredResponse | NotFoundResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsRecoveryCodes>>,
+        Awaited<ReturnType<typeof getAccountAuthenticatorsRecoveryCodes>>,
         TError,
         TData
       >
@@ -6096,46 +5831,44 @@ export const getGetAllauthClientV1AccountAuthenticatorsRecoveryCodesQueryOptions
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ??
-    getGetAllauthClientV1AccountAuthenticatorsRecoveryCodesQueryKey(client);
+    queryOptions?.queryKey ?? getGetAccountAuthenticatorsRecoveryCodesQueryKey(client);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsRecoveryCodes>>
-  > = ({ signal }) =>
-    getAllauthClientV1AccountAuthenticatorsRecoveryCodes(client, requestOptions, signal);
+    Awaited<ReturnType<typeof getAccountAuthenticatorsRecoveryCodes>>
+  > = ({ signal }) => getAccountAuthenticatorsRecoveryCodes(client, requestOptions, signal);
 
   return { queryKey, queryFn, enabled: !!client, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsRecoveryCodes>>,
+    Awaited<ReturnType<typeof getAccountAuthenticatorsRecoveryCodes>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetAllauthClientV1AccountAuthenticatorsRecoveryCodesQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsRecoveryCodes>>
+export type GetAccountAuthenticatorsRecoveryCodesQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAccountAuthenticatorsRecoveryCodes>>
 >;
-export type GetAllauthClientV1AccountAuthenticatorsRecoveryCodesQueryError = ErrorType<
+export type GetAccountAuthenticatorsRecoveryCodesQueryError = ErrorType<
   ReauthenticationRequiredResponse | NotFoundResponse
 >;
 
-export function useGetAllauthClientV1AccountAuthenticatorsRecoveryCodes<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsRecoveryCodes>>,
+export function useGetAccountAuthenticatorsRecoveryCodes<
+  TData = Awaited<ReturnType<typeof getAccountAuthenticatorsRecoveryCodes>>,
   TError = ErrorType<ReauthenticationRequiredResponse | NotFoundResponse>,
 >(
   client: 'app' | 'browser',
   options: {
     query: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsRecoveryCodes>>,
+        Awaited<ReturnType<typeof getAccountAuthenticatorsRecoveryCodes>>,
         TError,
         TData
       >
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsRecoveryCodes>>,
+          Awaited<ReturnType<typeof getAccountAuthenticatorsRecoveryCodes>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsRecoveryCodes>>
+          Awaited<ReturnType<typeof getAccountAuthenticatorsRecoveryCodes>>
         >,
         'initialData'
       >;
@@ -6143,24 +5876,24 @@ export function useGetAllauthClientV1AccountAuthenticatorsRecoveryCodes<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AccountAuthenticatorsRecoveryCodes<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsRecoveryCodes>>,
+export function useGetAccountAuthenticatorsRecoveryCodes<
+  TData = Awaited<ReturnType<typeof getAccountAuthenticatorsRecoveryCodes>>,
   TError = ErrorType<ReauthenticationRequiredResponse | NotFoundResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsRecoveryCodes>>,
+        Awaited<ReturnType<typeof getAccountAuthenticatorsRecoveryCodes>>,
         TError,
         TData
       >
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsRecoveryCodes>>,
+          Awaited<ReturnType<typeof getAccountAuthenticatorsRecoveryCodes>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsRecoveryCodes>>
+          Awaited<ReturnType<typeof getAccountAuthenticatorsRecoveryCodes>>
         >,
         'initialData'
       >;
@@ -6168,15 +5901,15 @@ export function useGetAllauthClientV1AccountAuthenticatorsRecoveryCodes<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AccountAuthenticatorsRecoveryCodes<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsRecoveryCodes>>,
+export function useGetAccountAuthenticatorsRecoveryCodes<
+  TData = Awaited<ReturnType<typeof getAccountAuthenticatorsRecoveryCodes>>,
   TError = ErrorType<ReauthenticationRequiredResponse | NotFoundResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsRecoveryCodes>>,
+        Awaited<ReturnType<typeof getAccountAuthenticatorsRecoveryCodes>>,
         TError,
         TData
       >
@@ -6189,15 +5922,15 @@ export function useGetAllauthClientV1AccountAuthenticatorsRecoveryCodes<
  * @summary List recovery codes
  */
 
-export function useGetAllauthClientV1AccountAuthenticatorsRecoveryCodes<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsRecoveryCodes>>,
+export function useGetAccountAuthenticatorsRecoveryCodes<
+  TData = Awaited<ReturnType<typeof getAccountAuthenticatorsRecoveryCodes>>,
   TError = ErrorType<ReauthenticationRequiredResponse | NotFoundResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsRecoveryCodes>>,
+        Awaited<ReturnType<typeof getAccountAuthenticatorsRecoveryCodes>>,
         TError,
         TData
       >
@@ -6206,10 +5939,7 @@ export function useGetAllauthClientV1AccountAuthenticatorsRecoveryCodes<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetAllauthClientV1AccountAuthenticatorsRecoveryCodesQueryOptions(
-    client,
-    options,
-  );
+  const queryOptions = getGetAccountAuthenticatorsRecoveryCodesQueryOptions(client, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;
@@ -6223,7 +5953,7 @@ export function useGetAllauthClientV1AccountAuthenticatorsRecoveryCodes<
 /**
  * @summary Regenerate recovery codes
  */
-export const postAllauthClientV1AccountAuthenticatorsRecoveryCodes = (
+export const postAccountAuthenticatorsRecoveryCodes = (
   client: 'app' | 'browser',
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -6238,24 +5968,24 @@ export const postAllauthClientV1AccountAuthenticatorsRecoveryCodes = (
   );
 };
 
-export const getPostAllauthClientV1AccountAuthenticatorsRecoveryCodesMutationOptions = <
+export const getPostAccountAuthenticatorsRecoveryCodesMutationOptions = <
   TError = ErrorType<ErrorResponse | ReauthenticationRequiredResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1AccountAuthenticatorsRecoveryCodes>>,
+    Awaited<ReturnType<typeof postAccountAuthenticatorsRecoveryCodes>>,
     TError,
     { client: 'app' | 'browser' },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1AccountAuthenticatorsRecoveryCodes>>,
+  Awaited<ReturnType<typeof postAccountAuthenticatorsRecoveryCodes>>,
   TError,
   { client: 'app' | 'browser' },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1AccountAuthenticatorsRecoveryCodes'];
+  const mutationKey = ['postAccountAuthenticatorsRecoveryCodes'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -6263,35 +5993,35 @@ export const getPostAllauthClientV1AccountAuthenticatorsRecoveryCodesMutationOpt
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1AccountAuthenticatorsRecoveryCodes>>,
+    Awaited<ReturnType<typeof postAccountAuthenticatorsRecoveryCodes>>,
     { client: 'app' | 'browser' }
   > = props => {
     const { client } = props ?? {};
 
-    return postAllauthClientV1AccountAuthenticatorsRecoveryCodes(client, requestOptions);
+    return postAccountAuthenticatorsRecoveryCodes(client, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1AccountAuthenticatorsRecoveryCodesMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1AccountAuthenticatorsRecoveryCodes>>
+export type PostAccountAuthenticatorsRecoveryCodesMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAccountAuthenticatorsRecoveryCodes>>
 >;
 
-export type PostAllauthClientV1AccountAuthenticatorsRecoveryCodesMutationError = ErrorType<
+export type PostAccountAuthenticatorsRecoveryCodesMutationError = ErrorType<
   ErrorResponse | ReauthenticationRequiredResponse
 >;
 
 /**
  * @summary Regenerate recovery codes
  */
-export const usePostAllauthClientV1AccountAuthenticatorsRecoveryCodes = <
+export const usePostAccountAuthenticatorsRecoveryCodes = <
   TError = ErrorType<ErrorResponse | ReauthenticationRequiredResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1AccountAuthenticatorsRecoveryCodes>>,
+      Awaited<ReturnType<typeof postAccountAuthenticatorsRecoveryCodes>>,
       TError,
       { client: 'app' | 'browser' },
       TContext
@@ -6300,13 +6030,12 @@ export const usePostAllauthClientV1AccountAuthenticatorsRecoveryCodes = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1AccountAuthenticatorsRecoveryCodes>>,
+  Awaited<ReturnType<typeof postAccountAuthenticatorsRecoveryCodes>>,
   TError,
   { client: 'app' | 'browser' },
   TContext
 > => {
-  const mutationOptions =
-    getPostAllauthClientV1AccountAuthenticatorsRecoveryCodesMutationOptions(options);
+  const mutationOptions = getPostAccountAuthenticatorsRecoveryCodesMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -6318,9 +6047,9 @@ processed using `parseCreationOptionsFromJSON()` on the frontend.
  * @summary Get WebAuthn credential creation options
 
  */
-export const getAllauthClientV1AccountAuthenticatorsWebauthn = (
+export const getAccountAuthenticatorsWebauthn = (
   client: 'app' | 'browser',
-  params?: GetAllauthClientV1AccountAuthenticatorsWebauthnParams,
+  params?: GetAccountAuthenticatorsWebauthnParams,
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
@@ -6335,9 +6064,9 @@ export const getAllauthClientV1AccountAuthenticatorsWebauthn = (
   );
 };
 
-export const getGetAllauthClientV1AccountAuthenticatorsWebauthnQueryKey = (
+export const getGetAccountAuthenticatorsWebauthnQueryKey = (
   client?: 'app' | 'browser',
-  params?: GetAllauthClientV1AccountAuthenticatorsWebauthnParams,
+  params?: GetAccountAuthenticatorsWebauthnParams,
 ) => {
   return [
     `/api/_allauth/${client}/v1/account/authenticators/webauthn`,
@@ -6345,19 +6074,15 @@ export const getGetAllauthClientV1AccountAuthenticatorsWebauthnQueryKey = (
   ] as const;
 };
 
-export const getGetAllauthClientV1AccountAuthenticatorsWebauthnQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsWebauthn>>,
+export const getGetAccountAuthenticatorsWebauthnQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAccountAuthenticatorsWebauthn>>,
   TError = ErrorType<ReauthenticationRequiredResponse | AddAuthenticatorConflictResponse>,
 >(
   client: 'app' | 'browser',
-  params?: GetAllauthClientV1AccountAuthenticatorsWebauthnParams,
+  params?: GetAccountAuthenticatorsWebauthnParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsWebauthn>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAccountAuthenticatorsWebauthn>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -6365,47 +6090,41 @@ export const getGetAllauthClientV1AccountAuthenticatorsWebauthnQueryOptions = <
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ??
-    getGetAllauthClientV1AccountAuthenticatorsWebauthnQueryKey(client, params);
+    queryOptions?.queryKey ?? getGetAccountAuthenticatorsWebauthnQueryKey(client, params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsWebauthn>>
-  > = ({ signal }) =>
-    getAllauthClientV1AccountAuthenticatorsWebauthn(client, params, requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAccountAuthenticatorsWebauthn>>> = ({
+    signal,
+  }) => getAccountAuthenticatorsWebauthn(client, params, requestOptions, signal);
 
   return { queryKey, queryFn, enabled: !!client, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsWebauthn>>,
+    Awaited<ReturnType<typeof getAccountAuthenticatorsWebauthn>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetAllauthClientV1AccountAuthenticatorsWebauthnQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsWebauthn>>
+export type GetAccountAuthenticatorsWebauthnQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAccountAuthenticatorsWebauthn>>
 >;
-export type GetAllauthClientV1AccountAuthenticatorsWebauthnQueryError = ErrorType<
+export type GetAccountAuthenticatorsWebauthnQueryError = ErrorType<
   ReauthenticationRequiredResponse | AddAuthenticatorConflictResponse
 >;
 
-export function useGetAllauthClientV1AccountAuthenticatorsWebauthn<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsWebauthn>>,
+export function useGetAccountAuthenticatorsWebauthn<
+  TData = Awaited<ReturnType<typeof getAccountAuthenticatorsWebauthn>>,
   TError = ErrorType<ReauthenticationRequiredResponse | AddAuthenticatorConflictResponse>,
 >(
   client: 'app' | 'browser',
-  params: undefined | GetAllauthClientV1AccountAuthenticatorsWebauthnParams,
+  params: undefined | GetAccountAuthenticatorsWebauthnParams,
   options: {
     query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsWebauthn>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAccountAuthenticatorsWebauthn>>, TError, TData>
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsWebauthn>>,
+          Awaited<ReturnType<typeof getAccountAuthenticatorsWebauthn>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsWebauthn>>
+          Awaited<ReturnType<typeof getAccountAuthenticatorsWebauthn>>
         >,
         'initialData'
       >;
@@ -6413,25 +6132,21 @@ export function useGetAllauthClientV1AccountAuthenticatorsWebauthn<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AccountAuthenticatorsWebauthn<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsWebauthn>>,
+export function useGetAccountAuthenticatorsWebauthn<
+  TData = Awaited<ReturnType<typeof getAccountAuthenticatorsWebauthn>>,
   TError = ErrorType<ReauthenticationRequiredResponse | AddAuthenticatorConflictResponse>,
 >(
   client: 'app' | 'browser',
-  params?: GetAllauthClientV1AccountAuthenticatorsWebauthnParams,
+  params?: GetAccountAuthenticatorsWebauthnParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsWebauthn>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAccountAuthenticatorsWebauthn>>, TError, TData>
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsWebauthn>>,
+          Awaited<ReturnType<typeof getAccountAuthenticatorsWebauthn>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsWebauthn>>
+          Awaited<ReturnType<typeof getAccountAuthenticatorsWebauthn>>
         >,
         'initialData'
       >;
@@ -6439,19 +6154,15 @@ export function useGetAllauthClientV1AccountAuthenticatorsWebauthn<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AccountAuthenticatorsWebauthn<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsWebauthn>>,
+export function useGetAccountAuthenticatorsWebauthn<
+  TData = Awaited<ReturnType<typeof getAccountAuthenticatorsWebauthn>>,
   TError = ErrorType<ReauthenticationRequiredResponse | AddAuthenticatorConflictResponse>,
 >(
   client: 'app' | 'browser',
-  params?: GetAllauthClientV1AccountAuthenticatorsWebauthnParams,
+  params?: GetAccountAuthenticatorsWebauthnParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsWebauthn>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAccountAuthenticatorsWebauthn>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -6462,29 +6173,21 @@ export function useGetAllauthClientV1AccountAuthenticatorsWebauthn<
 
  */
 
-export function useGetAllauthClientV1AccountAuthenticatorsWebauthn<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsWebauthn>>,
+export function useGetAccountAuthenticatorsWebauthn<
+  TData = Awaited<ReturnType<typeof getAccountAuthenticatorsWebauthn>>,
   TError = ErrorType<ReauthenticationRequiredResponse | AddAuthenticatorConflictResponse>,
 >(
   client: 'app' | 'browser',
-  params?: GetAllauthClientV1AccountAuthenticatorsWebauthnParams,
+  params?: GetAccountAuthenticatorsWebauthnParams,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getAllauthClientV1AccountAuthenticatorsWebauthn>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof getAccountAuthenticatorsWebauthn>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetAllauthClientV1AccountAuthenticatorsWebauthnQueryOptions(
-    client,
-    params,
-    options,
-  );
+  const queryOptions = getGetAccountAuthenticatorsWebauthnQueryOptions(client, params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;
@@ -6503,7 +6206,7 @@ the credentials via the "List authenticators" endpoint.
  * @summary Rename a WebAuthn credential
 
  */
-export const putAllauthClientV1AccountAuthenticatorsWebauthn = (
+export const putAccountAuthenticatorsWebauthn = (
   client: 'app' | 'browser',
   updateWebAuthnBody: BodyType<UpdateWebAuthnBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -6519,24 +6222,24 @@ export const putAllauthClientV1AccountAuthenticatorsWebauthn = (
   );
 };
 
-export const getPutAllauthClientV1AccountAuthenticatorsWebauthnMutationOptions = <
+export const getPutAccountAuthenticatorsWebauthnMutationOptions = <
   TError = ErrorType<ReauthenticationRequiredResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof putAllauthClientV1AccountAuthenticatorsWebauthn>>,
+    Awaited<ReturnType<typeof putAccountAuthenticatorsWebauthn>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<UpdateWebAuthnBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof putAllauthClientV1AccountAuthenticatorsWebauthn>>,
+  Awaited<ReturnType<typeof putAccountAuthenticatorsWebauthn>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<UpdateWebAuthnBody> },
   TContext
 > => {
-  const mutationKey = ['putAllauthClientV1AccountAuthenticatorsWebauthn'];
+  const mutationKey = ['putAccountAuthenticatorsWebauthn'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -6544,36 +6247,35 @@ export const getPutAllauthClientV1AccountAuthenticatorsWebauthnMutationOptions =
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof putAllauthClientV1AccountAuthenticatorsWebauthn>>,
+    Awaited<ReturnType<typeof putAccountAuthenticatorsWebauthn>>,
     { client: 'app' | 'browser'; data: BodyType<UpdateWebAuthnBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return putAllauthClientV1AccountAuthenticatorsWebauthn(client, data, requestOptions);
+    return putAccountAuthenticatorsWebauthn(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PutAllauthClientV1AccountAuthenticatorsWebauthnMutationResult = NonNullable<
-  Awaited<ReturnType<typeof putAllauthClientV1AccountAuthenticatorsWebauthn>>
+export type PutAccountAuthenticatorsWebauthnMutationResult = NonNullable<
+  Awaited<ReturnType<typeof putAccountAuthenticatorsWebauthn>>
 >;
-export type PutAllauthClientV1AccountAuthenticatorsWebauthnMutationBody =
-  BodyType<UpdateWebAuthnBody>;
-export type PutAllauthClientV1AccountAuthenticatorsWebauthnMutationError =
+export type PutAccountAuthenticatorsWebauthnMutationBody = BodyType<UpdateWebAuthnBody>;
+export type PutAccountAuthenticatorsWebauthnMutationError =
   ErrorType<ReauthenticationRequiredResponse>;
 
 /**
  * @summary Rename a WebAuthn credential
 
  */
-export const usePutAllauthClientV1AccountAuthenticatorsWebauthn = <
+export const usePutAccountAuthenticatorsWebauthn = <
   TError = ErrorType<ReauthenticationRequiredResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof putAllauthClientV1AccountAuthenticatorsWebauthn>>,
+      Awaited<ReturnType<typeof putAccountAuthenticatorsWebauthn>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<UpdateWebAuthnBody> },
       TContext
@@ -6582,13 +6284,12 @@ export const usePutAllauthClientV1AccountAuthenticatorsWebauthn = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof putAllauthClientV1AccountAuthenticatorsWebauthn>>,
+  Awaited<ReturnType<typeof putAccountAuthenticatorsWebauthn>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<UpdateWebAuthnBody> },
   TContext
 > => {
-  const mutationOptions =
-    getPutAllauthClientV1AccountAuthenticatorsWebauthnMutationOptions(options);
+  const mutationOptions = getPutAccountAuthenticatorsWebauthnMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -6597,7 +6298,7 @@ export const usePutAllauthClientV1AccountAuthenticatorsWebauthn = <
  * @summary Delete a WebAuthn credential
 
  */
-export const deleteAllauthClientV1AccountAuthenticatorsWebauthn = (
+export const deleteAccountAuthenticatorsWebauthn = (
   client: 'app' | 'browser',
   deleteWebAuthnBody: BodyType<DeleteWebAuthnBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -6613,24 +6314,24 @@ export const deleteAllauthClientV1AccountAuthenticatorsWebauthn = (
   );
 };
 
-export const getDeleteAllauthClientV1AccountAuthenticatorsWebauthnMutationOptions = <
+export const getDeleteAccountAuthenticatorsWebauthnMutationOptions = <
   TError = ErrorType<ReauthenticationRequiredResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteAllauthClientV1AccountAuthenticatorsWebauthn>>,
+    Awaited<ReturnType<typeof deleteAccountAuthenticatorsWebauthn>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<DeleteWebAuthnBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof deleteAllauthClientV1AccountAuthenticatorsWebauthn>>,
+  Awaited<ReturnType<typeof deleteAccountAuthenticatorsWebauthn>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<DeleteWebAuthnBody> },
   TContext
 > => {
-  const mutationKey = ['deleteAllauthClientV1AccountAuthenticatorsWebauthn'];
+  const mutationKey = ['deleteAccountAuthenticatorsWebauthn'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -6638,36 +6339,35 @@ export const getDeleteAllauthClientV1AccountAuthenticatorsWebauthnMutationOption
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof deleteAllauthClientV1AccountAuthenticatorsWebauthn>>,
+    Awaited<ReturnType<typeof deleteAccountAuthenticatorsWebauthn>>,
     { client: 'app' | 'browser'; data: BodyType<DeleteWebAuthnBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return deleteAllauthClientV1AccountAuthenticatorsWebauthn(client, data, requestOptions);
+    return deleteAccountAuthenticatorsWebauthn(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type DeleteAllauthClientV1AccountAuthenticatorsWebauthnMutationResult = NonNullable<
-  Awaited<ReturnType<typeof deleteAllauthClientV1AccountAuthenticatorsWebauthn>>
+export type DeleteAccountAuthenticatorsWebauthnMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteAccountAuthenticatorsWebauthn>>
 >;
-export type DeleteAllauthClientV1AccountAuthenticatorsWebauthnMutationBody =
-  BodyType<DeleteWebAuthnBody>;
-export type DeleteAllauthClientV1AccountAuthenticatorsWebauthnMutationError =
+export type DeleteAccountAuthenticatorsWebauthnMutationBody = BodyType<DeleteWebAuthnBody>;
+export type DeleteAccountAuthenticatorsWebauthnMutationError =
   ErrorType<ReauthenticationRequiredResponse>;
 
 /**
  * @summary Delete a WebAuthn credential
 
  */
-export const useDeleteAllauthClientV1AccountAuthenticatorsWebauthn = <
+export const useDeleteAccountAuthenticatorsWebauthn = <
   TError = ErrorType<ReauthenticationRequiredResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof deleteAllauthClientV1AccountAuthenticatorsWebauthn>>,
+      Awaited<ReturnType<typeof deleteAccountAuthenticatorsWebauthn>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<DeleteWebAuthnBody> },
       TContext
@@ -6676,13 +6376,12 @@ export const useDeleteAllauthClientV1AccountAuthenticatorsWebauthn = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof deleteAllauthClientV1AccountAuthenticatorsWebauthn>>,
+  Awaited<ReturnType<typeof deleteAccountAuthenticatorsWebauthn>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<DeleteWebAuthnBody> },
   TContext
 > => {
-  const mutationOptions =
-    getDeleteAllauthClientV1AccountAuthenticatorsWebauthnMutationOptions(options);
+  const mutationOptions = getDeleteAccountAuthenticatorsWebauthnMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -6691,7 +6390,7 @@ export const useDeleteAllauthClientV1AccountAuthenticatorsWebauthn = <
  * @summary Add a WebAuthn credential
 
  */
-export const postAllauthClientV1AccountAuthenticatorsWebauthn = (
+export const postAccountAuthenticatorsWebauthn = (
   client: 'app' | 'browser',
   addWebAuthnAuthenticatorBody: BodyType<AddWebAuthnAuthenticatorBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -6709,24 +6408,24 @@ export const postAllauthClientV1AccountAuthenticatorsWebauthn = (
   );
 };
 
-export const getPostAllauthClientV1AccountAuthenticatorsWebauthnMutationOptions = <
+export const getPostAccountAuthenticatorsWebauthnMutationOptions = <
   TError = ErrorType<ReauthenticationRequiredResponse | AddAuthenticatorConflictResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1AccountAuthenticatorsWebauthn>>,
+    Awaited<ReturnType<typeof postAccountAuthenticatorsWebauthn>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<AddWebAuthnAuthenticatorBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1AccountAuthenticatorsWebauthn>>,
+  Awaited<ReturnType<typeof postAccountAuthenticatorsWebauthn>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<AddWebAuthnAuthenticatorBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1AccountAuthenticatorsWebauthn'];
+  const mutationKey = ['postAccountAuthenticatorsWebauthn'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -6734,23 +6433,22 @@ export const getPostAllauthClientV1AccountAuthenticatorsWebauthnMutationOptions 
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1AccountAuthenticatorsWebauthn>>,
+    Awaited<ReturnType<typeof postAccountAuthenticatorsWebauthn>>,
     { client: 'app' | 'browser'; data: BodyType<AddWebAuthnAuthenticatorBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return postAllauthClientV1AccountAuthenticatorsWebauthn(client, data, requestOptions);
+    return postAccountAuthenticatorsWebauthn(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1AccountAuthenticatorsWebauthnMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1AccountAuthenticatorsWebauthn>>
+export type PostAccountAuthenticatorsWebauthnMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAccountAuthenticatorsWebauthn>>
 >;
-export type PostAllauthClientV1AccountAuthenticatorsWebauthnMutationBody =
-  BodyType<AddWebAuthnAuthenticatorBody>;
-export type PostAllauthClientV1AccountAuthenticatorsWebauthnMutationError = ErrorType<
+export type PostAccountAuthenticatorsWebauthnMutationBody = BodyType<AddWebAuthnAuthenticatorBody>;
+export type PostAccountAuthenticatorsWebauthnMutationError = ErrorType<
   ReauthenticationRequiredResponse | AddAuthenticatorConflictResponse
 >;
 
@@ -6758,13 +6456,13 @@ export type PostAllauthClientV1AccountAuthenticatorsWebauthnMutationError = Erro
  * @summary Add a WebAuthn credential
 
  */
-export const usePostAllauthClientV1AccountAuthenticatorsWebauthn = <
+export const usePostAccountAuthenticatorsWebauthn = <
   TError = ErrorType<ReauthenticationRequiredResponse | AddAuthenticatorConflictResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1AccountAuthenticatorsWebauthn>>,
+      Awaited<ReturnType<typeof postAccountAuthenticatorsWebauthn>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<AddWebAuthnAuthenticatorBody> },
       TContext
@@ -6773,13 +6471,12 @@ export const usePostAllauthClientV1AccountAuthenticatorsWebauthn = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1AccountAuthenticatorsWebauthn>>,
+  Awaited<ReturnType<typeof postAccountAuthenticatorsWebauthn>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<AddWebAuthnAuthenticatorBody> },
   TContext
 > => {
-  const mutationOptions =
-    getPostAllauthClientV1AccountAuthenticatorsWebauthnMutationOptions(options);
+  const mutationOptions = getPostAccountAuthenticatorsWebauthnMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -6791,7 +6488,7 @@ session.
  * @summary Get authentication status
 
  */
-export const getAllauthClientV1AuthSession = (
+export const getAuthSession = (
   client: 'app' | 'browser',
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -6802,58 +6499,49 @@ export const getAllauthClientV1AuthSession = (
   );
 };
 
-export const getGetAllauthClientV1AuthSessionQueryKey = (client?: 'app' | 'browser') => {
+export const getGetAuthSessionQueryKey = (client?: 'app' | 'browser') => {
   return [`/api/_allauth/${client}/v1/auth/session`] as const;
 };
 
-export const getGetAllauthClientV1AuthSessionQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthSession>>,
+export const getGetAuthSessionQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAuthSession>>,
   TError = ErrorType<AuthenticationResponse | SessionGoneResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AuthSession>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuthSession>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
   },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetAllauthClientV1AuthSessionQueryKey(client);
+  const queryKey = queryOptions?.queryKey ?? getGetAuthSessionQueryKey(client);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllauthClientV1AuthSession>>> = ({
-    signal,
-  }) => getAllauthClientV1AuthSession(client, requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAuthSession>>> = ({ signal }) =>
+    getAuthSession(client, requestOptions, signal);
 
   return { queryKey, queryFn, enabled: !!client, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAllauthClientV1AuthSession>>,
+    Awaited<ReturnType<typeof getAuthSession>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetAllauthClientV1AuthSessionQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAllauthClientV1AuthSession>>
->;
-export type GetAllauthClientV1AuthSessionQueryError = ErrorType<
-  AuthenticationResponse | SessionGoneResponse
->;
+export type GetAuthSessionQueryResult = NonNullable<Awaited<ReturnType<typeof getAuthSession>>>;
+export type GetAuthSessionQueryError = ErrorType<AuthenticationResponse | SessionGoneResponse>;
 
-export function useGetAllauthClientV1AuthSession<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthSession>>,
+export function useGetAuthSession<
+  TData = Awaited<ReturnType<typeof getAuthSession>>,
   TError = ErrorType<AuthenticationResponse | SessionGoneResponse>,
 >(
   client: 'app' | 'browser',
   options: {
-    query: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AuthSession>>, TError, TData>
-    > &
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuthSession>>, TError, TData>> &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AuthSession>>,
+          Awaited<ReturnType<typeof getAuthSession>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AuthSession>>
+          Awaited<ReturnType<typeof getAuthSession>>
         >,
         'initialData'
       >;
@@ -6861,20 +6549,18 @@ export function useGetAllauthClientV1AuthSession<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AuthSession<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthSession>>,
+export function useGetAuthSession<
+  TData = Awaited<ReturnType<typeof getAuthSession>>,
   TError = ErrorType<AuthenticationResponse | SessionGoneResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AuthSession>>, TError, TData>
-    > &
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuthSession>>, TError, TData>> &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AuthSession>>,
+          Awaited<ReturnType<typeof getAuthSession>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AuthSession>>
+          Awaited<ReturnType<typeof getAuthSession>>
         >,
         'initialData'
       >;
@@ -6882,15 +6568,13 @@ export function useGetAllauthClientV1AuthSession<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AuthSession<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthSession>>,
+export function useGetAuthSession<
+  TData = Awaited<ReturnType<typeof getAuthSession>>,
   TError = ErrorType<AuthenticationResponse | SessionGoneResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AuthSession>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuthSession>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
@@ -6900,20 +6584,18 @@ export function useGetAllauthClientV1AuthSession<
 
  */
 
-export function useGetAllauthClientV1AuthSession<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthSession>>,
+export function useGetAuthSession<
+  TData = Awaited<ReturnType<typeof getAuthSession>>,
   TError = ErrorType<AuthenticationResponse | SessionGoneResponse>,
 >(
   client: 'app' | 'browser',
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AuthSession>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuthSession>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetAllauthClientV1AuthSessionQueryOptions(client, options);
+  const queryOptions = getGetAuthSessionQueryOptions(client, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;
@@ -6929,7 +6611,7 @@ export function useGetAllauthClientV1AuthSession<
 
  * @summary Logout
  */
-export const deleteAllauthClientV1AuthSession = (
+export const deleteAuthSession = (
   client: 'app' | 'browser',
   options?: SecondParameter<typeof customInstance>,
 ) => {
@@ -6939,24 +6621,24 @@ export const deleteAllauthClientV1AuthSession = (
   );
 };
 
-export const getDeleteAllauthClientV1AuthSessionMutationOptions = <
+export const getDeleteAuthSessionMutationOptions = <
   TError = ErrorType<UnauthenticatedResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteAllauthClientV1AuthSession>>,
+    Awaited<ReturnType<typeof deleteAuthSession>>,
     TError,
     { client: 'app' | 'browser' },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof deleteAllauthClientV1AuthSession>>,
+  Awaited<ReturnType<typeof deleteAuthSession>>,
   TError,
   { client: 'app' | 'browser' },
   TContext
 > => {
-  const mutationKey = ['deleteAllauthClientV1AuthSession'];
+  const mutationKey = ['deleteAuthSession'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -6964,33 +6646,33 @@ export const getDeleteAllauthClientV1AuthSessionMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof deleteAllauthClientV1AuthSession>>,
+    Awaited<ReturnType<typeof deleteAuthSession>>,
     { client: 'app' | 'browser' }
   > = props => {
     const { client } = props ?? {};
 
-    return deleteAllauthClientV1AuthSession(client, requestOptions);
+    return deleteAuthSession(client, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type DeleteAllauthClientV1AuthSessionMutationResult = NonNullable<
-  Awaited<ReturnType<typeof deleteAllauthClientV1AuthSession>>
+export type DeleteAuthSessionMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteAuthSession>>
 >;
 
-export type DeleteAllauthClientV1AuthSessionMutationError = ErrorType<UnauthenticatedResponse>;
+export type DeleteAuthSessionMutationError = ErrorType<UnauthenticatedResponse>;
 
 /**
  * @summary Logout
  */
-export const useDeleteAllauthClientV1AuthSession = <
+export const useDeleteAuthSession = <
   TError = ErrorType<UnauthenticatedResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof deleteAllauthClientV1AuthSession>>,
+      Awaited<ReturnType<typeof deleteAuthSession>>,
       TError,
       { client: 'app' | 'browser' },
       TContext
@@ -6999,12 +6681,12 @@ export const useDeleteAllauthClientV1AuthSession = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof deleteAllauthClientV1AuthSession>>,
+  Awaited<ReturnType<typeof deleteAuthSession>>,
   TError,
   { client: 'app' | 'browser' },
   TContext
 > => {
-  const mutationOptions = getDeleteAllauthClientV1AuthSessionMutationOptions(options);
+  const mutationOptions = getDeleteAuthSessionMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -7016,7 +6698,7 @@ a new refresh token is returned as well.
  * @summary Refresh the access token
 
  */
-export const postAllauthAppV1TokensRefresh = (
+export const postAppTokensRefresh = (
   refreshTokenBody: BodyType<RefreshTokenBody>,
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -7033,24 +6715,24 @@ export const postAllauthAppV1TokensRefresh = (
   );
 };
 
-export const getPostAllauthAppV1TokensRefreshMutationOptions = <
+export const getPostAppTokensRefreshMutationOptions = <
   TError = ErrorType<ErrorResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthAppV1TokensRefresh>>,
+    Awaited<ReturnType<typeof postAppTokensRefresh>>,
     TError,
     { data: BodyType<RefreshTokenBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthAppV1TokensRefresh>>,
+  Awaited<ReturnType<typeof postAppTokensRefresh>>,
   TError,
   { data: BodyType<RefreshTokenBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthAppV1TokensRefresh'];
+  const mutationKey = ['postAppTokensRefresh'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -7058,34 +6740,31 @@ export const getPostAllauthAppV1TokensRefreshMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthAppV1TokensRefresh>>,
+    Awaited<ReturnType<typeof postAppTokensRefresh>>,
     { data: BodyType<RefreshTokenBody> }
   > = props => {
     const { data } = props ?? {};
 
-    return postAllauthAppV1TokensRefresh(data, requestOptions);
+    return postAppTokensRefresh(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthAppV1TokensRefreshMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthAppV1TokensRefresh>>
+export type PostAppTokensRefreshMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAppTokensRefresh>>
 >;
-export type PostAllauthAppV1TokensRefreshMutationBody = BodyType<RefreshTokenBody>;
-export type PostAllauthAppV1TokensRefreshMutationError = ErrorType<ErrorResponse>;
+export type PostAppTokensRefreshMutationBody = BodyType<RefreshTokenBody>;
+export type PostAppTokensRefreshMutationError = ErrorType<ErrorResponse>;
 
 /**
  * @summary Refresh the access token
 
  */
-export const usePostAllauthAppV1TokensRefresh = <
-  TError = ErrorType<ErrorResponse>,
-  TContext = unknown,
->(
+export const usePostAppTokensRefresh = <TError = ErrorType<ErrorResponse>, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthAppV1TokensRefresh>>,
+      Awaited<ReturnType<typeof postAppTokensRefresh>>,
       TError,
       { data: BodyType<RefreshTokenBody> },
       TContext
@@ -7094,12 +6773,12 @@ export const usePostAllauthAppV1TokensRefresh = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthAppV1TokensRefresh>>,
+  Awaited<ReturnType<typeof postAppTokensRefresh>>,
   TError,
   { data: BodyType<RefreshTokenBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthAppV1TokensRefreshMutationOptions(options);
+  const mutationOptions = getPostAppTokensRefreshMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -7112,7 +6791,7 @@ that case, the current password is not required.
 
  * @summary Change password
  */
-export const postAllauthClientV1AccountPasswordChange = (
+export const postAccountPasswordChange = (
   client: 'app' | 'browser',
   changePasswordBody: BodyType<ChangePasswordBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -7130,24 +6809,24 @@ export const postAllauthClientV1AccountPasswordChange = (
   );
 };
 
-export const getPostAllauthClientV1AccountPasswordChangeMutationOptions = <
+export const getPostAccountPasswordChangeMutationOptions = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAllauthClientV1AccountPasswordChange>>,
+    Awaited<ReturnType<typeof postAccountPasswordChange>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<ChangePasswordBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAllauthClientV1AccountPasswordChange>>,
+  Awaited<ReturnType<typeof postAccountPasswordChange>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<ChangePasswordBody> },
   TContext
 > => {
-  const mutationKey = ['postAllauthClientV1AccountPasswordChange'];
+  const mutationKey = ['postAccountPasswordChange'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -7155,35 +6834,35 @@ export const getPostAllauthClientV1AccountPasswordChangeMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAllauthClientV1AccountPasswordChange>>,
+    Awaited<ReturnType<typeof postAccountPasswordChange>>,
     { client: 'app' | 'browser'; data: BodyType<ChangePasswordBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return postAllauthClientV1AccountPasswordChange(client, data, requestOptions);
+    return postAccountPasswordChange(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAllauthClientV1AccountPasswordChangeMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAllauthClientV1AccountPasswordChange>>
+export type PostAccountPasswordChangeMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAccountPasswordChange>>
 >;
-export type PostAllauthClientV1AccountPasswordChangeMutationBody = BodyType<ChangePasswordBody>;
-export type PostAllauthClientV1AccountPasswordChangeMutationError = ErrorType<
+export type PostAccountPasswordChangeMutationBody = BodyType<ChangePasswordBody>;
+export type PostAccountPasswordChangeMutationError = ErrorType<
   ErrorResponse | AuthenticationResponse
 >;
 
 /**
  * @summary Change password
  */
-export const usePostAllauthClientV1AccountPasswordChange = <
+export const usePostAccountPasswordChange = <
   TError = ErrorType<ErrorResponse | AuthenticationResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAllauthClientV1AccountPasswordChange>>,
+      Awaited<ReturnType<typeof postAccountPasswordChange>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<ChangePasswordBody> },
       TContext
@@ -7192,12 +6871,12 @@ export const usePostAllauthClientV1AccountPasswordChange = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAllauthClientV1AccountPasswordChange>>,
+  Awaited<ReturnType<typeof postAccountPasswordChange>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<ChangePasswordBody> },
   TContext
 > => {
-  const mutationOptions = getPostAllauthClientV1AccountPasswordChangeMutationOptions(options);
+  const mutationOptions = getPostAccountPasswordChangeMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -7205,7 +6884,7 @@ export const usePostAllauthClientV1AccountPasswordChange = <
 /**
  * @summary List sessions
  */
-export const getAllauthClientV1AuthSessions = (
+export const getAuthSessions = (
   client: 'app' | 'browser',
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -7216,56 +6895,49 @@ export const getAllauthClientV1AuthSessions = (
   );
 };
 
-export const getGetAllauthClientV1AuthSessionsQueryKey = (client?: 'app' | 'browser') => {
+export const getGetAuthSessionsQueryKey = (client?: 'app' | 'browser') => {
   return [`/api/_allauth/${client}/v1/auth/sessions`] as const;
 };
 
-export const getGetAllauthClientV1AuthSessionsQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthSessions>>,
+export const getGetAuthSessionsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAuthSessions>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AuthSessions>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuthSessions>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
   },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetAllauthClientV1AuthSessionsQueryKey(client);
+  const queryKey = queryOptions?.queryKey ?? getGetAuthSessionsQueryKey(client);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllauthClientV1AuthSessions>>> = ({
-    signal,
-  }) => getAllauthClientV1AuthSessions(client, requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAuthSessions>>> = ({ signal }) =>
+    getAuthSessions(client, requestOptions, signal);
 
   return { queryKey, queryFn, enabled: !!client, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAllauthClientV1AuthSessions>>,
+    Awaited<ReturnType<typeof getAuthSessions>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetAllauthClientV1AuthSessionsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAllauthClientV1AuthSessions>>
->;
-export type GetAllauthClientV1AuthSessionsQueryError = ErrorType<unknown>;
+export type GetAuthSessionsQueryResult = NonNullable<Awaited<ReturnType<typeof getAuthSessions>>>;
+export type GetAuthSessionsQueryError = ErrorType<unknown>;
 
-export function useGetAllauthClientV1AuthSessions<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthSessions>>,
+export function useGetAuthSessions<
+  TData = Awaited<ReturnType<typeof getAuthSessions>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options: {
-    query: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AuthSessions>>, TError, TData>
-    > &
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuthSessions>>, TError, TData>> &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AuthSessions>>,
+          Awaited<ReturnType<typeof getAuthSessions>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AuthSessions>>
+          Awaited<ReturnType<typeof getAuthSessions>>
         >,
         'initialData'
       >;
@@ -7273,20 +6945,18 @@ export function useGetAllauthClientV1AuthSessions<
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AuthSessions<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthSessions>>,
+export function useGetAuthSessions<
+  TData = Awaited<ReturnType<typeof getAuthSessions>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AuthSessions>>, TError, TData>
-    > &
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuthSessions>>, TError, TData>> &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllauthClientV1AuthSessions>>,
+          Awaited<ReturnType<typeof getAuthSessions>>,
           TError,
-          Awaited<ReturnType<typeof getAllauthClientV1AuthSessions>>
+          Awaited<ReturnType<typeof getAuthSessions>>
         >,
         'initialData'
       >;
@@ -7294,15 +6964,13 @@ export function useGetAllauthClientV1AuthSessions<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetAllauthClientV1AuthSessions<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthSessions>>,
+export function useGetAuthSessions<
+  TData = Awaited<ReturnType<typeof getAuthSessions>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AuthSessions>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuthSessions>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
@@ -7311,20 +6979,18 @@ export function useGetAllauthClientV1AuthSessions<
  * @summary List sessions
  */
 
-export function useGetAllauthClientV1AuthSessions<
-  TData = Awaited<ReturnType<typeof getAllauthClientV1AuthSessions>>,
+export function useGetAuthSessions<
+  TData = Awaited<ReturnType<typeof getAuthSessions>>,
   TError = ErrorType<unknown>,
 >(
   client: 'app' | 'browser',
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllauthClientV1AuthSessions>>, TError, TData>
-    >;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAuthSessions>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetAllauthClientV1AuthSessionsQueryOptions(client, options);
+  const queryOptions = getGetAuthSessionsQueryOptions(client, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;
@@ -7338,7 +7004,7 @@ export function useGetAllauthClientV1AuthSessions<
 /**
  * @summary End one or more sessions
  */
-export const deleteAllauthClientV1AuthSessions = (
+export const deleteAuthSessions = (
   client: 'app' | 'browser',
   endSessionsBody: BodyType<EndSessionsBody>,
   options?: SecondParameter<typeof customInstance>,
@@ -7354,24 +7020,24 @@ export const deleteAllauthClientV1AuthSessions = (
   );
 };
 
-export const getDeleteAllauthClientV1AuthSessionsMutationOptions = <
+export const getDeleteAuthSessionsMutationOptions = <
   TError = ErrorType<AuthenticationResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteAllauthClientV1AuthSessions>>,
+    Awaited<ReturnType<typeof deleteAuthSessions>>,
     TError,
     { client: 'app' | 'browser'; data: BodyType<EndSessionsBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof deleteAllauthClientV1AuthSessions>>,
+  Awaited<ReturnType<typeof deleteAuthSessions>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<EndSessionsBody> },
   TContext
 > => {
-  const mutationKey = ['deleteAllauthClientV1AuthSessions'];
+  const mutationKey = ['deleteAuthSessions'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -7379,33 +7045,33 @@ export const getDeleteAllauthClientV1AuthSessionsMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof deleteAllauthClientV1AuthSessions>>,
+    Awaited<ReturnType<typeof deleteAuthSessions>>,
     { client: 'app' | 'browser'; data: BodyType<EndSessionsBody> }
   > = props => {
     const { client, data } = props ?? {};
 
-    return deleteAllauthClientV1AuthSessions(client, data, requestOptions);
+    return deleteAuthSessions(client, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type DeleteAllauthClientV1AuthSessionsMutationResult = NonNullable<
-  Awaited<ReturnType<typeof deleteAllauthClientV1AuthSessions>>
+export type DeleteAuthSessionsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteAuthSessions>>
 >;
-export type DeleteAllauthClientV1AuthSessionsMutationBody = BodyType<EndSessionsBody>;
-export type DeleteAllauthClientV1AuthSessionsMutationError = ErrorType<AuthenticationResponse>;
+export type DeleteAuthSessionsMutationBody = BodyType<EndSessionsBody>;
+export type DeleteAuthSessionsMutationError = ErrorType<AuthenticationResponse>;
 
 /**
  * @summary End one or more sessions
  */
-export const useDeleteAllauthClientV1AuthSessions = <
+export const useDeleteAuthSessions = <
   TError = ErrorType<AuthenticationResponse>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof deleteAllauthClientV1AuthSessions>>,
+      Awaited<ReturnType<typeof deleteAuthSessions>>,
       TError,
       { client: 'app' | 'browser'; data: BodyType<EndSessionsBody> },
       TContext
@@ -7414,12 +7080,12 @@ export const useDeleteAllauthClientV1AuthSessions = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof deleteAllauthClientV1AuthSessions>>,
+  Awaited<ReturnType<typeof deleteAuthSessions>>,
   TError,
   { client: 'app' | 'browser'; data: BodyType<EndSessionsBody> },
   TContext
 > => {
-  const mutationOptions = getDeleteAllauthClientV1AuthSessionsMutationOptions(options);
+  const mutationOptions = getDeleteAuthSessionsMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
