@@ -2,6 +2,7 @@
 
 import { QueryClient, QueryClientProvider, isServer } from '@tanstack/react-query';
 
+import { ThemeProvider, createTheme } from '@mui/material';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v16-appRouter';
 
 function makeQueryClient() {
@@ -25,6 +26,8 @@ function getQueryClient() {
   return browserQueryClient;
 }
 
+const darkTheme = createTheme({ palette: { mode: 'dark' } });
+
 export default function Providers({
   children,
 }: Readonly<{
@@ -34,7 +37,9 @@ export default function Providers({
 
   return (
     <AppRouterCacheProvider>
-      <QueryClientProvider client={client}>{children}</QueryClientProvider>;
+      <QueryClientProvider client={client}>
+        <ThemeProvider theme={darkTheme}>{children}</ThemeProvider>
+      </QueryClientProvider>
     </AppRouterCacheProvider>
   );
 }

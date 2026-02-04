@@ -1,38 +1,15 @@
-'use client';
-
-import { useState } from 'react';
-
-import styles from './page.module.css';
-import { usePostAuthLogin } from '@/api/allauth';
-import { Button, Paper, TextField } from '@mui/material';
+import { Container } from '@mui/material';
 
 export default function Home() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const login = usePostAuthLogin();
-
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Paper>
-          <TextField
-            variant="outlined"
-            label="username"
-            onChange={e => setUsername(e.target.value)}
-          />
-          <TextField
-            variant="outlined"
-            label="password"
-            onChange={e => setPassword(e.target.value)}
-          />
-          <Button
-            variant="contained"
-            onClick={() => login.mutate({ data: { username, password } })}
-          >
-            Submit
-          </Button>
-        </Paper>
-      </main>
-    </div>
+    <Container sx={{ justifyContent: 'center', lineHeight: 2 }}>
+      <p>This page intentionally left blank</p>
+      <p>
+        Try{' '}
+        <a href="/login" style={{ color: 'blue' }}>
+          here
+        </a>
+      </p>
+    </Container>
   );
 }
