@@ -6,7 +6,7 @@ module.exports = inputSchema => {
     for (const [method, operation] of Object.entries(methods)) {
       paths[newPath][method] = {
         ...operation,
-        parameters: (operation.parameters || []).filter(p => p.name !== 'client'),
+        parameters: (operation.parameters ?? []).filter(p => p.name !== 'client'),
       };
     }
   }

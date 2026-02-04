@@ -1,6 +1,5 @@
 import './globals.css';
-import { ClientProvider } from './provider';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v16-appRouter';
+import Providers from './providers';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
@@ -27,9 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <ClientProvider>
-          <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
-        </ClientProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

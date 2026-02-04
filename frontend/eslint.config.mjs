@@ -28,7 +28,13 @@ const eslintConfig = [
       parserOptions: {
         project: true,
         projectService: {
-          allowDefaultProject: ['*.js', '*.mjs', '*.cjs', '*/ChatWidget.js'],
+          allowDefaultProject: [
+            '*.js',
+            '*.mjs',
+            '*.cjs',
+            '*/ChatWidget.js',
+            'api/mutator/add-client.js', // temporary
+          ],
         },
         tsconfigRootDir: import.meta.dirname,
       },
