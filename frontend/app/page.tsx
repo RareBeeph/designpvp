@@ -27,7 +27,7 @@ export default function Home() {
           />
           <Button
             variant="contained"
-            onClick={() => login.mutate({ client: 'browser', data: { username, password } })}
+            onClick={() => login.mutate({ data: { username, password } })}
           >
             Submit
           </Button>

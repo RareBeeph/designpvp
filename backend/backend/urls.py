@@ -17,6 +17,8 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path
+from drf_spectacular.views import SpectacularAPIView
+from django.conf import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -24,3 +26,8 @@ urlpatterns = [
     path("api/accounts/", include("allauth.urls")),
     path("api/_allauth/", include("allauth.headless.urls")),
 ]
+
+if not settings.PRODUCTION:
+    urlpatterns += [
+        path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    ]

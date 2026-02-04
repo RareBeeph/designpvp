@@ -24,26 +24,6 @@ import type {
 import { customInstance } from './mutator/custom-instance';
 import type { BodyType, ErrorType } from './mutator/custom-instance';
 
-// https://stackoverflow.com/questions/49579094/typescript-conditional-types-filter-out-readonly-properties-pick-only-requir/49579497#49579497
-type IfEquals<X, Y, A = X, B = never> =
-  (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y ? 1 : 2 ? A : B;
-
-type WritableKeys<T> = {
-  [P in keyof T]-?: IfEquals<{ [Q in P]: T[P] }, { -readonly [Q in P]: T[P] }, P>;
-}[keyof T];
-
-type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void
-  ? I
-  : never;
-type DistributeReadOnlyOverUnions<T> = T extends any ? NonReadonly<T> : never;
-
-type Writable<T> = Pick<T, WritableKeys<T>>;
-type NonReadonly<T> = [T] extends [UnionToIntersection<T>]
-  ? {
-      [P in keyof Writable<T>]: T[P] extends object ? NonReadonly<NonNullable<T[P]>> : T[P];
-    }
-  : DistributeReadOnlyOverUnions<T>;
-
 export interface Event {
   readonly id: number;
   /** @maxLength 50 */
@@ -52,17 +32,31 @@ export interface Event {
   ends: string;
 }
 
-export interface PatchedEvent {
-  readonly id?: number;
-  /** @maxLength 50 */
+export interface EventRequest {
+  /**
+   * @minLength 1
+   * @maxLength 50
+   */
+  name: string;
+  starts: string;
+  ends: string;
+}
+
+export interface PatchedEventRequest {
+  /**
+   * @minLength 1
+   * @maxLength 50
+   */
   name?: string;
   starts?: string;
   ends?: string;
 }
 
-export interface PatchedTeam {
-  readonly id?: number;
-  /** @maxLength 50 */
+export interface PatchedTeamRequest {
+  /**
+   * @minLength 1
+   * @maxLength 50
+   */
   name?: string;
   event?: number;
 }
@@ -70,6 +64,15 @@ export interface PatchedTeam {
 export interface Team {
   readonly id: number;
   /** @maxLength 50 */
+  name: string;
+  event: number;
+}
+
+export interface TeamRequest {
+  /**
+   * @minLength 1
+   * @maxLength 50
+   */
   name: string;
   event: number;
 }
@@ -180,14 +183,14 @@ export function useEventsList<
 }
 
 export const eventsCreate = (
-  event: BodyType<NonReadonly<Event>>,
+  eventRequest: BodyType<EventRequest>,
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
   const formUrlEncoded = new URLSearchParams();
-  formUrlEncoded.append(`name`, event.name);
-  formUrlEncoded.append(`starts`, event.starts);
-  formUrlEncoded.append(`ends`, event.ends);
+  formUrlEncoded.append(`name`, eventRequest.name);
+  formUrlEncoded.append(`starts`, eventRequest.starts);
+  formUrlEncoded.append(`ends`, eventRequest.ends);
 
   return customInstance<Event>(
     {
@@ -208,14 +211,14 @@ export const getEventsCreateMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof eventsCreate>>,
     TError,
-    { data: BodyType<NonReadonly<Event>> },
+    { data: BodyType<EventRequest> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof eventsCreate>>,
   TError,
-  { data: BodyType<NonReadonly<Event>> },
+  { data: BodyType<EventRequest> },
   TContext
 > => {
   const mutationKey = ['eventsCreate'];
@@ -227,7 +230,7 @@ export const getEventsCreateMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof eventsCreate>>,
-    { data: BodyType<NonReadonly<Event>> }
+    { data: BodyType<EventRequest> }
   > = props => {
     const { data } = props ?? {};
 
@@ -238,7 +241,7 @@ export const getEventsCreateMutationOptions = <
 };
 
 export type EventsCreateMutationResult = NonNullable<Awaited<ReturnType<typeof eventsCreate>>>;
-export type EventsCreateMutationBody = BodyType<NonReadonly<Event>>;
+export type EventsCreateMutationBody = BodyType<EventRequest>;
 export type EventsCreateMutationError = ErrorType<unknown>;
 
 export const useEventsCreate = <TError = ErrorType<unknown>, TContext = unknown>(
@@ -246,7 +249,7 @@ export const useEventsCreate = <TError = ErrorType<unknown>, TContext = unknown>
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof eventsCreate>>,
       TError,
-      { data: BodyType<NonReadonly<Event>> },
+      { data: BodyType<EventRequest> },
       TContext
     >;
     request?: SecondParameter<typeof customInstance>;
@@ -255,7 +258,7 @@ export const useEventsCreate = <TError = ErrorType<unknown>, TContext = unknown>
 ): UseMutationResult<
   Awaited<ReturnType<typeof eventsCreate>>,
   TError,
-  { data: BodyType<NonReadonly<Event>> },
+  { data: BodyType<EventRequest> },
   TContext
 > => {
   const mutationOptions = getEventsCreateMutationOptions(options);
@@ -376,13 +379,13 @@ export function useEventsRetrieve<
 
 export const eventsUpdate = (
   id: number,
-  event: BodyType<NonReadonly<Event>>,
+  eventRequest: BodyType<EventRequest>,
   options?: SecondParameter<typeof customInstance>,
 ) => {
   const formUrlEncoded = new URLSearchParams();
-  formUrlEncoded.append(`name`, event.name);
-  formUrlEncoded.append(`starts`, event.starts);
-  formUrlEncoded.append(`ends`, event.ends);
+  formUrlEncoded.append(`name`, eventRequest.name);
+  formUrlEncoded.append(`starts`, eventRequest.starts);
+  formUrlEncoded.append(`ends`, eventRequest.ends);
 
   return customInstance<Event>(
     {
@@ -402,14 +405,14 @@ export const getEventsUpdateMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof eventsUpdate>>,
     TError,
-    { id: number; data: BodyType<NonReadonly<Event>> },
+    { id: number; data: BodyType<EventRequest> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof eventsUpdate>>,
   TError,
-  { id: number; data: BodyType<NonReadonly<Event>> },
+  { id: number; data: BodyType<EventRequest> },
   TContext
 > => {
   const mutationKey = ['eventsUpdate'];
@@ -421,7 +424,7 @@ export const getEventsUpdateMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof eventsUpdate>>,
-    { id: number; data: BodyType<NonReadonly<Event>> }
+    { id: number; data: BodyType<EventRequest> }
   > = props => {
     const { id, data } = props ?? {};
 
@@ -432,7 +435,7 @@ export const getEventsUpdateMutationOptions = <
 };
 
 export type EventsUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof eventsUpdate>>>;
-export type EventsUpdateMutationBody = BodyType<NonReadonly<Event>>;
+export type EventsUpdateMutationBody = BodyType<EventRequest>;
 export type EventsUpdateMutationError = ErrorType<unknown>;
 
 export const useEventsUpdate = <TError = ErrorType<unknown>, TContext = unknown>(
@@ -440,7 +443,7 @@ export const useEventsUpdate = <TError = ErrorType<unknown>, TContext = unknown>
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof eventsUpdate>>,
       TError,
-      { id: number; data: BodyType<NonReadonly<Event>> },
+      { id: number; data: BodyType<EventRequest> },
       TContext
     >;
     request?: SecondParameter<typeof customInstance>;
@@ -449,7 +452,7 @@ export const useEventsUpdate = <TError = ErrorType<unknown>, TContext = unknown>
 ): UseMutationResult<
   Awaited<ReturnType<typeof eventsUpdate>>,
   TError,
-  { id: number; data: BodyType<NonReadonly<Event>> },
+  { id: number; data: BodyType<EventRequest> },
   TContext
 > => {
   const mutationOptions = getEventsUpdateMutationOptions(options);
@@ -459,18 +462,18 @@ export const useEventsUpdate = <TError = ErrorType<unknown>, TContext = unknown>
 
 export const eventsPartialUpdate = (
   id: number,
-  patchedEvent: BodyType<NonReadonly<PatchedEvent>>,
+  patchedEventRequest: BodyType<PatchedEventRequest>,
   options?: SecondParameter<typeof customInstance>,
 ) => {
   const formUrlEncoded = new URLSearchParams();
-  if (patchedEvent.name !== undefined) {
-    formUrlEncoded.append(`name`, patchedEvent.name);
+  if (patchedEventRequest.name !== undefined) {
+    formUrlEncoded.append(`name`, patchedEventRequest.name);
   }
-  if (patchedEvent.starts !== undefined) {
-    formUrlEncoded.append(`starts`, patchedEvent.starts);
+  if (patchedEventRequest.starts !== undefined) {
+    formUrlEncoded.append(`starts`, patchedEventRequest.starts);
   }
-  if (patchedEvent.ends !== undefined) {
-    formUrlEncoded.append(`ends`, patchedEvent.ends);
+  if (patchedEventRequest.ends !== undefined) {
+    formUrlEncoded.append(`ends`, patchedEventRequest.ends);
   }
 
   return customInstance<Event>(
@@ -491,14 +494,14 @@ export const getEventsPartialUpdateMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof eventsPartialUpdate>>,
     TError,
-    { id: number; data: BodyType<NonReadonly<PatchedEvent>> },
+    { id: number; data: BodyType<PatchedEventRequest> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof eventsPartialUpdate>>,
   TError,
-  { id: number; data: BodyType<NonReadonly<PatchedEvent>> },
+  { id: number; data: BodyType<PatchedEventRequest> },
   TContext
 > => {
   const mutationKey = ['eventsPartialUpdate'];
@@ -510,7 +513,7 @@ export const getEventsPartialUpdateMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof eventsPartialUpdate>>,
-    { id: number; data: BodyType<NonReadonly<PatchedEvent>> }
+    { id: number; data: BodyType<PatchedEventRequest> }
   > = props => {
     const { id, data } = props ?? {};
 
@@ -523,7 +526,7 @@ export const getEventsPartialUpdateMutationOptions = <
 export type EventsPartialUpdateMutationResult = NonNullable<
   Awaited<ReturnType<typeof eventsPartialUpdate>>
 >;
-export type EventsPartialUpdateMutationBody = BodyType<NonReadonly<PatchedEvent>>;
+export type EventsPartialUpdateMutationBody = BodyType<PatchedEventRequest>;
 export type EventsPartialUpdateMutationError = ErrorType<unknown>;
 
 export const useEventsPartialUpdate = <TError = ErrorType<unknown>, TContext = unknown>(
@@ -531,7 +534,7 @@ export const useEventsPartialUpdate = <TError = ErrorType<unknown>, TContext = u
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof eventsPartialUpdate>>,
       TError,
-      { id: number; data: BodyType<NonReadonly<PatchedEvent>> },
+      { id: number; data: BodyType<PatchedEventRequest> },
       TContext
     >;
     request?: SecondParameter<typeof customInstance>;
@@ -540,7 +543,7 @@ export const useEventsPartialUpdate = <TError = ErrorType<unknown>, TContext = u
 ): UseMutationResult<
   Awaited<ReturnType<typeof eventsPartialUpdate>>,
   TError,
-  { id: number; data: BodyType<NonReadonly<PatchedEvent>> },
+  { id: number; data: BodyType<PatchedEventRequest> },
   TContext
 > => {
   const mutationOptions = getEventsPartialUpdateMutationOptions(options);
@@ -718,13 +721,13 @@ export function useTeamsList<
 }
 
 export const teamsCreate = (
-  team: BodyType<NonReadonly<Team>>,
+  teamRequest: BodyType<TeamRequest>,
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
   const formUrlEncoded = new URLSearchParams();
-  formUrlEncoded.append(`name`, team.name);
-  formUrlEncoded.append(`event`, team.event.toString());
+  formUrlEncoded.append(`name`, teamRequest.name);
+  formUrlEncoded.append(`event`, teamRequest.event.toString());
 
   return customInstance<Team>(
     {
@@ -745,14 +748,14 @@ export const getTeamsCreateMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof teamsCreate>>,
     TError,
-    { data: BodyType<NonReadonly<Team>> },
+    { data: BodyType<TeamRequest> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof teamsCreate>>,
   TError,
-  { data: BodyType<NonReadonly<Team>> },
+  { data: BodyType<TeamRequest> },
   TContext
 > => {
   const mutationKey = ['teamsCreate'];
@@ -764,7 +767,7 @@ export const getTeamsCreateMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof teamsCreate>>,
-    { data: BodyType<NonReadonly<Team>> }
+    { data: BodyType<TeamRequest> }
   > = props => {
     const { data } = props ?? {};
 
@@ -775,7 +778,7 @@ export const getTeamsCreateMutationOptions = <
 };
 
 export type TeamsCreateMutationResult = NonNullable<Awaited<ReturnType<typeof teamsCreate>>>;
-export type TeamsCreateMutationBody = BodyType<NonReadonly<Team>>;
+export type TeamsCreateMutationBody = BodyType<TeamRequest>;
 export type TeamsCreateMutationError = ErrorType<unknown>;
 
 export const useTeamsCreate = <TError = ErrorType<unknown>, TContext = unknown>(
@@ -783,7 +786,7 @@ export const useTeamsCreate = <TError = ErrorType<unknown>, TContext = unknown>(
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof teamsCreate>>,
       TError,
-      { data: BodyType<NonReadonly<Team>> },
+      { data: BodyType<TeamRequest> },
       TContext
     >;
     request?: SecondParameter<typeof customInstance>;
@@ -792,7 +795,7 @@ export const useTeamsCreate = <TError = ErrorType<unknown>, TContext = unknown>(
 ): UseMutationResult<
   Awaited<ReturnType<typeof teamsCreate>>,
   TError,
-  { data: BodyType<NonReadonly<Team>> },
+  { data: BodyType<TeamRequest> },
   TContext
 > => {
   const mutationOptions = getTeamsCreateMutationOptions(options);
@@ -913,12 +916,12 @@ export function useTeamsRetrieve<
 
 export const teamsUpdate = (
   id: number,
-  team: BodyType<NonReadonly<Team>>,
+  teamRequest: BodyType<TeamRequest>,
   options?: SecondParameter<typeof customInstance>,
 ) => {
   const formUrlEncoded = new URLSearchParams();
-  formUrlEncoded.append(`name`, team.name);
-  formUrlEncoded.append(`event`, team.event.toString());
+  formUrlEncoded.append(`name`, teamRequest.name);
+  formUrlEncoded.append(`event`, teamRequest.event.toString());
 
   return customInstance<Team>(
     {
@@ -938,14 +941,14 @@ export const getTeamsUpdateMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof teamsUpdate>>,
     TError,
-    { id: number; data: BodyType<NonReadonly<Team>> },
+    { id: number; data: BodyType<TeamRequest> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof teamsUpdate>>,
   TError,
-  { id: number; data: BodyType<NonReadonly<Team>> },
+  { id: number; data: BodyType<TeamRequest> },
   TContext
 > => {
   const mutationKey = ['teamsUpdate'];
@@ -957,7 +960,7 @@ export const getTeamsUpdateMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof teamsUpdate>>,
-    { id: number; data: BodyType<NonReadonly<Team>> }
+    { id: number; data: BodyType<TeamRequest> }
   > = props => {
     const { id, data } = props ?? {};
 
@@ -968,7 +971,7 @@ export const getTeamsUpdateMutationOptions = <
 };
 
 export type TeamsUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof teamsUpdate>>>;
-export type TeamsUpdateMutationBody = BodyType<NonReadonly<Team>>;
+export type TeamsUpdateMutationBody = BodyType<TeamRequest>;
 export type TeamsUpdateMutationError = ErrorType<unknown>;
 
 export const useTeamsUpdate = <TError = ErrorType<unknown>, TContext = unknown>(
@@ -976,7 +979,7 @@ export const useTeamsUpdate = <TError = ErrorType<unknown>, TContext = unknown>(
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof teamsUpdate>>,
       TError,
-      { id: number; data: BodyType<NonReadonly<Team>> },
+      { id: number; data: BodyType<TeamRequest> },
       TContext
     >;
     request?: SecondParameter<typeof customInstance>;
@@ -985,7 +988,7 @@ export const useTeamsUpdate = <TError = ErrorType<unknown>, TContext = unknown>(
 ): UseMutationResult<
   Awaited<ReturnType<typeof teamsUpdate>>,
   TError,
-  { id: number; data: BodyType<NonReadonly<Team>> },
+  { id: number; data: BodyType<TeamRequest> },
   TContext
 > => {
   const mutationOptions = getTeamsUpdateMutationOptions(options);
@@ -995,15 +998,15 @@ export const useTeamsUpdate = <TError = ErrorType<unknown>, TContext = unknown>(
 
 export const teamsPartialUpdate = (
   id: number,
-  patchedTeam: BodyType<NonReadonly<PatchedTeam>>,
+  patchedTeamRequest: BodyType<PatchedTeamRequest>,
   options?: SecondParameter<typeof customInstance>,
 ) => {
   const formUrlEncoded = new URLSearchParams();
-  if (patchedTeam.name !== undefined) {
-    formUrlEncoded.append(`name`, patchedTeam.name);
+  if (patchedTeamRequest.name !== undefined) {
+    formUrlEncoded.append(`name`, patchedTeamRequest.name);
   }
-  if (patchedTeam.event !== undefined) {
-    formUrlEncoded.append(`event`, patchedTeam.event.toString());
+  if (patchedTeamRequest.event !== undefined) {
+    formUrlEncoded.append(`event`, patchedTeamRequest.event.toString());
   }
 
   return customInstance<Team>(
@@ -1024,14 +1027,14 @@ export const getTeamsPartialUpdateMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof teamsPartialUpdate>>,
     TError,
-    { id: number; data: BodyType<NonReadonly<PatchedTeam>> },
+    { id: number; data: BodyType<PatchedTeamRequest> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof teamsPartialUpdate>>,
   TError,
-  { id: number; data: BodyType<NonReadonly<PatchedTeam>> },
+  { id: number; data: BodyType<PatchedTeamRequest> },
   TContext
 > => {
   const mutationKey = ['teamsPartialUpdate'];
@@ -1043,7 +1046,7 @@ export const getTeamsPartialUpdateMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof teamsPartialUpdate>>,
-    { id: number; data: BodyType<NonReadonly<PatchedTeam>> }
+    { id: number; data: BodyType<PatchedTeamRequest> }
   > = props => {
     const { id, data } = props ?? {};
 
@@ -1056,7 +1059,7 @@ export const getTeamsPartialUpdateMutationOptions = <
 export type TeamsPartialUpdateMutationResult = NonNullable<
   Awaited<ReturnType<typeof teamsPartialUpdate>>
 >;
-export type TeamsPartialUpdateMutationBody = BodyType<NonReadonly<PatchedTeam>>;
+export type TeamsPartialUpdateMutationBody = BodyType<PatchedTeamRequest>;
 export type TeamsPartialUpdateMutationError = ErrorType<unknown>;
 
 export const useTeamsPartialUpdate = <TError = ErrorType<unknown>, TContext = unknown>(
@@ -1064,7 +1067,7 @@ export const useTeamsPartialUpdate = <TError = ErrorType<unknown>, TContext = un
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof teamsPartialUpdate>>,
       TError,
-      { id: number; data: BodyType<NonReadonly<PatchedTeam>> },
+      { id: number; data: BodyType<PatchedTeamRequest> },
       TContext
     >;
     request?: SecondParameter<typeof customInstance>;
@@ -1073,7 +1076,7 @@ export const useTeamsPartialUpdate = <TError = ErrorType<unknown>, TContext = un
 ): UseMutationResult<
   Awaited<ReturnType<typeof teamsPartialUpdate>>,
   TError,
-  { id: number; data: BodyType<NonReadonly<PatchedTeam>> },
+  { id: number; data: BodyType<PatchedTeamRequest> },
   TContext
 > => {
   const mutationOptions = getTeamsPartialUpdateMutationOptions(options);

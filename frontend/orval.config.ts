@@ -2,11 +2,12 @@ import { defineConfig } from 'orval';
 
 export default defineConfig({
   backend: {
-    input: '../backend/schema.yml',
+    input: 'http://backend:3000/api/schema/',
     output: {
       target: './api/backend.ts',
       client: 'react-query',
       httpClient: 'axios',
+      prettier: true,
       override: {
         namingConvention: {
           enum: 'camelCase',
@@ -17,17 +18,20 @@ export default defineConfig({
         },
       },
     },
-    hooks: {
-      afterAllFilesWrite: 'prettier --write',
-    },
   },
   allauth: {
-    input: '../backend/allauth-schema.yaml',
+    input: {
+      target: './allauth-schema.yaml',
+      override: {
+        transformer: './api/mutator/add-client.js',
+      },
+    },
     output: {
       target: './api/allauth.ts',
       client: 'react-query',
       httpClient: 'axios',
       baseUrl: '/api/',
+      prettier: true,
       override: {
         namingConvention: {
           enum: 'camelCase',
@@ -37,9 +41,6 @@ export default defineConfig({
           name: 'customInstance',
         },
       },
-    },
-    hooks: {
-      afterAllFilesWrite: 'prettier --write',
     },
   },
 });
