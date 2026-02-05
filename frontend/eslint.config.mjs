@@ -6,6 +6,7 @@ import prettierConfig from 'eslint-config-prettier';
 import jest from 'eslint-plugin-jest';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import prettier from 'eslint-plugin-prettier';
+import unusedImports from 'eslint-plugin-unused-imports';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -57,9 +58,22 @@ const eslintConfig = [
       'jsx-a11y': jsxA11yPlugin,
       '@next/next': nextPlugin,
       prettier,
+      'unused-imports': unusedImports,
     },
 
     rules: {
+      // Detect and auto-fix unused imports
+      'unused-imports/no-unused-imports': 'error',
+      'unused-imports/no-unused-vars': [
+        'warn',
+        {
+          vars: 'all',
+          varsIgnorePattern: '^_',
+          args: 'after-used',
+          argsIgnorePattern: '^_',
+        },
+      ],
+
       // Type annotations that are only used in one spot are unnecessary and
       //   add visual clutter to the codebase
       '@typescript-eslint/no-unnecessary-type-parameters': 'error',
