@@ -19,6 +19,7 @@ pyyaml = "^6.0.3"
 
 [tool.poetry.group.types.dependencies]
 types-gunicorn = "^23.0.0.20251031"
+types-pyyaml = "^6.0.12.20250915"
 
 
 
