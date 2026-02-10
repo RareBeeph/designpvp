@@ -13,13 +13,13 @@ import {
   useTheme,
 } from '@mui/material';
 
-type MutationType = ReturnType<typeof usePostAuthLogin> | ReturnType<typeof usePostAuthSignup>;
-
-export default function LoginForm(props: {
-  mutation: MutationType;
+interface Props {
+  mutation: ReturnType<typeof usePostAuthLogin> | ReturnType<typeof usePostAuthSignup>;
   onSuccess?: () => Promise<void>;
   onError?: () => Promise<void>;
-}) {
+}
+
+export default function LoginForm({ mutation, onSuccess, onError }: Props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -31,7 +31,8 @@ export default function LoginForm(props: {
   const textFieldSize = isSmall ? 'small' : 'medium';
   const buttonSize = isSmall ? 'medium' : 'large';
 
-  const onClick = async () => props.mutation.mutate({ data: { username, password } }, { ...props });
+  const onClick = async () =>
+    mutation.mutate({ data: { username, password } }, { onSuccess, onError });
 
   return (
     <Paper sx={{ p: { xs: 2, md: 2, xl: 2.5 }, minWidth: 'max-content' }}>
