@@ -31,11 +31,7 @@ export default function LoginForm(props: {
   const textFieldSize = isSmall ? 'small' : 'medium';
   const buttonSize = isSmall ? 'medium' : 'large';
 
-  const onClick = async () =>
-    props.mutation.mutate(
-      { data: { username, password } },
-      { onSuccess: props.onSuccess, onError: props.onError },
-    );
+  const onClick = async () => props.mutation.mutate({ data: { username, password } }, { ...props });
 
   return (
     <Paper sx={{ p: { xs: 2, md: 2, xl: 2.5 }, minWidth: 'max-content' }}>
