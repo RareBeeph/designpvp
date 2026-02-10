@@ -1,3 +1,5 @@
+'use client'
+
 import { usePostAuthSignup } from '@/api/allauth';
 import { Container, Stack } from '@mui/material';
 
