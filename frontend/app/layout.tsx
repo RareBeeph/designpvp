@@ -1,6 +1,6 @@
 import './globals.css';
 import Providers from './providers';
-import { Paper } from '@mui/material';
+import { Box, Paper, Stack, Typography } from '@mui/material';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
@@ -26,12 +26,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable}`} style={{ height: '100dvh' }}>
         <Providers>
-          <Paper sx={{ px: 3, py: 1 }}>
-            <h1>DesignPVP</h1>
-          </Paper>
-          {children}
+          <Stack height={'100%'}>
+            <Paper sx={{ px: 3, py: 1 }}>
+              <Typography variant="h4">DesignPVP</Typography>
+            </Paper>
+            <Box flexGrow={1}>{children}</Box>
+          </Stack>
         </Providers>
       </body>
     </html>

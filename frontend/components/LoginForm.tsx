@@ -27,9 +27,11 @@ export default function LoginForm() {
   const buttonSize = isSmall ? 'medium' : 'large';
 
   return (
-    <Paper sx={{ p: { xs: 2, md: 2, xl: 2.5 } }}>
+    <Paper sx={{ p: { xs: 2, md: 2, xl: 2.5 }, minWidth: 'max-content' }}>
       <Stack spacing={{ xs: 1.5, md: 2, xl: 2.5 }}>
-        <Typography variant={headerVariant}>Login</Typography>
+        <Typography variant={headerVariant} textAlign={'center'}>
+          Login
+        </Typography>
         <TextField
           variant="outlined"
           label="username"
@@ -45,7 +47,6 @@ export default function LoginForm() {
         <Button
           variant="contained"
           size={buttonSize}
-          sx={{ maxWidth: 'min-content' }}
           onClick={() => login.mutate({ data: { username, password } })}
         >
           Submit
