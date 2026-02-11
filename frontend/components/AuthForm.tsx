@@ -22,7 +22,7 @@ interface Props {
   onError?: () => Promise<void>;
 }
 
-export default function LoginForm({ name, mutation, onSuccess, onError }: Props) {
+export default function AuthForm({ name, mutation, onSuccess, onError }: Props) {
   const queryClient = useQueryClient();
 
   const [username, setUsername] = useState('');
