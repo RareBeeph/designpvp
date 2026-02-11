@@ -5,7 +5,7 @@ import { Container, Stack } from '@mui/material';
 
 import AuthForm from '@/components/AuthForm';
 
-export default function Home() {
+export default function Signup() {
   const mutation = usePostAuthSignup();
 
   return (
