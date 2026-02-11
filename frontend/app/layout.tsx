@@ -1,8 +1,10 @@
 import './globals.css';
 import Providers from './providers';
-import { Box, Paper, Stack, Typography } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+
+import NavBar from '@/components/NavBar';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -29,9 +31,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`} style={{ height: '100dvh' }}>
         <Providers>
           <Stack height={'100%'}>
-            <Paper sx={{ px: 3, py: 1 }}>
-              <Typography variant="h4">DesignPVP</Typography>
-            </Paper>
+            <NavBar />
             <Box flexGrow={1}>{children}</Box>
           </Stack>
         </Providers>

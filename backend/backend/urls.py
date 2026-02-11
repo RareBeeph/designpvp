@@ -17,10 +17,10 @@ Including another URLconf
 
 from django.conf import settings
 from django.contrib import admin
-from django.urls import _AnyURL, include, path
+from django.urls import URLPattern, URLResolver, include, path
 from drf_spectacular.views import SpectacularAPIView
 
-urlpatterns: list[_AnyURL] = [
+urlpatterns: list[URLPattern | URLResolver] = [
     path("admin/", admin.site.urls),
     path("api/", include("events.urls")),
     path("api/accounts/", include("allauth.urls")),
