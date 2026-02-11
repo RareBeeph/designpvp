@@ -1,8 +1,9 @@
 'use client';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { usePostAuthLogin, usePostAuthSignup } from '@/api/allauth';
+import { getGetAuthSessionQueryKey, usePostAuthLogin, usePostAuthSignup } from '@/api/allauth';
 import {
   Button,
   Paper,
@@ -12,14 +13,18 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import { redirect } from 'next/navigation';
 
 interface Props {
+  name: string;
   mutation: ReturnType<typeof usePostAuthLogin> | ReturnType<typeof usePostAuthSignup>;
   onSuccess?: () => Promise<void>;
   onError?: () => Promise<void>;
 }
 
-export default function LoginForm({ mutation, onSuccess, onError }: Props) {
+export default function LoginForm({ name, mutation, onSuccess, onError }: Props) {
+  const queryClient = useQueryClient();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -32,13 +37,23 @@ export default function LoginForm({ mutation, onSuccess, onError }: Props) {
   const buttonSize = isSmall ? 'medium' : 'large';
 
   const onClick = async () =>
-    mutation.mutate({ data: { username, password } }, { onSuccess, onError });
+    mutation.mutate(
+      { data: { username, password } },
+      {
+        onSuccess: async () => {
+          await onSuccess?.();
+          await queryClient.invalidateQueries({ queryKey: getGetAuthSessionQueryKey() });
+          redirect('/');
+        },
+        onError,
+      },
+    );
 
   return (
     <Paper sx={{ p: { xs: 2, md: 2, xl: 2.5 }, minWidth: 'max-content' }}>
       <Stack spacing={{ xs: 1.5, md: 2, xl: 2.5 }}>
         <Typography variant={headerVariant} textAlign={'center'}>
-          Login
+          {name}
         </Typography>
         <TextField
           variant="outlined"
@@ -49,6 +64,7 @@ export default function LoginForm({ mutation, onSuccess, onError }: Props) {
         <TextField
           variant="outlined"
           label="password"
+          type="password"
           size={textFieldSize}
           onChange={e => setPassword(e.target.value)}
         />
