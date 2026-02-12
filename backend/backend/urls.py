@@ -23,6 +23,7 @@ from drf_spectacular.views import SpectacularAPIView
 urlpatterns: list[URLPattern | URLResolver] = [
     path("admin/", admin.site.urls),
     path("api/", include("events.urls")),
+    path("api/config/", include("config.urls")),
     path("api/accounts/", include("allauth.urls")),
     path("api/_allauth/", include("allauth.headless.urls")),
 ]

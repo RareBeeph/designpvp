@@ -24,6 +24,10 @@ import type {
 import { customInstance } from './mutator/custom-instance';
 import type { BodyType, ErrorType } from './mutator/custom-instance';
 
+export interface Config {
+  readonly production: boolean;
+}
+
 export interface Event {
   readonly id: number;
   /** @maxLength 50 */
@@ -78,6 +82,109 @@ export interface TeamRequest {
 }
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+
+export const configRetrieve = (
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<Config>({ url: `/api/config/`, method: 'GET', signal }, options);
+};
+
+export const getConfigRetrieveQueryKey = () => {
+  return [`/api/config/`] as const;
+};
+
+export const getConfigRetrieveQueryOptions = <
+  TData = Awaited<ReturnType<typeof configRetrieve>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof configRetrieve>>, TError, TData>>;
+  request?: SecondParameter<typeof customInstance>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getConfigRetrieveQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof configRetrieve>>> = ({ signal }) =>
+    configRetrieve(requestOptions, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof configRetrieve>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type ConfigRetrieveQueryResult = NonNullable<Awaited<ReturnType<typeof configRetrieve>>>;
+export type ConfigRetrieveQueryError = ErrorType<unknown>;
+
+export function useConfigRetrieve<
+  TData = Awaited<ReturnType<typeof configRetrieve>>,
+  TError = ErrorType<unknown>,
+>(
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof configRetrieve>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof configRetrieve>>,
+          TError,
+          Awaited<ReturnType<typeof configRetrieve>>
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useConfigRetrieve<
+  TData = Awaited<ReturnType<typeof configRetrieve>>,
+  TError = ErrorType<unknown>,
+>(
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof configRetrieve>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof configRetrieve>>,
+          TError,
+          Awaited<ReturnType<typeof configRetrieve>>
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useConfigRetrieve<
+  TData = Awaited<ReturnType<typeof configRetrieve>>,
+  TError = ErrorType<unknown>,
+>(
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof configRetrieve>>, TError, TData>>;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useConfigRetrieve<
+  TData = Awaited<ReturnType<typeof configRetrieve>>,
+  TError = ErrorType<unknown>,
+>(
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof configRetrieve>>, TError, TData>>;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getConfigRetrieveQueryOptions(options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
 
 export const eventsList = (
   options?: SecondParameter<typeof customInstance>,

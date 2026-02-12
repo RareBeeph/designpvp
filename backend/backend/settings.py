@@ -90,6 +90,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "backend",
     "events",
+    "config",
 ]
 
 MIDDLEWARE = [
