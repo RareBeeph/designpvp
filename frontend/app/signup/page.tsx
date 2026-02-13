@@ -1,19 +1,19 @@
 'use client';
 
-import { postAuthProviderRedirect, usePostAuthSignup } from '@/api/allauth';
-import { Button, Container, Stack } from '@mui/material';
+import { usePostAuthSignup } from '@/api/allauth';
+import { Container, Stack } from '@mui/material';
 
 import AuthForm from '@/components/AuthForm';
 
 export default function Signup() {
   const mutation = usePostAuthSignup();
-  const oauth = () => postAuthProviderRedirect({provider: 'discord', callback_url: '/', process: 'login'})
+  // const oauth = () => postAuthProviderRedirect({provider: 'discord', callback_url: '/', process: 'login'})
 
   return (
     <Stack sx={{ alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
       <Container sx={{ width: '40%', minWidth: 'min-content' }} maxWidth="sm">
         <AuthForm {...{ name: 'Sign up', mutation }} />
-        <Button variant="contained" onClick={oauth}>Discord</Button>
+        {/* <Button variant="contained" onClick={oauth}>Discord</Button> */}
       </Container>
     </Stack>
   );

@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
-import json
 import os
 from pathlib import Path
 
@@ -87,6 +86,7 @@ INSTALLED_APPS = [
     "allauth.headless",
     "allauth.account",
     "allauth.socialaccount",
+    # "allauth.socialaccount.providers.discord",
     "rest_framework",
     "drf_spectacular",
     "backend",
@@ -211,15 +211,15 @@ SPECTACULAR_SETTINGS = {
     ],
 }
 
-with open(os.path.join(BASE_DIR, "secrets.env")) as secrets:
-    SOCIALACCOUNT_PROVIDERS = json.load(secrets)
-SOCIALACCOUNT_ONLY = True  # PRODUCTION
-ACCOUNT_EMAIL_VERIFICATION = "none" if SOCIALACCOUNT_ONLY else "optional"
+# with open(os.path.join(BASE_DIR, "secrets.env")) as secrets:
+#     SOCIALACCOUNT_PROVIDERS = json.load(secrets)
+# SOCIALACCOUNT_ONLY = True  # PRODUCTION
+# ACCOUNT_EMAIL_VERIFICATION = "none" if SOCIALACCOUNT_ONLY else "optional"
 
-HEADLESS_FRONTEND_URLS = {
-    "account_confirm_email": "http://localhost:3000/account/verify-email/{key}",
-    "account_reset_password_from_key": "http://localhost:3000/account/password/reset/key/{key}",
-    "account_signup": "http://localhost:3000/account/signup",
-}
+# HEADLESS_FRONTEND_URLS = {
+#     "account_confirm_email": "http://localhost:3000/account/verify-email/{key}",
+#     "account_reset_password_from_key": "http://localhost:3000/account/password/reset/key/{key}",
+#     "account_signup": "http://localhost:3000/account/signup",
+# }
 
 HEADLESS_ONLY = True
