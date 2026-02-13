@@ -2426,7 +2426,7 @@ manner.
 
  * @summary Provider redirect
  */
-export const postBrowserAuthProviderRedirect = (
+export const postAuthProviderRedirect = (
   providerRedirectBody: BodyType<ProviderRedirectBody>,
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -2448,24 +2448,24 @@ export const postBrowserAuthProviderRedirect = (
   );
 };
 
-export const getPostBrowserAuthProviderRedirectMutationOptions = <
+export const getPostAuthProviderRedirectMutationOptions = <
   TError = ErrorType<void>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postBrowserAuthProviderRedirect>>,
+    Awaited<ReturnType<typeof postAuthProviderRedirect>>,
     TError,
     { data: BodyType<ProviderRedirectBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postBrowserAuthProviderRedirect>>,
+  Awaited<ReturnType<typeof postAuthProviderRedirect>>,
   TError,
   { data: BodyType<ProviderRedirectBody> },
   TContext
 > => {
-  const mutationKey = ['postBrowserAuthProviderRedirect'];
+  const mutationKey = ['postAuthProviderRedirect'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -2473,30 +2473,30 @@ export const getPostBrowserAuthProviderRedirectMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postBrowserAuthProviderRedirect>>,
+    Awaited<ReturnType<typeof postAuthProviderRedirect>>,
     { data: BodyType<ProviderRedirectBody> }
   > = props => {
     const { data } = props ?? {};
 
-    return postBrowserAuthProviderRedirect(data, requestOptions);
+    return postAuthProviderRedirect(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostBrowserAuthProviderRedirectMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postBrowserAuthProviderRedirect>>
+export type PostAuthProviderRedirectMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAuthProviderRedirect>>
 >;
-export type PostBrowserAuthProviderRedirectMutationBody = BodyType<ProviderRedirectBody>;
-export type PostBrowserAuthProviderRedirectMutationError = ErrorType<void>;
+export type PostAuthProviderRedirectMutationBody = BodyType<ProviderRedirectBody>;
+export type PostAuthProviderRedirectMutationError = ErrorType<void>;
 
 /**
  * @summary Provider redirect
  */
-export const usePostBrowserAuthProviderRedirect = <TError = ErrorType<void>, TContext = unknown>(
+export const usePostAuthProviderRedirect = <TError = ErrorType<void>, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postBrowserAuthProviderRedirect>>,
+      Awaited<ReturnType<typeof postAuthProviderRedirect>>,
       TError,
       { data: BodyType<ProviderRedirectBody> },
       TContext
@@ -2505,12 +2505,12 @@ export const usePostBrowserAuthProviderRedirect = <TError = ErrorType<void>, TCo
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postBrowserAuthProviderRedirect>>,
+  Awaited<ReturnType<typeof postAuthProviderRedirect>>,
   TError,
   { data: BodyType<ProviderRedirectBody> },
   TContext
 > => {
-  const mutationOptions = getPostBrowserAuthProviderRedirectMutationOptions(options);
+  const mutationOptions = getPostAuthProviderRedirectMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -3041,7 +3041,7 @@ browser. This endpoint is used to complete the `mfa_trust` flow.
 
  * @summary Trust this browser
  */
-export const postBrowserAuth2faTrust = (
+export const postAuth2faTrust = (
   mFATrustBody: BodyType<MFATrustBody>,
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -3058,24 +3058,24 @@ export const postBrowserAuth2faTrust = (
   );
 };
 
-export const getPostBrowserAuth2faTrustMutationOptions = <
+export const getPostAuth2faTrustMutationOptions = <
   TError = ErrorType<ErrorResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postBrowserAuth2faTrust>>,
+    Awaited<ReturnType<typeof postAuth2faTrust>>,
     TError,
     { data: BodyType<MFATrustBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postBrowserAuth2faTrust>>,
+  Awaited<ReturnType<typeof postAuth2faTrust>>,
   TError,
   { data: BodyType<MFATrustBody> },
   TContext
 > => {
-  const mutationKey = ['postBrowserAuth2faTrust'];
+  const mutationKey = ['postAuth2faTrust'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -3083,30 +3083,30 @@ export const getPostBrowserAuth2faTrustMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postBrowserAuth2faTrust>>,
+    Awaited<ReturnType<typeof postAuth2faTrust>>,
     { data: BodyType<MFATrustBody> }
   > = props => {
     const { data } = props ?? {};
 
-    return postBrowserAuth2faTrust(data, requestOptions);
+    return postAuth2faTrust(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostBrowserAuth2faTrustMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postBrowserAuth2faTrust>>
+export type PostAuth2faTrustMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postAuth2faTrust>>
 >;
-export type PostBrowserAuth2faTrustMutationBody = BodyType<MFATrustBody>;
-export type PostBrowserAuth2faTrustMutationError = ErrorType<ErrorResponse>;
+export type PostAuth2faTrustMutationBody = BodyType<MFATrustBody>;
+export type PostAuth2faTrustMutationError = ErrorType<ErrorResponse>;
 
 /**
  * @summary Trust this browser
  */
-export const usePostBrowserAuth2faTrust = <TError = ErrorType<ErrorResponse>, TContext = unknown>(
+export const usePostAuth2faTrust = <TError = ErrorType<ErrorResponse>, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postBrowserAuth2faTrust>>,
+      Awaited<ReturnType<typeof postAuth2faTrust>>,
       TError,
       { data: BodyType<MFATrustBody> },
       TContext
@@ -3115,12 +3115,12 @@ export const usePostBrowserAuth2faTrust = <TError = ErrorType<ErrorResponse>, TC
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postBrowserAuth2faTrust>>,
+  Awaited<ReturnType<typeof postAuth2faTrust>>,
   TError,
   { data: BodyType<MFATrustBody> },
   TContext
 > => {
-  const mutationOptions = getPostBrowserAuth2faTrustMutationOptions(options);
+  const mutationOptions = getPostAuth2faTrustMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -6505,7 +6505,7 @@ a new refresh token is returned as well.
  * @summary Refresh the access token
 
  */
-export const postAppTokensRefresh = (
+export const postTokensRefresh = (
   refreshTokenBody: BodyType<RefreshTokenBody>,
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -6522,24 +6522,24 @@ export const postAppTokensRefresh = (
   );
 };
 
-export const getPostAppTokensRefreshMutationOptions = <
+export const getPostTokensRefreshMutationOptions = <
   TError = ErrorType<ErrorResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postAppTokensRefresh>>,
+    Awaited<ReturnType<typeof postTokensRefresh>>,
     TError,
     { data: BodyType<RefreshTokenBody> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postAppTokensRefresh>>,
+  Awaited<ReturnType<typeof postTokensRefresh>>,
   TError,
   { data: BodyType<RefreshTokenBody> },
   TContext
 > => {
-  const mutationKey = ['postAppTokensRefresh'];
+  const mutationKey = ['postTokensRefresh'];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -6547,31 +6547,31 @@ export const getPostAppTokensRefreshMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postAppTokensRefresh>>,
+    Awaited<ReturnType<typeof postTokensRefresh>>,
     { data: BodyType<RefreshTokenBody> }
   > = props => {
     const { data } = props ?? {};
 
-    return postAppTokensRefresh(data, requestOptions);
+    return postTokensRefresh(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostAppTokensRefreshMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postAppTokensRefresh>>
+export type PostTokensRefreshMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postTokensRefresh>>
 >;
-export type PostAppTokensRefreshMutationBody = BodyType<RefreshTokenBody>;
-export type PostAppTokensRefreshMutationError = ErrorType<ErrorResponse>;
+export type PostTokensRefreshMutationBody = BodyType<RefreshTokenBody>;
+export type PostTokensRefreshMutationError = ErrorType<ErrorResponse>;
 
 /**
  * @summary Refresh the access token
 
  */
-export const usePostAppTokensRefresh = <TError = ErrorType<ErrorResponse>, TContext = unknown>(
+export const usePostTokensRefresh = <TError = ErrorType<ErrorResponse>, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postAppTokensRefresh>>,
+      Awaited<ReturnType<typeof postTokensRefresh>>,
       TError,
       { data: BodyType<RefreshTokenBody> },
       TContext
@@ -6580,12 +6580,12 @@ export const usePostAppTokensRefresh = <TError = ErrorType<ErrorResponse>, TCont
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postAppTokensRefresh>>,
+  Awaited<ReturnType<typeof postTokensRefresh>>,
   TError,
   { data: BodyType<RefreshTokenBody> },
   TContext
 > => {
-  const mutationOptions = getPostAppTokensRefreshMutationOptions(options);
+  const mutationOptions = getPostTokensRefreshMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };

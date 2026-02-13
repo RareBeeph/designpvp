@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import json
 import os
 from pathlib import Path
 
@@ -210,19 +211,15 @@ SPECTACULAR_SETTINGS = {
     ],
 }
 
-SOCIALACCOUNT_PROVIDERS = {
-    "google": {
-        # For each OAuth based provider, either add a ``SocialApp``
-        # (``socialaccount`` app) containing the required client
-        # credentials, or list them here:
-        "APP": {"client_id": "123", "secret": "456", "key": ""}
-    }
-}
+with open(os.path.join(BASE_DIR, "secrets.env")) as secrets:
+    SOCIALACCOUNT_PROVIDERS = json.load(secrets)
+SOCIALACCOUNT_ONLY = True  # PRODUCTION
+ACCOUNT_EMAIL_VERIFICATION = "none" if SOCIALACCOUNT_ONLY else "optional"
 
 HEADLESS_FRONTEND_URLS = {
-    "account_confirm_email": "https://app.project.org/account/verify-email/{key}",
-    "account_reset_password_from_key": "https://app.org/account/password/reset/key/{key}",
-    "account_signup": "https://app.org/account/signup",
+    "account_confirm_email": "http://localhost:3000/account/verify-email/{key}",
+    "account_reset_password_from_key": "http://localhost:3000/account/password/reset/key/{key}",
+    "account_signup": "http://localhost:3000/account/signup",
 }
 
 HEADLESS_ONLY = True

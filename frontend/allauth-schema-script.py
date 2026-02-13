@@ -1,6 +1,6 @@
 import yaml
 
-excludeList = ["_allauth", "{client}", "v1"]
+excludeList = ["_allauth", "{client}", "browser", "app", "v1"]
 
 with open("allauth-schema.yaml") as stream:
     schema = yaml.safe_load(stream)

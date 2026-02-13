@@ -615,7 +615,7 @@ paths:
               schema:
                 type: string
               description: The redirect URL.
-      operationId: postBrowserAuthProviderRedirect
+      operationId: postAuthProviderRedirect
   /_allauth/{client}/v1/auth/provider/token:
     post:
       tags:
@@ -861,7 +861,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-      operationId: postBrowserAuth2faTrust
+      operationId: postAuth2faTrust
   /_allauth/{client}/v1/auth/webauthn/authenticate:
     get:
       tags:
@@ -1739,7 +1739,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-      operationId: postAppTokensRefresh
+      operationId: postTokensRefresh
   /_allauth/{client}/v1/account/password/change:
     post:
       tags:

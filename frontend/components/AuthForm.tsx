@@ -13,7 +13,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   name: string;
@@ -24,6 +24,7 @@ interface Props {
 
 export default function AuthForm({ name, mutation, onSuccess, onError }: Props) {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -43,7 +44,7 @@ export default function AuthForm({ name, mutation, onSuccess, onError }: Props) 
         onSuccess: async () => {
           await onSuccess?.();
           await queryClient.invalidateQueries({ queryKey: getGetAuthSessionQueryKey() });
-          redirect('/');
+          router.push('/'); // redirect
         },
         onError,
       },

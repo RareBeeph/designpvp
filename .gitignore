@@ -325,3 +325,4 @@ dist
 
 backend/staticfiles
 backend/schema.yml
+backend/secrets.env
