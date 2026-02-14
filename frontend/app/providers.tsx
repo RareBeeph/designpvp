@@ -4,6 +4,8 @@ import { QueryClient, QueryClientProvider, isServer } from '@tanstack/react-quer
 
 import { ThemeProvider, createTheme } from '@mui/material';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v16-appRouter';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 function makeQueryClient() {
   return new QueryClient({
@@ -38,7 +40,9 @@ export default function Providers({
   return (
     <AppRouterCacheProvider>
       <QueryClientProvider client={client}>
-        <ThemeProvider theme={darkTheme}>{children}</ThemeProvider>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <ThemeProvider theme={darkTheme}>{children}</ThemeProvider>
+        </LocalizationProvider>
       </QueryClientProvider>
     </AppRouterCacheProvider>
   );
