@@ -2,37 +2,25 @@
 
 import { useQueryClient } from '@tanstack/react-query';
 
+import { StyledDateTime } from './form/StyledDateTime';
+import StyledForm from './form/StyledForm';
+import StyledPaper from './form/StyledPaper';
+import StyledStack from './form/StyledStack';
+import { StyledTextField } from './form/StyledTextField';
 import { getEventsListQueryKey, useEventsCreate, useEventsList } from '@/api/backend';
-import { Button, Paper, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import dayjs, { Dayjs } from 'dayjs';
-import { Field, Form, Formik } from 'formik';
-import { TextField } from 'formik-mui';
-import { DateTimePicker } from 'formik-mui-x-date-pickers';
+import { Formik } from 'formik';
 
-interface Props {}
-
-const stackSpacing = { xs: 1.5, md: 2, xl: 2.5 };
-const paperPadding = { xs: 2, md: 2, xl: 2.5 };
-
-export default function EventManagerForm({}: Props) {
+export default function EventManagerForm() {
   const queryClient = useQueryClient();
+  const createEvent = useEventsCreate();
+  const eventsList = useEventsList();
 
-  const mutation = useEventsCreate();
-  const query = useEventsList();
-
-  const theme = useTheme();
-  const isSmall = useMediaQuery(theme.breakpoints.down('md'));
-  const isXL = useMediaQuery(theme.breakpoints.up('xl'));
-
-  const headerVariant = isXL ? 'h4' : isSmall ? 'h6' : 'h5';
-  const textFieldSize = isSmall ? 'small' : 'medium';
-  const buttonSize = isSmall ? 'medium' : 'large';
-
-  const onSubmit = async (data: { name: string; starts: Dayjs; ends: Dayjs }) =>
-    mutation.mutate(
+  const onSubmit = async ({ name, starts, ends }: { name: string; starts: Dayjs; ends: Dayjs }) =>
+    createEvent.mutate(
       {
-        data: { name: data.name, starts: data.starts.toISOString(), ends: data.ends.toISOString() },
+        data: { name, starts: starts.toISOString(), ends: ends.toISOString() },
       },
       {
         onSuccess: () => {
@@ -42,8 +30,8 @@ export default function EventManagerForm({}: Props) {
     );
 
   return (
-    <Stack spacing={stackSpacing} alignItems="center">
-      <Paper sx={{ p: paperPadding, minWidth: 'max-content' }}>
+    <StyledStack alignItems="center">
+      <StyledPaper sx={{ minWidth: 'max-content' }}>
         <DataGrid
           columns={[
             { field: 'id', headerName: 'ID', width: 50 },
@@ -52,42 +40,26 @@ export default function EventManagerForm({}: Props) {
             { field: 'ends', headerName: 'Ends', width: 200 },
           ]}
           rows={
-            query.data
+            eventsList.data
               ?.entries()
               .toArray()
               .map(([_idx, entry]) => entry) ?? []
           }
         />
-      </Paper>
-      <Paper sx={{ p: paperPadding, minWidth: 'max-content', width: '80%' }}>
-        <Formik
-          initialValues={{ name: '', starts: dayjs(''), ends: dayjs('') }}
-          onSubmit={onSubmit}
-        >
+      </StyledPaper>
+      <StyledPaper sx={{ minWidth: 'max-content', width: '80%' }}>
+        <Formik initialValues={{ name: '', starts: dayjs(''), ends: dayjs('') }} {...{ onSubmit }}>
           {({ isSubmitting }) => {
             return (
-              <Form>
-                <Stack spacing={stackSpacing}>
-                  <Typography variant={headerVariant} textAlign={'center'}>
-                    New Event
-                  </Typography>
-                  <Field name="name" component={TextField} size={textFieldSize} label="name" />
-                  <Field name="starts" component={DateTimePicker} label="starts" />
-                  <Field name="ends" component={DateTimePicker} label="ends" />
-                  <Button
-                    variant="contained"
-                    size={buttonSize}
-                    type="submit"
-                    disabled={isSubmitting}
-                  >
-                    Submit
-                  </Button>
-                </Stack>
-              </Form>
+              <StyledForm header="New Event" {...{ isSubmitting }}>
+                <StyledTextField name="name" />
+                <StyledDateTime name="starts" />
+                <StyledDateTime name="ends" />
+              </StyledForm>
             );
           }}
         </Formik>
-      </Paper>
-    </Stack>
+      </StyledPaper>
+    </StyledStack>
   );
 }
