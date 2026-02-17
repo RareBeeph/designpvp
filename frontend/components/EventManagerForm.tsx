@@ -1,21 +1,14 @@
 'use client';
 
 import { useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
 
 import { getEventsListQueryKey, useEventsCreate, useEventsList } from '@/api/backend';
-import {
-  Button,
-  Paper,
-  Stack,
-  TextField,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Button, Paper, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { DateTimePicker } from '@mui/x-date-pickers';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import { Field, Form, Formik } from 'formik';
+import { TextField } from 'formik-mui';
+import { DateTimePicker } from 'formik-mui-x-date-pickers';
 
 interface Props {}
 
@@ -28,10 +21,6 @@ export default function EventManagerForm({}: Props) {
   const mutation = useEventsCreate();
   const query = useEventsList();
 
-  const [name, setName] = useState('');
-  const [starts, setStarts] = useState('');
-  const [ends, setEnds] = useState('');
-
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down('md'));
   const isXL = useMediaQuery(theme.breakpoints.up('xl'));
@@ -40,15 +29,14 @@ export default function EventManagerForm({}: Props) {
   const textFieldSize = isSmall ? 'small' : 'medium';
   const buttonSize = isSmall ? 'medium' : 'large';
 
-  const onClick = async () =>
+  const onSubmit = async (data: { name: string; starts: Dayjs; ends: Dayjs }) =>
     mutation.mutate(
-      { data: { name, starts, ends } },
+      {
+        data: { name: data.name, starts: data.starts.toISOString(), ends: data.ends.toISOString() },
+      },
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: getEventsListQueryKey() });
-          setName('');
-          setStarts('');
-          setEnds('');
         },
       },
     );
@@ -72,31 +60,33 @@ export default function EventManagerForm({}: Props) {
         />
       </Paper>
       <Paper sx={{ p: paperPadding, minWidth: 'max-content', width: '80%' }}>
-        <Stack spacing={stackSpacing}>
-          <Typography variant={headerVariant} textAlign={'center'}>
-            New Event
-          </Typography>
-          <TextField
-            variant="outlined"
-            label="name"
-            size={textFieldSize}
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
-          <DateTimePicker
-            label="starts"
-            value={dayjs(starts)}
-            onChange={e => setStarts(e?.toISOString() ?? '')}
-          />
-          <DateTimePicker
-            label="ends"
-            value={dayjs(ends)}
-            onChange={e => setEnds(e?.toISOString() ?? '')}
-          />
-          <Button variant="contained" size={buttonSize} onClick={onClick}>
-            Submit
-          </Button>
-        </Stack>
+        <Formik
+          initialValues={{ name: '', starts: dayjs(''), ends: dayjs('') }}
+          onSubmit={onSubmit}
+        >
+          {({ isSubmitting }) => {
+            return (
+              <Form>
+                <Stack spacing={stackSpacing}>
+                  <Typography variant={headerVariant} textAlign={'center'}>
+                    New Event
+                  </Typography>
+                  <Field name="name" component={TextField} size={textFieldSize} label="name" />
+                  <Field name="starts" component={DateTimePicker} label="starts" />
+                  <Field name="ends" component={DateTimePicker} label="ends" />
+                  <Button
+                    variant="contained"
+                    size={buttonSize}
+                    type="submit"
+                    disabled={isSubmitting}
+                  >
+                    Submit
+                  </Button>
+                </Stack>
+              </Form>
+            );
+          }}
+        </Formik>
       </Paper>
     </Stack>
   );
