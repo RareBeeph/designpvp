@@ -1,6 +1,5 @@
-import StyledStack from './StyledStack';
 import SubmitButton from './SubmitButton';
-import { Typography, TypographyProps } from '@mui/material';
+import { Stack, Typography, TypographyProps } from '@mui/material';
 import { Form, FormikFormProps } from 'formik';
 
 import { useBreakpoint } from '@/hooks/useBreakpoint';
@@ -23,13 +22,11 @@ export default function StyledForm({
 }: FormikFormProps & { header?: string; isSubmitting: boolean }) {
   return (
     <Form {...props}>
-      <StyledStack>
-        {(() => {
-          if (header) return <StyledHeader>{header}</StyledHeader>;
-        })()}
+      <Stack>
+        {header ? <StyledHeader>{header}</StyledHeader> : undefined}
         {children}
         <SubmitButton {...{ isSubmitting }}>Submit</SubmitButton>
-      </StyledStack>
+      </Stack>
     </Form>
   );
 }

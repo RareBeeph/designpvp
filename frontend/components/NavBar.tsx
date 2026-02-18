@@ -12,6 +12,7 @@ import {
 } from '@/api/allauth';
 import { ErrorType } from '@/api/mutator/custom-instance';
 import { AppBar, Button, Link, Toolbar, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 type SessionQueryError = ErrorType<AuthenticationResponse | SessionGoneResponse>;
 type RetryFn = (failureCount: number, error: SessionQueryError) => boolean;
@@ -19,6 +20,7 @@ type RetryValue = boolean | number | RetryFn;
 
 export default function NavBar() {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const retrySessionQuery = (failureCount: number, error: SessionQueryError) => {
     const allowedCodes = [
@@ -42,7 +44,7 @@ export default function NavBar() {
     }
   };
 
-  const { data, error } = useGetAuthSession({
+  const session = useGetAuthSession({
     query: {
       retry: retrySessionQuery,
     },
@@ -55,7 +57,9 @@ export default function NavBar() {
     },
   });
 
-  const currentUsername = error ? 'Not logged in' : (data?.data.user?.username ?? '.'); // '.' is a visible placeholder string for debug purposes
+  const currentUsername = session.isSuccess
+    ? (session.data?.data.user?.username ?? '.')
+    : 'Not logged in'; // '.' is a visible placeholder string for debug purposes
 
   return (
     <AppBar position="relative">
@@ -66,17 +70,28 @@ export default function NavBar() {
         <Typography variant="h6" sx={{ ml: 'auto', mr: 2 }}>
           {currentUsername}
         </Typography>
-        {error ? (
-          <></>
-        ) : (
+        {session.isSuccess ? (
           <Button
             variant="contained"
             onClick={() => {
-              logout.mutate();
+              logout.mutate(undefined, {
+                onSettled: () => {
+                  queryClient.invalidateQueries({ queryKey: getGetAuthSessionQueryKey() });
+                },
+              });
             }}
           >
             Log out
           </Button> // this whole thing needs a rework
+        ) : (
+          <Button
+            variant="contained"
+            onClick={() => {
+              router.push('/login');
+            }}
+          >
+            Log in
+          </Button>
         )}
       </Toolbar>
     </AppBar>

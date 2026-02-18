@@ -3,20 +3,27 @@
 import { useQueryClient } from '@tanstack/react-query';
 
 import StyledForm from './form/StyledForm';
-import StyledPaper from './form/StyledPaper';
 import { StyledTextField } from './form/StyledTextField';
 import { getGetAuthSessionQueryKey, usePostAuthLogin, usePostAuthSignup } from '@/api/allauth';
+import { Paper, PaperProps } from '@mui/material';
 import { Formik } from 'formik';
 import { useRouter } from 'next/navigation';
 
-interface Props {
+interface Props extends PaperProps {
   name: string;
   mutation: ReturnType<typeof usePostAuthLogin> | ReturnType<typeof usePostAuthSignup>;
   onSuccess?: () => Promise<void>;
   onError?: () => Promise<void>;
 }
 
-export default function AuthForm({ name, mutation, onSuccess, onError }: Props) {
+export default function AuthForm({
+  name,
+  mutation,
+  onSuccess,
+  onError,
+  children: _children,
+  ...props
+}: Props) {
   const queryClient = useQueryClient();
   const router = useRouter();
 
@@ -34,7 +41,7 @@ export default function AuthForm({ name, mutation, onSuccess, onError }: Props) 
     );
 
   return (
-    <StyledPaper sx={{ minWidth: 'max-content' }}>
+    <Paper {...props}>
       <Formik initialValues={{ username: '', password: '' }} {...{ onSubmit }}>
         {({ isSubmitting }) => {
           return (
@@ -45,6 +52,6 @@ export default function AuthForm({ name, mutation, onSuccess, onError }: Props) 
           );
         }}
       </Formik>
-    </StyledPaper>
+    </Paper>
   );
 }

@@ -223,3 +223,6 @@ SPECTACULAR_SETTINGS = {
 # }
 
 HEADLESS_ONLY = True
+
+HEADLESS_ADAPTER = "backend.adapter.BackendHeadlessAdapter"
+# HEADLESS_SERVE_SPECIFICATION = True
