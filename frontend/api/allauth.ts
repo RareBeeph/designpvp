@@ -997,7 +997,7 @@ export interface User {
   has_usable_password: boolean;
   /** The user ID. */
   id?: number;
-  /** Whether or not the account can view the admin site */
+  /** Whether or not the account can view the admin site. */
   is_staff: boolean;
   /** The username. */
   username: string;

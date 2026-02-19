@@ -13,7 +13,7 @@ class BackendHeadlessAdapter(DefaultHeadlessAdapter):
                 bool,
                 dataclasses.field(
                     metadata={
-                        "description": "Whether or not the user can view the admin site.",
+                        "description": "Whether or not the account can view the admin site.",
                         "example": False,
                     }
                 ),

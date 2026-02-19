@@ -2107,7 +2107,7 @@ components:
           example: 123
           type: integer
         is_staff:
-          description: Whether or not the account can view the admin site
+          description: Whether or not the account can view the admin site.
           type: boolean
         username:
           description: The username.
@@ -2116,8 +2116,8 @@ components:
       required:
         - display
         - has_usable_password
-        - is_staff
         - username
+        - is_staff
       type: object
     UserSessionsConfiguration:
       description: 'Configuration of the Django `allauth.usersessions` app.
