@@ -43,6 +43,8 @@ const darkTheme = createTheme({
       },
     },
     MuiStack: { defaultProps: { spacing: { xs: 1.5, md: 2, xl: 2.5 } } },
+    MuiAppBar: { styleOverrides: { root: { padding: 0 } } },
+    // MuiDrawer: { styleOverrides: { root: { "& .MuiDrawer-paper": { paddingTop:0 } } } },
   },
 });
 

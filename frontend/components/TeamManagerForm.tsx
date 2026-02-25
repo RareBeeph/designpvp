@@ -14,8 +14,8 @@ export default function TeamManagerForm({ children: _children, ...props }: Paper
   const createTeam = useTeamsCreate();
   const eventsList = useEventsList();
 
-  const onSubmit = async ({ name, eventId }: { name: string; eventId: number }) => {
-    if (eventsList.data?.map(event => event.id).includes(Number(eventId))) {
+  const onSubmit = async ({ name, eventId }: { name: string; eventId: number | '' }) => {
+    if (eventId && eventsList.data?.map(event => event.id).includes(Number(eventId))) {
       createTeam.mutate(
         {
           data: { name, event: eventId },
@@ -31,7 +31,7 @@ export default function TeamManagerForm({ children: _children, ...props }: Paper
 
   return (
     <Paper {...props}>
-      <Formik initialValues={{ name: '', eventId: 0 }} {...{ onSubmit }}>
+      <Formik initialValues={{ name: '', eventId: '' }} {...{ onSubmit }}>
         {({ isSubmitting, values }) => {
           return (
             <StyledForm header="New Team" {...{ isSubmitting }}>

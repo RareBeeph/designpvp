@@ -1,6 +1,8 @@
 'use client';
 import { useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 
+import NavDrawer from './NavDrawer';
 import {
   AuthenticationResponse,
   AuthenticationResponseStatus,
@@ -11,8 +13,9 @@ import {
   useGetAuthSession,
 } from '@/api/allauth';
 import { ErrorType } from '@/api/mutator/custom-instance';
-import { AppBar, Button, Link, Toolbar, Typography } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import MenuIcon from '@mui/icons-material/Menu';
+import { AppBar, Box, Button, IconButton, Link, Toolbar, Typography } from '@mui/material';
+import { useRouter, useSelectedLayoutSegments } from 'next/navigation';
 
 type SessionQueryError = ErrorType<AuthenticationResponse | SessionGoneResponse>;
 type RetryFn = (failureCount: number, error: SessionQueryError) => boolean;
@@ -21,6 +24,12 @@ type RetryValue = boolean | number | RetryFn;
 export default function NavBar() {
   const queryClient = useQueryClient();
   const router = useRouter();
+  const breadcrumbs = useSelectedLayoutSegments();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setDrawerOpen(prevState => !prevState);
+  };
 
   const retrySessionQuery = (failureCount: number, error: SessionQueryError) => {
     const allowedCodes = [
@@ -62,38 +71,44 @@ export default function NavBar() {
     : 'Not logged in'; // '.' is a visible placeholder string for debug purposes
 
   return (
-    <AppBar position="relative">
-      <Toolbar>
-        <Link variant="h4" underline="none" color="inherit" href="/">
-          DesignPVP
-        </Link>
-        <Typography variant="h6" sx={{ ml: 'auto', mr: 2 }}>
-          {currentUsername}
-        </Typography>
-        {session.isSuccess ? (
-          <Button
-            variant="contained"
-            onClick={() => {
-              logout.mutate(undefined, {
-                onSettled: () => {
-                  queryClient.invalidateQueries({ queryKey: getGetAuthSessionQueryKey() });
-                },
-              });
-            }}
-          >
-            Log out
-          </Button> // this whole thing needs a rework
-        ) : (
-          <Button
-            variant="contained"
-            onClick={() => {
-              router.push('/login');
-            }}
-          >
-            Log in
-          </Button>
-        )}
-      </Toolbar>
-    </AppBar>
+    <Box>
+      <AppBar position="relative" sx={{ zIndex: theme => theme.zIndex.drawer + 1 }}>
+        <Toolbar>
+          <IconButton edge="start" onClick={handleDrawerToggle} sx={{ mr: 2 }}>
+            <MenuIcon />
+          </IconButton>
+          <Link variant="h4" underline="none" color="inherit" href="/">
+            DesignPVP
+          </Link>
+          <Typography variant="h6" sx={{ ml: 'auto', mr: 2 }}>
+            {currentUsername}
+          </Typography>
+          {session.isSuccess ? (
+            <Button
+              variant="contained"
+              onClick={() => {
+                logout.mutate(undefined, {
+                  onSettled: () => {
+                    queryClient.invalidateQueries({ queryKey: getGetAuthSessionQueryKey() });
+                  },
+                });
+              }}
+            >
+              Log out
+            </Button> // this whole thing needs a rework
+          ) : (
+            <Button
+              variant="contained"
+              onClick={() => {
+                router.push('/login');
+              }}
+            >
+              Log in
+            </Button>
+          )}
+        </Toolbar>
+      </AppBar>
+      <NavDrawer open={drawerOpen} onClose={handleDrawerToggle} {...{ breadcrumbs }} />
+    </Box>
   );
 }

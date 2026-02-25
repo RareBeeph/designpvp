@@ -1,14 +1,9 @@
-import { Container, Link, Stack, Typography } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 
 export default function Home() {
   return (
     <Container sx={{ lineHeight: 2 }}>
       <Typography>This page intentionally left blank</Typography>
-      <Stack spacing={0}>
-        <Link href="/login">login</Link>
-        <Link href="/signup">signup</Link>
-        <Link href="/manage">(admin) manage</Link>
-      </Stack>
     </Container>
   );
 }
