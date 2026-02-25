@@ -34,17 +34,16 @@ const darkTheme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: ({ theme }) => ({
-          padding: theme.spacing(2),
-          [theme.breakpoints.up('xl')]: {
-            padding: theme.spacing(2.5),
+          [':not(.MuiAppBar-root)']: {
+            padding: theme.spacing(2),
+            [theme.breakpoints.up('xl')]: {
+              padding: theme.spacing(2.5),
+            }, // xs: 2, md: 2, xl: 2.5
           },
-          // xs: 2, md: 2, xl: 2.5
         }),
       },
     },
     MuiStack: { defaultProps: { spacing: { xs: 1.5, md: 2, xl: 2.5 } } },
-    MuiAppBar: { styleOverrides: { root: { padding: 0 } } },
-    // MuiDrawer: { styleOverrides: { root: { "& .MuiDrawer-paper": { paddingTop:0 } } } },
   },
 });
 

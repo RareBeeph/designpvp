@@ -2,7 +2,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import NavDrawer from './NavDrawer';
+import NavDrawer from './Drawer';
 import {
   AuthenticationResponse,
   AuthenticationResponseStatus,
