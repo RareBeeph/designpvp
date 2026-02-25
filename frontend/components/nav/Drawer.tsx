@@ -23,6 +23,8 @@ import { useRouter } from 'next/navigation';
 const ROUTES = ['', 'login', 'signup'];
 const ADMIN_ROUTES = ['manage', 'manage/events', 'manage/teams'];
 
+const upperCaseFirstLetter = (str: string) => str.slice(0, 1).toUpperCase() + str.slice(1);
+
 export default function NavDrawer({
   open,
   onClose,
@@ -80,7 +82,7 @@ export default function NavDrawer({
                 <ListItemIcon>
                   <ExpandMoreIcon />
                 </ListItemIcon>
-                <ListItemText primary={ref}></ListItemText>
+                <ListItemText primary={upperCaseFirstLetter(ref)}></ListItemText>
               </ListItemButton>
             );
           })}
@@ -94,7 +96,7 @@ export default function NavDrawer({
               <ListItemIcon>
                 {subroutes.length > 0 ? <ExpandMoreIcon /> : <LastPageIcon />}
               </ListItemIcon>
-              <ListItemText primary={breadcrumbs[breadcrumbs.length - 1]} />
+              <ListItemText primary={upperCaseFirstLetter(breadcrumbs[breadcrumbs.length - 1])} />
             </ListItemButton>
           ) : undefined}
           <Collapse in={collapseOpen || breadcrumbs.length == 0}>
@@ -110,7 +112,9 @@ export default function NavDrawer({
                   <ListItemIcon>
                     <ChevronRightIcon />
                   </ListItemIcon>
-                  <ListItemText primary={path.replace(breadcrumbs.join('/') + '/', '')} />
+                  <ListItemText
+                    primary={upperCaseFirstLetter(path.replace(breadcrumbs.join('/') + '/', ''))}
+                  />
                 </ListItemButton>
               ))}
             </List>
