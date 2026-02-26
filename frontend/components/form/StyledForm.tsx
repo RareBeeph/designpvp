@@ -6,9 +6,12 @@ import { useBreakpoint } from '@/hooks/useBreakpoint';
 
 const StyledHeader = ({ children, ...props }: TypographyProps) => {
   const { isSmall, isXL } = useBreakpoint();
-  const variant = isXL ? 'h4' : isSmall ? 'h6' : 'h5';
+  const variant =
+    isXL ? 'h4'
+    : isSmall ? 'h6'
+    : 'h5';
   return (
-    <Typography textAlign="center" {...{ variant, ...props }}>
+    <Typography textAlign="center" variant={variant} {...props}>
       {children}
     </Typography>
   );
@@ -23,9 +26,9 @@ export default function StyledForm({
   return (
     <Form {...props}>
       <Stack>
-        {header ? <StyledHeader>{header}</StyledHeader> : undefined}
+        {header && <StyledHeader>{header}</StyledHeader>}
         {children}
-        <SubmitButton {...{ isSubmitting }}>Submit</SubmitButton>
+        <SubmitButton isSubmitting={isSubmitting}>Submit</SubmitButton>
       </Stack>
     </Form>
   );

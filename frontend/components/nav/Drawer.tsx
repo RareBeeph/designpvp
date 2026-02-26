@@ -1,29 +1,19 @@
 'use client';
 import { useState } from 'react';
 
+import { NavButton } from '.';
 import { useGetAuthSession } from '@/api/allauth';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import HomeIcon from '@mui/icons-material/Home';
 import LastPageIcon from '@mui/icons-material/LastPage';
-import {
-  Box,
-  Collapse,
-  Drawer,
-  DrawerProps,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Toolbar,
-} from '@mui/material';
+import { Box, Collapse, Drawer, DrawerProps, List, Toolbar } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { pascalCase } from 'text-case';
 
 // this sucks but it works for now
 const ROUTES = ['', 'login', 'signup'];
 const ADMIN_ROUTES = ['manage', 'manage/events', 'manage/teams'];
-
-const upperCaseFirstLetter = (str: string) => str.slice(0, 1).toUpperCase() + str.slice(1);
 
 export default function NavDrawer({
   open,
@@ -35,17 +25,31 @@ export default function NavDrawer({
   const router = useRouter();
   const [collapseOpen, setCollapseOpen] = useState(true);
 
+  // Determine which links are available to display, given user permissions.
   const routes =
-    authSession.isSuccess && authSession.data?.data.user.is_staff
-      ? ROUTES.concat(ADMIN_ROUTES)
-      : ROUTES;
-  const subroutes = routes.filter(route => {
-    if (breadcrumbs.length == 0) return !route.includes('/') && route != '';
-    return (
-      route.startsWith(breadcrumbs.join('/') + '/') &&
-      !route.replace(breadcrumbs.join('/') + '/', '').includes('/')
-    );
-  });
+    authSession.isSuccess && authSession.data?.data.user.is_staff ?
+      ROUTES.concat(ADMIN_ROUTES)
+    : ROUTES;
+
+  // Helper func to find routes which are exactly one level deeper than the prefix.
+  const routeFilter = (prefix: string | false) => {
+    return routes.filter(route => {
+      if (typeof prefix == 'boolean') return route == '';
+      return (
+        route.startsWith(prefix) &&
+        route.replace(prefix, '').length > 0 &&
+        route.replace(prefix, '').lastIndexOf('/') <= 0
+      );
+    });
+  };
+
+  // Which available links are children of the current page.
+  const currentPage = breadcrumbs.join('/');
+  const subroutes = routeFilter(currentPage);
+  // Which available links are siblings of the current page.
+  const parentPage =
+    currentPage != '' && currentPage.slice(0, Math.max(currentPage.lastIndexOf('/'), 0));
+  const siblingRoutes = routeFilter(parentPage);
 
   return (
     <Drawer
@@ -63,62 +67,88 @@ export default function NavDrawer({
       <Toolbar />
       <Box sx={{ overflow: 'auto' }}>
         <List>
-          <ListItemButton onClick={() => router.push('/')}>
-            <ListItemIcon>
-              <HomeIcon />
-            </ListItemIcon>
-            <ListItemText primary="Home" />
-          </ListItemButton>
+          {/* Home link */}
+          <NavButton
+            depth={0}
+            icon={<HomeIcon />}
+            primary={'Home'}
+            onClick={() => router.push('/')}
+            key={'Home'}
+          />
+
+          {/* Breadcrumb links */}
           {...breadcrumbs.slice(0, -1).map((_crumb, idx) => {
-            const ref = breadcrumbs.slice(0, idx + 1).join('/');
+            const path = breadcrumbs.slice(0, idx + 1).join('/');
             return (
-              <ListItemButton
+              <NavButton
+                depth={idx + 1}
+                icon={<ExpandMoreIcon />}
+                primary={pascalCase(path)}
                 onClick={() => {
                   setCollapseOpen(true);
-                  router.push('/' + ref);
+                  router.push('/' + path);
                 }}
-                sx={{ pl: idx + 4 }}
-              >
-                <ListItemIcon>
-                  <ExpandMoreIcon />
-                </ListItemIcon>
-                <ListItemText primary={upperCaseFirstLetter(ref)}></ListItemText>
-              </ListItemButton>
+                key={'Breadcrumb' + idx}
+              />
             );
           })}
-          {breadcrumbs.length > 0 ? (
-            <ListItemButton
-              onClick={() => {
-                if (subroutes.length > 0) setCollapseOpen(!collapseOpen);
-              }}
-              sx={{ pl: 2 * (breadcrumbs.length + 1) }}
-            >
-              <ListItemIcon>
-                {subroutes.length > 0 ? <ExpandMoreIcon /> : <LastPageIcon />}
-              </ListItemIcon>
-              <ListItemText primary={upperCaseFirstLetter(breadcrumbs[breadcrumbs.length - 1])} />
-            </ListItemButton>
-          ) : undefined}
-          <Collapse in={collapseOpen || breadcrumbs.length == 0}>
-            <List disablePadding>
-              {...subroutes.map(path => (
-                <ListItemButton
+
+          {/* Current and sibling page links */}
+          {siblingRoutes.map((path, idx) => {
+            const currentPageIcon =
+              subroutes.length == 0 ? <LastPageIcon />
+              : collapseOpen ? <ExpandMoreIcon />
+              : <ChevronRightIcon />;
+
+            if (path != currentPage)
+              return (
+                // Sibling page button
+                <NavButton
+                  depth={breadcrumbs.length}
+                  icon={<ChevronRightIcon />}
+                  primary={pascalCase(path.replace(parentPage + '/', ''))}
                   onClick={() => {
                     setCollapseOpen(true);
                     router.push('/' + path);
                   }}
-                  sx={{ pl: 2 * (breadcrumbs.length + 2) }}
-                >
-                  <ListItemIcon>
-                    <ChevronRightIcon />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={upperCaseFirstLetter(path.replace(breadcrumbs.join('/') + '/', ''))}
-                  />
-                </ListItemButton>
-              ))}
-            </List>
-          </Collapse>
+                  key={'Sibling' + idx}
+                />
+              );
+            else
+              return (
+                <div key={idx}>
+                  {/* Current page button (unless already Home) */}
+                  {path != '' && (
+                    <NavButton
+                      depth={breadcrumbs.length}
+                      icon={currentPageIcon}
+                      primary={pascalCase(breadcrumbs[breadcrumbs.length - 1])}
+                      onClick={() => {
+                        if (subroutes.length > 0) setCollapseOpen(!collapseOpen);
+                      }}
+                      key={'CurrentPage'}
+                    />
+                  )}
+                  {/* Immediate subroutes dropdown */}
+                  <Collapse in={collapseOpen || breadcrumbs.length == 0}>
+                    <List disablePadding>
+                      {...subroutes.map((path, idx) => (
+                        <NavButton
+                          depth={breadcrumbs.length + 1}
+                          icon={<ChevronRightIcon />}
+                          primary={pascalCase(path.replace(currentPage + '/', ''))}
+                          onClick={() => {
+                            setCollapseOpen(true);
+                            router.push('/' + path);
+                          }}
+                          key={'Subroute' + idx}
+                        />
+                      ))}
+                    </List>
+                  </Collapse>
+                </div>
+              );
+          })}
         </List>
       </Box>
     </Drawer>

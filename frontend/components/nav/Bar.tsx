@@ -66,9 +66,9 @@ export default function NavBar() {
     },
   });
 
-  const currentUsername = session.isSuccess
-    ? (session.data?.data.user?.username ?? '.')
-    : 'Not logged in'; // '.' is a visible placeholder string for debug purposes
+  // '.' is a visible placeholder string for debug purposes
+  const currentUsername =
+    session.isSuccess ? (session.data?.data.user?.username ?? '.') : 'Not logged in';
 
   return (
     <Box>
@@ -83,7 +83,7 @@ export default function NavBar() {
           <Typography variant="h6" sx={{ ml: 'auto', mr: 2 }}>
             {currentUsername}
           </Typography>
-          {session.isSuccess ? (
+          {session.isSuccess ?
             <Button
               variant="contained"
               onClick={() => {
@@ -96,8 +96,7 @@ export default function NavBar() {
             >
               Log out
             </Button> // this whole thing needs a rework
-          ) : (
-            <Button
+          : <Button
               variant="contained"
               onClick={() => {
                 router.push('/login');
@@ -105,7 +104,7 @@ export default function NavBar() {
             >
               Log in
             </Button>
-          )}
+          }
         </Toolbar>
       </AppBar>
       <NavDrawer open={drawerOpen} onClose={handleDrawerToggle} {...{ breadcrumbs }} />

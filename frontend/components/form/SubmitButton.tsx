@@ -6,7 +6,7 @@ const StyledButton = ({ children, ...props }: ButtonProps) => {
   const { isSmall } = useBreakpoint();
   const size = (props.size ?? isSmall) ? 'medium' : 'large';
   return (
-    <Button variant="contained" {...{ size, ...props }}>
+    <Button variant="contained" size={size} {...props}>
       {children}
     </Button>
   );

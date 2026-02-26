@@ -7,5 +7,6 @@
   "plugins": ["@trivago/prettier-plugin-sort-imports"],
   "importOrder": ["react", "<THIRD_PARTY_MODULES>", "components/*", "hooks/*", "constants/*"],
   "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true
+  "importOrderSortSpecifiers": true,
+  "experimentalTernaries": true
 }

@@ -31,10 +31,10 @@ export default function TeamManagerForm({ children: _children, ...props }: Paper
 
   return (
     <Paper {...props}>
-      <Formik initialValues={{ name: '', eventId: '' }} {...{ onSubmit }}>
+      <Formik initialValues={{ name: '', eventId: '' }} onSubmit={onSubmit}>
         {({ isSubmitting, values }) => {
           return (
-            <StyledForm header="New Team" {...{ isSubmitting }}>
+            <StyledForm header="New Team" isSubmitting={isSubmitting}>
               <StyledTextField name="name" />
               <Field component={Select} name="eventId" value={values.eventId}>
                 {eventsList.data?.map(event => (

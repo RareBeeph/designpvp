@@ -28,10 +28,10 @@ export default function EventManagerForm({ children: _children, ...props }: Pape
 
   return (
     <Paper {...props}>
-      <Formik initialValues={{ name: '', starts: dayjs(''), ends: dayjs('') }} {...{ onSubmit }}>
+      <Formik initialValues={{ name: '', starts: dayjs(''), ends: dayjs('') }} onSubmit={onSubmit}>
         {({ isSubmitting }) => {
           return (
-            <StyledForm header="New Event" {...{ isSubmitting }}>
+            <StyledForm header="New Event" isSubmitting={isSubmitting}>
               <StyledTextField name="name" />
               <StyledDateTime name="starts" />
               <StyledDateTime name="ends" />
