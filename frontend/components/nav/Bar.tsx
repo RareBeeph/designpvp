@@ -17,6 +17,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Box, Button, IconButton, Link, Toolbar, Typography } from '@mui/material';
 import { useRouter, useSelectedLayoutSegments } from 'next/navigation';
 
+import { useBreakpoint } from '@/hooks/useBreakpoint';
+
 type SessionQueryError = ErrorType<AuthenticationResponse | SessionGoneResponse>;
 type RetryFn = (failureCount: number, error: SessionQueryError) => boolean;
 type RetryValue = boolean | number | RetryFn;
@@ -25,6 +27,7 @@ export default function NavBar() {
   const queryClient = useQueryClient();
   const router = useRouter();
   const breadcrumbs = useSelectedLayoutSegments();
+  const breakpoint = useBreakpoint();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleDrawerToggle = () => {
@@ -72,11 +75,16 @@ export default function NavBar() {
 
   return (
     <Box>
-      <AppBar position="relative" sx={{ zIndex: theme => theme.zIndex.drawer + 1 }}>
+      <AppBar
+        position="relative"
+        sx={{ zIndex: theme => theme.zIndex.drawer + (breakpoint.isSmall ? -1 : 1) }}
+      >
         <Toolbar>
-          <IconButton edge="start" onClick={handleDrawerToggle} sx={{ mr: 2 }}>
-            <MenuIcon />
-          </IconButton>
+          {breakpoint.isSmall && (
+            <IconButton edge="start" onClick={handleDrawerToggle} sx={{ mr: 2 }}>
+              <MenuIcon />
+            </IconButton>
+          )}
           <Link variant="h4" underline="none" color="inherit" href="/">
             DesignPVP
           </Link>

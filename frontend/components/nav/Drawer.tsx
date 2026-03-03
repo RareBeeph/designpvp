@@ -4,12 +4,15 @@ import { useState } from 'react';
 import { NavButton } from '.';
 import { useGetAuthSession } from '@/api/allauth';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import CloseIcon from '@mui/icons-material/Close';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import HomeIcon from '@mui/icons-material/Home';
 import LastPageIcon from '@mui/icons-material/LastPage';
-import { Box, Collapse, Drawer, DrawerProps, List, Toolbar } from '@mui/material';
+import { Box, Collapse, Drawer, DrawerProps, IconButton, List, Toolbar } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { pascalCase } from 'text-case';
+
+import { useBreakpoint } from '@/hooks/useBreakpoint';
 
 // this sucks but it works for now
 const ROUTES = ['', 'login', 'signup'];
@@ -23,6 +26,7 @@ export default function NavDrawer({
 }: DrawerProps & { breadcrumbs: string[] }) {
   const authSession = useGetAuthSession();
   const router = useRouter();
+  const breakpoint = useBreakpoint();
   const [collapseOpen, setCollapseOpen] = useState(true);
 
   // Determine which links are available to display, given user permissions.
@@ -53,18 +57,28 @@ export default function NavDrawer({
 
   return (
     <Drawer
-      variant="temporary"
+      variant={breakpoint.isSmall ? 'temporary' : 'permanent'}
       open={open}
       onClose={onClose}
       ModalProps={{
         keepMounted: true,
       }}
       sx={{
-        '& .MuiDrawer-paper': { width: 320 }, // TODO: change
+        '& .MuiDrawer-paper': { width: breakpoint.isXS ? 1 : 320 }, // TODO: change
       }}
       {...props}
     >
-      <Toolbar />
+      {!breakpoint.isSmall && <Toolbar />}
+      {breakpoint.isXS && (
+        <IconButton
+          onClick={() => {
+            onClose?.({}, 'backdropClick');
+          }}
+          sx={{ width: 'min-content', marginLeft: 'auto' }}
+        >
+          <CloseIcon />
+        </IconButton>
+      )}
       <Box sx={{ overflow: 'auto' }}>
         <List>
           {/* Home link */}
@@ -114,40 +128,39 @@ export default function NavDrawer({
                   key={'Sibling' + idx}
                 />
               );
-            else
-              return (
-                <div key={idx}>
-                  {/* Current page button (unless already Home) */}
-                  {path != '' && (
-                    <NavButton
-                      depth={breadcrumbs.length}
-                      icon={currentPageIcon}
-                      primary={pascalCase(breadcrumbs[breadcrumbs.length - 1])}
-                      onClick={() => {
-                        if (subroutes.length > 0) setCollapseOpen(!collapseOpen);
-                      }}
-                      key={'CurrentPage'}
-                    />
-                  )}
-                  {/* Immediate subroutes dropdown */}
-                  <Collapse in={collapseOpen || breadcrumbs.length == 0}>
-                    <List disablePadding>
-                      {...subroutes.map((path, idx) => (
-                        <NavButton
-                          depth={breadcrumbs.length + 1}
-                          icon={<ChevronRightIcon />}
-                          primary={pascalCase(path.replace(currentPage + '/', ''))}
-                          onClick={() => {
-                            setCollapseOpen(true);
-                            router.push('/' + path);
-                          }}
-                          key={'Subroute' + idx}
-                        />
-                      ))}
-                    </List>
-                  </Collapse>
-                </div>
-              );
+            return (
+              <div key={idx}>
+                {/* Current page button (unless already Home) */}
+                {path != '' && (
+                  <NavButton
+                    depth={breadcrumbs.length}
+                    icon={currentPageIcon}
+                    primary={pascalCase(breadcrumbs[breadcrumbs.length - 1])}
+                    onClick={() => {
+                      if (subroutes.length > 0) setCollapseOpen(!collapseOpen);
+                    }}
+                    key={'CurrentPage'}
+                  />
+                )}
+                {/* Immediate subroutes dropdown */}
+                <Collapse in={collapseOpen || breadcrumbs.length == 0}>
+                  <List disablePadding>
+                    {...subroutes.map((path, idx) => (
+                      <NavButton
+                        depth={breadcrumbs.length + 1}
+                        icon={<ChevronRightIcon />}
+                        primary={pascalCase(path.replace(currentPage + '/', ''))}
+                        onClick={() => {
+                          setCollapseOpen(true);
+                          router.push('/' + path);
+                        }}
+                        key={'Subroute' + idx}
+                      />
+                    ))}
+                  </List>
+                </Collapse>
+              </div>
+            );
           })}
         </List>
       </Box>
