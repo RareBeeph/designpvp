@@ -41,7 +41,7 @@ export default function AuthForm({
     );
 
   return (
-    <Paper {...props}>
+    <Paper sx={{ minWidth: 'max-content' }} {...props}>
       <Formik initialValues={{ username: '', password: '' }} {...{ onSubmit }}>
         {({ isSubmitting }) => {
           return (

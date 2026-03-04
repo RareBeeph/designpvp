@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, BoxProps } from '@mui/material';
+import { Box, BoxProps, Toolbar } from '@mui/material';
 
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 
@@ -10,6 +10,7 @@ export default function NavBox({ children, ...props }: BoxProps) {
   // TODO: change
   return (
     <Box flexGrow={1} paddingLeft={!breakpoint.isSmall ? '320px' : 0} {...props}>
+      <Toolbar />
       {children}
     </Box>
   );

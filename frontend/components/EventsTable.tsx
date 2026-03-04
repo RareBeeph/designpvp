@@ -8,7 +8,7 @@ export default function EventsTable({ children: _children, ...props }: PaperProp
   const eventsList = useEventsList();
 
   return (
-    <Paper style={{ minWidth: 'max-content' }} {...props}>
+    <Paper style={{ minWidth: '0' }} {...props}>
       <DataGrid
         columns={[
           { field: 'id', headerName: 'ID', width: 50 },

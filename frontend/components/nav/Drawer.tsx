@@ -2,6 +2,7 @@
 import { useState } from 'react';
 
 import { NavButton } from '.';
+import UserDisplay from './UserDisplay';
 import { useGetAuthSession } from '@/api/allauth';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CloseIcon from '@mui/icons-material/Close';
@@ -164,6 +165,8 @@ export default function NavDrawer({
           })}
         </List>
       </Box>
+      {breakpoint.isXS && <UserDisplay />}
+      <Toolbar />
     </Drawer>
   );
 }

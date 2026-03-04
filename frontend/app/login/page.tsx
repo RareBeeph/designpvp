@@ -9,7 +9,14 @@ export default function Login() {
   const mutation = usePostAuthLogin();
 
   return (
-    <Stack sx={{ alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
+    <Stack
+      sx={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        height: 'calc(100% - 70px)', // bluh
+      }}
+    >
       <Container sx={{ width: '40%', minWidth: 'min-content' }} maxWidth="sm">
         <AuthForm {...{ name: 'Login', mutation }} />
       </Container>

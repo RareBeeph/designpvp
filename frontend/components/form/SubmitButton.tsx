@@ -2,7 +2,7 @@ import { Button, ButtonProps } from '@mui/material';
 
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 
-const StyledButton = ({ children, ...props }: ButtonProps) => {
+export const StyledButton = ({ children, ...props }: ButtonProps) => {
   const { isSmall } = useBreakpoint();
   const size = (props.size ?? isSmall) ? 'medium' : 'large';
   return (
