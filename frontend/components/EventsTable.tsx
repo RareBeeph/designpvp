@@ -1,23 +1,38 @@
 'use client';
 
+import { MRT_Table, useMaterialReactTable } from 'material-react-table';
+
 import { useEventsList } from '@/api/backend';
-import { Paper, PaperProps } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
+import { Button, Paper, PaperProps } from '@mui/material';
+
+const columns = [
+  { accessorKey: 'id', header: 'ID', size: 50 },
+  { accessorKey: 'name', header: 'Name', size: 200 },
+  { accessorKey: 'starts', header: 'Starts', size: 200 },
+  { accessorKey: 'ends', header: 'Ends', width: 200 },
+];
 
 export default function EventsTable({ children: _children, ...props }: PaperProps) {
-  const eventsList = useEventsList();
+  const { data } = useEventsList({
+    query: { placeholderData: [] },
+  });
+
+  const table = useMaterialReactTable({
+    columns,
+    data: data ?? [],
+  });
+  let tableComponent = <MRT_Table table={table} />;
 
   return (
     <Paper style={{ minWidth: '0' }} {...props}>
-      <DataGrid
-        columns={[
-          { field: 'id', headerName: 'ID', width: 50 },
-          { field: 'name', headerName: 'Name', width: 200 },
-          { field: 'starts', headerName: 'Starts', width: 200 },
-          { field: 'ends', headerName: 'Ends', width: 200 },
-        ]}
-        rows={eventsList.data ?? []}
+      {/* Button is necessary as intimidation */}
+      <Button
+        sx={{ display: 'none' }}
+        onClick={() => {
+          tableComponent = <></>;
+        }}
       />
+      {tableComponent}
     </Paper>
   );
 }
