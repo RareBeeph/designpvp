@@ -1,9 +1,11 @@
 'use client';
 
-import { MRT_Table, useMaterialReactTable } from 'material-react-table';
+import { MaterialReactTable } from 'material-react-table';
 
 import { useEventsList } from '@/api/backend';
-import { Button, Paper, PaperProps } from '@mui/material';
+import { PaperProps } from '@mui/material';
+
+import { useBreakpoint } from '@/hooks/useBreakpoint';
 
 const columns = [
   { accessorKey: 'id', header: 'ID', size: 50 },
@@ -17,22 +19,21 @@ export default function EventsTable({ children: _children, ...props }: PaperProp
     query: { placeholderData: [] },
   });
 
-  const table = useMaterialReactTable({
-    columns,
-    data: data ?? [],
-  });
-  let tableComponent = <MRT_Table table={table} />;
+  const breakpoint = useBreakpoint();
 
   return (
-    <Paper style={{ minWidth: '0' }} {...props}>
-      {/* Button is necessary as intimidation */}
-      <Button
-        sx={{ display: 'none' }}
-        onClick={() => {
-          tableComponent = <></>;
-        }}
-      />
-      {tableComponent}
-    </Paper>
+    <MaterialReactTable
+      columns={columns}
+      data={data ?? []}
+      muiTablePaperProps={{
+        sx: {
+          display: 'block',
+          minWidth: 0,
+          maxWidth: breakpoint.isSmall ? '90vw' : '60vw',
+          overflow: 'scroll',
+        },
+        ...props,
+      }}
+    />
   );
 }

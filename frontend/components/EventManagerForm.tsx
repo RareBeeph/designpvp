@@ -10,6 +10,8 @@ import { Paper, PaperProps } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import { Formik } from 'formik';
 
+import { useBreakpoint } from '@/hooks/useBreakpoint';
+
 export default function EventManagerForm({ children: _children, ...props }: PaperProps) {
   const queryClient = useQueryClient();
   const createEvent = useEventsCreate();
