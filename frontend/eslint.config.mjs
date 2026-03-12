@@ -125,6 +125,7 @@ const eslintConfig = [
       'react/forbid-prop-types': ['off'],
       'react/no-unescaped-entities': ['off'],
       'react/no-array-index-key': ['off'],
+      'react/jsx-key': 'error',
       'jsx-a11y/no-static-element-interactions': ['off'],
 
       // For components that appear more than once, this is impossible
