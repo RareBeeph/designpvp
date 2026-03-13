@@ -8,10 +8,10 @@ import { PaperProps } from '@mui/material';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 
 const columns = [
-  { accessorKey: 'id', header: 'ID', size: 50 },
-  { accessorKey: 'name', header: 'Name', size: 200 },
-  { accessorKey: 'starts', header: 'Starts', size: 200 },
-  { accessorKey: 'ends', header: 'Ends', width: 200 },
+  { accessorKey: 'id', header: 'ID', size: 0, grow: true },
+  { accessorKey: 'name', header: 'Name', size: 0, grow: true },
+  { accessorKey: 'starts', header: 'Starts', size: 0, grow: true },
+  { accessorKey: 'ends', header: 'Ends', size: 0, grow: true },
 ];
 
 export default function EventsTable({ children: _children, ...props }: PaperProps) {
@@ -30,7 +30,7 @@ export default function EventsTable({ children: _children, ...props }: PaperProp
           display: 'block',
           minWidth: 0,
           maxWidth: breakpoint.isSmall ? '90vw' : '60vw',
-          overflow: 'scroll',
+          overflow: 'auto',
         },
         ...props,
       }}

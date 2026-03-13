@@ -3,21 +3,20 @@
 import { MaterialReactTable } from 'material-react-table';
 
 import { useEventsList, useTeamsList } from '@/api/backend';
-import { PaperProps, useTheme } from '@mui/material';
+import { PaperProps } from '@mui/material';
 
 import { useBreakpoint } from '@/hooks/useBreakpoint';
+
+const columns = [
+  { accessorKey: 'id', header: 'ID', size: 0, grow: true, maxSize: 100 },
+  { accessorKey: 'name', header: 'Name', size: 0, grow: true },
+  { accessorKey: 'event', header: 'Event', size: 0, grow: true },
+];
 
 export default function TeamsTable({ children: _children, ...props }: PaperProps) {
   const teamsList = useTeamsList();
   const eventsList = useEventsList();
-  const theme = useTheme();
   const breakpoint = useBreakpoint();
-
-  const columns = [
-    { accessorKey: 'id', header: 'ID', size: parseInt(theme.spacing(6)) },
-    { accessorKey: 'name', header: 'Name', size: parseInt(theme.spacing(25)) },
-    { accessorKey: 'event', header: 'Event', size: parseInt(theme.spacing(25)) },
-  ];
 
   const data =
     teamsList.data?.map(({ id, name, event: eventId }) => {
@@ -29,12 +28,17 @@ export default function TeamsTable({ children: _children, ...props }: PaperProps
     <MaterialReactTable
       columns={columns}
       data={data}
+      layoutMode="semantic"
       muiTablePaperProps={{
         sx: {
           display: 'block',
           minWidth: 0,
-          maxWidth: breakpoint.isSmall ? '90vw' : '60vw',
-          overflow: 'scroll',
+          maxWidth:
+            breakpoint.isXS ? 'none'
+            : breakpoint.isSmall ? '90vw'
+            : '60vw',
+          width: '100%',
+          overflow: 'auto',
         },
         ...props,
       }}

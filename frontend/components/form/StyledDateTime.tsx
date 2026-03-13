@@ -8,18 +8,15 @@ export const StyledDateTime = (props: FieldAttributes<any>) => {
 
   return (
     <Field
-      component={(props: DateTimePickerProps) => (
-        <DateTimePicker
-          slotProps={{
-            textField: {
-              size: breakpoint.isSmall ? 'small' : 'medium',
-              ...props.slotProps?.textField,
-            },
-            ...props.slotProps,
-          }}
-          {...props}
-        />
-      )}
+      component={(fieldProps: DateTimePickerProps) => {
+        if (fieldProps.slotProps) {
+          fieldProps.slotProps.textField = {
+            size: breakpoint.isSmall ? 'small' : 'medium',
+            ...fieldProps.slotProps.textField,
+          }; // Ugly, but forces fieldProps.slotProps.textField.size to exist
+        }
+        return <DateTimePicker {...fieldProps} />;
+      }}
       label={props.name}
       {...props}
     />

@@ -1,15 +1,24 @@
-import { Container, Stack } from '@mui/material';
+'use client';
+
+import { Stack } from '@mui/material';
 
 import TeamManagerForm from '@/components/TeamManagerForm';
 import TeamsTable from '@/components/TeamsTable';
+import Padding from '@/components/form/Padding';
 
 export default function Teams() {
   return (
-    <Container sx={{ width: '40%', minWidth: 'min-content' }} maxWidth="sm">
-      <Stack sx={{ alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
-        <TeamManagerForm sx={{ width: '80%' }} />
-        <TeamsTable />
+    <Stack>
+      <Stack direction={'row'}>
+        <Padding flex={1} />
+        <TeamManagerForm sx={{ flex: 2 }} />
+        <Padding flex={1} />
       </Stack>
-    </Container>
+      <Stack direction={'row'}>
+        <Padding flex={1} />
+        <TeamsTable sx={{ flex: 4 }} />
+        <Padding flex={1} />
+      </Stack>
+    </Stack>
   );
 }

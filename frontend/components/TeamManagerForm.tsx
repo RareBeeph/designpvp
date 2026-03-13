@@ -40,14 +40,16 @@ export default function TeamManagerForm({ children: _children, ...props }: Paper
             <StyledForm header="New Team" isSubmitting={isSubmitting}>
               <StyledTextField name="name" />
               <Field
-                component={({ ...props }: SelectProps) => (
-                  <Select size={breakpoint.isSmall ? 'small' : 'medium'} {...props} />
+                component={(SelectProps: SelectProps) => (
+                  <Select size={breakpoint.isSmall ? 'small' : 'medium'} {...SelectProps} />
                 )}
                 name="eventId"
                 value={values.eventId}
               >
                 {eventsList.data?.map(event => (
-                  <MenuItem value={event.id}>{event.name}</MenuItem>
+                  <MenuItem value={event.id} key={event.id}>
+                    {event.name}
+                  </MenuItem>
                 ))}
               </Field>
             </StyledForm>

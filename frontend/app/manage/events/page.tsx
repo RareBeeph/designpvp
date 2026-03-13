@@ -1,21 +1,24 @@
 'use client';
 
-import { Container, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 
 import EventManagerForm from '@/components/EventManagerForm';
 import EventsTable from '@/components/EventsTable';
-
-import { useBreakpoint } from '@/hooks/useBreakpoint';
+import Padding from '@/components/form/Padding';
 
 export default function Events() {
-  const breakpoint = useBreakpoint();
-
   return (
-    <Container sx={{ width: '40%', minWidth: 'min-content' }} maxWidth="sm">
-      <Stack sx={{ alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
-        <EventManagerForm sx={{ width: breakpoint.isXS ? '100%' : '80%' }} />
-        <EventsTable />
+    <Stack>
+      <Stack direction={'row'}>
+        <Padding flex={1} />
+        <EventManagerForm sx={{ flex: 2 }} />
+        <Padding flex={1} />
       </Stack>
-    </Container>
+      <Stack direction={'row'}>
+        <Padding flex={1} />
+        <EventsTable sx={{ flex: 4 }} />
+        <Padding flex={1} />
+      </Stack>
+    </Stack>
   );
 }

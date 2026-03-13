@@ -38,12 +38,15 @@ const darkTheme = createTheme({
             padding: theme.spacing(2),
             [theme.breakpoints.up('xl')]: {
               padding: theme.spacing(2.5),
-            }, // xs: 2, md: 2, xl: 2.5
+            },
+            [theme.breakpoints.down('sm')]: {
+              padding: theme.spacing(0.5),
+            }, // xs: 0.5, md: 2, xl: 2.5
           },
         }),
       },
     },
-    MuiStack: { defaultProps: { spacing: { xs: 1.5, md: 2, xl: 2.5 } } },
+    MuiStack: { defaultProps: { spacing: { xs: 0.5, sm: 1.5, md: 2, xl: 2.5 } } },
   },
 });
 
