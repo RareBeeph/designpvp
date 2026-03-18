@@ -4,6 +4,7 @@ import { MaterialReactTable } from 'material-react-table';
 
 import { useEventsList, useTeamsList } from '@/api/backend';
 import { PaperProps } from '@mui/material';
+import { usePathname, useRouter } from 'next/navigation';
 
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 
@@ -17,6 +18,8 @@ export default function TeamsTable({ children: _children, ...props }: PaperProps
   const teamsList = useTeamsList();
   const eventsList = useEventsList();
   const breakpoint = useBreakpoint();
+  const router = useRouter();
+  const pathName = usePathname();
 
   const data =
     teamsList.data?.map(({ id, name, event: eventId }) => {
@@ -27,7 +30,7 @@ export default function TeamsTable({ children: _children, ...props }: PaperProps
   return (
     <MaterialReactTable
       columns={columns}
-      data={data}
+      data={data.toSorted(({ id: idA }, { id: idB }) => idA - idB)}
       layoutMode="semantic"
       muiTablePaperProps={{
         sx: {
@@ -42,6 +45,11 @@ export default function TeamsTable({ children: _children, ...props }: PaperProps
         },
         ...props,
       }}
+      muiTableBodyCellProps={({ row }) => ({
+        onClick: () => {
+          router.push(pathName + '/' + row.getValue('id'));
+        },
+      })}
     />
   );
 }

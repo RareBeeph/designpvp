@@ -98,7 +98,7 @@ export default function NavDrawer({
               <NavButton
                 depth={idx + 1}
                 icon={<ExpandMoreIcon />}
-                primary={pascalCase(path)}
+                primary={pascalCase(path.includes('/') ? path.slice(path.lastIndexOf('/')) : path)}
                 onClick={() => {
                   setCollapseOpen(true);
                   router.push('/' + path);

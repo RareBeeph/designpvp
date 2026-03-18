@@ -26,7 +26,7 @@ export default function Teams() {
       >
         <Stack direction={'row'} width={'100%'}>
           <Padding flex={1} />
-          <TeamManagerForm sx={{ flex: 2 }} />
+          <TeamManagerForm mode={'create'} sx={{ flex: 2 }} />
           <Padding flex={1} />
         </Stack>
       </Modal>
