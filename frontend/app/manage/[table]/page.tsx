@@ -4,16 +4,18 @@ import { useState } from 'react';
 
 import AddIcon from '@mui/icons-material/Add';
 import { Button, Container, Fab, Modal, Stack } from '@mui/material';
+import { useParams } from 'next/navigation';
 
-import EventManagerForm from '@/components/EventManagerForm';
-import EventsTable from '@/components/EventsTable';
+import TeamManagerForm from '@/components/TeamManagerForm';
+import DataTable from '@/components/api/DataTable';
 import Padding from '@/components/form/Padding';
 
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 
-export default function Events() {
+export default function Teams() {
   const breakpoint = useBreakpoint();
   const [open, setOpen] = useState(false);
+  const { table }: { table: 'events' | 'teams' } = useParams();
 
   return (
     <Container disableGutters>
@@ -26,7 +28,7 @@ export default function Events() {
       >
         <Stack direction={'row'} width={'100%'}>
           <Padding flex={1} />
-          <EventManagerForm sx={{ flex: 2 }} />
+          <TeamManagerForm mode={'create'} sx={{ flex: 2 }} />
           <Padding flex={1} />
         </Stack>
       </Modal>
@@ -41,7 +43,7 @@ export default function Events() {
                 setOpen(!open);
               }}
             >
-              Add New Event
+              Add New Team
             </Button>
           : <Fab
               color="primary"
@@ -58,7 +60,7 @@ export default function Events() {
         </Stack>
         <Stack direction={'row'}>
           <Padding flex={1} />
-          <EventsTable sx={{ flex: 4 }} />
+          <DataTable table={table} sx={{ flex: 4 }} />
           <Padding flex={1} />
         </Stack>
       </Stack>

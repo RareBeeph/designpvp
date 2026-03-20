@@ -20,7 +20,7 @@ export default function TeamManagerForm({
   const queryClient = useQueryClient();
   const createTeam = useTeamsCreate();
   const updateTeam = useTeamsUpdate();
-  const { slug } = useParams();
+  const { id }: { id: string } = useParams();
   const router = useRouter();
   const eventsList = useEventsList();
   const breakpoint = useBreakpoint();
@@ -42,14 +42,10 @@ export default function TeamManagerForm({
         }
         break;
       case 'update':
-        if (
-          eventId &&
-          eventsList.data?.map(event => event.id).includes(Number(eventId)) &&
-          slug?.toString()
-        ) {
+        if (eventId && eventsList.data?.map(event => event.id).includes(Number(eventId))) {
           updateTeam.mutate(
             {
-              id: parseInt(slug.toString()),
+              id: parseInt(id),
               data: { name, event: eventId },
             },
             {
@@ -69,7 +65,7 @@ export default function TeamManagerForm({
         {({ isSubmitting, values }) => {
           return (
             <StyledForm
-              header={mode == 'create' ? 'New Team' : 'Editing Team ' + slug}
+              header={mode == 'create' ? 'New Team' : 'Editing Team ' + id}
               isSubmitting={isSubmitting}
             >
               <StyledTextField name="name" />
