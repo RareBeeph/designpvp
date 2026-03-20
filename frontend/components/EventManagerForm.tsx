@@ -45,7 +45,7 @@ export default function EventManagerForm({
           {
             onSuccess: () => {
               queryClient.invalidateQueries({ queryKey: getEventsListQueryKey() });
-              router.push('/manage/events')
+              router.push('/manage/events');
             },
           },
         );
@@ -57,7 +57,10 @@ export default function EventManagerForm({
       <Formik initialValues={{ name: '', starts: dayjs(''), ends: dayjs('') }} onSubmit={onSubmit}>
         {({ isSubmitting }) => {
           return (
-            <StyledForm header={mode == 'create' ? "New Event" : "Editing Event "+id} isSubmitting={isSubmitting}>
+            <StyledForm
+              header={mode == 'create' ? 'New Event' : 'Editing Event ' + id}
+              isSubmitting={isSubmitting}
+            >
               <StyledTextField name="name" />
               <StyledDateTime name="starts" />
               <StyledDateTime name="ends" />
