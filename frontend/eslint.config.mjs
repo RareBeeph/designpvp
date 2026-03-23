@@ -125,6 +125,7 @@ const eslintConfig = [
       'react/forbid-prop-types': ['off'],
       'react/no-unescaped-entities': ['off'],
       'react/no-array-index-key': ['off'],
+      'react/jsx-curly-brace-presence': ['error', { props: 'never', children: 'never' }],
       'react/jsx-key': 'error',
       'jsx-a11y/no-static-element-interactions': ['off'],
 
