@@ -86,9 +86,9 @@ export default function NavDrawer({
           <NavButton
             depth={0}
             icon={<HomeIcon />}
-            primary={'Home'}
+            primary="Home"
             onClick={() => router.push('/')}
-            key={'Home'}
+            key="Home"
           />
 
           {/* Breadcrumb links */}
@@ -140,7 +140,7 @@ export default function NavDrawer({
                     onClick={() => {
                       if (subroutes.length > 0) setCollapseOpen(!collapseOpen);
                     }}
-                    key={'CurrentPage'}
+                    key="CurrentPage"
                   />
                 )}
                 {/* Immediate subroutes dropdown */}

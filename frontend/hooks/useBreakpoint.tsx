@@ -1,6 +1,6 @@
 import { useMediaQuery, useTheme } from '@mui/material';
 
-interface Breakpoint {
+export interface Breakpoint {
   isXS: boolean;
   isSmall: boolean;
   isXL: boolean;

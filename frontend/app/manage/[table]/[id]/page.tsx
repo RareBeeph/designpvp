@@ -2,50 +2,41 @@
 
 import { useQueryClient } from '@tanstack/react-query';
 
-import {
-  getEventsListQueryKey,
-  getTeamsListQueryKey,
-  useEventsDestroy,
-  useTeamsDestroy,
-} from '@/api/backend';
 import { Stack } from '@mui/material';
 import { useParams, useRouter } from 'next/navigation';
 import { pascalCase } from 'text-case';
 
-import EventManagerForm from '@/components/EventManagerForm';
-import TeamManagerForm from '@/components/TeamManagerForm';
+import DataManagerForm from '@/components/api/DataManagerForm';
+import { tableConfigs } from '@/components/api/TableConfigs';
 import Padding from '@/components/form/Padding';
 import { StyledButton } from '@/components/form/SubmitButton';
 
 export default function UpdateTeams() {
-  const deleteTeam = useTeamsDestroy();
-  const deleteEvent = useEventsDestroy();
   const { table, id }: { table: string; id: string } = useParams();
   const queryClient = useQueryClient();
   const router = useRouter();
+  const destroy = tableConfigs[table].useDestroy()
 
   return (
     <Stack rowGap={10}>
-      <Stack direction={'row'} width={'100%'}>
+      <Stack direction="row" width="100%">
         <Padding flex={1} />
-        {table == 'teams' ?
-          <TeamManagerForm mode={'update'} sx={{ flex: 2 }} />
-        : <EventManagerForm mode={'update'} sx={{ flex: 2 }} />}
+        <DataManagerForm config={tableConfigs[table]} mode="update" sx={{ flex: 2 }} id={id} />
         <Padding flex={1} />
       </Stack>
 
-      <Stack direction={'row'} width={'100%'}>
+      <Stack direction="row" width="100%">
         <Padding flex={3} />
         <StyledButton
           color="error"
           sx={{ flex: 2 }}
           onClick={() => {
-            (table == 'teams' ? deleteTeam : deleteEvent).mutate(
+            destroy.mutate(
               { id: parseInt(id) },
               {
                 onSuccess: () => {
                   queryClient.invalidateQueries({
-                    queryKey: table == 'teams' ? getTeamsListQueryKey() : getEventsListQueryKey(),
+                    queryKey: tableConfigs[table].queryKey(),
                   });
                   router.push('/manage/' + table);
                 },

@@ -1,6 +1,7 @@
 'use client';
 
-import { MRT_RowData, MaterialReactTable } from 'material-react-table';
+import { MRT_ColumnDef, MRT_RowData, MaterialReactTable } from 'material-react-table';
+import React from 'react';
 
 import { PaperProps } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
@@ -14,7 +15,7 @@ export default function DataTable({
   ...props
 }: PaperProps & {
   data: MRT_RowData[];
-  columns: { accessorKey: string; header: string; size: number; grow: boolean }[];
+  columns: MRT_ColumnDef<MRT_RowData>[];
 }) {
   const breakpoint = useBreakpoint();
   const router = useRouter();

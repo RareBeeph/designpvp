@@ -30,7 +30,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`} style={{ height: '100dvh' }}>
         <Providers>
-          <Stack height={'100%'}>
+          <Stack height="100%">
             <NavBar />
             <NavBox> {children} </NavBox>
           </Stack>
