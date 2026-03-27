@@ -1,7 +1,6 @@
 'use client';
 
 import { MRT_ColumnDef, MRT_RowData, MaterialReactTable } from 'material-react-table';
-import React from 'react';
 
 import { PaperProps } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';

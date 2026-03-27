@@ -7,8 +7,11 @@ class Event(models.Model):
     starts = models.DateTimeField()
     ends = models.DateTimeField()
 
+    def __str__(self):
+        return self.name
+
 
 class Team(models.Model):
     name = models.CharField(max_length=50)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="event")
     users = models.ManyToManyField(User)

@@ -15,7 +15,7 @@ export default function UpdateTeams() {
   const { table, id }: { table: string; id: string } = useParams();
   const queryClient = useQueryClient();
   const router = useRouter();
-  const destroy = tableConfigs[table].useDestroy()
+  const destroy = tableConfigs[table].useDestroy();
 
   return (
     <Stack rowGap={10}>

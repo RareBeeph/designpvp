@@ -6,7 +6,7 @@ import { Paper, PaperProps } from '@mui/material';
 import { Formik } from 'formik';
 import { useRouter } from 'next/navigation';
 
-import { TableConfig } from '@/components/api/TableConfigs';
+import { AnyConfig } from '@/components/api/TableConfigs';
 
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 
@@ -16,19 +16,22 @@ export default function DataManagerForm({
   mode,
   id,
   ...props
-}: PaperProps & { config: TableConfig; mode: 'create' | 'update'; id?: string }) {
+}: PaperProps & { config: AnyConfig; mode: 'create' | 'update'; id?: string }) {
   const queryClient = useQueryClient();
   const create = config.useCreate();
   const update = config.useUpdate();
   const router = useRouter();
   const breakpoint = useBreakpoint();
 
-  const onSubmit = async (data: Record<string, any>) => {
-    switch (mode) {
-      case 'create':
+  const onSubmit = async (data: Parameters<typeof config.parseRequest>[0]) => {
+    const request = config.parseRequest(data as any);
+
+    if (request) {
+      switch (mode) {
+        case 'create':
           create.mutate(
             {
-              data,
+              data: request as any,
             },
             {
               onSuccess: () => {
@@ -37,24 +40,23 @@ export default function DataManagerForm({
               // would be nice to have an onError
             },
           );
-        break;
-      case 'update':
-        if (
-          id
-        ) {
-          update.mutate(
-            {
-              id: parseInt(id),
-              data,
-            },
-            {
-              onSuccess: () => {
-                queryClient.invalidateQueries({ queryKey: config.queryKey() });
-                router.push('/manage/' + config.name);
+          break;
+        case 'update':
+          if (id) {
+            update.mutate(
+              {
+                id: parseInt(id),
+                data: request as any,
               },
-            },
-          );
-        }
+              {
+                onSuccess: () => {
+                  queryClient.invalidateQueries({ queryKey: config.queryKey() });
+                  router.push('/manage/' + config.name);
+                },
+              },
+            );
+          }
+      }
     }
   };
 
@@ -64,7 +66,7 @@ export default function DataManagerForm({
         {({ isSubmitting, values }) => (
           <config.formFields
             isSubmitting={isSubmitting}
-            values={values}
+            values={values as any}
             mode={mode}
             id={id}
             breakpoint={breakpoint}

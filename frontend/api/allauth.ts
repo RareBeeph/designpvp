@@ -1441,9 +1441,10 @@ export const getPostTokensRefreshMutationOptions = <
   TContext
 > => {
   const mutationKey = ['postTokensRefresh'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -1539,9 +1540,10 @@ export const getPostAuthProviderRedirectMutationOptions = <
   TContext
 > => {
   const mutationKey = ['postAuthProviderRedirect'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -1626,9 +1628,10 @@ export const getDeleteAccountEmailMutationOptions = <
   TContext
 > => {
   const mutationKey = ['deleteAccountEmail'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -1828,9 +1831,10 @@ export const getPatchAccountEmailMutationOptions = <
   TContext
 > => {
   const mutationKey = ['patchAccountEmail'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -1924,9 +1928,10 @@ export const getPostAccountEmailMutationOptions = <
   TContext
 > => {
   const mutationKey = ['postAccountEmail'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -2019,9 +2024,10 @@ export const getPutAccountEmailMutationOptions = <
   TContext
 > => {
   const mutationKey = ['putAccountEmail'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -2114,9 +2120,10 @@ export const getPostAccountPasswordChangeMutationOptions = <
   TContext
 > => {
   const mutationKey = ['postAccountPasswordChange'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -2333,9 +2340,10 @@ export const getPostAccountPhoneMutationOptions = <
   TContext
 > => {
   const mutationKey = ['postAccountPhone'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -2430,9 +2438,10 @@ export const getDeleteAccountProvidersMutationOptions = <
   TContext
 > => {
   const mutationKey = ['deleteAccountProviders'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -2642,9 +2651,10 @@ export const getPostAuthCodeConfirmMutationOptions = <
   TContext
 > => {
   const mutationKey = ['postAuthCodeConfirm'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -2864,9 +2874,10 @@ export const getPostAuthEmailVerifyMutationOptions = <
   TContext
 > => {
   const mutationKey = ['postAuthEmailVerify'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -2952,9 +2963,10 @@ export const getPostAuthEmailVerifyResendMutationOptions = <
   TContext
 > => {
   const mutationKey = ['postAuthEmailVerifyResend'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -3044,9 +3056,10 @@ export const getPostAuthLoginMutationOptions = <
   TContext
 > => {
   const mutationKey = ['postAuthLogin'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -3146,9 +3159,10 @@ export const getPostAuthPasswordRequestMutationOptions = <
   TContext
 > => {
   const mutationKey = ['postAuthPasswordRequest'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -3374,9 +3388,10 @@ export const getPostAuthPasswordResetMutationOptions = <
   TContext
 > => {
   const mutationKey = ['postAuthPasswordReset'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -3470,9 +3485,10 @@ export const getPostAuthPhoneVerifyMutationOptions = <
   TContext
 > => {
   const mutationKey = ['postAuthPhoneVerify'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -3558,9 +3574,10 @@ export const getPostAuthPhoneVerifyResendMutationOptions = <
   TContext
 > => {
   const mutationKey = ['postAuthPhoneVerifyResend'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -3784,9 +3801,10 @@ export const getPostAuthProviderSignupMutationOptions = <
   TContext
 > => {
   const mutationKey = ['postAuthProviderSignup'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -3883,9 +3901,10 @@ export const getPostAuthProviderTokenMutationOptions = <
   TContext
 > => {
   const mutationKey = ['postAuthProviderToken'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -3982,9 +4001,10 @@ export const getPostAuthReauthenticateMutationOptions = <
   TContext
 > => {
   const mutationKey = ['postAuthReauthenticate'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -4056,9 +4076,10 @@ export const getDeleteAuthSessionMutationOptions = <
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<Awaited<ReturnType<typeof deleteAuthSession>>, TError, void, TContext> => {
   const mutationKey = ['deleteAuthSession'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -4258,9 +4279,10 @@ export const getPostAuthSignupMutationOptions = <
   TContext
 > => {
   const mutationKey = ['postAuthSignup'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 

@@ -62,14 +62,15 @@ export interface PatchedTeamRequest {
    * @maxLength 50
    */
   name?: string;
-  event?: number;
+  eventId?: number;
 }
 
 export interface Team {
   readonly id: number;
   /** @maxLength 50 */
   name: string;
-  event: number;
+  readonly event: string;
+  eventId: number;
 }
 
 export interface TeamRequest {
@@ -78,7 +79,7 @@ export interface TeamRequest {
    * @maxLength 50
    */
   name: string;
-  event: number;
+  eventId: number;
 }
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
@@ -329,9 +330,10 @@ export const getEventsCreateMutationOptions = <
   TContext
 > => {
   const mutationKey = ['eventsCreate'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -523,9 +525,10 @@ export const getEventsUpdateMutationOptions = <
   TContext
 > => {
   const mutationKey = ['eventsUpdate'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -612,9 +615,10 @@ export const getEventsPartialUpdateMutationOptions = <
   TContext
 > => {
   const mutationKey = ['eventsPartialUpdate'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -680,9 +684,10 @@ export const getEventsDestroyMutationOptions = <
   TContext
 > => {
   const mutationKey = ['eventsDestroy'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -834,7 +839,7 @@ export const teamsCreate = (
 ) => {
   const formUrlEncoded = new URLSearchParams();
   formUrlEncoded.append(`name`, teamRequest.name);
-  formUrlEncoded.append(`event`, teamRequest.event.toString());
+  formUrlEncoded.append(`eventId`, teamRequest.eventId.toString());
 
   return customInstance<Team>(
     {
@@ -866,9 +871,10 @@ export const getTeamsCreateMutationOptions = <
   TContext
 > => {
   const mutationKey = ['teamsCreate'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -1028,7 +1034,7 @@ export const teamsUpdate = (
 ) => {
   const formUrlEncoded = new URLSearchParams();
   formUrlEncoded.append(`name`, teamRequest.name);
-  formUrlEncoded.append(`event`, teamRequest.event.toString());
+  formUrlEncoded.append(`eventId`, teamRequest.eventId.toString());
 
   return customInstance<Team>(
     {
@@ -1059,9 +1065,10 @@ export const getTeamsUpdateMutationOptions = <
   TContext
 > => {
   const mutationKey = ['teamsUpdate'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -1112,8 +1119,8 @@ export const teamsPartialUpdate = (
   if (patchedTeamRequest.name !== undefined) {
     formUrlEncoded.append(`name`, patchedTeamRequest.name);
   }
-  if (patchedTeamRequest.event !== undefined) {
-    formUrlEncoded.append(`event`, patchedTeamRequest.event.toString());
+  if (patchedTeamRequest.eventId !== undefined) {
+    formUrlEncoded.append(`eventId`, patchedTeamRequest.eventId.toString());
   }
 
   return customInstance<Team>(
@@ -1145,9 +1152,10 @@ export const getTeamsPartialUpdateMutationOptions = <
   TContext
 > => {
   const mutationKey = ['teamsPartialUpdate'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 
@@ -1213,9 +1221,10 @@ export const getTeamsDestroyMutationOptions = <
   TContext
 > => {
   const mutationKey = ['teamsDestroy'];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
 

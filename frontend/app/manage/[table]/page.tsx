@@ -18,6 +18,7 @@ export default function Teams() {
   const breakpoint = useBreakpoint();
   const [open, setOpen] = useState(false);
   const { table }: { table: 'events' | 'teams' } = useParams();
+  const listData = tableConfigs[table]?.useList().data ?? [];
 
   return (
     <Container disableGutters>
@@ -63,11 +64,7 @@ export default function Teams() {
         <Stack direction="row">
           <Padding flex={1} />
           <DataTable
-            data={
-              tableConfigs[table]?.resolveForeignKeys?.(tableConfigs[table]?.useList()) ??
-              tableConfigs[table]?.useList().data ??
-              []
-            }
+            data={listData}
             columns={tableConfigs[table]?.columns ?? []}
             sx={{ flex: 4 }}
           />
