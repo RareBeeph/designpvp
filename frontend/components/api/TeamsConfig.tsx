@@ -1,6 +1,6 @@
 import StyledForm from '../form/StyledForm';
 import { StyledTextField } from '../form/StyledTextField';
-import { TableConfig } from './TableConfigs';
+import { FormFieldProps, TableConfig } from './TableConfigs';
 import {
   Team,
   TeamRequest,
@@ -15,22 +15,12 @@ import { MenuItem } from '@mui/material';
 import { Field } from 'formik';
 import { Select, SelectProps } from 'formik-mui';
 
-import { Breakpoint } from '@/hooks/useBreakpoint';
-
-interface TeamProps {
-  isSubmitting: boolean;
-  values: { name: string; eventId: number | '' };
-  mode: 'create' | 'update';
-  id?: string;
-  breakpoint: Breakpoint;
-}
-
 interface TeamValues {
   name: string;
   eventId: string;
 }
 
-export const TeamsConfig: TableConfig<Team, TeamProps, TeamRequest, TeamValues> = {
+export const TeamsConfig: TableConfig<Team, TeamRequest, TeamValues> = {
   name: 'teams',
   columns: [
     { accessorKey: 'id', header: 'ID', size: 0, grow: true },
@@ -40,15 +30,15 @@ export const TeamsConfig: TableConfig<Team, TeamProps, TeamRequest, TeamValues> 
   queryKey: getTeamsListQueryKey,
   useList: useTeamsList,
   parseRequest: data => {
-      return {
-        name: data.name,
-        eventId: parseInt(data.eventId),
-      };
+    return {
+      name: data.name,
+      eventId: parseInt(data.eventId),
+    };
   },
   useCreate: useTeamsCreate,
   useUpdate: useTeamsUpdate,
   useDestroy: useTeamsDestroy,
-  formFields: ({ isSubmitting, values, mode, id, breakpoint }: TeamProps) => {
+  formFields: ({ isSubmitting, values, mode, id, breakpoint }: FormFieldProps<TeamValues>) => {
     return (
       <StyledForm
         header={mode == 'create' ? 'New Team' : 'Editing Team ' + id}

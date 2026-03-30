@@ -1,7 +1,7 @@
 import { StyledDateTime } from '../form/StyledDateTime';
 import StyledForm from '../form/StyledForm';
 import { StyledTextField } from '../form/StyledTextField';
-import { TableConfig } from './TableConfigs';
+import { FormFieldProps, TableConfig } from './TableConfigs';
 import {
   Event,
   EventRequest,
@@ -13,19 +13,13 @@ import {
 } from '@/api/backend';
 import dayjs, { Dayjs } from 'dayjs';
 
-interface EventProps {
-  isSubmitting: boolean;
-  mode: 'create' | 'update';
-  id?: string;
-}
-
 interface EventValues {
   name: string;
   starts: Dayjs;
   ends: Dayjs;
 }
 
-export const EventsConfig: TableConfig<Event, EventProps, EventRequest, EventValues> = {
+export const EventsConfig: TableConfig<Event, EventRequest, EventValues> = {
   name: 'events',
   columns: [
     { accessorKey: 'id', header: 'ID', size: 0, grow: true },
@@ -45,7 +39,7 @@ export const EventsConfig: TableConfig<Event, EventProps, EventRequest, EventVal
   useCreate: useEventsCreate,
   useUpdate: useEventsUpdate,
   useDestroy: useEventsDestroy,
-  formFields: ({ isSubmitting, mode, id }: EventProps) => {
+  formFields: ({ isSubmitting, mode, id }: FormFieldProps<EventValues>) => {
     return (
       <StyledForm
         header={mode == 'create' ? 'New Event' : 'Editing Event ' + id}

@@ -24,14 +24,14 @@ export default function DataManagerForm({
   const breakpoint = useBreakpoint();
 
   const onSubmit = async (data: Parameters<typeof config.parseRequest>[0]) => {
-    const request = config.parseRequest(data as any);
+    const request = config.parseRequest(data);
 
     if (request) {
       switch (mode) {
         case 'create':
           create.mutate(
             {
-              data: request as any,
+              data: request,
             },
             {
               onSuccess: () => {
@@ -46,7 +46,7 @@ export default function DataManagerForm({
             update.mutate(
               {
                 id: parseInt(id),
-                data: request as any,
+                data: request,
               },
               {
                 onSuccess: () => {
@@ -66,7 +66,7 @@ export default function DataManagerForm({
         {({ isSubmitting, values }) => (
           <config.formFields
             isSubmitting={isSubmitting}
-            values={values as any}
+            values={values}
             mode={mode}
             id={id}
             breakpoint={breakpoint}
