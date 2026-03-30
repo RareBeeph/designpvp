@@ -1,6 +1,7 @@
 import { StyledDateTime } from '../form/StyledDateTime';
 import StyledForm from '../form/StyledForm';
 import { StyledTextField } from '../form/StyledTextField';
+import DataManagerForm from './DataManagerForm';
 import { FormFieldProps, TableConfig } from './TableConfigs';
 import {
   Event,
@@ -52,4 +53,7 @@ export const EventsConfig: TableConfig<Event, EventRequest, EventValues> = {
     );
   },
   initialValues: { name: '', starts: dayjs(''), ends: dayjs('') },
+  dataManagerForm: ({ mode, id, ...props }) => (
+    <DataManagerForm config={EventsConfig} mode={mode} id={id} {...props} />
+  ),
 };

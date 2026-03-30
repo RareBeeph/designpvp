@@ -3,20 +3,20 @@
 import { useQueryClient } from '@tanstack/react-query';
 
 import { Paper, PaperProps } from '@mui/material';
-import { Formik } from 'formik';
+import { Formik, FormikValues } from 'formik';
 import { useRouter } from 'next/navigation';
 
-import { AnyConfig } from '@/components/api/TableConfigs';
+import { ModeProps, TableConfig } from '@/components/api/TableConfigs';
 
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 
-export default function DataManagerForm({
+export default function DataManagerForm<T, TRequest, TValues extends FormikValues>({
   children: _children,
   config,
   mode,
   id,
   ...props
-}: PaperProps & { config: AnyConfig; mode: 'create' | 'update'; id?: string }) {
+}: PaperProps & ModeProps & { config: TableConfig<T, TRequest, TValues> }) {
   const queryClient = useQueryClient();
   const create = config.useCreate();
   const update = config.useUpdate();

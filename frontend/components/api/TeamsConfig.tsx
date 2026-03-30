@@ -1,5 +1,8 @@
+import React from 'react';
+
 import StyledForm from '../form/StyledForm';
 import { StyledTextField } from '../form/StyledTextField';
+import DataManagerForm from './DataManagerForm';
 import { FormFieldProps, TableConfig } from './TableConfigs';
 import {
   Team,
@@ -62,4 +65,7 @@ export const TeamsConfig: TableConfig<Team, TeamRequest, TeamValues> = {
     );
   },
   initialValues: { name: '', eventId: '' },
+  dataManagerForm: ({ mode, id, ...props }) => (
+    <DataManagerForm config={TeamsConfig} mode={mode} id={id} {...props} />
+  ),
 };

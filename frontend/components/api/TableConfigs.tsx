@@ -1,20 +1,26 @@
 import { QueryKey, UseMutationResult, UseQueryResult } from '@tanstack/react-query';
 import { MRT_ColumnDef, MRT_RowData } from 'material-react-table';
+import { ReactNode } from 'react';
 
 import { EventsConfig } from './EventsConfig';
 import { TeamsConfig } from './TeamsConfig';
+import { PaperProps } from '@mui/material';
+import { FormikValues } from 'formik';
 
 import { Breakpoint } from '@/hooks/useBreakpoint';
 
-export interface FormFieldProps<TValues> {
-  isSubmitting: boolean;
-  values: TValues;
+export interface ModeProps {
   mode: 'create' | 'update';
   id?: string;
-  breakpoint: Breakpoint;
 }
 
-export interface TableConfig<T, TRequest, TValues> {
+export type FormFieldProps<TValues> = {
+  isSubmitting: boolean;
+  values: TValues;
+  breakpoint: Breakpoint;
+} & ModeProps;
+
+export interface TableConfig<T, TRequest, TValues extends FormikValues> {
   name: string;
   columns: MRT_ColumnDef<MRT_RowData>[];
   queryKey: () => QueryKey;
@@ -25,6 +31,7 @@ export interface TableConfig<T, TRequest, TValues> {
   useDestroy: () => UseMutationResult<unknown, Error, { id: number }, unknown>;
   formFields: React.FC<FormFieldProps<TValues>>;
   initialValues: TValues;
+  dataManagerForm: (props: PaperProps & ModeProps) => ReactNode;
 }
 
 export type AnyConfig = TableConfig<any, any, any>;

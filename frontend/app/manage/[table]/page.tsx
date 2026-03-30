@@ -7,7 +7,6 @@ import { Button, Container, Fab, Modal, Stack } from '@mui/material';
 import { useParams } from 'next/navigation';
 import { pascalCase } from 'text-case';
 
-import DataManagerForm from '@/components/api/DataManagerForm';
 import DataTable from '@/components/api/DataTable';
 import { tableConfigs } from '@/components/api/TableConfigs';
 import Padding from '@/components/form/Padding';
@@ -31,7 +30,7 @@ export default function Teams() {
       >
         <Stack direction="row" width="100%">
           <Padding flex={1} />
-          <DataManagerForm config={tableConfigs[table]} mode="create" sx={{ flex: 2 }} />
+          {tableConfigs[table].dataManagerForm({ mode: 'create', sx: { flex: 2 } })}
           <Padding flex={1} />
         </Stack>
       </Modal>
