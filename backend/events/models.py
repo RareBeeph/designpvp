@@ -7,9 +7,6 @@ class Event(models.Model):
     starts = models.DateTimeField()
     ends = models.DateTimeField()
 
-    def __str__(self):
-        return self.name
-
 
 class Team(models.Model):
     name = models.CharField(max_length=50)

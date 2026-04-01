@@ -23,7 +23,7 @@ export default function DataManagerForm<T, TRequest, TValues extends FormikValue
   const router = useRouter();
   const breakpoint = useBreakpoint();
 
-  const onSubmit = async (data: Parameters<typeof config.parseRequest>[0]) => {
+  const onSubmit = async (data: TValues) => {
     const request = config.parseRequest(data);
 
     if (request) {

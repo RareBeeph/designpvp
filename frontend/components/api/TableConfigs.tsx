@@ -36,7 +36,7 @@ export interface TableConfig<T, TRequest, TValues extends FormikValues> {
 
 export type AnyConfig = TableConfig<any, any, any>;
 
-export const tableConfigs: Record<string, AnyConfig> = {
+export const tableConfigs: Record<string, AnyConfig | undefined> = {
   teams: TeamsConfig,
   events: EventsConfig,
 };

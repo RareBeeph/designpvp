@@ -1,7 +1,7 @@
-from rest_framework import viewsets
+from rest_framework import serializers, viewsets
 
 from .models import Event, Team
-from .serializers import EventSerializer, TeamSerializer
+from .serializers import EventSerializer, TeamSerializer, TeamWriteSerializer
 
 
 class EventViewSet(viewsets.ModelViewSet):
@@ -11,4 +11,8 @@ class EventViewSet(viewsets.ModelViewSet):
 
 class TeamViewSet(viewsets.ModelViewSet):
     queryset = Team.objects.all()
-    serializer_class = TeamSerializer
+
+    def get_serializer_class(self) -> type[serializers.ModelSerializer]:
+        if self.request.method in ["POST", "PUT"]:
+            return TeamWriteSerializer
+        return TeamSerializer

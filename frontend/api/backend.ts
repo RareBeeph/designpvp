@@ -62,24 +62,30 @@ export interface PatchedTeamRequest {
    * @maxLength 50
    */
   name?: string;
-  eventId?: number;
+  event?: EventRequest;
 }
 
 export interface Team {
   readonly id: number;
   /** @maxLength 50 */
   name: string;
-  readonly event: string;
-  eventId: number;
+  event: Event;
 }
 
-export interface TeamRequest {
+export interface TeamWrite {
+  readonly id: number;
+  /** @maxLength 50 */
+  name: string;
+  event: number;
+}
+
+export interface TeamWriteRequest {
   /**
    * @minLength 1
    * @maxLength 50
    */
   name: string;
-  eventId: number;
+  event: number;
 }
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
@@ -833,15 +839,15 @@ export function useTeamsList<
 }
 
 export const teamsCreate = (
-  teamRequest: BodyType<TeamRequest>,
+  teamWriteRequest: BodyType<TeamWriteRequest>,
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
   const formUrlEncoded = new URLSearchParams();
-  formUrlEncoded.append(`name`, teamRequest.name);
-  formUrlEncoded.append(`eventId`, teamRequest.eventId.toString());
+  formUrlEncoded.append(`name`, teamWriteRequest.name);
+  formUrlEncoded.append(`event`, teamWriteRequest.event.toString());
 
-  return customInstance<Team>(
+  return customInstance<TeamWrite>(
     {
       url: `/api/teams/`,
       method: 'POST',
@@ -860,14 +866,14 @@ export const getTeamsCreateMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof teamsCreate>>,
     TError,
-    { data: BodyType<TeamRequest> },
+    { data: BodyType<TeamWriteRequest> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof teamsCreate>>,
   TError,
-  { data: BodyType<TeamRequest> },
+  { data: BodyType<TeamWriteRequest> },
   TContext
 > => {
   const mutationKey = ['teamsCreate'];
@@ -880,7 +886,7 @@ export const getTeamsCreateMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof teamsCreate>>,
-    { data: BodyType<TeamRequest> }
+    { data: BodyType<TeamWriteRequest> }
   > = props => {
     const { data } = props ?? {};
 
@@ -891,7 +897,7 @@ export const getTeamsCreateMutationOptions = <
 };
 
 export type TeamsCreateMutationResult = NonNullable<Awaited<ReturnType<typeof teamsCreate>>>;
-export type TeamsCreateMutationBody = BodyType<TeamRequest>;
+export type TeamsCreateMutationBody = BodyType<TeamWriteRequest>;
 export type TeamsCreateMutationError = ErrorType<unknown>;
 
 export const useTeamsCreate = <TError = ErrorType<unknown>, TContext = unknown>(
@@ -899,7 +905,7 @@ export const useTeamsCreate = <TError = ErrorType<unknown>, TContext = unknown>(
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof teamsCreate>>,
       TError,
-      { data: BodyType<TeamRequest> },
+      { data: BodyType<TeamWriteRequest> },
       TContext
     >;
     request?: SecondParameter<typeof customInstance>;
@@ -908,7 +914,7 @@ export const useTeamsCreate = <TError = ErrorType<unknown>, TContext = unknown>(
 ): UseMutationResult<
   Awaited<ReturnType<typeof teamsCreate>>,
   TError,
-  { data: BodyType<TeamRequest> },
+  { data: BodyType<TeamWriteRequest> },
   TContext
 > => {
   const mutationOptions = getTeamsCreateMutationOptions(options);
@@ -1029,14 +1035,14 @@ export function useTeamsRetrieve<
 
 export const teamsUpdate = (
   id: number,
-  teamRequest: BodyType<TeamRequest>,
+  teamWriteRequest: BodyType<TeamWriteRequest>,
   options?: SecondParameter<typeof customInstance>,
 ) => {
   const formUrlEncoded = new URLSearchParams();
-  formUrlEncoded.append(`name`, teamRequest.name);
-  formUrlEncoded.append(`eventId`, teamRequest.eventId.toString());
+  formUrlEncoded.append(`name`, teamWriteRequest.name);
+  formUrlEncoded.append(`event`, teamWriteRequest.event.toString());
 
-  return customInstance<Team>(
+  return customInstance<TeamWrite>(
     {
       url: `/api/teams/${id}/`,
       method: 'PUT',
@@ -1054,14 +1060,14 @@ export const getTeamsUpdateMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof teamsUpdate>>,
     TError,
-    { id: number; data: BodyType<TeamRequest> },
+    { id: number; data: BodyType<TeamWriteRequest> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof teamsUpdate>>,
   TError,
-  { id: number; data: BodyType<TeamRequest> },
+  { id: number; data: BodyType<TeamWriteRequest> },
   TContext
 > => {
   const mutationKey = ['teamsUpdate'];
@@ -1074,7 +1080,7 @@ export const getTeamsUpdateMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof teamsUpdate>>,
-    { id: number; data: BodyType<TeamRequest> }
+    { id: number; data: BodyType<TeamWriteRequest> }
   > = props => {
     const { id, data } = props ?? {};
 
@@ -1085,7 +1091,7 @@ export const getTeamsUpdateMutationOptions = <
 };
 
 export type TeamsUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof teamsUpdate>>>;
-export type TeamsUpdateMutationBody = BodyType<TeamRequest>;
+export type TeamsUpdateMutationBody = BodyType<TeamWriteRequest>;
 export type TeamsUpdateMutationError = ErrorType<unknown>;
 
 export const useTeamsUpdate = <TError = ErrorType<unknown>, TContext = unknown>(
@@ -1093,7 +1099,7 @@ export const useTeamsUpdate = <TError = ErrorType<unknown>, TContext = unknown>(
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof teamsUpdate>>,
       TError,
-      { id: number; data: BodyType<TeamRequest> },
+      { id: number; data: BodyType<TeamWriteRequest> },
       TContext
     >;
     request?: SecondParameter<typeof customInstance>;
@@ -1102,7 +1108,7 @@ export const useTeamsUpdate = <TError = ErrorType<unknown>, TContext = unknown>(
 ): UseMutationResult<
   Awaited<ReturnType<typeof teamsUpdate>>,
   TError,
-  { id: number; data: BodyType<TeamRequest> },
+  { id: number; data: BodyType<TeamWriteRequest> },
   TContext
 > => {
   const mutationOptions = getTeamsUpdateMutationOptions(options);
@@ -1119,8 +1125,8 @@ export const teamsPartialUpdate = (
   if (patchedTeamRequest.name !== undefined) {
     formUrlEncoded.append(`name`, patchedTeamRequest.name);
   }
-  if (patchedTeamRequest.eventId !== undefined) {
-    formUrlEncoded.append(`eventId`, patchedTeamRequest.eventId.toString());
+  if (patchedTeamRequest.event !== undefined) {
+    formUrlEncoded.append(`event`, JSON.stringify(patchedTeamRequest.event));
   }
 
   return customInstance<Team>(

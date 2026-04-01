@@ -6,7 +6,7 @@ import DataManagerForm from './DataManagerForm';
 import { FormFieldProps, TableConfig } from './TableConfigs';
 import {
   Team,
-  TeamRequest,
+  TeamWriteRequest,
   getTeamsListQueryKey,
   useEventsList,
   useTeamsCreate,
@@ -20,22 +20,22 @@ import { Select, SelectProps } from 'formik-mui';
 
 interface TeamValues {
   name: string;
-  eventId: string;
+  event: string;
 }
 
-export const TeamsConfig: TableConfig<Team, TeamRequest, TeamValues> = {
+export const TeamsConfig: TableConfig<Team, TeamWriteRequest, TeamValues> = {
   name: 'teams',
   columns: [
     { accessorKey: 'id', header: 'ID', size: 0, grow: true },
     { accessorKey: 'name', header: 'Name', size: 0, grow: true },
-    { accessorKey: 'event', header: 'Event', size: 0, grow: true },
+    { accessorKey: 'event.name', header: 'Event', size: 0, grow: true },
   ],
   queryKey: getTeamsListQueryKey,
   useList: useTeamsList,
   parseRequest: data => {
     return {
       name: data.name,
-      eventId: parseInt(data.eventId),
+      event: parseInt(data.event),
     };
   },
   useCreate: useTeamsCreate,
@@ -52,8 +52,8 @@ export const TeamsConfig: TableConfig<Team, TeamRequest, TeamValues> = {
           component={(SelectProps: SelectProps) => (
             <Select size={breakpoint.isSmall ? 'small' : 'medium'} {...SelectProps} />
           )}
-          name="eventId"
-          value={values.eventId}
+          name="event"
+          value={values.event}
         >
           {useEventsList().data?.map(event => (
             <MenuItem value={event.id} key={event.id}>
@@ -64,7 +64,7 @@ export const TeamsConfig: TableConfig<Team, TeamRequest, TeamValues> = {
       </StyledForm>
     );
   },
-  initialValues: { name: '', eventId: '' },
+  initialValues: { name: '', event: '' },
   dataManagerForm: ({ mode, id, ...props }) => (
     <DataManagerForm config={TeamsConfig} mode={mode} id={id} {...props} />
   ),

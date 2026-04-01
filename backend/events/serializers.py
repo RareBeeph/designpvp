@@ -11,10 +11,18 @@ class EventSerializer(serializers.ModelSerializer):
 
 
 class TeamSerializer(serializers.ModelSerializer):
-    event = serializers.StringRelatedField(read_only=True)
-    event_id = serializers.PrimaryKeyRelatedField(queryset=Event.objects.all())
+    event = EventSerializer()
 
     class Meta:
         model = Team
-        fields = ["id", "name", "event", "event_id"]
+        fields = ["id", "name", "event"]
         read_only_fields = ["id", "event"]
+
+
+class TeamWriteSerializer(serializers.ModelSerializer):
+    event = serializers.PrimaryKeyRelatedField(queryset=Event.objects.all())
+
+    class Meta:
+        model = Team
+        fields = ["id", "name", "event"]
+        read_only_fields = ["id"]

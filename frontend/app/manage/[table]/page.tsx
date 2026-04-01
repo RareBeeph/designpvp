@@ -16,8 +16,9 @@ import { useBreakpoint } from '@/hooks/useBreakpoint';
 export default function Teams() {
   const breakpoint = useBreakpoint();
   const [open, setOpen] = useState(false);
-  const { table }: { table: 'events' | 'teams' } = useParams();
-  const listData = tableConfigs[table]?.useList().data ?? [];
+  const { table }: { table: string } = useParams();
+  const config = tableConfigs[table];
+  const listData = config?.useList().data ?? [];
 
   return (
     <Container disableGutters>
@@ -30,7 +31,7 @@ export default function Teams() {
       >
         <Stack direction="row" width="100%">
           <Padding flex={1} />
-          {tableConfigs[table].dataManagerForm({ mode: 'create', sx: { flex: 2 } })}
+          {config && <config.dataManagerForm mode="create" sx={{ flex: 2 }} />}
           <Padding flex={1} />
         </Stack>
       </Modal>
@@ -62,11 +63,7 @@ export default function Teams() {
         </Stack>
         <Stack direction="row">
           <Padding flex={1} />
-          <DataTable
-            data={listData}
-            columns={tableConfigs[table]?.columns ?? []}
-            sx={{ flex: 4 }}
-          />
+          <DataTable data={listData} columns={config?.columns ?? []} sx={{ flex: 4 }} />
           <Padding flex={1} />
         </Stack>
       </Stack>
