@@ -6,7 +6,6 @@ import { Container, Stack } from '@mui/material';
 import AuthForm from '@/components/AuthForm';
 
 export default function Signup() {
-  const mutation = usePostAuthSignup();
   // const oauth = () => postAuthProviderRedirect({provider: 'discord', callback_url: '/', process: 'login'})
 
   return (
@@ -19,7 +18,7 @@ export default function Signup() {
       }}
     >
       <Container sx={{ width: '40%', minWidth: 'min-content' }} maxWidth="sm">
-        <AuthForm {...{ name: 'Sign up', mutation }} />
+        <AuthForm name="Sign up" usePostAuth={usePostAuthSignup} />
         {/* <Button variant="contained" onClick={oauth}>Discord</Button> */}
       </Container>
     </Stack>

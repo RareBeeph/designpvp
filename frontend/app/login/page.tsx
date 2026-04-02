@@ -6,8 +6,6 @@ import { Container, Stack } from '@mui/material';
 import AuthForm from '@/components/AuthForm';
 
 export default function Login() {
-  const mutation = usePostAuthLogin();
-
   return (
     <Stack
       sx={{
@@ -18,7 +16,7 @@ export default function Login() {
       }}
     >
       <Container sx={{ width: '40%', minWidth: 'min-content' }} maxWidth="sm">
-        <AuthForm {...{ name: 'Login', mutation }} />
+        <AuthForm name="Login" usePostAuth={usePostAuthLogin} />
       </Container>
     </Stack>
   );

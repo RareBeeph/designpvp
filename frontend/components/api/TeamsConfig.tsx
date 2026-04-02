@@ -6,6 +6,7 @@ import DataManagerForm from './DataManagerForm';
 import { FormFieldProps, TableConfig } from './TableConfigs';
 import {
   Team,
+  TeamWrite,
   TeamWriteRequest,
   getTeamsListQueryKey,
   useEventsList,
@@ -23,7 +24,7 @@ interface TeamValues {
   event: string;
 }
 
-export const TeamsConfig: TableConfig<Team, TeamWriteRequest, TeamValues> = {
+export const TeamsConfig: TableConfig<Team, TeamWriteRequest, TeamValues, TeamWrite> = {
   name: 'teams',
   columns: [
     { accessorKey: 'id', header: 'ID', size: 0, grow: true },
@@ -44,7 +45,7 @@ export const TeamsConfig: TableConfig<Team, TeamWriteRequest, TeamValues> = {
   formFields: ({ isSubmitting, values, mode, id, breakpoint }: FormFieldProps<TeamValues>) => {
     return (
       <StyledForm
-        header={mode == 'create' ? 'New Team' : 'Editing Team ' + id}
+        header={mode == 'create' ? 'New Team' : `Editing Team ${id}`}
         isSubmitting={isSubmitting}
       >
         <StyledTextField name="name" />

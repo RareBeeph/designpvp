@@ -1,8 +1,10 @@
 'use client';
 
 import { useQueryClient } from '@tanstack/react-query';
+import { ReactNode, useState } from 'react';
 
-import { Paper, PaperProps } from '@mui/material';
+import { ErrorType } from '@/api/mutator/custom-instance';
+import { Alert, Paper, PaperProps, Stack } from '@mui/material';
 import { Formik, FormikValues } from 'formik';
 import { useRouter } from 'next/navigation';
 
@@ -10,18 +12,32 @@ import { ModeProps, TableConfig } from '@/components/api/TableConfigs';
 
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 
-export default function DataManagerForm<T, TRequest, TValues extends FormikValues>({
+export default function DataManagerForm<T, TRequest, TValues extends FormikValues, TWrite = T>({
   children: _children,
   config,
   mode,
   id,
   ...props
-}: PaperProps & ModeProps & { config: TableConfig<T, TRequest, TValues> }) {
+}: PaperProps &
+  ModeProps & {
+    config: TableConfig<T, TRequest, TValues, TWrite>;
+  }) {
   const queryClient = useQueryClient();
   const create = config.useCreate();
   const update = config.useUpdate();
   const router = useRouter();
   const breakpoint = useBreakpoint();
+  const [alert, setAlert] = useState<ReactNode>(<></>);
+
+  const onError = (error: ErrorType<unknown>) => {
+    setAlert(
+      <Alert severity="error">
+        {`${error.message}: ${error.response?.statusText}.`}
+        <br />
+        {`${JSON.stringify(error.response?.data)}`}
+      </Alert>,
+    );
+  };
 
   const onSubmit = async (data: TValues) => {
     const request = config.parseRequest(data);
@@ -37,7 +53,7 @@ export default function DataManagerForm<T, TRequest, TValues extends FormikValue
               onSuccess: () => {
                 queryClient.invalidateQueries({ queryKey: config.queryKey() });
               },
-              // would be nice to have an onError
+              onError,
             },
           );
           break;
@@ -53,6 +69,7 @@ export default function DataManagerForm<T, TRequest, TValues extends FormikValue
                   queryClient.invalidateQueries({ queryKey: config.queryKey() });
                   router.push('/manage/' + config.name);
                 },
+                onError,
               },
             );
           }
@@ -61,18 +78,21 @@ export default function DataManagerForm<T, TRequest, TValues extends FormikValue
   };
 
   return (
-    <Paper {...props}>
-      <Formik initialValues={config.initialValues} onSubmit={onSubmit}>
-        {({ isSubmitting, values }) => (
-          <config.formFields
-            isSubmitting={isSubmitting}
-            values={values}
-            mode={mode}
-            id={id}
-            breakpoint={breakpoint}
-          />
-        )}
-      </Formik>
-    </Paper>
+    <Stack {...props}>
+      <Paper>
+        <Formik initialValues={config.initialValues} onSubmit={onSubmit}>
+          {({ isSubmitting, values }) => (
+            <config.formFields
+              isSubmitting={isSubmitting}
+              values={values}
+              mode={mode}
+              id={id}
+              breakpoint={breakpoint}
+            />
+          )}
+        </Formik>
+      </Paper>
+      {alert}
+    </Stack>
   );
 }
