@@ -6,7 +6,7 @@ import { EventsConfig } from './EventsConfig';
 import { TeamsConfig } from './TeamsConfig';
 import { ErrorType } from '@/api/mutator/custom-instance';
 import { PaperProps } from '@mui/material';
-import { FormikValues } from 'formik';
+import { FormikProps, FormikValues } from 'formik';
 
 import { Breakpoint } from '@/hooks/useBreakpoint';
 
@@ -16,10 +16,9 @@ export interface ModeProps {
 }
 
 export type FormFieldProps<TValues> = {
-  isSubmitting: boolean;
-  values: TValues;
   breakpoint: Breakpoint;
-} & ModeProps;
+} & FormikProps<TValues> &
+  ModeProps;
 
 export interface TableConfig<T, TRequest, TValues extends FormikValues, TWrite = T> {
   name: string;

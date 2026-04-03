@@ -1,7 +1,7 @@
 'use client';
 
 import { useQueryClient } from '@tanstack/react-query';
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 
 import { ErrorType } from '@/api/mutator/custom-instance';
 import { Alert, Paper, PaperProps, Stack } from '@mui/material';
@@ -27,17 +27,7 @@ export default function DataManagerForm<T, TRequest, TValues extends FormikValue
   const update = config.useUpdate();
   const router = useRouter();
   const breakpoint = useBreakpoint();
-  const [alert, setAlert] = useState<ReactNode>(<></>);
-
-  const onError = (error: ErrorType<unknown>) => {
-    setAlert(
-      <Alert severity="error">
-        {`${error.message}: ${error.response?.statusText}.`}
-        <br />
-        {`${JSON.stringify(error.response?.data)}`}
-      </Alert>,
-    );
-  };
+  const [error, setError] = useState<ErrorType<unknown>>();
 
   const onSubmit = async (data: TValues) => {
     const request = config.parseRequest(data);
@@ -53,7 +43,7 @@ export default function DataManagerForm<T, TRequest, TValues extends FormikValue
               onSuccess: () => {
                 queryClient.invalidateQueries({ queryKey: config.queryKey() });
               },
-              onError,
+              onError: setError,
             },
           );
           break;
@@ -69,7 +59,7 @@ export default function DataManagerForm<T, TRequest, TValues extends FormikValue
                   queryClient.invalidateQueries({ queryKey: config.queryKey() });
                   router.push('/manage/' + config.name);
                 },
-                onError,
+                onError: setError,
               },
             );
           }
@@ -81,18 +71,18 @@ export default function DataManagerForm<T, TRequest, TValues extends FormikValue
     <Stack {...props}>
       <Paper>
         <Formik initialValues={config.initialValues} onSubmit={onSubmit}>
-          {({ isSubmitting, values }) => (
-            <config.formFields
-              isSubmitting={isSubmitting}
-              values={values}
-              mode={mode}
-              id={id}
-              breakpoint={breakpoint}
-            />
+          {formikProps => (
+            <config.formFields mode={mode} id={id} breakpoint={breakpoint} {...formikProps} />
           )}
         </Formik>
       </Paper>
-      {alert}
+      {error && (
+        <Alert severity="error">
+          {`${error.message}: ${error.response?.statusText}.`}
+          <br />
+          {`${JSON.stringify(error.response?.data)}`}
+        </Alert>
+      )}
     </Stack>
   );
 }

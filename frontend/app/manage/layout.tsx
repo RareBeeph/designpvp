@@ -12,7 +12,7 @@ export default function AdminLayout({
   const router = useRouter();
 
   if ((session.isSuccess && !session.data?.data.user.is_staff) || session.error?.status == 401)
-    router.push('/');
+    router.push('/'); // Nextjs complains that I don't finish rendering before pushing
 
   return <>{session.isSuccess && session.data?.data.user.is_staff ? children : undefined}</>;
 }

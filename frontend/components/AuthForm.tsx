@@ -39,7 +39,7 @@ export default function AuthForm({
 }: Props) {
   const queryClient = useQueryClient();
   const router = useRouter();
-  const [alert, setAlert] = useState(<></>);
+  const [error, setError] = useState<ErrorType<unknown>>();
   const mutation = usePostAuth();
 
   const onSubmit = async (data: { username: string; password: string }) =>
@@ -53,13 +53,7 @@ export default function AuthForm({
         },
         onError: async (error: ErrorType<unknown>) => {
           await onError?.();
-          setAlert(
-            <Alert severity="error">
-              {`${error.message}: ${error.response?.statusText}.`}
-              <br />
-              {`${JSON.stringify(error.response?.data)}`}
-            </Alert>,
-          );
+          setError(error);
         },
       },
     );
@@ -78,7 +72,13 @@ export default function AuthForm({
           }}
         </Formik>
       </Paper>
-      {alert}
+      {error && (
+        <Alert severity="error">
+          {`${error.message}: ${error.response?.statusText}.`}
+          <br />
+          {`${JSON.stringify(error.response?.data)}`}
+        </Alert>
+      )}
     </Stack>
   );
 }
