@@ -483,6 +483,29 @@ offline = ["drf-spectacular-sidecar"]
 sidecar = ["drf-spectacular-sidecar"]
 
 [[package]]
+name = "drf-standardized-errors"
+version = "0.15.0"
+description = "Standardize your API error responses."
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "drf_standardized_errors-0.15.0-py3-none-any.whl", hash = "sha256:75dcfec11433a16c81f8c5948a5cd2932cd5b02f426f64ca82020a78c155b263"},
+    {file = "drf_standardized_errors-0.15.0.tar.gz", hash = "sha256:83112d072e751eb444c2f16ab4618273b912cffc07f12b81998060fdfa2eb655"},
+]
+
+[package.dependencies]
+django = ">=3.2"
+djangorestframework = ">=3.12"
+
+[package.extras]
+dev = ["pre-commit"]
+doc = ["myst-parser", "sphinx (!=5.2.0.post0)", "sphinx-autobuild", "sphinx-rtd-theme (>=1.1.0)"]
+openapi = ["drf-spectacular (>=0.27.1)", "inflection"]
+release = ["flit", "keyring", "tbump"]
+test = ["tox", "tox-gh-actions"]
+
+[[package]]
 name = "execnet"
 version = "2.1.1"
 description = "execnet: rapid multi-Python deployment"
@@ -1376,4 +1399,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.14.0"
-content-hash = "e820ebf695fcdd2e57f8e7b3c086e664ebc8145802c47f024a9123708b951459"
+content-hash = "d031c742090c835a3153e6c041a9db389bd7bda7a01420391acd2c80f1aae6f4"

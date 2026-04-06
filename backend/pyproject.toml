@@ -16,6 +16,7 @@ djangorestframework-camel-case = "^1.4.2"
 django-redis = "^6.0.0"
 django-allauth = {extras = ["headless-spec"], version = "^65.14.3"}
 pyyaml = "^6.0.3"
+drf-standardized-errors = "^0.15.0"
 
 [tool.poetry.group.types.dependencies]
 types-gunicorn = "^23.0.0.20251031"
