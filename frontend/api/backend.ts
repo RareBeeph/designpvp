@@ -24,8 +24,176 @@ import type {
 import { customInstance } from './mutator/custom-instance';
 import type { BodyType, ErrorType } from './mutator/custom-instance';
 
+/**
+ * * `client_error` - Client Error
+ */
+export type ClientErrorEnum = (typeof ClientErrorEnum)[keyof typeof ClientErrorEnum];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ClientErrorEnum = {
+  clientError: 'client_error',
+} as const;
+
 export interface Config {
   readonly production: boolean;
+}
+
+export type ConfigRetrieveErrorResponse400 = ParseErrorResponse;
+
+export interface Error401 {
+  code: ErrorCode401Enum;
+  detail: string;
+  /** @nullable */
+  attr: string | null;
+}
+
+export interface Error403 {
+  code: ErrorCode403Enum;
+  detail: string;
+  /** @nullable */
+  attr: string | null;
+}
+
+export interface Error404 {
+  code: ErrorCode404Enum;
+  detail: string;
+  /** @nullable */
+  attr: string | null;
+}
+
+export interface Error405 {
+  code: ErrorCode405Enum;
+  detail: string;
+  /** @nullable */
+  attr: string | null;
+}
+
+export interface Error406 {
+  code: ErrorCode406Enum;
+  detail: string;
+  /** @nullable */
+  attr: string | null;
+}
+
+export interface Error415 {
+  code: ErrorCode415Enum;
+  detail: string;
+  /** @nullable */
+  attr: string | null;
+}
+
+export interface Error500 {
+  code: ErrorCode500Enum;
+  detail: string;
+  /** @nullable */
+  attr: string | null;
+}
+
+/**
+ * * `authentication_failed` - Authentication Failed
+ * `not_authenticated` - Not Authenticated
+ */
+export type ErrorCode401Enum = (typeof ErrorCode401Enum)[keyof typeof ErrorCode401Enum];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ErrorCode401Enum = {
+  authenticationFailed: 'authentication_failed',
+  notAuthenticated: 'not_authenticated',
+} as const;
+
+/**
+ * * `permission_denied` - Permission Denied
+ */
+export type ErrorCode403Enum = (typeof ErrorCode403Enum)[keyof typeof ErrorCode403Enum];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ErrorCode403Enum = {
+  permissionDenied: 'permission_denied',
+} as const;
+
+/**
+ * * `not_found` - Not Found
+ */
+export type ErrorCode404Enum = (typeof ErrorCode404Enum)[keyof typeof ErrorCode404Enum];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ErrorCode404Enum = {
+  notFound: 'not_found',
+} as const;
+
+/**
+ * * `method_not_allowed` - Method Not Allowed
+ */
+export type ErrorCode405Enum = (typeof ErrorCode405Enum)[keyof typeof ErrorCode405Enum];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ErrorCode405Enum = {
+  methodNotAllowed: 'method_not_allowed',
+} as const;
+
+/**
+ * * `not_acceptable` - Not Acceptable
+ */
+export type ErrorCode406Enum = (typeof ErrorCode406Enum)[keyof typeof ErrorCode406Enum];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ErrorCode406Enum = {
+  notAcceptable: 'not_acceptable',
+} as const;
+
+/**
+ * * `unsupported_media_type` - Unsupported Media Type
+ */
+export type ErrorCode415Enum = (typeof ErrorCode415Enum)[keyof typeof ErrorCode415Enum];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ErrorCode415Enum = {
+  unsupportedMediaType: 'unsupported_media_type',
+} as const;
+
+/**
+ * * `error` - Error
+ */
+export type ErrorCode500Enum = (typeof ErrorCode500Enum)[keyof typeof ErrorCode500Enum];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ErrorCode500Enum = {
+  error: 'error',
+} as const;
+
+export interface ErrorResponse401 {
+  type: ClientErrorEnum;
+  errors: Error401[];
+}
+
+export interface ErrorResponse403 {
+  type: ClientErrorEnum;
+  errors: Error403[];
+}
+
+export interface ErrorResponse404 {
+  type: ClientErrorEnum;
+  errors: Error404[];
+}
+
+export interface ErrorResponse405 {
+  type: ClientErrorEnum;
+  errors: Error405[];
+}
+
+export interface ErrorResponse406 {
+  type: ClientErrorEnum;
+  errors: Error406[];
+}
+
+export interface ErrorResponse415 {
+  type: ClientErrorEnum;
+  errors: Error415[];
+}
+
+export interface ErrorResponse500 {
+  type: ServerErrorEnum;
+  errors: Error500[];
 }
 
 export interface Event {
@@ -46,6 +214,572 @@ export interface EventRequest {
   ends: string;
 }
 
+export type EventsCreateEndsErrorComponentAttr =
+  (typeof EventsCreateEndsErrorComponentAttr)[keyof typeof EventsCreateEndsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsCreateEndsErrorComponentAttr = {
+  ends: 'ends',
+} as const;
+
+/**
+ * * `date` - date
+ * `invalid` - invalid
+ * `make_aware` - make_aware
+ * `null` - null
+ * `overflow` - overflow
+ * `required` - required
+ */
+export type EventsCreateEndsErrorComponentCode =
+  (typeof EventsCreateEndsErrorComponentCode)[keyof typeof EventsCreateEndsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsCreateEndsErrorComponentCode = {
+  date: 'date',
+  invalid: 'invalid',
+  makeAware: 'make_aware',
+  null: 'null',
+  overflow: 'overflow',
+  required: 'required',
+} as const;
+
+export interface EventsCreateEndsErrorComponent {
+  attr: EventsCreateEndsErrorComponentAttr;
+  /** * `date` - date
+   * `invalid` - invalid
+   * `make_aware` - make_aware
+   * `null` - null
+   * `overflow` - overflow
+   * `required` - required */
+  code: EventsCreateEndsErrorComponentCode;
+  detail: string;
+}
+
+export type EventsCreateError =
+  | EventsCreateNonFieldErrorsErrorComponent
+  | EventsCreateNameErrorComponent
+  | EventsCreateStartsErrorComponent
+  | EventsCreateEndsErrorComponent;
+
+export type EventsCreateErrorResponse400 = EventsCreateValidationError | ParseErrorResponse;
+
+export type EventsCreateNameErrorComponentAttr =
+  (typeof EventsCreateNameErrorComponentAttr)[keyof typeof EventsCreateNameErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsCreateNameErrorComponentAttr = {
+  name: 'name',
+} as const;
+
+/**
+ * * `blank` - blank
+ * `invalid` - invalid
+ * `max_length` - max_length
+ * `null` - null
+ * `null_characters_not_allowed` - null_characters_not_allowed
+ * `required` - required
+ * `surrogate_characters_not_allowed` - surrogate_characters_not_allowed
+ */
+export type EventsCreateNameErrorComponentCode =
+  (typeof EventsCreateNameErrorComponentCode)[keyof typeof EventsCreateNameErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsCreateNameErrorComponentCode = {
+  blank: 'blank',
+  invalid: 'invalid',
+  maxLength: 'max_length',
+  null: 'null',
+  nullCharactersNotAllowed: 'null_characters_not_allowed',
+  required: 'required',
+  surrogateCharactersNotAllowed: 'surrogate_characters_not_allowed',
+} as const;
+
+export interface EventsCreateNameErrorComponent {
+  attr: EventsCreateNameErrorComponentAttr;
+  /** * `blank` - blank
+   * `invalid` - invalid
+   * `max_length` - max_length
+   * `null` - null
+   * `null_characters_not_allowed` - null_characters_not_allowed
+   * `required` - required
+   * `surrogate_characters_not_allowed` - surrogate_characters_not_allowed */
+  code: EventsCreateNameErrorComponentCode;
+  detail: string;
+}
+
+export type EventsCreateNonFieldErrorsErrorComponentAttr =
+  (typeof EventsCreateNonFieldErrorsErrorComponentAttr)[keyof typeof EventsCreateNonFieldErrorsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsCreateNonFieldErrorsErrorComponentAttr = {
+  nonFieldErrors: 'non_field_errors',
+} as const;
+
+/**
+ * * `invalid` - invalid
+ * `null` - null
+ */
+export type EventsCreateNonFieldErrorsErrorComponentCode =
+  (typeof EventsCreateNonFieldErrorsErrorComponentCode)[keyof typeof EventsCreateNonFieldErrorsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsCreateNonFieldErrorsErrorComponentCode = {
+  invalid: 'invalid',
+  null: 'null',
+} as const;
+
+export interface EventsCreateNonFieldErrorsErrorComponent {
+  attr: EventsCreateNonFieldErrorsErrorComponentAttr;
+  /** * `invalid` - invalid
+   * `null` - null */
+  code: EventsCreateNonFieldErrorsErrorComponentCode;
+  detail: string;
+}
+
+export type EventsCreateStartsErrorComponentAttr =
+  (typeof EventsCreateStartsErrorComponentAttr)[keyof typeof EventsCreateStartsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsCreateStartsErrorComponentAttr = {
+  starts: 'starts',
+} as const;
+
+/**
+ * * `date` - date
+ * `invalid` - invalid
+ * `make_aware` - make_aware
+ * `null` - null
+ * `overflow` - overflow
+ * `required` - required
+ */
+export type EventsCreateStartsErrorComponentCode =
+  (typeof EventsCreateStartsErrorComponentCode)[keyof typeof EventsCreateStartsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsCreateStartsErrorComponentCode = {
+  date: 'date',
+  invalid: 'invalid',
+  makeAware: 'make_aware',
+  null: 'null',
+  overflow: 'overflow',
+  required: 'required',
+} as const;
+
+export interface EventsCreateStartsErrorComponent {
+  attr: EventsCreateStartsErrorComponentAttr;
+  /** * `date` - date
+   * `invalid` - invalid
+   * `make_aware` - make_aware
+   * `null` - null
+   * `overflow` - overflow
+   * `required` - required */
+  code: EventsCreateStartsErrorComponentCode;
+  detail: string;
+}
+
+export type EventsCreateValidationErrorType =
+  (typeof EventsCreateValidationErrorType)[keyof typeof EventsCreateValidationErrorType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsCreateValidationErrorType = {
+  validationError: 'validation_error',
+} as const;
+
+export interface EventsCreateValidationError {
+  type: EventsCreateValidationErrorType;
+  errors: EventsCreateError[];
+}
+
+export type EventsDestroyErrorResponse400 = ParseErrorResponse;
+
+export type EventsListErrorResponse400 = ParseErrorResponse;
+
+export type EventsPartialUpdateEndsErrorComponentAttr =
+  (typeof EventsPartialUpdateEndsErrorComponentAttr)[keyof typeof EventsPartialUpdateEndsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsPartialUpdateEndsErrorComponentAttr = {
+  ends: 'ends',
+} as const;
+
+/**
+ * * `date` - date
+ * `invalid` - invalid
+ * `make_aware` - make_aware
+ * `null` - null
+ * `overflow` - overflow
+ * `required` - required
+ */
+export type EventsPartialUpdateEndsErrorComponentCode =
+  (typeof EventsPartialUpdateEndsErrorComponentCode)[keyof typeof EventsPartialUpdateEndsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsPartialUpdateEndsErrorComponentCode = {
+  date: 'date',
+  invalid: 'invalid',
+  makeAware: 'make_aware',
+  null: 'null',
+  overflow: 'overflow',
+  required: 'required',
+} as const;
+
+export interface EventsPartialUpdateEndsErrorComponent {
+  attr: EventsPartialUpdateEndsErrorComponentAttr;
+  /** * `date` - date
+   * `invalid` - invalid
+   * `make_aware` - make_aware
+   * `null` - null
+   * `overflow` - overflow
+   * `required` - required */
+  code: EventsPartialUpdateEndsErrorComponentCode;
+  detail: string;
+}
+
+export type EventsPartialUpdateError =
+  | EventsPartialUpdateNonFieldErrorsErrorComponent
+  | EventsPartialUpdateNameErrorComponent
+  | EventsPartialUpdateStartsErrorComponent
+  | EventsPartialUpdateEndsErrorComponent;
+
+export type EventsPartialUpdateErrorResponse400 =
+  | EventsPartialUpdateValidationError
+  | ParseErrorResponse;
+
+export type EventsPartialUpdateNameErrorComponentAttr =
+  (typeof EventsPartialUpdateNameErrorComponentAttr)[keyof typeof EventsPartialUpdateNameErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsPartialUpdateNameErrorComponentAttr = {
+  name: 'name',
+} as const;
+
+/**
+ * * `blank` - blank
+ * `invalid` - invalid
+ * `max_length` - max_length
+ * `null` - null
+ * `null_characters_not_allowed` - null_characters_not_allowed
+ * `required` - required
+ * `surrogate_characters_not_allowed` - surrogate_characters_not_allowed
+ */
+export type EventsPartialUpdateNameErrorComponentCode =
+  (typeof EventsPartialUpdateNameErrorComponentCode)[keyof typeof EventsPartialUpdateNameErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsPartialUpdateNameErrorComponentCode = {
+  blank: 'blank',
+  invalid: 'invalid',
+  maxLength: 'max_length',
+  null: 'null',
+  nullCharactersNotAllowed: 'null_characters_not_allowed',
+  required: 'required',
+  surrogateCharactersNotAllowed: 'surrogate_characters_not_allowed',
+} as const;
+
+export interface EventsPartialUpdateNameErrorComponent {
+  attr: EventsPartialUpdateNameErrorComponentAttr;
+  /** * `blank` - blank
+   * `invalid` - invalid
+   * `max_length` - max_length
+   * `null` - null
+   * `null_characters_not_allowed` - null_characters_not_allowed
+   * `required` - required
+   * `surrogate_characters_not_allowed` - surrogate_characters_not_allowed */
+  code: EventsPartialUpdateNameErrorComponentCode;
+  detail: string;
+}
+
+export type EventsPartialUpdateNonFieldErrorsErrorComponentAttr =
+  (typeof EventsPartialUpdateNonFieldErrorsErrorComponentAttr)[keyof typeof EventsPartialUpdateNonFieldErrorsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsPartialUpdateNonFieldErrorsErrorComponentAttr = {
+  nonFieldErrors: 'non_field_errors',
+} as const;
+
+/**
+ * * `invalid` - invalid
+ * `null` - null
+ */
+export type EventsPartialUpdateNonFieldErrorsErrorComponentCode =
+  (typeof EventsPartialUpdateNonFieldErrorsErrorComponentCode)[keyof typeof EventsPartialUpdateNonFieldErrorsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsPartialUpdateNonFieldErrorsErrorComponentCode = {
+  invalid: 'invalid',
+  null: 'null',
+} as const;
+
+export interface EventsPartialUpdateNonFieldErrorsErrorComponent {
+  attr: EventsPartialUpdateNonFieldErrorsErrorComponentAttr;
+  /** * `invalid` - invalid
+   * `null` - null */
+  code: EventsPartialUpdateNonFieldErrorsErrorComponentCode;
+  detail: string;
+}
+
+export type EventsPartialUpdateStartsErrorComponentAttr =
+  (typeof EventsPartialUpdateStartsErrorComponentAttr)[keyof typeof EventsPartialUpdateStartsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsPartialUpdateStartsErrorComponentAttr = {
+  starts: 'starts',
+} as const;
+
+/**
+ * * `date` - date
+ * `invalid` - invalid
+ * `make_aware` - make_aware
+ * `null` - null
+ * `overflow` - overflow
+ * `required` - required
+ */
+export type EventsPartialUpdateStartsErrorComponentCode =
+  (typeof EventsPartialUpdateStartsErrorComponentCode)[keyof typeof EventsPartialUpdateStartsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsPartialUpdateStartsErrorComponentCode = {
+  date: 'date',
+  invalid: 'invalid',
+  makeAware: 'make_aware',
+  null: 'null',
+  overflow: 'overflow',
+  required: 'required',
+} as const;
+
+export interface EventsPartialUpdateStartsErrorComponent {
+  attr: EventsPartialUpdateStartsErrorComponentAttr;
+  /** * `date` - date
+   * `invalid` - invalid
+   * `make_aware` - make_aware
+   * `null` - null
+   * `overflow` - overflow
+   * `required` - required */
+  code: EventsPartialUpdateStartsErrorComponentCode;
+  detail: string;
+}
+
+export type EventsPartialUpdateValidationErrorType =
+  (typeof EventsPartialUpdateValidationErrorType)[keyof typeof EventsPartialUpdateValidationErrorType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsPartialUpdateValidationErrorType = {
+  validationError: 'validation_error',
+} as const;
+
+export interface EventsPartialUpdateValidationError {
+  type: EventsPartialUpdateValidationErrorType;
+  errors: EventsPartialUpdateError[];
+}
+
+export type EventsRetrieveErrorResponse400 = ParseErrorResponse;
+
+export type EventsUpdateEndsErrorComponentAttr =
+  (typeof EventsUpdateEndsErrorComponentAttr)[keyof typeof EventsUpdateEndsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsUpdateEndsErrorComponentAttr = {
+  ends: 'ends',
+} as const;
+
+/**
+ * * `date` - date
+ * `invalid` - invalid
+ * `make_aware` - make_aware
+ * `null` - null
+ * `overflow` - overflow
+ * `required` - required
+ */
+export type EventsUpdateEndsErrorComponentCode =
+  (typeof EventsUpdateEndsErrorComponentCode)[keyof typeof EventsUpdateEndsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsUpdateEndsErrorComponentCode = {
+  date: 'date',
+  invalid: 'invalid',
+  makeAware: 'make_aware',
+  null: 'null',
+  overflow: 'overflow',
+  required: 'required',
+} as const;
+
+export interface EventsUpdateEndsErrorComponent {
+  attr: EventsUpdateEndsErrorComponentAttr;
+  /** * `date` - date
+   * `invalid` - invalid
+   * `make_aware` - make_aware
+   * `null` - null
+   * `overflow` - overflow
+   * `required` - required */
+  code: EventsUpdateEndsErrorComponentCode;
+  detail: string;
+}
+
+export type EventsUpdateError =
+  | EventsUpdateNonFieldErrorsErrorComponent
+  | EventsUpdateNameErrorComponent
+  | EventsUpdateStartsErrorComponent
+  | EventsUpdateEndsErrorComponent;
+
+export type EventsUpdateErrorResponse400 = EventsUpdateValidationError | ParseErrorResponse;
+
+export type EventsUpdateNameErrorComponentAttr =
+  (typeof EventsUpdateNameErrorComponentAttr)[keyof typeof EventsUpdateNameErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsUpdateNameErrorComponentAttr = {
+  name: 'name',
+} as const;
+
+/**
+ * * `blank` - blank
+ * `invalid` - invalid
+ * `max_length` - max_length
+ * `null` - null
+ * `null_characters_not_allowed` - null_characters_not_allowed
+ * `required` - required
+ * `surrogate_characters_not_allowed` - surrogate_characters_not_allowed
+ */
+export type EventsUpdateNameErrorComponentCode =
+  (typeof EventsUpdateNameErrorComponentCode)[keyof typeof EventsUpdateNameErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsUpdateNameErrorComponentCode = {
+  blank: 'blank',
+  invalid: 'invalid',
+  maxLength: 'max_length',
+  null: 'null',
+  nullCharactersNotAllowed: 'null_characters_not_allowed',
+  required: 'required',
+  surrogateCharactersNotAllowed: 'surrogate_characters_not_allowed',
+} as const;
+
+export interface EventsUpdateNameErrorComponent {
+  attr: EventsUpdateNameErrorComponentAttr;
+  /** * `blank` - blank
+   * `invalid` - invalid
+   * `max_length` - max_length
+   * `null` - null
+   * `null_characters_not_allowed` - null_characters_not_allowed
+   * `required` - required
+   * `surrogate_characters_not_allowed` - surrogate_characters_not_allowed */
+  code: EventsUpdateNameErrorComponentCode;
+  detail: string;
+}
+
+export type EventsUpdateNonFieldErrorsErrorComponentAttr =
+  (typeof EventsUpdateNonFieldErrorsErrorComponentAttr)[keyof typeof EventsUpdateNonFieldErrorsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsUpdateNonFieldErrorsErrorComponentAttr = {
+  nonFieldErrors: 'non_field_errors',
+} as const;
+
+/**
+ * * `invalid` - invalid
+ * `null` - null
+ */
+export type EventsUpdateNonFieldErrorsErrorComponentCode =
+  (typeof EventsUpdateNonFieldErrorsErrorComponentCode)[keyof typeof EventsUpdateNonFieldErrorsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsUpdateNonFieldErrorsErrorComponentCode = {
+  invalid: 'invalid',
+  null: 'null',
+} as const;
+
+export interface EventsUpdateNonFieldErrorsErrorComponent {
+  attr: EventsUpdateNonFieldErrorsErrorComponentAttr;
+  /** * `invalid` - invalid
+   * `null` - null */
+  code: EventsUpdateNonFieldErrorsErrorComponentCode;
+  detail: string;
+}
+
+export type EventsUpdateStartsErrorComponentAttr =
+  (typeof EventsUpdateStartsErrorComponentAttr)[keyof typeof EventsUpdateStartsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsUpdateStartsErrorComponentAttr = {
+  starts: 'starts',
+} as const;
+
+/**
+ * * `date` - date
+ * `invalid` - invalid
+ * `make_aware` - make_aware
+ * `null` - null
+ * `overflow` - overflow
+ * `required` - required
+ */
+export type EventsUpdateStartsErrorComponentCode =
+  (typeof EventsUpdateStartsErrorComponentCode)[keyof typeof EventsUpdateStartsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsUpdateStartsErrorComponentCode = {
+  date: 'date',
+  invalid: 'invalid',
+  makeAware: 'make_aware',
+  null: 'null',
+  overflow: 'overflow',
+  required: 'required',
+} as const;
+
+export interface EventsUpdateStartsErrorComponent {
+  attr: EventsUpdateStartsErrorComponentAttr;
+  /** * `date` - date
+   * `invalid` - invalid
+   * `make_aware` - make_aware
+   * `null` - null
+   * `overflow` - overflow
+   * `required` - required */
+  code: EventsUpdateStartsErrorComponentCode;
+  detail: string;
+}
+
+export type EventsUpdateValidationErrorType =
+  (typeof EventsUpdateValidationErrorType)[keyof typeof EventsUpdateValidationErrorType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsUpdateValidationErrorType = {
+  validationError: 'validation_error',
+} as const;
+
+export interface EventsUpdateValidationError {
+  type: EventsUpdateValidationErrorType;
+  errors: EventsUpdateError[];
+}
+
+export interface ParseError {
+  code: ParseErrorCodeEnum;
+  detail: string;
+  /** @nullable */
+  attr: string | null;
+}
+
+/**
+ * * `parse_error` - Parse Error
+ */
+export type ParseErrorCodeEnum = (typeof ParseErrorCodeEnum)[keyof typeof ParseErrorCodeEnum];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ParseErrorCodeEnum = {
+  parseError: 'parse_error',
+} as const;
+
+export type ParseErrorResponseType =
+  (typeof ParseErrorResponseType)[keyof typeof ParseErrorResponseType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ParseErrorResponseType = {
+  clientError: 'client_error',
+} as const;
+
+export interface ParseErrorResponse {
+  type: ParseErrorResponseType;
+  errors: ParseError[];
+}
+
 export interface PatchedEventRequest {
   /**
    * @minLength 1
@@ -56,14 +790,24 @@ export interface PatchedEventRequest {
   ends?: string;
 }
 
-export interface PatchedTeamRequest {
+export interface PatchedTeamWriteRequest {
   /**
    * @minLength 1
    * @maxLength 50
    */
   name?: string;
-  event?: EventRequest;
+  event?: number;
 }
+
+/**
+ * * `server_error` - Server Error
+ */
+export type ServerErrorEnum = (typeof ServerErrorEnum)[keyof typeof ServerErrorEnum];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ServerErrorEnum = {
+  serverError: 'server_error',
+} as const;
 
 export interface Team {
   readonly id: number;
@@ -88,6 +832,408 @@ export interface TeamWriteRequest {
   event: number;
 }
 
+export type TeamsCreateError =
+  | TeamsCreateNonFieldErrorsErrorComponent
+  | TeamsCreateNameErrorComponent
+  | TeamsCreateEventErrorComponent;
+
+export type TeamsCreateErrorResponse400 = TeamsCreateValidationError | ParseErrorResponse;
+
+export type TeamsCreateEventErrorComponentAttr =
+  (typeof TeamsCreateEventErrorComponentAttr)[keyof typeof TeamsCreateEventErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const TeamsCreateEventErrorComponentAttr = {
+  event: 'event',
+} as const;
+
+/**
+ * * `does_not_exist` - does_not_exist
+ * `incorrect_type` - incorrect_type
+ * `null` - null
+ * `required` - required
+ */
+export type TeamsCreateEventErrorComponentCode =
+  (typeof TeamsCreateEventErrorComponentCode)[keyof typeof TeamsCreateEventErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const TeamsCreateEventErrorComponentCode = {
+  doesNotExist: 'does_not_exist',
+  incorrectType: 'incorrect_type',
+  null: 'null',
+  required: 'required',
+} as const;
+
+export interface TeamsCreateEventErrorComponent {
+  attr: TeamsCreateEventErrorComponentAttr;
+  /** * `does_not_exist` - does_not_exist
+   * `incorrect_type` - incorrect_type
+   * `null` - null
+   * `required` - required */
+  code: TeamsCreateEventErrorComponentCode;
+  detail: string;
+}
+
+export type TeamsCreateNameErrorComponentAttr =
+  (typeof TeamsCreateNameErrorComponentAttr)[keyof typeof TeamsCreateNameErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const TeamsCreateNameErrorComponentAttr = {
+  name: 'name',
+} as const;
+
+/**
+ * * `blank` - blank
+ * `invalid` - invalid
+ * `max_length` - max_length
+ * `null` - null
+ * `null_characters_not_allowed` - null_characters_not_allowed
+ * `required` - required
+ * `surrogate_characters_not_allowed` - surrogate_characters_not_allowed
+ */
+export type TeamsCreateNameErrorComponentCode =
+  (typeof TeamsCreateNameErrorComponentCode)[keyof typeof TeamsCreateNameErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const TeamsCreateNameErrorComponentCode = {
+  blank: 'blank',
+  invalid: 'invalid',
+  maxLength: 'max_length',
+  null: 'null',
+  nullCharactersNotAllowed: 'null_characters_not_allowed',
+  required: 'required',
+  surrogateCharactersNotAllowed: 'surrogate_characters_not_allowed',
+} as const;
+
+export interface TeamsCreateNameErrorComponent {
+  attr: TeamsCreateNameErrorComponentAttr;
+  /** * `blank` - blank
+   * `invalid` - invalid
+   * `max_length` - max_length
+   * `null` - null
+   * `null_characters_not_allowed` - null_characters_not_allowed
+   * `required` - required
+   * `surrogate_characters_not_allowed` - surrogate_characters_not_allowed */
+  code: TeamsCreateNameErrorComponentCode;
+  detail: string;
+}
+
+export type TeamsCreateNonFieldErrorsErrorComponentAttr =
+  (typeof TeamsCreateNonFieldErrorsErrorComponentAttr)[keyof typeof TeamsCreateNonFieldErrorsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const TeamsCreateNonFieldErrorsErrorComponentAttr = {
+  nonFieldErrors: 'non_field_errors',
+} as const;
+
+/**
+ * * `invalid` - invalid
+ * `null` - null
+ */
+export type TeamsCreateNonFieldErrorsErrorComponentCode =
+  (typeof TeamsCreateNonFieldErrorsErrorComponentCode)[keyof typeof TeamsCreateNonFieldErrorsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const TeamsCreateNonFieldErrorsErrorComponentCode = {
+  invalid: 'invalid',
+  null: 'null',
+} as const;
+
+export interface TeamsCreateNonFieldErrorsErrorComponent {
+  attr: TeamsCreateNonFieldErrorsErrorComponentAttr;
+  /** * `invalid` - invalid
+   * `null` - null */
+  code: TeamsCreateNonFieldErrorsErrorComponentCode;
+  detail: string;
+}
+
+export type TeamsCreateValidationErrorType =
+  (typeof TeamsCreateValidationErrorType)[keyof typeof TeamsCreateValidationErrorType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const TeamsCreateValidationErrorType = {
+  validationError: 'validation_error',
+} as const;
+
+export interface TeamsCreateValidationError {
+  type: TeamsCreateValidationErrorType;
+  errors: TeamsCreateError[];
+}
+
+export type TeamsDestroyErrorResponse400 = ParseErrorResponse;
+
+export type TeamsListErrorResponse400 = ParseErrorResponse;
+
+export type TeamsPartialUpdateError =
+  | TeamsPartialUpdateNonFieldErrorsErrorComponent
+  | TeamsPartialUpdateNameErrorComponent
+  | TeamsPartialUpdateEventErrorComponent;
+
+export type TeamsPartialUpdateErrorResponse400 =
+  | TeamsPartialUpdateValidationError
+  | ParseErrorResponse;
+
+export type TeamsPartialUpdateEventErrorComponentAttr =
+  (typeof TeamsPartialUpdateEventErrorComponentAttr)[keyof typeof TeamsPartialUpdateEventErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const TeamsPartialUpdateEventErrorComponentAttr = {
+  event: 'event',
+} as const;
+
+/**
+ * * `does_not_exist` - does_not_exist
+ * `incorrect_type` - incorrect_type
+ * `null` - null
+ * `required` - required
+ */
+export type TeamsPartialUpdateEventErrorComponentCode =
+  (typeof TeamsPartialUpdateEventErrorComponentCode)[keyof typeof TeamsPartialUpdateEventErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const TeamsPartialUpdateEventErrorComponentCode = {
+  doesNotExist: 'does_not_exist',
+  incorrectType: 'incorrect_type',
+  null: 'null',
+  required: 'required',
+} as const;
+
+export interface TeamsPartialUpdateEventErrorComponent {
+  attr: TeamsPartialUpdateEventErrorComponentAttr;
+  /** * `does_not_exist` - does_not_exist
+   * `incorrect_type` - incorrect_type
+   * `null` - null
+   * `required` - required */
+  code: TeamsPartialUpdateEventErrorComponentCode;
+  detail: string;
+}
+
+export type TeamsPartialUpdateNameErrorComponentAttr =
+  (typeof TeamsPartialUpdateNameErrorComponentAttr)[keyof typeof TeamsPartialUpdateNameErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const TeamsPartialUpdateNameErrorComponentAttr = {
+  name: 'name',
+} as const;
+
+/**
+ * * `blank` - blank
+ * `invalid` - invalid
+ * `max_length` - max_length
+ * `null` - null
+ * `null_characters_not_allowed` - null_characters_not_allowed
+ * `required` - required
+ * `surrogate_characters_not_allowed` - surrogate_characters_not_allowed
+ */
+export type TeamsPartialUpdateNameErrorComponentCode =
+  (typeof TeamsPartialUpdateNameErrorComponentCode)[keyof typeof TeamsPartialUpdateNameErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const TeamsPartialUpdateNameErrorComponentCode = {
+  blank: 'blank',
+  invalid: 'invalid',
+  maxLength: 'max_length',
+  null: 'null',
+  nullCharactersNotAllowed: 'null_characters_not_allowed',
+  required: 'required',
+  surrogateCharactersNotAllowed: 'surrogate_characters_not_allowed',
+} as const;
+
+export interface TeamsPartialUpdateNameErrorComponent {
+  attr: TeamsPartialUpdateNameErrorComponentAttr;
+  /** * `blank` - blank
+   * `invalid` - invalid
+   * `max_length` - max_length
+   * `null` - null
+   * `null_characters_not_allowed` - null_characters_not_allowed
+   * `required` - required
+   * `surrogate_characters_not_allowed` - surrogate_characters_not_allowed */
+  code: TeamsPartialUpdateNameErrorComponentCode;
+  detail: string;
+}
+
+export type TeamsPartialUpdateNonFieldErrorsErrorComponentAttr =
+  (typeof TeamsPartialUpdateNonFieldErrorsErrorComponentAttr)[keyof typeof TeamsPartialUpdateNonFieldErrorsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const TeamsPartialUpdateNonFieldErrorsErrorComponentAttr = {
+  nonFieldErrors: 'non_field_errors',
+} as const;
+
+/**
+ * * `invalid` - invalid
+ * `null` - null
+ */
+export type TeamsPartialUpdateNonFieldErrorsErrorComponentCode =
+  (typeof TeamsPartialUpdateNonFieldErrorsErrorComponentCode)[keyof typeof TeamsPartialUpdateNonFieldErrorsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const TeamsPartialUpdateNonFieldErrorsErrorComponentCode = {
+  invalid: 'invalid',
+  null: 'null',
+} as const;
+
+export interface TeamsPartialUpdateNonFieldErrorsErrorComponent {
+  attr: TeamsPartialUpdateNonFieldErrorsErrorComponentAttr;
+  /** * `invalid` - invalid
+   * `null` - null */
+  code: TeamsPartialUpdateNonFieldErrorsErrorComponentCode;
+  detail: string;
+}
+
+export type TeamsPartialUpdateValidationErrorType =
+  (typeof TeamsPartialUpdateValidationErrorType)[keyof typeof TeamsPartialUpdateValidationErrorType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const TeamsPartialUpdateValidationErrorType = {
+  validationError: 'validation_error',
+} as const;
+
+export interface TeamsPartialUpdateValidationError {
+  type: TeamsPartialUpdateValidationErrorType;
+  errors: TeamsPartialUpdateError[];
+}
+
+export type TeamsRetrieveErrorResponse400 = ParseErrorResponse;
+
+export type TeamsUpdateError =
+  | TeamsUpdateNonFieldErrorsErrorComponent
+  | TeamsUpdateNameErrorComponent
+  | TeamsUpdateEventErrorComponent;
+
+export type TeamsUpdateErrorResponse400 = TeamsUpdateValidationError | ParseErrorResponse;
+
+export type TeamsUpdateEventErrorComponentAttr =
+  (typeof TeamsUpdateEventErrorComponentAttr)[keyof typeof TeamsUpdateEventErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const TeamsUpdateEventErrorComponentAttr = {
+  event: 'event',
+} as const;
+
+/**
+ * * `does_not_exist` - does_not_exist
+ * `incorrect_type` - incorrect_type
+ * `null` - null
+ * `required` - required
+ */
+export type TeamsUpdateEventErrorComponentCode =
+  (typeof TeamsUpdateEventErrorComponentCode)[keyof typeof TeamsUpdateEventErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const TeamsUpdateEventErrorComponentCode = {
+  doesNotExist: 'does_not_exist',
+  incorrectType: 'incorrect_type',
+  null: 'null',
+  required: 'required',
+} as const;
+
+export interface TeamsUpdateEventErrorComponent {
+  attr: TeamsUpdateEventErrorComponentAttr;
+  /** * `does_not_exist` - does_not_exist
+   * `incorrect_type` - incorrect_type
+   * `null` - null
+   * `required` - required */
+  code: TeamsUpdateEventErrorComponentCode;
+  detail: string;
+}
+
+export type TeamsUpdateNameErrorComponentAttr =
+  (typeof TeamsUpdateNameErrorComponentAttr)[keyof typeof TeamsUpdateNameErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const TeamsUpdateNameErrorComponentAttr = {
+  name: 'name',
+} as const;
+
+/**
+ * * `blank` - blank
+ * `invalid` - invalid
+ * `max_length` - max_length
+ * `null` - null
+ * `null_characters_not_allowed` - null_characters_not_allowed
+ * `required` - required
+ * `surrogate_characters_not_allowed` - surrogate_characters_not_allowed
+ */
+export type TeamsUpdateNameErrorComponentCode =
+  (typeof TeamsUpdateNameErrorComponentCode)[keyof typeof TeamsUpdateNameErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const TeamsUpdateNameErrorComponentCode = {
+  blank: 'blank',
+  invalid: 'invalid',
+  maxLength: 'max_length',
+  null: 'null',
+  nullCharactersNotAllowed: 'null_characters_not_allowed',
+  required: 'required',
+  surrogateCharactersNotAllowed: 'surrogate_characters_not_allowed',
+} as const;
+
+export interface TeamsUpdateNameErrorComponent {
+  attr: TeamsUpdateNameErrorComponentAttr;
+  /** * `blank` - blank
+   * `invalid` - invalid
+   * `max_length` - max_length
+   * `null` - null
+   * `null_characters_not_allowed` - null_characters_not_allowed
+   * `required` - required
+   * `surrogate_characters_not_allowed` - surrogate_characters_not_allowed */
+  code: TeamsUpdateNameErrorComponentCode;
+  detail: string;
+}
+
+export type TeamsUpdateNonFieldErrorsErrorComponentAttr =
+  (typeof TeamsUpdateNonFieldErrorsErrorComponentAttr)[keyof typeof TeamsUpdateNonFieldErrorsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const TeamsUpdateNonFieldErrorsErrorComponentAttr = {
+  nonFieldErrors: 'non_field_errors',
+} as const;
+
+/**
+ * * `invalid` - invalid
+ * `null` - null
+ */
+export type TeamsUpdateNonFieldErrorsErrorComponentCode =
+  (typeof TeamsUpdateNonFieldErrorsErrorComponentCode)[keyof typeof TeamsUpdateNonFieldErrorsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const TeamsUpdateNonFieldErrorsErrorComponentCode = {
+  invalid: 'invalid',
+  null: 'null',
+} as const;
+
+export interface TeamsUpdateNonFieldErrorsErrorComponent {
+  attr: TeamsUpdateNonFieldErrorsErrorComponentAttr;
+  /** * `invalid` - invalid
+   * `null` - null */
+  code: TeamsUpdateNonFieldErrorsErrorComponentCode;
+  detail: string;
+}
+
+export type TeamsUpdateValidationErrorType =
+  (typeof TeamsUpdateValidationErrorType)[keyof typeof TeamsUpdateValidationErrorType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const TeamsUpdateValidationErrorType = {
+  validationError: 'validation_error',
+} as const;
+
+export interface TeamsUpdateValidationError {
+  type: TeamsUpdateValidationErrorType;
+  errors: TeamsUpdateError[];
+}
+
+/**
+ * * `validation_error` - Validation Error
+ */
+export type ValidationErrorEnum = (typeof ValidationErrorEnum)[keyof typeof ValidationErrorEnum];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ValidationErrorEnum = {
+  validationError: 'validation_error',
+} as const;
+
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 export const configRetrieve = (
@@ -103,7 +1249,14 @@ export const getConfigRetrieveQueryKey = () => {
 
 export const getConfigRetrieveQueryOptions = <
   TData = Awaited<ReturnType<typeof configRetrieve>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | ConfigRetrieveErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(options?: {
   query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof configRetrieve>>, TError, TData>>;
   request?: SecondParameter<typeof customInstance>;
@@ -123,11 +1276,25 @@ export const getConfigRetrieveQueryOptions = <
 };
 
 export type ConfigRetrieveQueryResult = NonNullable<Awaited<ReturnType<typeof configRetrieve>>>;
-export type ConfigRetrieveQueryError = ErrorType<unknown>;
+export type ConfigRetrieveQueryError = ErrorType<
+  | ConfigRetrieveErrorResponse400
+  | ErrorResponse401
+  | ErrorResponse405
+  | ErrorResponse406
+  | ErrorResponse415
+  | ErrorResponse500
+>;
 
 export function useConfigRetrieve<
   TData = Awaited<ReturnType<typeof configRetrieve>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | ConfigRetrieveErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(
   options: {
     query: Partial<UseQueryOptions<Awaited<ReturnType<typeof configRetrieve>>, TError, TData>> &
@@ -145,7 +1312,14 @@ export function useConfigRetrieve<
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useConfigRetrieve<
   TData = Awaited<ReturnType<typeof configRetrieve>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | ConfigRetrieveErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof configRetrieve>>, TError, TData>> &
@@ -163,7 +1337,14 @@ export function useConfigRetrieve<
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useConfigRetrieve<
   TData = Awaited<ReturnType<typeof configRetrieve>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | ConfigRetrieveErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof configRetrieve>>, TError, TData>>;
@@ -174,7 +1355,14 @@ export function useConfigRetrieve<
 
 export function useConfigRetrieve<
   TData = Awaited<ReturnType<typeof configRetrieve>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | ConfigRetrieveErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof configRetrieve>>, TError, TData>>;
@@ -206,7 +1394,15 @@ export const getEventsListQueryKey = () => {
 
 export const getEventsListQueryOptions = <
   TData = Awaited<ReturnType<typeof eventsList>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | EventsListErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(options?: {
   query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof eventsList>>, TError, TData>>;
   request?: SecondParameter<typeof customInstance>;
@@ -226,11 +1422,27 @@ export const getEventsListQueryOptions = <
 };
 
 export type EventsListQueryResult = NonNullable<Awaited<ReturnType<typeof eventsList>>>;
-export type EventsListQueryError = ErrorType<unknown>;
+export type EventsListQueryError = ErrorType<
+  | EventsListErrorResponse400
+  | ErrorResponse401
+  | ErrorResponse403
+  | ErrorResponse405
+  | ErrorResponse406
+  | ErrorResponse415
+  | ErrorResponse500
+>;
 
 export function useEventsList<
   TData = Awaited<ReturnType<typeof eventsList>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | EventsListErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(
   options: {
     query: Partial<UseQueryOptions<Awaited<ReturnType<typeof eventsList>>, TError, TData>> &
@@ -248,7 +1460,15 @@ export function useEventsList<
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useEventsList<
   TData = Awaited<ReturnType<typeof eventsList>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | EventsListErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof eventsList>>, TError, TData>> &
@@ -266,7 +1486,15 @@ export function useEventsList<
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useEventsList<
   TData = Awaited<ReturnType<typeof eventsList>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | EventsListErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof eventsList>>, TError, TData>>;
@@ -277,7 +1505,15 @@ export function useEventsList<
 
 export function useEventsList<
   TData = Awaited<ReturnType<typeof eventsList>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | EventsListErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof eventsList>>, TError, TData>>;
@@ -319,7 +1555,15 @@ export const eventsCreate = (
 };
 
 export const getEventsCreateMutationOptions = <
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | EventsCreateErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -357,9 +1601,28 @@ export const getEventsCreateMutationOptions = <
 
 export type EventsCreateMutationResult = NonNullable<Awaited<ReturnType<typeof eventsCreate>>>;
 export type EventsCreateMutationBody = BodyType<EventRequest>;
-export type EventsCreateMutationError = ErrorType<unknown>;
+export type EventsCreateMutationError = ErrorType<
+  | EventsCreateErrorResponse400
+  | ErrorResponse401
+  | ErrorResponse403
+  | ErrorResponse405
+  | ErrorResponse406
+  | ErrorResponse415
+  | ErrorResponse500
+>;
 
-export const useEventsCreate = <TError = ErrorType<unknown>, TContext = unknown>(
+export const useEventsCreate = <
+  TError = ErrorType<
+    | EventsCreateErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+  TContext = unknown,
+>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof eventsCreate>>,
@@ -395,7 +1658,16 @@ export const getEventsRetrieveQueryKey = (id?: number) => {
 
 export const getEventsRetrieveQueryOptions = <
   TData = Awaited<ReturnType<typeof eventsRetrieve>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | EventsRetrieveErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(
   id: number,
   options?: {
@@ -418,11 +1690,29 @@ export const getEventsRetrieveQueryOptions = <
 };
 
 export type EventsRetrieveQueryResult = NonNullable<Awaited<ReturnType<typeof eventsRetrieve>>>;
-export type EventsRetrieveQueryError = ErrorType<unknown>;
+export type EventsRetrieveQueryError = ErrorType<
+  | EventsRetrieveErrorResponse400
+  | ErrorResponse401
+  | ErrorResponse403
+  | ErrorResponse404
+  | ErrorResponse405
+  | ErrorResponse406
+  | ErrorResponse415
+  | ErrorResponse500
+>;
 
 export function useEventsRetrieve<
   TData = Awaited<ReturnType<typeof eventsRetrieve>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | EventsRetrieveErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(
   id: number,
   options: {
@@ -441,7 +1731,16 @@ export function useEventsRetrieve<
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useEventsRetrieve<
   TData = Awaited<ReturnType<typeof eventsRetrieve>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | EventsRetrieveErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(
   id: number,
   options?: {
@@ -460,7 +1759,16 @@ export function useEventsRetrieve<
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useEventsRetrieve<
   TData = Awaited<ReturnType<typeof eventsRetrieve>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | EventsRetrieveErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(
   id: number,
   options?: {
@@ -472,7 +1780,16 @@ export function useEventsRetrieve<
 
 export function useEventsRetrieve<
   TData = Awaited<ReturnType<typeof eventsRetrieve>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | EventsRetrieveErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(
   id: number,
   options?: {
@@ -514,7 +1831,16 @@ export const eventsUpdate = (
 };
 
 export const getEventsUpdateMutationOptions = <
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | EventsUpdateErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -552,9 +1878,30 @@ export const getEventsUpdateMutationOptions = <
 
 export type EventsUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof eventsUpdate>>>;
 export type EventsUpdateMutationBody = BodyType<EventRequest>;
-export type EventsUpdateMutationError = ErrorType<unknown>;
+export type EventsUpdateMutationError = ErrorType<
+  | EventsUpdateErrorResponse400
+  | ErrorResponse401
+  | ErrorResponse403
+  | ErrorResponse404
+  | ErrorResponse405
+  | ErrorResponse406
+  | ErrorResponse415
+  | ErrorResponse500
+>;
 
-export const useEventsUpdate = <TError = ErrorType<unknown>, TContext = unknown>(
+export const useEventsUpdate = <
+  TError = ErrorType<
+    | EventsUpdateErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+  TContext = unknown,
+>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof eventsUpdate>>,
@@ -604,7 +1951,16 @@ export const eventsPartialUpdate = (
 };
 
 export const getEventsPartialUpdateMutationOptions = <
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | EventsPartialUpdateErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -644,9 +2000,30 @@ export type EventsPartialUpdateMutationResult = NonNullable<
   Awaited<ReturnType<typeof eventsPartialUpdate>>
 >;
 export type EventsPartialUpdateMutationBody = BodyType<PatchedEventRequest>;
-export type EventsPartialUpdateMutationError = ErrorType<unknown>;
+export type EventsPartialUpdateMutationError = ErrorType<
+  | EventsPartialUpdateErrorResponse400
+  | ErrorResponse401
+  | ErrorResponse403
+  | ErrorResponse404
+  | ErrorResponse405
+  | ErrorResponse406
+  | ErrorResponse415
+  | ErrorResponse500
+>;
 
-export const useEventsPartialUpdate = <TError = ErrorType<unknown>, TContext = unknown>(
+export const useEventsPartialUpdate = <
+  TError = ErrorType<
+    | EventsPartialUpdateErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+  TContext = unknown,
+>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof eventsPartialUpdate>>,
@@ -673,7 +2050,16 @@ export const eventsDestroy = (id: number, options?: SecondParameter<typeof custo
 };
 
 export const getEventsDestroyMutationOptions = <
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | EventsDestroyErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -711,9 +2097,30 @@ export const getEventsDestroyMutationOptions = <
 
 export type EventsDestroyMutationResult = NonNullable<Awaited<ReturnType<typeof eventsDestroy>>>;
 
-export type EventsDestroyMutationError = ErrorType<unknown>;
+export type EventsDestroyMutationError = ErrorType<
+  | EventsDestroyErrorResponse400
+  | ErrorResponse401
+  | ErrorResponse403
+  | ErrorResponse404
+  | ErrorResponse405
+  | ErrorResponse406
+  | ErrorResponse415
+  | ErrorResponse500
+>;
 
-export const useEventsDestroy = <TError = ErrorType<unknown>, TContext = unknown>(
+export const useEventsDestroy = <
+  TError = ErrorType<
+    | EventsDestroyErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+  TContext = unknown,
+>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof eventsDestroy>>,
@@ -748,7 +2155,15 @@ export const getTeamsListQueryKey = () => {
 
 export const getTeamsListQueryOptions = <
   TData = Awaited<ReturnType<typeof teamsList>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | TeamsListErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(options?: {
   query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof teamsList>>, TError, TData>>;
   request?: SecondParameter<typeof customInstance>;
@@ -768,11 +2183,27 @@ export const getTeamsListQueryOptions = <
 };
 
 export type TeamsListQueryResult = NonNullable<Awaited<ReturnType<typeof teamsList>>>;
-export type TeamsListQueryError = ErrorType<unknown>;
+export type TeamsListQueryError = ErrorType<
+  | TeamsListErrorResponse400
+  | ErrorResponse401
+  | ErrorResponse403
+  | ErrorResponse405
+  | ErrorResponse406
+  | ErrorResponse415
+  | ErrorResponse500
+>;
 
 export function useTeamsList<
   TData = Awaited<ReturnType<typeof teamsList>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | TeamsListErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(
   options: {
     query: Partial<UseQueryOptions<Awaited<ReturnType<typeof teamsList>>, TError, TData>> &
@@ -790,7 +2221,15 @@ export function useTeamsList<
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useTeamsList<
   TData = Awaited<ReturnType<typeof teamsList>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | TeamsListErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof teamsList>>, TError, TData>> &
@@ -808,7 +2247,15 @@ export function useTeamsList<
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useTeamsList<
   TData = Awaited<ReturnType<typeof teamsList>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | TeamsListErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof teamsList>>, TError, TData>>;
@@ -819,7 +2266,15 @@ export function useTeamsList<
 
 export function useTeamsList<
   TData = Awaited<ReturnType<typeof teamsList>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | TeamsListErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof teamsList>>, TError, TData>>;
@@ -860,7 +2315,15 @@ export const teamsCreate = (
 };
 
 export const getTeamsCreateMutationOptions = <
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | TeamsCreateErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -898,9 +2361,28 @@ export const getTeamsCreateMutationOptions = <
 
 export type TeamsCreateMutationResult = NonNullable<Awaited<ReturnType<typeof teamsCreate>>>;
 export type TeamsCreateMutationBody = BodyType<TeamWriteRequest>;
-export type TeamsCreateMutationError = ErrorType<unknown>;
+export type TeamsCreateMutationError = ErrorType<
+  | TeamsCreateErrorResponse400
+  | ErrorResponse401
+  | ErrorResponse403
+  | ErrorResponse405
+  | ErrorResponse406
+  | ErrorResponse415
+  | ErrorResponse500
+>;
 
-export const useTeamsCreate = <TError = ErrorType<unknown>, TContext = unknown>(
+export const useTeamsCreate = <
+  TError = ErrorType<
+    | TeamsCreateErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+  TContext = unknown,
+>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof teamsCreate>>,
@@ -936,7 +2418,16 @@ export const getTeamsRetrieveQueryKey = (id?: number) => {
 
 export const getTeamsRetrieveQueryOptions = <
   TData = Awaited<ReturnType<typeof teamsRetrieve>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | TeamsRetrieveErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(
   id: number,
   options?: {
@@ -959,11 +2450,29 @@ export const getTeamsRetrieveQueryOptions = <
 };
 
 export type TeamsRetrieveQueryResult = NonNullable<Awaited<ReturnType<typeof teamsRetrieve>>>;
-export type TeamsRetrieveQueryError = ErrorType<unknown>;
+export type TeamsRetrieveQueryError = ErrorType<
+  | TeamsRetrieveErrorResponse400
+  | ErrorResponse401
+  | ErrorResponse403
+  | ErrorResponse404
+  | ErrorResponse405
+  | ErrorResponse406
+  | ErrorResponse415
+  | ErrorResponse500
+>;
 
 export function useTeamsRetrieve<
   TData = Awaited<ReturnType<typeof teamsRetrieve>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | TeamsRetrieveErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(
   id: number,
   options: {
@@ -982,7 +2491,16 @@ export function useTeamsRetrieve<
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useTeamsRetrieve<
   TData = Awaited<ReturnType<typeof teamsRetrieve>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | TeamsRetrieveErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(
   id: number,
   options?: {
@@ -1001,7 +2519,16 @@ export function useTeamsRetrieve<
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useTeamsRetrieve<
   TData = Awaited<ReturnType<typeof teamsRetrieve>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | TeamsRetrieveErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(
   id: number,
   options?: {
@@ -1013,7 +2540,16 @@ export function useTeamsRetrieve<
 
 export function useTeamsRetrieve<
   TData = Awaited<ReturnType<typeof teamsRetrieve>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | TeamsRetrieveErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
 >(
   id: number,
   options?: {
@@ -1054,7 +2590,16 @@ export const teamsUpdate = (
 };
 
 export const getTeamsUpdateMutationOptions = <
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | TeamsUpdateErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -1092,9 +2637,30 @@ export const getTeamsUpdateMutationOptions = <
 
 export type TeamsUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof teamsUpdate>>>;
 export type TeamsUpdateMutationBody = BodyType<TeamWriteRequest>;
-export type TeamsUpdateMutationError = ErrorType<unknown>;
+export type TeamsUpdateMutationError = ErrorType<
+  | TeamsUpdateErrorResponse400
+  | ErrorResponse401
+  | ErrorResponse403
+  | ErrorResponse404
+  | ErrorResponse405
+  | ErrorResponse406
+  | ErrorResponse415
+  | ErrorResponse500
+>;
 
-export const useTeamsUpdate = <TError = ErrorType<unknown>, TContext = unknown>(
+export const useTeamsUpdate = <
+  TError = ErrorType<
+    | TeamsUpdateErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+  TContext = unknown,
+>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof teamsUpdate>>,
@@ -1118,18 +2684,18 @@ export const useTeamsUpdate = <TError = ErrorType<unknown>, TContext = unknown>(
 
 export const teamsPartialUpdate = (
   id: number,
-  patchedTeamRequest: BodyType<PatchedTeamRequest>,
+  patchedTeamWriteRequest: BodyType<PatchedTeamWriteRequest>,
   options?: SecondParameter<typeof customInstance>,
 ) => {
   const formUrlEncoded = new URLSearchParams();
-  if (patchedTeamRequest.name !== undefined) {
-    formUrlEncoded.append(`name`, patchedTeamRequest.name);
+  if (patchedTeamWriteRequest.name !== undefined) {
+    formUrlEncoded.append(`name`, patchedTeamWriteRequest.name);
   }
-  if (patchedTeamRequest.event !== undefined) {
-    formUrlEncoded.append(`event`, JSON.stringify(patchedTeamRequest.event));
+  if (patchedTeamWriteRequest.event !== undefined) {
+    formUrlEncoded.append(`event`, patchedTeamWriteRequest.event.toString());
   }
 
-  return customInstance<Team>(
+  return customInstance<TeamWrite>(
     {
       url: `/api/teams/${id}/`,
       method: 'PATCH',
@@ -1141,20 +2707,29 @@ export const teamsPartialUpdate = (
 };
 
 export const getTeamsPartialUpdateMutationOptions = <
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | TeamsPartialUpdateErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof teamsPartialUpdate>>,
     TError,
-    { id: number; data: BodyType<PatchedTeamRequest> },
+    { id: number; data: BodyType<PatchedTeamWriteRequest> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof teamsPartialUpdate>>,
   TError,
-  { id: number; data: BodyType<PatchedTeamRequest> },
+  { id: number; data: BodyType<PatchedTeamWriteRequest> },
   TContext
 > => {
   const mutationKey = ['teamsPartialUpdate'];
@@ -1167,7 +2742,7 @@ export const getTeamsPartialUpdateMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof teamsPartialUpdate>>,
-    { id: number; data: BodyType<PatchedTeamRequest> }
+    { id: number; data: BodyType<PatchedTeamWriteRequest> }
   > = props => {
     const { id, data } = props ?? {};
 
@@ -1180,15 +2755,36 @@ export const getTeamsPartialUpdateMutationOptions = <
 export type TeamsPartialUpdateMutationResult = NonNullable<
   Awaited<ReturnType<typeof teamsPartialUpdate>>
 >;
-export type TeamsPartialUpdateMutationBody = BodyType<PatchedTeamRequest>;
-export type TeamsPartialUpdateMutationError = ErrorType<unknown>;
+export type TeamsPartialUpdateMutationBody = BodyType<PatchedTeamWriteRequest>;
+export type TeamsPartialUpdateMutationError = ErrorType<
+  | TeamsPartialUpdateErrorResponse400
+  | ErrorResponse401
+  | ErrorResponse403
+  | ErrorResponse404
+  | ErrorResponse405
+  | ErrorResponse406
+  | ErrorResponse415
+  | ErrorResponse500
+>;
 
-export const useTeamsPartialUpdate = <TError = ErrorType<unknown>, TContext = unknown>(
+export const useTeamsPartialUpdate = <
+  TError = ErrorType<
+    | TeamsPartialUpdateErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+  TContext = unknown,
+>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof teamsPartialUpdate>>,
       TError,
-      { id: number; data: BodyType<PatchedTeamRequest> },
+      { id: number; data: BodyType<PatchedTeamWriteRequest> },
       TContext
     >;
     request?: SecondParameter<typeof customInstance>;
@@ -1197,7 +2793,7 @@ export const useTeamsPartialUpdate = <TError = ErrorType<unknown>, TContext = un
 ): UseMutationResult<
   Awaited<ReturnType<typeof teamsPartialUpdate>>,
   TError,
-  { id: number; data: BodyType<PatchedTeamRequest> },
+  { id: number; data: BodyType<PatchedTeamWriteRequest> },
   TContext
 > => {
   const mutationOptions = getTeamsPartialUpdateMutationOptions(options);
@@ -1210,7 +2806,16 @@ export const teamsDestroy = (id: number, options?: SecondParameter<typeof custom
 };
 
 export const getTeamsDestroyMutationOptions = <
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | TeamsDestroyErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -1248,9 +2853,30 @@ export const getTeamsDestroyMutationOptions = <
 
 export type TeamsDestroyMutationResult = NonNullable<Awaited<ReturnType<typeof teamsDestroy>>>;
 
-export type TeamsDestroyMutationError = ErrorType<unknown>;
+export type TeamsDestroyMutationError = ErrorType<
+  | TeamsDestroyErrorResponse400
+  | ErrorResponse401
+  | ErrorResponse403
+  | ErrorResponse404
+  | ErrorResponse405
+  | ErrorResponse406
+  | ErrorResponse415
+  | ErrorResponse500
+>;
 
-export const useTeamsDestroy = <TError = ErrorType<unknown>, TContext = unknown>(
+export const useTeamsDestroy = <
+  TError = ErrorType<
+    | TeamsDestroyErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+  TContext = unknown,
+>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof teamsDestroy>>,

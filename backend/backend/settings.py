@@ -89,6 +89,7 @@ INSTALLED_APPS = [
     # "allauth.socialaccount.providers.discord",
     "rest_framework",
     "drf_spectacular",
+    "drf_standardized_errors",
     "backend",
     "events",
     "config",
@@ -179,7 +180,8 @@ REST_FRAMEWORK = {
         "djangorestframework_camel_case.parser.CamelCaseMultiPartParser",
         "djangorestframework_camel_case.parser.CamelCaseJSONParser",
     ),
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_SCHEMA_CLASS": "drf_standardized_errors.openapi.AutoSchema",
+    "EXCEPTION_HANDLER": "drf_standardized_errors.handler.exception_handler",
 }
 
 CACHES = {
@@ -206,9 +208,22 @@ SPECTACULAR_SETTINGS = {
     "COMPONENT_SPLIT_REQUEST": True,
     "CAMELIZE_NAMES": False,  # Perform this with POSTPROCESSING_HOOKS instead
     "POSTPROCESSING_HOOKS": [
-        "drf_spectacular.hooks.postprocess_schema_enums",
+        "drf_standardized_errors.openapi_hooks.postprocess_schema_enums",
         "drf_spectacular.contrib.djangorestframework_camel_case.camelize_serializer_fields",
     ],
+    "ENUM_NAME_OVERRIDES": {
+        "ValidationErrorEnum": "drf_standardized_errors.openapi_serializers.ValidationErrorEnum.choices",
+        "ClientErrorEnum": "drf_standardized_errors.openapi_serializers.ClientErrorEnum.choices",
+        "ServerErrorEnum": "drf_standardized_errors.openapi_serializers.ServerErrorEnum.choices",
+        "ErrorCode401Enum": "drf_standardized_errors.openapi_serializers.ErrorCode401Enum.choices",
+        "ErrorCode403Enum": "drf_standardized_errors.openapi_serializers.ErrorCode403Enum.choices",
+        "ErrorCode404Enum": "drf_standardized_errors.openapi_serializers.ErrorCode404Enum.choices",
+        "ErrorCode405Enum": "drf_standardized_errors.openapi_serializers.ErrorCode405Enum.choices",
+        "ErrorCode406Enum": "drf_standardized_errors.openapi_serializers.ErrorCode406Enum.choices",
+        "ErrorCode415Enum": "drf_standardized_errors.openapi_serializers.ErrorCode415Enum.choices",
+        "ErrorCode429Enum": "drf_standardized_errors.openapi_serializers.ErrorCode429Enum.choices",
+        "ErrorCode500Enum": "drf_standardized_errors.openapi_serializers.ErrorCode500Enum.choices",
+    },
 }
 
 # with open(os.path.join(BASE_DIR, "secrets.env")) as secrets:

@@ -1,18 +1,25 @@
 'use client';
 
 import { useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
 
-import { ErrorType } from '@/api/mutator/custom-instance';
-import { Alert, Paper, PaperProps, Stack } from '@mui/material';
-import { Formik, FormikValues } from 'formik';
+import { Paper, PaperProps, Stack } from '@mui/material';
+import { Formik, FormikHelpers, FormikValues } from 'formik';
 import { useRouter } from 'next/navigation';
 
-import { ModeProps, TableConfig } from '@/components/api/TableConfigs';
+import { AnyError, ModeProps, TableConfig } from '@/components/api/TableConfigs';
 
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 
-export default function DataManagerForm<T, TRequest, TValues extends FormikValues, TWrite = T>({
+export default function DataManagerForm<
+  T,
+  TRequest,
+  TListError extends AnyError,
+  TCreateError extends AnyError,
+  TUpdateError extends AnyError,
+  TDestroyError extends AnyError,
+  TValues extends FormikValues,
+  TWrite = T,
+>({
   children: _children,
   config,
   mode,
@@ -20,17 +27,33 @@ export default function DataManagerForm<T, TRequest, TValues extends FormikValue
   ...props
 }: PaperProps &
   ModeProps & {
-    config: TableConfig<T, TRequest, TValues, TWrite>;
+    config: TableConfig<
+      T,
+      TRequest,
+      TListError,
+      TCreateError,
+      TUpdateError,
+      TDestroyError,
+      TValues,
+      TWrite
+    >;
   }) {
   const queryClient = useQueryClient();
   const create = config.useCreate();
   const update = config.useUpdate();
   const router = useRouter();
   const breakpoint = useBreakpoint();
-  const [error, setError] = useState<ErrorType<unknown>>();
 
-  const onSubmit = async (data: TValues) => {
+  const onSubmit = async (data: TValues, actions: FormikHelpers<TValues>) => {
     const request = config.parseRequest(data);
+
+    const onSubmitError = (
+      newError: TListError | TCreateError | TUpdateError | TDestroyError | undefined,
+    ) => {
+      newError?.response?.data.errors?.forEach(fieldError => {
+        if (fieldError.attr) actions.setFieldError(fieldError.attr, fieldError.detail);
+      });
+    };
 
     if (request) {
       switch (mode) {
@@ -43,7 +66,7 @@ export default function DataManagerForm<T, TRequest, TValues extends FormikValue
               onSuccess: () => {
                 queryClient.invalidateQueries({ queryKey: config.queryKey() });
               },
-              onError: setError,
+              onError: onSubmitError,
             },
           );
           break;
@@ -59,7 +82,7 @@ export default function DataManagerForm<T, TRequest, TValues extends FormikValue
                   queryClient.invalidateQueries({ queryKey: config.queryKey() });
                   router.push('/manage/' + config.name);
                 },
-                onError: setError,
+                onError: onSubmitError,
               },
             );
           }
@@ -76,13 +99,6 @@ export default function DataManagerForm<T, TRequest, TValues extends FormikValue
           )}
         </Formik>
       </Paper>
-      {error && (
-        <Alert severity="error">
-          {`${error.message}: ${error.response?.statusText}.`}
-          <br />
-          {`${JSON.stringify(error.response?.data)}`}
-        </Alert>
-      )}
     </Stack>
   );
 }

@@ -1,30 +1,28 @@
 'use client';
 
 import { UseMutationResult, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
 
 import StyledForm from './form/StyledForm';
 import { StyledTextField } from './form/StyledTextField';
 import {
   AuthenticatedResponse,
   LoginBody,
+  PostAuthLoginMutationError,
+  PostAuthSignupMutationError,
   SignupBody,
   getGetAuthSessionQueryKey,
 } from '@/api/allauth';
-import { ErrorType } from '@/api/mutator/custom-instance';
-import { Alert, Paper, PaperProps, Stack } from '@mui/material';
-import { Formik } from 'formik';
+import { Paper, PaperProps, Stack } from '@mui/material';
+import { Formik, FormikHelpers } from 'formik';
 import { useRouter } from 'next/navigation';
 
-type AuthMutation<T> = () => UseMutationResult<
-  AuthenticatedResponse,
-  ErrorType<unknown>,
-  { data: T }
->;
+type AuthMutation<T, TError> = () => UseMutationResult<AuthenticatedResponse, TError, { data: T }>;
 
 interface Props extends PaperProps {
   name: string;
-  usePostAuth: AuthMutation<LoginBody> | AuthMutation<SignupBody>;
+  usePostAuth:
+    | AuthMutation<LoginBody, PostAuthLoginMutationError>
+    | AuthMutation<SignupBody, PostAuthSignupMutationError>;
   onSuccess?: () => Promise<void>;
   onError?: () => Promise<void>;
 }
@@ -39,10 +37,12 @@ export default function AuthForm({
 }: Props) {
   const queryClient = useQueryClient();
   const router = useRouter();
-  const [error, setError] = useState<ErrorType<unknown>>();
   const mutation = usePostAuth();
 
-  const onSubmit = async (data: { username: string; password: string }) =>
+  const onSubmit = async (
+    data: { username: string; password: string },
+    actions: FormikHelpers<{ username: string; password: string }>,
+  ) =>
     mutation.mutate(
       { data },
       {
@@ -51,9 +51,14 @@ export default function AuthForm({
           await queryClient.invalidateQueries({ queryKey: getGetAuthSessionQueryKey() });
           router.push('/'); // redirect
         },
-        onError: async (error: ErrorType<unknown>) => {
+        onError: async (newError: PostAuthLoginMutationError | PostAuthSignupMutationError) => {
           await onError?.();
-          setError(error);
+          const data = newError?.response?.data ?? {};
+          if ('errors' in data) {
+            data.errors?.forEach(fieldError => {
+              if (fieldError.param) actions.setFieldError(fieldError.param, fieldError.message);
+            });
+          }
         },
       },
     );
@@ -72,13 +77,6 @@ export default function AuthForm({
           }}
         </Formik>
       </Paper>
-      {error && (
-        <Alert severity="error">
-          {`${error.message}: ${error.response?.statusText}.`}
-          <br />
-          {`${JSON.stringify(error.response?.data)}`}
-        </Alert>
-      )}
     </Stack>
   );
 }
