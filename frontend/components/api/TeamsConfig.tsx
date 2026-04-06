@@ -8,10 +8,6 @@ import {
   Team,
   TeamWrite,
   TeamWriteRequest,
-  TeamsCreateMutationError,
-  TeamsDestroyMutationError,
-  TeamsListQueryError,
-  TeamsUpdateMutationError,
   getTeamsListQueryKey,
   useEventsList,
   useTeamsCreate,
@@ -28,16 +24,7 @@ interface TeamValues {
   event: string;
 }
 
-export const TeamsConfig: TableConfig<
-  Team,
-  TeamWriteRequest,
-  TeamsListQueryError,
-  TeamsCreateMutationError,
-  TeamsUpdateMutationError,
-  TeamsDestroyMutationError,
-  TeamValues,
-  TeamWrite
-> = {
+export const TeamsConfig: TableConfig<Team, TeamWriteRequest, TeamValues, TeamWrite> = {
   name: 'teams',
   columns: [
     { accessorKey: 'id', header: 'ID', size: 0, grow: true },

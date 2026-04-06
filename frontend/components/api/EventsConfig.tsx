@@ -6,10 +6,6 @@ import { FormFieldProps, TableConfig } from './TableConfigs';
 import {
   Event,
   EventRequest,
-  EventsCreateMutationError,
-  EventsDestroyMutationError,
-  EventsListQueryError,
-  EventsUpdateMutationError,
   getEventsListQueryKey,
   useEventsCreate,
   useEventsDestroy,
@@ -24,15 +20,7 @@ interface EventValues {
   ends: Dayjs;
 }
 
-export const EventsConfig: TableConfig<
-  Event,
-  EventRequest,
-  EventsListQueryError,
-  EventsCreateMutationError,
-  EventsUpdateMutationError,
-  EventsDestroyMutationError,
-  EventValues
-> = {
+export const EventsConfig: TableConfig<Event, EventRequest, EventValues> = {
   name: 'events',
   columns: [
     { accessorKey: 'id', header: 'ID', size: 0, grow: true },

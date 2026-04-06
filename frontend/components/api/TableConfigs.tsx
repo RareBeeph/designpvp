@@ -21,7 +21,7 @@ export type FormFieldProps<TValues> = {
   ModeProps;
 
 export type AnyError = ErrorType<{
-  type: string;
+  type: 'validation_error' | 'client_error' | 'server_error';
   errors: {
     attr: string | null;
     code: string;
@@ -29,30 +29,21 @@ export type AnyError = ErrorType<{
   }[];
 }>;
 
-export interface TableConfig<
-  T,
-  TRequest,
-  TListError extends AnyError,
-  TCreateError extends AnyError,
-  TUpdateError extends AnyError,
-  TDestroyError extends AnyError,
-  TValues extends FormikValues,
-  TWrite = T,
-> {
+export interface TableConfig<T, TRequest, TValues extends FormikValues, TWrite = T> {
   name: string;
   columns: MRT_ColumnDef<MRT_RowData>[];
   queryKey: () => QueryKey;
-  useList: () => UseQueryResult<T[], TListError>;
+  useList: () => UseQueryResult<T[], AnyError>;
   parseRequest: (data: TValues) => TRequest | undefined;
-  useCreate: () => UseMutationResult<TWrite, TCreateError, { data: TRequest }, unknown>;
-  useUpdate: () => UseMutationResult<TWrite, TUpdateError, { id: number; data: TRequest }, unknown>;
-  useDestroy: () => UseMutationResult<void, TDestroyError, { id: number }, unknown>;
+  useCreate: () => UseMutationResult<TWrite, AnyError, { data: TRequest }, unknown>;
+  useUpdate: () => UseMutationResult<TWrite, AnyError, { id: number; data: TRequest }, unknown>;
+  useDestroy: () => UseMutationResult<void, AnyError, { id: number }, unknown>;
   formFields: React.FC<FormFieldProps<TValues>>;
   initialValues: TValues;
   dataManagerForm: (props: PaperProps & ModeProps) => ReactNode;
 }
 
-export type AnyConfig = TableConfig<any, any, any, any, any, any, any, any>;
+export type AnyConfig = TableConfig<any, any, any, any>;
 
 export const tableConfigs: Record<string, AnyConfig | undefined> = {
   teams: TeamsConfig,
