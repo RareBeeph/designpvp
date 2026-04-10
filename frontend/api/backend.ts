@@ -790,6 +790,11 @@ export interface PatchedEventRequest {
   ends?: string;
 }
 
+export interface PatchedProfileRequest {
+  user?: number;
+  teams?: number[];
+}
+
 export interface PatchedTeamWriteRequest {
   /**
    * @minLength 1
@@ -797,6 +802,391 @@ export interface PatchedTeamWriteRequest {
    */
   name?: string;
   event?: number;
+}
+
+export interface Profile {
+  readonly id: number;
+  user: number;
+  teams: number[];
+}
+
+export interface ProfileRequest {
+  user: number;
+  teams: number[];
+}
+
+export type ProfilesCreateError =
+  | ProfilesCreateNonFieldErrorsErrorComponent
+  | ProfilesCreateUserErrorComponent
+  | ProfilesCreateTeamsErrorComponent;
+
+export type ProfilesCreateErrorResponse400 = ProfilesCreateValidationError | ParseErrorResponse;
+
+export type ProfilesCreateNonFieldErrorsErrorComponentAttr =
+  (typeof ProfilesCreateNonFieldErrorsErrorComponentAttr)[keyof typeof ProfilesCreateNonFieldErrorsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesCreateNonFieldErrorsErrorComponentAttr = {
+  nonFieldErrors: 'non_field_errors',
+} as const;
+
+/**
+ * * `invalid` - invalid
+ * `null` - null
+ */
+export type ProfilesCreateNonFieldErrorsErrorComponentCode =
+  (typeof ProfilesCreateNonFieldErrorsErrorComponentCode)[keyof typeof ProfilesCreateNonFieldErrorsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesCreateNonFieldErrorsErrorComponentCode = {
+  invalid: 'invalid',
+  null: 'null',
+} as const;
+
+export interface ProfilesCreateNonFieldErrorsErrorComponent {
+  attr: ProfilesCreateNonFieldErrorsErrorComponentAttr;
+  /** * `invalid` - invalid
+   * `null` - null */
+  code: ProfilesCreateNonFieldErrorsErrorComponentCode;
+  detail: string;
+}
+
+export type ProfilesCreateTeamsErrorComponentAttr =
+  (typeof ProfilesCreateTeamsErrorComponentAttr)[keyof typeof ProfilesCreateTeamsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesCreateTeamsErrorComponentAttr = {
+  teams: 'teams',
+} as const;
+
+/**
+ * * `does_not_exist` - does_not_exist
+ * `incorrect_type` - incorrect_type
+ * `not_a_list` - not_a_list
+ * `null` - null
+ * `required` - required
+ */
+export type ProfilesCreateTeamsErrorComponentCode =
+  (typeof ProfilesCreateTeamsErrorComponentCode)[keyof typeof ProfilesCreateTeamsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesCreateTeamsErrorComponentCode = {
+  doesNotExist: 'does_not_exist',
+  incorrectType: 'incorrect_type',
+  notAList: 'not_a_list',
+  null: 'null',
+  required: 'required',
+} as const;
+
+export interface ProfilesCreateTeamsErrorComponent {
+  attr: ProfilesCreateTeamsErrorComponentAttr;
+  /** * `does_not_exist` - does_not_exist
+   * `incorrect_type` - incorrect_type
+   * `not_a_list` - not_a_list
+   * `null` - null
+   * `required` - required */
+  code: ProfilesCreateTeamsErrorComponentCode;
+  detail: string;
+}
+
+export type ProfilesCreateUserErrorComponentAttr =
+  (typeof ProfilesCreateUserErrorComponentAttr)[keyof typeof ProfilesCreateUserErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesCreateUserErrorComponentAttr = {
+  user: 'user',
+} as const;
+
+/**
+ * * `does_not_exist` - does_not_exist
+ * `incorrect_type` - incorrect_type
+ * `null` - null
+ * `required` - required
+ */
+export type ProfilesCreateUserErrorComponentCode =
+  (typeof ProfilesCreateUserErrorComponentCode)[keyof typeof ProfilesCreateUserErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesCreateUserErrorComponentCode = {
+  doesNotExist: 'does_not_exist',
+  incorrectType: 'incorrect_type',
+  null: 'null',
+  required: 'required',
+} as const;
+
+export interface ProfilesCreateUserErrorComponent {
+  attr: ProfilesCreateUserErrorComponentAttr;
+  /** * `does_not_exist` - does_not_exist
+   * `incorrect_type` - incorrect_type
+   * `null` - null
+   * `required` - required */
+  code: ProfilesCreateUserErrorComponentCode;
+  detail: string;
+}
+
+export type ProfilesCreateValidationErrorType =
+  (typeof ProfilesCreateValidationErrorType)[keyof typeof ProfilesCreateValidationErrorType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesCreateValidationErrorType = {
+  validationError: 'validation_error',
+} as const;
+
+export interface ProfilesCreateValidationError {
+  type: ProfilesCreateValidationErrorType;
+  errors: ProfilesCreateError[];
+}
+
+export type ProfilesDestroyErrorResponse400 = ParseErrorResponse;
+
+export type ProfilesListErrorResponse400 = ParseErrorResponse;
+
+export type ProfilesPartialUpdateError =
+  | ProfilesPartialUpdateNonFieldErrorsErrorComponent
+  | ProfilesPartialUpdateUserErrorComponent
+  | ProfilesPartialUpdateTeamsErrorComponent;
+
+export type ProfilesPartialUpdateErrorResponse400 =
+  | ProfilesPartialUpdateValidationError
+  | ParseErrorResponse;
+
+export type ProfilesPartialUpdateNonFieldErrorsErrorComponentAttr =
+  (typeof ProfilesPartialUpdateNonFieldErrorsErrorComponentAttr)[keyof typeof ProfilesPartialUpdateNonFieldErrorsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesPartialUpdateNonFieldErrorsErrorComponentAttr = {
+  nonFieldErrors: 'non_field_errors',
+} as const;
+
+/**
+ * * `invalid` - invalid
+ * `null` - null
+ */
+export type ProfilesPartialUpdateNonFieldErrorsErrorComponentCode =
+  (typeof ProfilesPartialUpdateNonFieldErrorsErrorComponentCode)[keyof typeof ProfilesPartialUpdateNonFieldErrorsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesPartialUpdateNonFieldErrorsErrorComponentCode = {
+  invalid: 'invalid',
+  null: 'null',
+} as const;
+
+export interface ProfilesPartialUpdateNonFieldErrorsErrorComponent {
+  attr: ProfilesPartialUpdateNonFieldErrorsErrorComponentAttr;
+  /** * `invalid` - invalid
+   * `null` - null */
+  code: ProfilesPartialUpdateNonFieldErrorsErrorComponentCode;
+  detail: string;
+}
+
+export type ProfilesPartialUpdateTeamsErrorComponentAttr =
+  (typeof ProfilesPartialUpdateTeamsErrorComponentAttr)[keyof typeof ProfilesPartialUpdateTeamsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesPartialUpdateTeamsErrorComponentAttr = {
+  teams: 'teams',
+} as const;
+
+/**
+ * * `does_not_exist` - does_not_exist
+ * `incorrect_type` - incorrect_type
+ * `not_a_list` - not_a_list
+ * `null` - null
+ * `required` - required
+ */
+export type ProfilesPartialUpdateTeamsErrorComponentCode =
+  (typeof ProfilesPartialUpdateTeamsErrorComponentCode)[keyof typeof ProfilesPartialUpdateTeamsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesPartialUpdateTeamsErrorComponentCode = {
+  doesNotExist: 'does_not_exist',
+  incorrectType: 'incorrect_type',
+  notAList: 'not_a_list',
+  null: 'null',
+  required: 'required',
+} as const;
+
+export interface ProfilesPartialUpdateTeamsErrorComponent {
+  attr: ProfilesPartialUpdateTeamsErrorComponentAttr;
+  /** * `does_not_exist` - does_not_exist
+   * `incorrect_type` - incorrect_type
+   * `not_a_list` - not_a_list
+   * `null` - null
+   * `required` - required */
+  code: ProfilesPartialUpdateTeamsErrorComponentCode;
+  detail: string;
+}
+
+export type ProfilesPartialUpdateUserErrorComponentAttr =
+  (typeof ProfilesPartialUpdateUserErrorComponentAttr)[keyof typeof ProfilesPartialUpdateUserErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesPartialUpdateUserErrorComponentAttr = {
+  user: 'user',
+} as const;
+
+/**
+ * * `does_not_exist` - does_not_exist
+ * `incorrect_type` - incorrect_type
+ * `null` - null
+ * `required` - required
+ */
+export type ProfilesPartialUpdateUserErrorComponentCode =
+  (typeof ProfilesPartialUpdateUserErrorComponentCode)[keyof typeof ProfilesPartialUpdateUserErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesPartialUpdateUserErrorComponentCode = {
+  doesNotExist: 'does_not_exist',
+  incorrectType: 'incorrect_type',
+  null: 'null',
+  required: 'required',
+} as const;
+
+export interface ProfilesPartialUpdateUserErrorComponent {
+  attr: ProfilesPartialUpdateUserErrorComponentAttr;
+  /** * `does_not_exist` - does_not_exist
+   * `incorrect_type` - incorrect_type
+   * `null` - null
+   * `required` - required */
+  code: ProfilesPartialUpdateUserErrorComponentCode;
+  detail: string;
+}
+
+export type ProfilesPartialUpdateValidationErrorType =
+  (typeof ProfilesPartialUpdateValidationErrorType)[keyof typeof ProfilesPartialUpdateValidationErrorType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesPartialUpdateValidationErrorType = {
+  validationError: 'validation_error',
+} as const;
+
+export interface ProfilesPartialUpdateValidationError {
+  type: ProfilesPartialUpdateValidationErrorType;
+  errors: ProfilesPartialUpdateError[];
+}
+
+export type ProfilesRetrieveErrorResponse400 = ParseErrorResponse;
+
+export type ProfilesUpdateError =
+  | ProfilesUpdateNonFieldErrorsErrorComponent
+  | ProfilesUpdateUserErrorComponent
+  | ProfilesUpdateTeamsErrorComponent;
+
+export type ProfilesUpdateErrorResponse400 = ProfilesUpdateValidationError | ParseErrorResponse;
+
+export type ProfilesUpdateNonFieldErrorsErrorComponentAttr =
+  (typeof ProfilesUpdateNonFieldErrorsErrorComponentAttr)[keyof typeof ProfilesUpdateNonFieldErrorsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesUpdateNonFieldErrorsErrorComponentAttr = {
+  nonFieldErrors: 'non_field_errors',
+} as const;
+
+/**
+ * * `invalid` - invalid
+ * `null` - null
+ */
+export type ProfilesUpdateNonFieldErrorsErrorComponentCode =
+  (typeof ProfilesUpdateNonFieldErrorsErrorComponentCode)[keyof typeof ProfilesUpdateNonFieldErrorsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesUpdateNonFieldErrorsErrorComponentCode = {
+  invalid: 'invalid',
+  null: 'null',
+} as const;
+
+export interface ProfilesUpdateNonFieldErrorsErrorComponent {
+  attr: ProfilesUpdateNonFieldErrorsErrorComponentAttr;
+  /** * `invalid` - invalid
+   * `null` - null */
+  code: ProfilesUpdateNonFieldErrorsErrorComponentCode;
+  detail: string;
+}
+
+export type ProfilesUpdateTeamsErrorComponentAttr =
+  (typeof ProfilesUpdateTeamsErrorComponentAttr)[keyof typeof ProfilesUpdateTeamsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesUpdateTeamsErrorComponentAttr = {
+  teams: 'teams',
+} as const;
+
+/**
+ * * `does_not_exist` - does_not_exist
+ * `incorrect_type` - incorrect_type
+ * `not_a_list` - not_a_list
+ * `null` - null
+ * `required` - required
+ */
+export type ProfilesUpdateTeamsErrorComponentCode =
+  (typeof ProfilesUpdateTeamsErrorComponentCode)[keyof typeof ProfilesUpdateTeamsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesUpdateTeamsErrorComponentCode = {
+  doesNotExist: 'does_not_exist',
+  incorrectType: 'incorrect_type',
+  notAList: 'not_a_list',
+  null: 'null',
+  required: 'required',
+} as const;
+
+export interface ProfilesUpdateTeamsErrorComponent {
+  attr: ProfilesUpdateTeamsErrorComponentAttr;
+  /** * `does_not_exist` - does_not_exist
+   * `incorrect_type` - incorrect_type
+   * `not_a_list` - not_a_list
+   * `null` - null
+   * `required` - required */
+  code: ProfilesUpdateTeamsErrorComponentCode;
+  detail: string;
+}
+
+export type ProfilesUpdateUserErrorComponentAttr =
+  (typeof ProfilesUpdateUserErrorComponentAttr)[keyof typeof ProfilesUpdateUserErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesUpdateUserErrorComponentAttr = {
+  user: 'user',
+} as const;
+
+/**
+ * * `does_not_exist` - does_not_exist
+ * `incorrect_type` - incorrect_type
+ * `null` - null
+ * `required` - required
+ */
+export type ProfilesUpdateUserErrorComponentCode =
+  (typeof ProfilesUpdateUserErrorComponentCode)[keyof typeof ProfilesUpdateUserErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesUpdateUserErrorComponentCode = {
+  doesNotExist: 'does_not_exist',
+  incorrectType: 'incorrect_type',
+  null: 'null',
+  required: 'required',
+} as const;
+
+export interface ProfilesUpdateUserErrorComponent {
+  attr: ProfilesUpdateUserErrorComponentAttr;
+  /** * `does_not_exist` - does_not_exist
+   * `incorrect_type` - incorrect_type
+   * `null` - null
+   * `required` - required */
+  code: ProfilesUpdateUserErrorComponentCode;
+  detail: string;
+}
+
+export type ProfilesUpdateValidationErrorType =
+  (typeof ProfilesUpdateValidationErrorType)[keyof typeof ProfilesUpdateValidationErrorType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesUpdateValidationErrorType = {
+  validationError: 'validation_error',
+} as const;
+
+export interface ProfilesUpdateValidationError {
+  type: ProfilesUpdateValidationErrorType;
+  errors: ProfilesUpdateError[];
 }
 
 /**
@@ -2138,6 +2528,740 @@ export const useEventsDestroy = <
   TContext
 > => {
   const mutationOptions = getEventsDestroyMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export const profilesList = (
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<Profile[]>({ url: `/api/profiles/`, method: 'GET', signal }, options);
+};
+
+export const getProfilesListQueryKey = () => {
+  return [`/api/profiles/`] as const;
+};
+
+export const getProfilesListQueryOptions = <
+  TData = Awaited<ReturnType<typeof profilesList>>,
+  TError = ErrorType<
+    | ProfilesListErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof profilesList>>, TError, TData>>;
+  request?: SecondParameter<typeof customInstance>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getProfilesListQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof profilesList>>> = ({ signal }) =>
+    profilesList(requestOptions, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof profilesList>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type ProfilesListQueryResult = NonNullable<Awaited<ReturnType<typeof profilesList>>>;
+export type ProfilesListQueryError = ErrorType<
+  | ProfilesListErrorResponse400
+  | ErrorResponse401
+  | ErrorResponse405
+  | ErrorResponse406
+  | ErrorResponse415
+  | ErrorResponse500
+>;
+
+export function useProfilesList<
+  TData = Awaited<ReturnType<typeof profilesList>>,
+  TError = ErrorType<
+    | ProfilesListErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+>(
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof profilesList>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof profilesList>>,
+          TError,
+          Awaited<ReturnType<typeof profilesList>>
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useProfilesList<
+  TData = Awaited<ReturnType<typeof profilesList>>,
+  TError = ErrorType<
+    | ProfilesListErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+>(
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof profilesList>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof profilesList>>,
+          TError,
+          Awaited<ReturnType<typeof profilesList>>
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useProfilesList<
+  TData = Awaited<ReturnType<typeof profilesList>>,
+  TError = ErrorType<
+    | ProfilesListErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+>(
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof profilesList>>, TError, TData>>;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useProfilesList<
+  TData = Awaited<ReturnType<typeof profilesList>>,
+  TError = ErrorType<
+    | ProfilesListErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+>(
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof profilesList>>, TError, TData>>;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getProfilesListQueryOptions(options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const profilesCreate = (
+  profileRequest: BodyType<ProfileRequest>,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  const formUrlEncoded = new URLSearchParams();
+  formUrlEncoded.append(`user`, profileRequest.user.toString());
+  profileRequest.teams.forEach(value => formUrlEncoded.append(`teams`, value.toString()));
+
+  return customInstance<Profile>(
+    {
+      url: `/api/profiles/`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: formUrlEncoded,
+      signal,
+    },
+    options,
+  );
+};
+
+export const getProfilesCreateMutationOptions = <
+  TError = ErrorType<
+    | ProfilesCreateErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof profilesCreate>>,
+    TError,
+    { data: BodyType<ProfileRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof profilesCreate>>,
+  TError,
+  { data: BodyType<ProfileRequest> },
+  TContext
+> => {
+  const mutationKey = ['profilesCreate'];
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof profilesCreate>>,
+    { data: BodyType<ProfileRequest> }
+  > = props => {
+    const { data } = props ?? {};
+
+    return profilesCreate(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ProfilesCreateMutationResult = NonNullable<Awaited<ReturnType<typeof profilesCreate>>>;
+export type ProfilesCreateMutationBody = BodyType<ProfileRequest>;
+export type ProfilesCreateMutationError = ErrorType<
+  | ProfilesCreateErrorResponse400
+  | ErrorResponse401
+  | ErrorResponse405
+  | ErrorResponse406
+  | ErrorResponse415
+  | ErrorResponse500
+>;
+
+export const useProfilesCreate = <
+  TError = ErrorType<
+    | ProfilesCreateErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof profilesCreate>>,
+      TError,
+      { data: BodyType<ProfileRequest> },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof profilesCreate>>,
+  TError,
+  { data: BodyType<ProfileRequest> },
+  TContext
+> => {
+  const mutationOptions = getProfilesCreateMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export const profilesRetrieve = (
+  id: number,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<Profile>({ url: `/api/profiles/${id}/`, method: 'GET', signal }, options);
+};
+
+export const getProfilesRetrieveQueryKey = (id?: number) => {
+  return [`/api/profiles/${id}/`] as const;
+};
+
+export const getProfilesRetrieveQueryOptions = <
+  TData = Awaited<ReturnType<typeof profilesRetrieve>>,
+  TError = ErrorType<
+    | ProfilesRetrieveErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+>(
+  id: number,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof profilesRetrieve>>, TError, TData>>;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getProfilesRetrieveQueryKey(id);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof profilesRetrieve>>> = ({ signal }) =>
+    profilesRetrieve(id, requestOptions, signal);
+
+  return { queryKey, queryFn, enabled: !!id, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof profilesRetrieve>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type ProfilesRetrieveQueryResult = NonNullable<Awaited<ReturnType<typeof profilesRetrieve>>>;
+export type ProfilesRetrieveQueryError = ErrorType<
+  | ProfilesRetrieveErrorResponse400
+  | ErrorResponse401
+  | ErrorResponse404
+  | ErrorResponse405
+  | ErrorResponse406
+  | ErrorResponse415
+  | ErrorResponse500
+>;
+
+export function useProfilesRetrieve<
+  TData = Awaited<ReturnType<typeof profilesRetrieve>>,
+  TError = ErrorType<
+    | ProfilesRetrieveErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+>(
+  id: number,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof profilesRetrieve>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof profilesRetrieve>>,
+          TError,
+          Awaited<ReturnType<typeof profilesRetrieve>>
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useProfilesRetrieve<
+  TData = Awaited<ReturnType<typeof profilesRetrieve>>,
+  TError = ErrorType<
+    | ProfilesRetrieveErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+>(
+  id: number,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof profilesRetrieve>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof profilesRetrieve>>,
+          TError,
+          Awaited<ReturnType<typeof profilesRetrieve>>
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useProfilesRetrieve<
+  TData = Awaited<ReturnType<typeof profilesRetrieve>>,
+  TError = ErrorType<
+    | ProfilesRetrieveErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+>(
+  id: number,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof profilesRetrieve>>, TError, TData>>;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useProfilesRetrieve<
+  TData = Awaited<ReturnType<typeof profilesRetrieve>>,
+  TError = ErrorType<
+    | ProfilesRetrieveErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+>(
+  id: number,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof profilesRetrieve>>, TError, TData>>;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getProfilesRetrieveQueryOptions(id, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const profilesUpdate = (
+  id: number,
+  profileRequest: BodyType<ProfileRequest>,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  const formUrlEncoded = new URLSearchParams();
+  formUrlEncoded.append(`user`, profileRequest.user.toString());
+  profileRequest.teams.forEach(value => formUrlEncoded.append(`teams`, value.toString()));
+
+  return customInstance<Profile>(
+    {
+      url: `/api/profiles/${id}/`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: formUrlEncoded,
+    },
+    options,
+  );
+};
+
+export const getProfilesUpdateMutationOptions = <
+  TError = ErrorType<
+    | ProfilesUpdateErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof profilesUpdate>>,
+    TError,
+    { id: number; data: BodyType<ProfileRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof profilesUpdate>>,
+  TError,
+  { id: number; data: BodyType<ProfileRequest> },
+  TContext
+> => {
+  const mutationKey = ['profilesUpdate'];
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof profilesUpdate>>,
+    { id: number; data: BodyType<ProfileRequest> }
+  > = props => {
+    const { id, data } = props ?? {};
+
+    return profilesUpdate(id, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ProfilesUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof profilesUpdate>>>;
+export type ProfilesUpdateMutationBody = BodyType<ProfileRequest>;
+export type ProfilesUpdateMutationError = ErrorType<
+  | ProfilesUpdateErrorResponse400
+  | ErrorResponse401
+  | ErrorResponse404
+  | ErrorResponse405
+  | ErrorResponse406
+  | ErrorResponse415
+  | ErrorResponse500
+>;
+
+export const useProfilesUpdate = <
+  TError = ErrorType<
+    | ProfilesUpdateErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof profilesUpdate>>,
+      TError,
+      { id: number; data: BodyType<ProfileRequest> },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof profilesUpdate>>,
+  TError,
+  { id: number; data: BodyType<ProfileRequest> },
+  TContext
+> => {
+  const mutationOptions = getProfilesUpdateMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export const profilesPartialUpdate = (
+  id: number,
+  patchedProfileRequest: BodyType<PatchedProfileRequest>,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  const formUrlEncoded = new URLSearchParams();
+  if (patchedProfileRequest.user !== undefined) {
+    formUrlEncoded.append(`user`, patchedProfileRequest.user.toString());
+  }
+  if (patchedProfileRequest.teams !== undefined) {
+    patchedProfileRequest.teams.forEach(value => formUrlEncoded.append(`teams`, value.toString()));
+  }
+
+  return customInstance<Profile>(
+    {
+      url: `/api/profiles/${id}/`,
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: formUrlEncoded,
+    },
+    options,
+  );
+};
+
+export const getProfilesPartialUpdateMutationOptions = <
+  TError = ErrorType<
+    | ProfilesPartialUpdateErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof profilesPartialUpdate>>,
+    TError,
+    { id: number; data: BodyType<PatchedProfileRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof profilesPartialUpdate>>,
+  TError,
+  { id: number; data: BodyType<PatchedProfileRequest> },
+  TContext
+> => {
+  const mutationKey = ['profilesPartialUpdate'];
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof profilesPartialUpdate>>,
+    { id: number; data: BodyType<PatchedProfileRequest> }
+  > = props => {
+    const { id, data } = props ?? {};
+
+    return profilesPartialUpdate(id, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ProfilesPartialUpdateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof profilesPartialUpdate>>
+>;
+export type ProfilesPartialUpdateMutationBody = BodyType<PatchedProfileRequest>;
+export type ProfilesPartialUpdateMutationError = ErrorType<
+  | ProfilesPartialUpdateErrorResponse400
+  | ErrorResponse401
+  | ErrorResponse404
+  | ErrorResponse405
+  | ErrorResponse406
+  | ErrorResponse415
+  | ErrorResponse500
+>;
+
+export const useProfilesPartialUpdate = <
+  TError = ErrorType<
+    | ProfilesPartialUpdateErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof profilesPartialUpdate>>,
+      TError,
+      { id: number; data: BodyType<PatchedProfileRequest> },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof profilesPartialUpdate>>,
+  TError,
+  { id: number; data: BodyType<PatchedProfileRequest> },
+  TContext
+> => {
+  const mutationOptions = getProfilesPartialUpdateMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export const profilesDestroy = (id: number, options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<void>({ url: `/api/profiles/${id}/`, method: 'DELETE' }, options);
+};
+
+export const getProfilesDestroyMutationOptions = <
+  TError = ErrorType<
+    | ProfilesDestroyErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof profilesDestroy>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof profilesDestroy>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ['profilesDestroy'];
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof profilesDestroy>>,
+    { id: number }
+  > = props => {
+    const { id } = props ?? {};
+
+    return profilesDestroy(id, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ProfilesDestroyMutationResult = NonNullable<
+  Awaited<ReturnType<typeof profilesDestroy>>
+>;
+
+export type ProfilesDestroyMutationError = ErrorType<
+  | ProfilesDestroyErrorResponse400
+  | ErrorResponse401
+  | ErrorResponse404
+  | ErrorResponse405
+  | ErrorResponse406
+  | ErrorResponse415
+  | ErrorResponse500
+>;
+
+export const useProfilesDestroy = <
+  TError = ErrorType<
+    | ProfilesDestroyErrorResponse400
+    | ErrorResponse401
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof profilesDestroy>>,
+      TError,
+      { id: number },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof profilesDestroy>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationOptions = getProfilesDestroyMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };

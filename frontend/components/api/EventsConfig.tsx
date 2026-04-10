@@ -34,7 +34,7 @@ export const EventsConfig: TableConfig<Event, EventRequest, EventValues> = {
     return {
       name: data.name,
       starts: data.starts.isValid() ? data.starts.toISOString() : '',
-      ends: data.starts.isValid() ? data.ends.toISOString() : '',
+      ends: data.ends.isValid() ? data.ends.toISOString() : '',
     };
   },
   useCreate: useEventsCreate,

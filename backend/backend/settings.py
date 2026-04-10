@@ -92,6 +92,7 @@ INSTALLED_APPS = [
     "drf_standardized_errors",
     "backend",
     "events",
+    "profiles",
     "config",
 ]
 
