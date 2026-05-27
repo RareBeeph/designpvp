@@ -34,3 +34,18 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Development Fixtures
+
+The default state of the database after loading the "devsetup.json" fixture is as follows:
+
+Users:
+- {username: admin, password: password} -- is superuser
+- {username: user, password: CorrectHorseBatteryStaple} -- is regular user
+
+Events:
+- {name: event, starts: May 26, 2026, ends: May 26, 2027}
+
+Teams:
+- {name: team1, event: event}
+- {name: team2, event: event}
