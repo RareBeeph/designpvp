@@ -35,7 +35,7 @@ export interface TableConfig<T, TRequest, TValues extends FormikValues, TWrite =
   queryKey: () => QueryKey;
   useList: () => UseQueryResult<T[], AnyError>;
   parseRequest: (data: TValues) => TRequest | undefined;
-  useCreate: () => UseMutationResult<TWrite, AnyError, { data: TRequest }, unknown>;
+  useCreate: (() => UseMutationResult<TWrite, AnyError, { data: TRequest }, unknown>) | undefined;
   useUpdate: () => UseMutationResult<TWrite, AnyError, { id: number; data: TRequest }, unknown>;
   useDestroy: () => UseMutationResult<void, AnyError, { id: number }, unknown>;
   formFields: React.FC<FormFieldProps<TValues>>;

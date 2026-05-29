@@ -40,6 +40,16 @@ export interface Config {
 
 export type ConfigRetrieveErrorResponse400 = ParseErrorResponse;
 
+export interface DjangoUser {
+  readonly id: number;
+  /**
+   * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+   * @maxLength 150
+   * @pattern ^[\w.@+-]+$
+   */
+  username: string;
+}
+
 export interface Error401 {
   code: ErrorCode401Enum;
   detail: string;
@@ -790,7 +800,7 @@ export interface PatchedEventRequest {
   ends?: string;
 }
 
-export interface PatchedProfileRequest {
+export interface PatchedProfileWriteRequest {
   user?: number;
   teams?: number[];
 }
@@ -806,11 +816,17 @@ export interface PatchedTeamWriteRequest {
 
 export interface Profile {
   readonly id: number;
+  user: DjangoUser;
+  teams: Team;
+}
+
+export interface ProfileWrite {
+  readonly id: number;
   user: number;
   teams: number[];
 }
 
-export interface ProfileRequest {
+export interface ProfileWriteRequest {
   user: number;
   teams: number[];
 }
@@ -2678,15 +2694,15 @@ export function useProfilesList<
 }
 
 export const profilesCreate = (
-  profileRequest: BodyType<ProfileRequest>,
+  profileWriteRequest: BodyType<ProfileWriteRequest>,
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
   const formUrlEncoded = new URLSearchParams();
-  formUrlEncoded.append(`user`, profileRequest.user.toString());
-  profileRequest.teams.forEach(value => formUrlEncoded.append(`teams`, value.toString()));
+  formUrlEncoded.append(`user`, profileWriteRequest.user.toString());
+  profileWriteRequest.teams.forEach(value => formUrlEncoded.append(`teams`, value.toString()));
 
-  return customInstance<Profile>(
+  return customInstance<ProfileWrite>(
     {
       url: `/api/profiles/`,
       method: 'POST',
@@ -2712,14 +2728,14 @@ export const getProfilesCreateMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof profilesCreate>>,
     TError,
-    { data: BodyType<ProfileRequest> },
+    { data: BodyType<ProfileWriteRequest> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof profilesCreate>>,
   TError,
-  { data: BodyType<ProfileRequest> },
+  { data: BodyType<ProfileWriteRequest> },
   TContext
 > => {
   const mutationKey = ['profilesCreate'];
@@ -2732,7 +2748,7 @@ export const getProfilesCreateMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof profilesCreate>>,
-    { data: BodyType<ProfileRequest> }
+    { data: BodyType<ProfileWriteRequest> }
   > = props => {
     const { data } = props ?? {};
 
@@ -2743,7 +2759,7 @@ export const getProfilesCreateMutationOptions = <
 };
 
 export type ProfilesCreateMutationResult = NonNullable<Awaited<ReturnType<typeof profilesCreate>>>;
-export type ProfilesCreateMutationBody = BodyType<ProfileRequest>;
+export type ProfilesCreateMutationBody = BodyType<ProfileWriteRequest>;
 export type ProfilesCreateMutationError = ErrorType<
   | ProfilesCreateErrorResponse400
   | ErrorResponse401
@@ -2768,7 +2784,7 @@ export const useProfilesCreate = <
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof profilesCreate>>,
       TError,
-      { data: BodyType<ProfileRequest> },
+      { data: BodyType<ProfileWriteRequest> },
       TContext
     >;
     request?: SecondParameter<typeof customInstance>;
@@ -2777,7 +2793,7 @@ export const useProfilesCreate = <
 ): UseMutationResult<
   Awaited<ReturnType<typeof profilesCreate>>,
   TError,
-  { data: BodyType<ProfileRequest> },
+  { data: BodyType<ProfileWriteRequest> },
   TContext
 > => {
   const mutationOptions = getProfilesCreateMutationOptions(options);
@@ -2946,14 +2962,14 @@ export function useProfilesRetrieve<
 
 export const profilesUpdate = (
   id: number,
-  profileRequest: BodyType<ProfileRequest>,
+  profileWriteRequest: BodyType<ProfileWriteRequest>,
   options?: SecondParameter<typeof customInstance>,
 ) => {
   const formUrlEncoded = new URLSearchParams();
-  formUrlEncoded.append(`user`, profileRequest.user.toString());
-  profileRequest.teams.forEach(value => formUrlEncoded.append(`teams`, value.toString()));
+  formUrlEncoded.append(`user`, profileWriteRequest.user.toString());
+  profileWriteRequest.teams.forEach(value => formUrlEncoded.append(`teams`, value.toString()));
 
-  return customInstance<Profile>(
+  return customInstance<ProfileWrite>(
     {
       url: `/api/profiles/${id}/`,
       method: 'PUT',
@@ -2979,14 +2995,14 @@ export const getProfilesUpdateMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof profilesUpdate>>,
     TError,
-    { id: number; data: BodyType<ProfileRequest> },
+    { id: number; data: BodyType<ProfileWriteRequest> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof profilesUpdate>>,
   TError,
-  { id: number; data: BodyType<ProfileRequest> },
+  { id: number; data: BodyType<ProfileWriteRequest> },
   TContext
 > => {
   const mutationKey = ['profilesUpdate'];
@@ -2999,7 +3015,7 @@ export const getProfilesUpdateMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof profilesUpdate>>,
-    { id: number; data: BodyType<ProfileRequest> }
+    { id: number; data: BodyType<ProfileWriteRequest> }
   > = props => {
     const { id, data } = props ?? {};
 
@@ -3010,7 +3026,7 @@ export const getProfilesUpdateMutationOptions = <
 };
 
 export type ProfilesUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof profilesUpdate>>>;
-export type ProfilesUpdateMutationBody = BodyType<ProfileRequest>;
+export type ProfilesUpdateMutationBody = BodyType<ProfileWriteRequest>;
 export type ProfilesUpdateMutationError = ErrorType<
   | ProfilesUpdateErrorResponse400
   | ErrorResponse401
@@ -3037,7 +3053,7 @@ export const useProfilesUpdate = <
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof profilesUpdate>>,
       TError,
-      { id: number; data: BodyType<ProfileRequest> },
+      { id: number; data: BodyType<ProfileWriteRequest> },
       TContext
     >;
     request?: SecondParameter<typeof customInstance>;
@@ -3046,7 +3062,7 @@ export const useProfilesUpdate = <
 ): UseMutationResult<
   Awaited<ReturnType<typeof profilesUpdate>>,
   TError,
-  { id: number; data: BodyType<ProfileRequest> },
+  { id: number; data: BodyType<ProfileWriteRequest> },
   TContext
 > => {
   const mutationOptions = getProfilesUpdateMutationOptions(options);
@@ -3056,18 +3072,20 @@ export const useProfilesUpdate = <
 
 export const profilesPartialUpdate = (
   id: number,
-  patchedProfileRequest: BodyType<PatchedProfileRequest>,
+  patchedProfileWriteRequest: BodyType<PatchedProfileWriteRequest>,
   options?: SecondParameter<typeof customInstance>,
 ) => {
   const formUrlEncoded = new URLSearchParams();
-  if (patchedProfileRequest.user !== undefined) {
-    formUrlEncoded.append(`user`, patchedProfileRequest.user.toString());
+  if (patchedProfileWriteRequest.user !== undefined) {
+    formUrlEncoded.append(`user`, patchedProfileWriteRequest.user.toString());
   }
-  if (patchedProfileRequest.teams !== undefined) {
-    patchedProfileRequest.teams.forEach(value => formUrlEncoded.append(`teams`, value.toString()));
+  if (patchedProfileWriteRequest.teams !== undefined) {
+    patchedProfileWriteRequest.teams.forEach(value =>
+      formUrlEncoded.append(`teams`, value.toString()),
+    );
   }
 
-  return customInstance<Profile>(
+  return customInstance<ProfileWrite>(
     {
       url: `/api/profiles/${id}/`,
       method: 'PATCH',
@@ -3093,14 +3111,14 @@ export const getProfilesPartialUpdateMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof profilesPartialUpdate>>,
     TError,
-    { id: number; data: BodyType<PatchedProfileRequest> },
+    { id: number; data: BodyType<PatchedProfileWriteRequest> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof profilesPartialUpdate>>,
   TError,
-  { id: number; data: BodyType<PatchedProfileRequest> },
+  { id: number; data: BodyType<PatchedProfileWriteRequest> },
   TContext
 > => {
   const mutationKey = ['profilesPartialUpdate'];
@@ -3113,7 +3131,7 @@ export const getProfilesPartialUpdateMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof profilesPartialUpdate>>,
-    { id: number; data: BodyType<PatchedProfileRequest> }
+    { id: number; data: BodyType<PatchedProfileWriteRequest> }
   > = props => {
     const { id, data } = props ?? {};
 
@@ -3126,7 +3144,7 @@ export const getProfilesPartialUpdateMutationOptions = <
 export type ProfilesPartialUpdateMutationResult = NonNullable<
   Awaited<ReturnType<typeof profilesPartialUpdate>>
 >;
-export type ProfilesPartialUpdateMutationBody = BodyType<PatchedProfileRequest>;
+export type ProfilesPartialUpdateMutationBody = BodyType<PatchedProfileWriteRequest>;
 export type ProfilesPartialUpdateMutationError = ErrorType<
   | ProfilesPartialUpdateErrorResponse400
   | ErrorResponse401
@@ -3153,7 +3171,7 @@ export const useProfilesPartialUpdate = <
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof profilesPartialUpdate>>,
       TError,
-      { id: number; data: BodyType<PatchedProfileRequest> },
+      { id: number; data: BodyType<PatchedProfileWriteRequest> },
       TContext
     >;
     request?: SecondParameter<typeof customInstance>;
@@ -3162,7 +3180,7 @@ export const useProfilesPartialUpdate = <
 ): UseMutationResult<
   Awaited<ReturnType<typeof profilesPartialUpdate>>,
   TError,
-  { id: number; data: BodyType<PatchedProfileRequest> },
+  { id: number; data: BodyType<PatchedProfileWriteRequest> },
   TContext
 > => {
   const mutationOptions = getProfilesPartialUpdateMutationOptions(options);

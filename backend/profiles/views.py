@@ -1,10 +1,14 @@
-from rest_framework import viewsets
+from rest_framework import serializers, viewsets
 
 from .models import Profile
-from .serializers import ProfileSerializer
+from .serializers import ProfileSerializer, ProfileWriteSerializer
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
-    # permission_classes = [IsAuthenticated]
+    # permission_classes = [IsStaffOrReadOnly]
+
+    def get_serializer_class(self) -> type[serializers.ModelSerializer]:
+        if self.request.method in ["POST", "PUT", "PATCH"]:
+            return ProfileWriteSerializer
+        return ProfileSerializer
