@@ -7,9 +7,11 @@ import {
   Event,
   EventRequest,
   getEventsListQueryKey,
+  getEventsRetrieveQueryKey,
   useEventsCreate,
   useEventsDestroy,
   useEventsList,
+  useEventsRetrieve,
   useEventsUpdate,
 } from '@/api/backend';
 import dayjs, { Dayjs } from 'dayjs';
@@ -28,8 +30,12 @@ export const EventsConfig: TableConfig<Event, EventRequest, EventValues> = {
     { accessorKey: 'starts', header: 'Starts', size: 0, grow: true },
     { accessorKey: 'ends', header: 'Ends', size: 0, grow: true },
   ],
-  queryKey: getEventsListQueryKey,
+  invalidateQueries: (queryClient, id) => {
+    queryClient.invalidateQueries({ queryKey: getEventsListQueryKey() });
+    queryClient.invalidateQueries({ queryKey: getEventsRetrieveQueryKey(id) });
+  },
   useList: useEventsList,
+  useRetrieve: useEventsRetrieve,
   parseRequest: data => {
     return {
       name: data.name,
@@ -52,7 +58,11 @@ export const EventsConfig: TableConfig<Event, EventRequest, EventValues> = {
       </StyledForm>
     );
   },
-  initialValues: { name: '', starts: dayjs(''), ends: dayjs('') },
+  initialValues: instance => ({
+    name: instance?.name ?? '',
+    starts: dayjs(instance?.starts ?? ''),
+    ends: dayjs(instance?.ends ?? ''),
+  }),
   dataManagerForm: ({ mode, id, ...props }) => (
     <DataManagerForm config={EventsConfig} mode={mode} id={id} {...props} />
   ),

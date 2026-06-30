@@ -801,7 +801,11 @@ export interface PatchedEventRequest {
 }
 
 export interface PatchedProfileWriteRequest {
-  user?: number;
+  /**
+   * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+   * @minLength 1
+   */
+  user?: string;
   teams?: number[];
 }
 
@@ -817,17 +821,22 @@ export interface PatchedTeamWriteRequest {
 export interface Profile {
   readonly id: number;
   user: DjangoUser;
-  teams: Team;
+  teams: Team[];
 }
 
 export interface ProfileWrite {
   readonly id: number;
-  user: number;
+  /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
+  user: string;
   teams: number[];
 }
 
 export interface ProfileWriteRequest {
-  user: number;
+  /**
+   * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+   * @minLength 1
+   */
+  user: string;
   teams: number[];
 }
 
@@ -915,7 +924,7 @@ export const ProfilesCreateUserErrorComponentAttr = {
 
 /**
  * * `does_not_exist` - does_not_exist
- * `incorrect_type` - incorrect_type
+ * `invalid` - invalid
  * `null` - null
  * `required` - required
  */
@@ -925,7 +934,7 @@ export type ProfilesCreateUserErrorComponentCode =
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ProfilesCreateUserErrorComponentCode = {
   doesNotExist: 'does_not_exist',
-  incorrectType: 'incorrect_type',
+  invalid: 'invalid',
   null: 'null',
   required: 'required',
 } as const;
@@ -933,7 +942,7 @@ export const ProfilesCreateUserErrorComponentCode = {
 export interface ProfilesCreateUserErrorComponent {
   attr: ProfilesCreateUserErrorComponentAttr;
   /** * `does_not_exist` - does_not_exist
-   * `incorrect_type` - incorrect_type
+   * `invalid` - invalid
    * `null` - null
    * `required` - required */
   code: ProfilesCreateUserErrorComponentCode;
@@ -1043,7 +1052,7 @@ export const ProfilesPartialUpdateUserErrorComponentAttr = {
 
 /**
  * * `does_not_exist` - does_not_exist
- * `incorrect_type` - incorrect_type
+ * `invalid` - invalid
  * `null` - null
  * `required` - required
  */
@@ -1053,7 +1062,7 @@ export type ProfilesPartialUpdateUserErrorComponentCode =
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ProfilesPartialUpdateUserErrorComponentCode = {
   doesNotExist: 'does_not_exist',
-  incorrectType: 'incorrect_type',
+  invalid: 'invalid',
   null: 'null',
   required: 'required',
 } as const;
@@ -1061,7 +1070,7 @@ export const ProfilesPartialUpdateUserErrorComponentCode = {
 export interface ProfilesPartialUpdateUserErrorComponent {
   attr: ProfilesPartialUpdateUserErrorComponentAttr;
   /** * `does_not_exist` - does_not_exist
-   * `incorrect_type` - incorrect_type
+   * `invalid` - invalid
    * `null` - null
    * `required` - required */
   code: ProfilesPartialUpdateUserErrorComponentCode;
@@ -1167,7 +1176,7 @@ export const ProfilesUpdateUserErrorComponentAttr = {
 
 /**
  * * `does_not_exist` - does_not_exist
- * `incorrect_type` - incorrect_type
+ * `invalid` - invalid
  * `null` - null
  * `required` - required
  */
@@ -1177,7 +1186,7 @@ export type ProfilesUpdateUserErrorComponentCode =
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ProfilesUpdateUserErrorComponentCode = {
   doesNotExist: 'does_not_exist',
-  incorrectType: 'incorrect_type',
+  invalid: 'invalid',
   null: 'null',
   required: 'required',
 } as const;
@@ -1185,7 +1194,7 @@ export const ProfilesUpdateUserErrorComponentCode = {
 export interface ProfilesUpdateUserErrorComponent {
   attr: ProfilesUpdateUserErrorComponentAttr;
   /** * `does_not_exist` - does_not_exist
-   * `incorrect_type` - incorrect_type
+   * `invalid` - invalid
    * `null` - null
    * `required` - required */
   code: ProfilesUpdateUserErrorComponentCode;
@@ -2699,7 +2708,7 @@ export const profilesCreate = (
   signal?: AbortSignal,
 ) => {
   const formUrlEncoded = new URLSearchParams();
-  formUrlEncoded.append(`user`, profileWriteRequest.user.toString());
+  formUrlEncoded.append(`user`, profileWriteRequest.user);
   profileWriteRequest.teams.forEach(value => formUrlEncoded.append(`teams`, value.toString()));
 
   return customInstance<ProfileWrite>(
@@ -2966,7 +2975,7 @@ export const profilesUpdate = (
   options?: SecondParameter<typeof customInstance>,
 ) => {
   const formUrlEncoded = new URLSearchParams();
-  formUrlEncoded.append(`user`, profileWriteRequest.user.toString());
+  formUrlEncoded.append(`user`, profileWriteRequest.user);
   profileWriteRequest.teams.forEach(value => formUrlEncoded.append(`teams`, value.toString()));
 
   return customInstance<ProfileWrite>(
@@ -3077,7 +3086,7 @@ export const profilesPartialUpdate = (
 ) => {
   const formUrlEncoded = new URLSearchParams();
   if (patchedProfileWriteRequest.user !== undefined) {
-    formUrlEncoded.append(`user`, patchedProfileWriteRequest.user.toString());
+    formUrlEncoded.append(`user`, patchedProfileWriteRequest.user);
   }
   if (patchedProfileWriteRequest.teams !== undefined) {
     patchedProfileWriteRequest.teams.forEach(value =>

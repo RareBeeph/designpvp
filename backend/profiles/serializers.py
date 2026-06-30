@@ -21,10 +21,10 @@ class BaseProfileSerializer(serializers.ModelSerializer):
 
 
 class ProfileWriteSerializer(BaseProfileSerializer):
-    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    user = serializers.SlugRelatedField(queryset=User.objects.all(), slug_field="username")
     teams = serializers.PrimaryKeyRelatedField(queryset=Team.objects.all(), many=True)
 
 
 class ProfileSerializer(BaseProfileSerializer):
     user = DjangoUserSerializer()
-    teams = TeamSerializer()
+    teams = TeamSerializer(many=True)

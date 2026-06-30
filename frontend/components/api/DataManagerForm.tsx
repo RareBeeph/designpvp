@@ -21,10 +21,11 @@ export default function DataManagerForm<T, TRequest, TValues extends FormikValue
     config: TableConfig<T, TRequest, TValues, TWrite>;
   }) {
   const queryClient = useQueryClient();
-  const create = config.useCreate();
+  const create = config.useCreate?.();
   const update = config.useUpdate();
   const router = useRouter();
   const breakpoint = useBreakpoint();
+  const thisEntry = id ? config.useRetrieve(parseInt(id), { query: {} }) : undefined;
 
   const onSubmit = async (data: TValues, actions: FormikHelpers<TValues>) => {
     const request = config.parseRequest(data);
@@ -38,13 +39,13 @@ export default function DataManagerForm<T, TRequest, TValues extends FormikValue
     if (request) {
       switch (mode) {
         case 'create':
-          create.mutate(
+          create?.mutate(
             {
               data: request,
             },
             {
               onSuccess: () => {
-                queryClient.invalidateQueries({ queryKey: config.queryKey() });
+                config.invalidateQueries(queryClient, id ? parseInt(id) : undefined);
               },
               onError: onSubmitError,
             },
@@ -59,7 +60,7 @@ export default function DataManagerForm<T, TRequest, TValues extends FormikValue
               },
               {
                 onSuccess: () => {
-                  queryClient.invalidateQueries({ queryKey: config.queryKey() });
+                  config.invalidateQueries(queryClient, id ? parseInt(id) : undefined);
                   router.push('/manage/' + config.name);
                 },
                 onError: onSubmitError,
@@ -73,11 +74,13 @@ export default function DataManagerForm<T, TRequest, TValues extends FormikValue
   return (
     <Stack {...props}>
       <Paper>
-        <Formik initialValues={config.initialValues} onSubmit={onSubmit}>
-          {formikProps => (
-            <config.formFields mode={mode} id={id} breakpoint={breakpoint} {...formikProps} />
-          )}
-        </Formik>
+        {!thisEntry?.isFetching && (
+          <Formik initialValues={config.initialValues(thisEntry?.data)} onSubmit={onSubmit}>
+            {formikProps => (
+              <config.formFields mode={mode} id={id} breakpoint={breakpoint} {...formikProps} />
+            )}
+          </Formik>
+        )}
       </Paper>
     </Stack>
   );

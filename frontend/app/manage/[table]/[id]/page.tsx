@@ -10,7 +10,7 @@ import { tableConfigs } from '@/components/api/TableConfigs';
 import Padding from '@/components/form/Padding';
 import { StyledButton } from '@/components/form/SubmitButton';
 
-export default function UpdateTeams() {
+export default function UpdateTableEntry() {
   const { table, id }: { table: string; id: string } = useParams();
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -37,9 +37,7 @@ export default function UpdateTeams() {
                   { id: parseInt(id) },
                   {
                     onSuccess: () => {
-                      queryClient.invalidateQueries({
-                        queryKey: config.queryKey(),
-                      });
+                      config.invalidateQueries(queryClient);
                       router.push('/manage/' + table);
                     },
                   },

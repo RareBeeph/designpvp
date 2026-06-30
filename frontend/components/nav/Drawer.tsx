@@ -17,7 +17,7 @@ import { useBreakpoint } from '@/hooks/useBreakpoint';
 
 // this sucks but it works for now
 const ROUTES = ['', 'login', 'signup'];
-const ADMIN_ROUTES = ['manage', 'manage/events', 'manage/teams'];
+const ADMIN_ROUTES = ['manage', 'manage/events', 'manage/teams', 'manage/profiles'];
 
 export default function NavDrawer({
   open,
