@@ -9,6 +9,7 @@ from .models import Event, Team
 from .serializers import EventSerializer, TeamSerializer, TeamWriteSerializer
 
 IsReadOnly = IsAuthenticatedOrReadOnly & ~IsAuthenticated
+# imported by profiles/views.py. consider relocating to somewhere more appropriate to share from
 IsStaffOrReadOnly = IsAdminUser | IsReadOnly
 
 

@@ -49,7 +49,7 @@ export const EventsConfig: TableConfig<Event, EventRequest, EventValues> = {
   formFields: ({ isSubmitting, mode, id }: FormFieldProps<EventValues>) => {
     return (
       <StyledForm
-        header={mode == 'create' ? 'New Event' : 'Editing Event ' + id}
+        header={mode == 'create' ? 'New Event' : `Editing Event ${id}`}
         isSubmitting={isSubmitting}
       >
         <StyledTextField name="name" />
