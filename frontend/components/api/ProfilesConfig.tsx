@@ -69,7 +69,12 @@ export const ProfilesConfig: TableConfig<
     return (
       <StyledForm header={`Editing Profile ${id}`} isSubmitting={isSubmitting}>
         <StyledTextField name="user" disabled />
-        <StyledSelectField name="teams" value={values.teams} data={useTeamsList().data ?? []} />
+        <StyledSelectField
+          name="teams"
+          value={values.teams}
+          multiple
+          data={useTeamsList().data ?? []}
+        />
       </StyledForm>
     );
   },

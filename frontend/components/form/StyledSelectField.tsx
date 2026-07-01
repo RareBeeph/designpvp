@@ -9,10 +9,12 @@ export default function StyledSelectField({
   data,
   name,
   value,
+  multiple,
   ...props
 }: {
   name: string;
   value: string | string[];
+  multiple?: boolean;
   data: { id: number; name: string }[];
 }) {
   const { isSmall } = useBreakpoint();
@@ -24,7 +26,7 @@ export default function StyledSelectField({
       )}
       name={name}
       value={value}
-      multiple={typeof value !== 'string'}
+      multiple={multiple ?? Array.isArray(value)}
       {...props}
     >
       {data.map(v => (
