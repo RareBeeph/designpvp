@@ -3,7 +3,7 @@
 import { usePostAuthSignup } from '@/api/allauth';
 import { Container, Stack } from '@mui/material';
 
-import AuthForm from '@/components/AuthForm';
+import { AuthForm } from '@/components';
 
 export default function Signup() {
   // const oauth = () => postAuthProviderRedirect({provider: 'discord', callback_url: '/', process: 'login'})

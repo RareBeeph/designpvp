@@ -2,13 +2,13 @@
 
 import { useQueryClient } from '@tanstack/react-query';
 
-import { onSubmitError } from '.';
 import FormWrapper from './FormWrapper';
+import onSubmitError from './onSubmitError';
 import { PaperProps } from '@mui/material';
 import { FormikHelpers, FormikValues } from 'formik';
 import { useRouter } from 'next/navigation';
 
-import { TableConfig } from '@/components/api/TableConfigs';
+import { TableConfig } from '@/components/api/TableConfigs/types';
 
 export default function UpdateForm<T, TRequest, TValues extends FormikValues, TWrite = T>({
   children: _children,

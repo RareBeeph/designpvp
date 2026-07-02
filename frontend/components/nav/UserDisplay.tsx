@@ -1,6 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
 
-import { StyledButton } from '../form/SubmitButton';
 import {
   AuthenticationResponse,
   AuthenticationResponseStatus,
@@ -15,7 +14,9 @@ import { ErrorType } from '@/api/mutator/custom-instance';
 import { Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 
-import { useBreakpoint } from '@/hooks/useBreakpoint';
+import { StyledButton } from '@/components/StyledForm';
+
+import { useBreakpoint } from '@/hooks';
 
 type SessionQueryError = ErrorType<AuthenticationResponse | SessionGoneResponse>;
 type RetryFn = (failureCount: number, error: SessionQueryError) => boolean;

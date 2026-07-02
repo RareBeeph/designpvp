@@ -4,16 +4,18 @@ import { useState } from 'react';
 import { NavButton } from '.';
 import UserDisplay from './UserDisplay';
 import { useGetAuthSession } from '@/api/allauth';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import CloseIcon from '@mui/icons-material/Close';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import HomeIcon from '@mui/icons-material/Home';
-import LastPageIcon from '@mui/icons-material/LastPage';
+import {
+  ChevronRight as ChevronRightIcon,
+  Close as CloseIcon,
+  ExpandMore as ExpandMoreIcon,
+  Home as HomeIcon,
+  LastPage as LastPageIcon,
+} from '@mui/icons-material';
 import { Box, Collapse, Drawer, DrawerProps, IconButton, List, Toolbar } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { pascalCase } from 'text-case';
 
-import { useBreakpoint } from '@/hooks/useBreakpoint';
+import { useBreakpoint } from '@/hooks';
 
 // this sucks but it works for now
 const ROUTES = ['', 'login', 'signup'];

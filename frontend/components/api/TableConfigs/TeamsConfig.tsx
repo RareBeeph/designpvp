@@ -1,10 +1,4 @@
-import React from 'react';
-
-import StyledForm from '../form/StyledForm';
-import StyledSelectField from '../form/StyledSelectField';
-import { StyledTextField } from '../form/StyledTextField';
-import DataManagerForm from './DataManagerForm';
-import { FormFieldProps, TableConfig } from './TableConfigs';
+import { FormFieldProps, PrimaryKeyOption, TableConfig } from './types';
 import {
   Team,
   TeamWrite,
@@ -19,12 +13,17 @@ import {
   useTeamsUpdate,
 } from '@/api/backend';
 
+import { StyledForm } from '@/components/StyledForm';
+import { StyledSelectField } from '@/components/StyledForm';
+import { StyledTextField } from '@/components/StyledForm';
+import { DataManagerForm } from '@/components/api/DataManagerForm';
+
 interface TeamValues {
   name: string;
-  event: string;
+  event: PrimaryKeyOption;
 }
 
-export const TeamsConfig: TableConfig<Team, TeamWriteRequest, TeamValues, TeamWrite> = {
+const TeamsConfig: TableConfig<Team, TeamWriteRequest, TeamValues, TeamWrite> = {
   name: 'teams',
   columns: [
     { accessorKey: 'id', header: 'ID', size: 0, grow: true },
@@ -65,3 +64,5 @@ export const TeamsConfig: TableConfig<Team, TeamWriteRequest, TeamValues, TeamWr
     <DataManagerForm config={TeamsConfig} mode={mode} id={id} {...props} />
   ),
 };
+
+export default TeamsConfig;

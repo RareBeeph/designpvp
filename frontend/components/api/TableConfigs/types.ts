@@ -2,24 +2,16 @@ import { QueryClient, UseMutationResult, UseQueryResult } from '@tanstack/react-
 import { MRT_ColumnDef, MRT_RowData } from 'material-react-table';
 import { ReactNode } from 'react';
 
-import { EventsConfig } from './EventsConfig';
-import { ProfilesConfig } from './ProfilesConfig';
-import { TeamsConfig } from './TeamsConfig';
 import { ErrorType } from '@/api/mutator/custom-instance';
 import { PaperProps } from '@mui/material';
 import { FormikProps, FormikValues } from 'formik';
-
-import { Breakpoint } from '@/hooks/useBreakpoint';
 
 export interface ModeProps {
   mode: 'create' | 'update';
   id?: string;
 }
 
-export type FormFieldProps<TValues> = {
-  breakpoint: Breakpoint;
-} & FormikProps<TValues> &
-  ModeProps;
+export type FormFieldProps<TValues> = FormikProps<TValues> & ModeProps;
 
 export type AnyError = ErrorType<{
   type: 'validation_error' | 'client_error' | 'server_error';
@@ -47,8 +39,5 @@ export interface TableConfig<T, TRequest, TValues extends FormikValues, TWrite =
 
 export type AnyConfig = TableConfig<any, any, any, any>;
 
-export const tableConfigs: Record<string, AnyConfig | undefined> = {
-  teams: TeamsConfig,
-  events: EventsConfig,
-  profiles: ProfilesConfig,
-};
+// an int in string form, due to the DOM's limitation on <option> values
+export type PrimaryKeyOption = string;

@@ -1,9 +1,9 @@
 import { Field, FieldAttributes } from 'formik';
 import { DateTimePicker, DateTimePickerProps } from 'formik-mui-x-date-pickers';
 
-import { useBreakpoint } from '@/hooks/useBreakpoint';
+import { useBreakpoint } from '@/hooks';
 
-export const StyledDateTime = (props: FieldAttributes<any>) => {
+export default function StyledDateTime(props: FieldAttributes<any>) {
   const breakpoint = useBreakpoint();
 
   return (
@@ -21,4 +21,4 @@ export const StyledDateTime = (props: FieldAttributes<any>) => {
       {...props}
     />
   );
-};
+}

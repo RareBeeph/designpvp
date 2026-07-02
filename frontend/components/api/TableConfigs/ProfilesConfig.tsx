@@ -1,10 +1,4 @@
-import React from 'react';
-
-import StyledForm from '../form/StyledForm';
-import StyledSelectField from '../form/StyledSelectField';
-import { StyledTextField } from '../form/StyledTextField';
-import DataManagerForm from './DataManagerForm';
-import { FormFieldProps, TableConfig } from './TableConfigs';
+import { FormFieldProps, PrimaryKeyOption, TableConfig } from './types';
 import {
   Profile,
   ProfileWrite,
@@ -19,17 +13,17 @@ import {
   useTeamsList,
 } from '@/api/backend';
 
+import { StyledForm } from '@/components/StyledForm';
+import { StyledSelectField } from '@/components/StyledForm';
+import { StyledTextField } from '@/components/StyledForm';
+import { DataManagerForm } from '@/components/api/DataManagerForm/';
+
 interface ProfileValues {
-  user: string; // numeric id
-  teams: string[]; // list of numeric ids
+  user: string; // username
+  teams: PrimaryKeyOption[];
 }
 
-export const ProfilesConfig: TableConfig<
-  Profile,
-  ProfileWriteRequest,
-  ProfileValues,
-  ProfileWrite
-> = {
+const ProfilesConfig: TableConfig<Profile, ProfileWriteRequest, ProfileValues, ProfileWrite> = {
   name: 'profiles',
   columns: [
     { accessorKey: 'id', header: 'ID', size: 0, grow: true },
@@ -60,12 +54,7 @@ export const ProfilesConfig: TableConfig<
   useCreate: undefined, // To create a profile, you should just Sign Up instead.
   useUpdate: useProfilesUpdate,
   useDestroy: useProfilesDestroy,
-  formFields: ({
-    isSubmitting,
-    values,
-    id,
-    breakpoint: _breakpoint,
-  }: FormFieldProps<ProfileValues>) => {
+  formFields: ({ isSubmitting, values, id }: FormFieldProps<ProfileValues>) => {
     return (
       <StyledForm header={`Editing Profile ${id}`} isSubmitting={isSubmitting}>
         <StyledTextField name="user" disabled />
@@ -86,3 +75,5 @@ export const ProfilesConfig: TableConfig<
     <DataManagerForm config={ProfilesConfig} mode={mode} id={id} {...props} />
   ),
 };
+
+export default ProfilesConfig;

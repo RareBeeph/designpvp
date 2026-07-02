@@ -1,8 +1,4 @@
-import { StyledDateTime } from '../form/StyledDateTime';
-import StyledForm from '../form/StyledForm';
-import { StyledTextField } from '../form/StyledTextField';
-import DataManagerForm from './DataManagerForm';
-import { FormFieldProps, TableConfig } from './TableConfigs';
+import { FormFieldProps, TableConfig } from './types';
 import {
   Event,
   EventRequest,
@@ -16,13 +12,18 @@ import {
 } from '@/api/backend';
 import dayjs, { Dayjs } from 'dayjs';
 
+import { StyledDateTime } from '@/components/StyledForm';
+import { StyledForm } from '@/components/StyledForm/';
+import { StyledTextField } from '@/components/StyledForm/';
+import { DataManagerForm } from '@/components/api/DataManagerForm';
+
 interface EventValues {
   name: string;
   starts: Dayjs;
   ends: Dayjs;
 }
 
-export const EventsConfig: TableConfig<Event, EventRequest, EventValues> = {
+const EventsConfig: TableConfig<Event, EventRequest, EventValues> = {
   name: 'events',
   columns: [
     { accessorKey: 'id', header: 'ID', size: 0, grow: true },
@@ -67,3 +68,5 @@ export const EventsConfig: TableConfig<Event, EventRequest, EventValues> = {
     <DataManagerForm config={EventsConfig} mode={mode} id={id} {...props} />
   ),
 };
+
+export default EventsConfig;

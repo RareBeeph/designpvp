@@ -3,11 +3,11 @@ import { useState } from 'react';
 
 import NavDrawer from './Drawer';
 import UserDisplay from './UserDisplay';
-import MenuIcon from '@mui/icons-material/Menu';
+import { Menu as MenuIcon } from '@mui/icons-material';
 import { AppBar, Box, IconButton, Link, Toolbar } from '@mui/material';
 import { useSelectedLayoutSegments } from 'next/navigation';
 
-import { useBreakpoint } from '@/hooks/useBreakpoint';
+import { useBreakpoint } from '@/hooks';
 
 export default function NavBar() {
   const breadcrumbs = useSelectedLayoutSegments();

@@ -3,7 +3,7 @@ import { Field } from 'formik';
 import { SelectProps } from 'formik-mui';
 import { Select } from 'formik-mui';
 
-import { useBreakpoint } from '@/hooks/useBreakpoint';
+import { useBreakpoint } from '@/hooks';
 
 export default function StyledSelectField({
   data,

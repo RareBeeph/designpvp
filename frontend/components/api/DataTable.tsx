@@ -5,7 +5,7 @@ import { MRT_ColumnDef, MRT_RowData, MaterialReactTable } from 'material-react-t
 import { PaperProps } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
 
-import { useBreakpoint } from '@/hooks/useBreakpoint';
+import { useBreakpoint } from '@/hooks';
 
 export default function DataTable({
   data,

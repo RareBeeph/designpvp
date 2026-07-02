@@ -6,9 +6,8 @@ import { Stack } from '@mui/material';
 import { useParams, useRouter } from 'next/navigation';
 import { pascalCase } from 'text-case';
 
+import { Padding, StyledButton } from '@/components/StyledForm';
 import { tableConfigs } from '@/components/api/TableConfigs';
-import Padding from '@/components/form/Padding';
-import { StyledButton } from '@/components/form/SubmitButton';
 
 export default function UpdateTableEntry() {
   const { table, id }: { table: string; id: string } = useParams();

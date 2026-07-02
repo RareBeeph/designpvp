@@ -2,16 +2,16 @@
 
 import { useState } from 'react';
 
-import AddIcon from '@mui/icons-material/Add';
+import { Add as AddIcon } from '@mui/icons-material';
 import { Button, Container, Fab, Modal, Stack } from '@mui/material';
 import { useParams } from 'next/navigation';
 import { pascalCase } from 'text-case';
 
-import DataTable from '@/components/api/DataTable';
+import { Padding } from '@/components/StyledForm';
+import { DataTable } from '@/components/api';
 import { tableConfigs } from '@/components/api/TableConfigs';
-import Padding from '@/components/form/Padding';
 
-import { useBreakpoint } from '@/hooks/useBreakpoint';
+import { useBreakpoint } from '@/hooks';
 
 export default function ManageTable() {
   const breakpoint = useBreakpoint();

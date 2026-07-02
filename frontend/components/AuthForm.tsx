@@ -2,8 +2,7 @@
 
 import { UseMutationResult, useQueryClient } from '@tanstack/react-query';
 
-import StyledForm from './form/StyledForm';
-import { StyledTextField } from './form/StyledTextField';
+import { StyledForm, StyledTextField } from './StyledForm';
 import {
   AuthenticatedResponse,
   LoginBody,

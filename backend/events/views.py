@@ -1,16 +1,9 @@
 from rest_framework import serializers, viewsets
-from rest_framework.permissions import (
-    IsAdminUser,
-    IsAuthenticated,
-    IsAuthenticatedOrReadOnly,
-)
+
+from backend.permissions import IsStaffOrReadOnly
 
 from .models import Event, Team
 from .serializers import EventSerializer, TeamSerializer, TeamWriteSerializer
-
-IsReadOnly = IsAuthenticatedOrReadOnly & ~IsAuthenticated
-# imported by profiles/views.py. consider relocating to somewhere more appropriate to share from
-IsStaffOrReadOnly = IsAdminUser | IsReadOnly
 
 
 class EventViewSet(viewsets.ModelViewSet):

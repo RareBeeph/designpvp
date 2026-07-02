@@ -3,6 +3,7 @@ import reactHooksPlugin from 'eslint-plugin-react-hooks';
 
 import nextPlugin from '@next/eslint-plugin-next';
 import prettierConfig from 'eslint-config-prettier';
+import importPlugin from 'eslint-plugin-import';
 import jest from 'eslint-plugin-jest';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import prettier from 'eslint-plugin-prettier';
@@ -59,6 +60,7 @@ const eslintConfig = [
       '@next/next': nextPlugin,
       prettier,
       'unused-imports': unusedImports,
+      import: importPlugin,
     },
 
     rules: {
@@ -117,9 +119,11 @@ const eslintConfig = [
 
       // This rule doesn't play nicely with our default aliases.
       'import/no-extraneous-dependencies': ['off'],
+      // Prefer global imports with aliases (e.g. '@/components/StyledForm' rather than '../../StyledForm')
+      'import/no-relative-parent-imports': 'error',
 
       'no-restricted-syntax': ['off'],
-      'react/jsx-filename-extension': ['off'],
+      'react/jsx-filename-extension': [1, { extensions: ['.jsx', '.tsx'] }],
       'prettier/prettier': 'error',
       'react/jsx-props-no-spreading': ['off'],
       'react/forbid-prop-types': ['off'],

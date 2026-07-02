@@ -1,8 +1,6 @@
 from rest_framework import serializers, viewsets
 
-from events.views import (
-    IsStaffOrReadOnly,  # consider relocating this to somewhere more appropriate to share from
-)
+from backend.permissions import IsStaffOrReadOnly
 
 from .models import Profile
 from .serializers import ProfileSerializer, ProfileWriteSerializer
