@@ -1,6 +1,6 @@
-import EventsConfig from './EventsConfig';
-import ProfilesConfig from './ProfilesConfig';
-import TeamsConfig from './TeamsConfig';
+import EventsConfig from './Events';
+import ProfilesConfig from './Profiles';
+import TeamsConfig from './Teams';
 import { AnyConfig } from './types';
 
 const tableConfigs: Record<string, AnyConfig | undefined> = {
