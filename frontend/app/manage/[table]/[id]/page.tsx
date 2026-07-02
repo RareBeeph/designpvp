@@ -6,14 +6,14 @@ import { Stack } from '@mui/material';
 import { useParams, useRouter } from 'next/navigation';
 import { pascalCase } from 'text-case';
 
-import { Padding, StyledButton } from '@/components/StyledForm';
-import { tableConfigs } from '@/components/api/TableConfigs';
+import { dataConfigs } from '@/components/Data';
+import { Padding, StyledButton } from '@/components/Styled';
 
 export default function UpdateTableEntry() {
   const { table, id }: { table: string; id: string } = useParams();
   const queryClient = useQueryClient();
   const router = useRouter();
-  const config = tableConfigs[table];
+  const config = dataConfigs[table];
   const destroy = config?.useDestroy();
 
   return (

@@ -1,9 +1,9 @@
-import StyledHeader from './StyledHeader';
+import StyledHeader from './Header';
 import SubmitButton from './SubmitButton';
 import { Stack } from '@mui/material';
 import { Form, FormikFormProps } from 'formik';
 
-export function StyledForm({
+export default function StyledForm({
   header,
   isSubmitting,
   children,
@@ -19,10 +19,3 @@ export function StyledForm({
     </Form>
   );
 }
-
-export { default as Padding } from './Padding';
-export { default as StyledDateTime } from './StyledDateTime';
-export { default as StyledSelectField } from './StyledSelectField';
-export { default as StyledTextField } from './StyledTextField';
-export { StyledButton } from './SubmitButton';
-export { StyledHeader, SubmitButton };

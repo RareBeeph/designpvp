@@ -1,3 +1,5 @@
+'use client';
+
 import { useQueryClient } from '@tanstack/react-query';
 
 import {
@@ -14,7 +16,7 @@ import { ErrorType } from '@/api/mutator/custom-instance';
 import { Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 
-import { StyledButton } from '@/components/StyledForm';
+import { StyledButton } from '@/components/Styled';
 
 import { useBreakpoint } from '@/hooks';
 

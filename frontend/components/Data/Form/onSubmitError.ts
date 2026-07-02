@@ -1,4 +1,4 @@
-import { AnyError } from '../TableConfigs/types';
+import { AnyError } from '../Configs/types';
 import { FormikHelpers } from 'formik';
 
 export default function onSubmitError<TValues>(

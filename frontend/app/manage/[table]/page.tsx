@@ -7,9 +7,9 @@ import { Button, Container, Fab, Modal, Stack } from '@mui/material';
 import { useParams } from 'next/navigation';
 import { pascalCase } from 'text-case';
 
-import { Padding } from '@/components/StyledForm';
-import { DataTable } from '@/components/api';
-import { tableConfigs } from '@/components/api/TableConfigs';
+import { DataTable } from '@/components/Data';
+import { dataConfigs } from '@/components/Data';
+import { Padding } from '@/components/Styled';
 
 import { useBreakpoint } from '@/hooks';
 
@@ -17,7 +17,7 @@ export default function ManageTable() {
   const breakpoint = useBreakpoint();
   const [open, setOpen] = useState(false);
   const { table }: { table: string } = useParams();
-  const config = tableConfigs[table];
+  const config = dataConfigs[table];
   const listData = config?.useList().data ?? [];
 
   return (

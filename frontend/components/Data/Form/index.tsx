@@ -1,13 +1,13 @@
 'use client';
 
-import CreateForm from './CreateForm';
-import UpdateForm from './UpdateForm';
+import CreateForm from './Create';
+import UpdateForm from './Update';
 import { PaperProps } from '@mui/material';
 import { FormikValues } from 'formik';
 
-import { ModeProps, TableConfig } from '@/components/api/TableConfigs/types';
+import { ModeProps, TableConfig } from '@/components/Data/Configs/types';
 
-export function DataManagerForm<T, TRequest, TValues extends FormikValues, TWrite = T>({
+export default function DataManagerForm<T, TRequest, TValues extends FormikValues, TWrite = T>({
   children: _children,
   config,
   mode,

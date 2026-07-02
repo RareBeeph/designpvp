@@ -3,7 +3,7 @@
 import { Paper, PaperProps, Stack } from '@mui/material';
 import { Formik, FormikHelpers, FormikValues } from 'formik';
 
-import { ModeProps, TableConfig } from '@/components/api/TableConfigs/types';
+import { ModeProps, TableConfig } from '@/components/Data/Configs/types';
 
 export default function FormWrapper<T, TRequest, TValues extends FormikValues, TWrite = T>({
   children: _children,

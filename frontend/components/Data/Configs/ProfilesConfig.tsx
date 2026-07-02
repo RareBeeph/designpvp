@@ -13,10 +13,10 @@ import {
   useTeamsList,
 } from '@/api/backend';
 
-import { StyledForm } from '@/components/StyledForm';
-import { StyledSelectField } from '@/components/StyledForm';
-import { StyledTextField } from '@/components/StyledForm';
-import { DataManagerForm } from '@/components/api/DataManagerForm/';
+import { DataManagerForm } from '@/components/Data';
+import { StyledForm } from '@/components/Styled';
+import { StyledSelectField } from '@/components/Styled';
+import { StyledTextField } from '@/components/Styled';
 
 interface ProfileValues {
   user: string; // username
@@ -58,12 +58,7 @@ const ProfilesConfig: TableConfig<Profile, ProfileWriteRequest, ProfileValues, P
     return (
       <StyledForm header={`Editing Profile ${id}`} isSubmitting={isSubmitting}>
         <StyledTextField name="user" disabled />
-        <StyledSelectField
-          name="teams"
-          value={values.teams}
-          multiple
-          data={useTeamsList().data ?? []}
-        />
+        <StyledSelectField name="teams" value={values.teams} data={useTeamsList().data ?? []} />
       </StyledForm>
     );
   },

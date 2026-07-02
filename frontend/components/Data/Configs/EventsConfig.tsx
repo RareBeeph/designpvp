@@ -12,10 +12,10 @@ import {
 } from '@/api/backend';
 import dayjs, { Dayjs } from 'dayjs';
 
-import { StyledDateTime } from '@/components/StyledForm';
-import { StyledForm } from '@/components/StyledForm/';
-import { StyledTextField } from '@/components/StyledForm/';
-import { DataManagerForm } from '@/components/api/DataManagerForm';
+import { DataManagerForm } from '@/components/Data';
+import { StyledDateTime } from '@/components/Styled';
+import { StyledForm } from '@/components/Styled';
+import { StyledTextField } from '@/components/Styled';
 
 interface EventValues {
   name: string;

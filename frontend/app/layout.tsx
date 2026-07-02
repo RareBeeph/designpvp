@@ -4,7 +4,7 @@ import { Stack } from '@mui/material';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
-import { NavBar, NavBox } from '@/components/nav';
+import { NavBar, NavBox } from '@/components/Nav';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
