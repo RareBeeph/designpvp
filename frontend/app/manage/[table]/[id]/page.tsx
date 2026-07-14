@@ -17,7 +17,7 @@ export default function UpdateTableEntry() {
   const destroy = config?.useDestroy();
 
   return (
-    <Stack rowGap={10}>
+    <Stack rowGap={10} paddingTop={2}>
       <Stack direction="row" width="100%">
         <Padding flex={1} />
         {config && <config.dataManagerForm mode="update" sx={{ flex: 2 }} id={id} />}

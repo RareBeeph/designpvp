@@ -21,7 +21,7 @@ export default function ManageTable() {
   const listData = config?.useList().data ?? [];
 
   return (
-    <Container disableGutters>
+    <Container disableGutters sx={{ paddingTop: 2 }}>
       {config?.useCreate && (
         <Modal
           open={open}

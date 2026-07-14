@@ -34,7 +34,7 @@ const darkTheme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: ({ theme }) => ({
-          [':not(.MuiAppBar-root)']: {
+          [':not(.MuiAppBar-root, .no-padding)']: {
             padding: theme.spacing(2),
             [theme.breakpoints.up('xl')]: {
               padding: theme.spacing(2.5),
