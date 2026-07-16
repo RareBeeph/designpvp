@@ -2,60 +2,21 @@
 
 import { useQueryClient } from '@tanstack/react-query';
 
-import {
-  AuthenticationResponse,
-  AuthenticationResponseStatus,
-  GetAuthSessionQueryError,
-  SessionGoneResponse,
-  SessionGoneResponseStatus,
-  getGetAuthSessionQueryKey,
-  useDeleteAuthSession,
-  useGetAuthSession,
-} from '@/api/allauth';
-import { ErrorType } from '@/api/mutator/custom-instance';
+import { getGetAuthSessionQueryKey, useDeleteAuthSession } from '@/api/allauth';
 import { Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 
 import { StyledButton } from '@/components/Styled';
 
 import { useBreakpoint } from '@/hooks';
-
-type SessionQueryError = ErrorType<AuthenticationResponse | SessionGoneResponse>;
-type RetryFn = (failureCount: number, error: SessionQueryError) => boolean;
-type RetryValue = boolean | number | RetryFn;
+import useSession from '@/hooks/useSession';
 
 export default function UserDisplay() {
   const queryClient = useQueryClient();
   const breakpoint = useBreakpoint();
   const router = useRouter();
 
-  const retrySessionQuery = (failureCount: number, error: GetAuthSessionQueryError) => {
-    const allowedCodes = [
-      AuthenticationResponseStatus.number401 as number,
-      SessionGoneResponseStatus.number410 as number,
-    ];
-    if (allowedCodes.includes(error.response?.status ?? 0)) return false;
-
-    const { retry }: { retry?: RetryValue } = queryClient.getQueryDefaults(
-      getGetAuthSessionQueryKey(),
-    );
-    switch (typeof retry) {
-      case 'boolean':
-        return retry;
-      case 'number':
-        return failureCount < retry;
-      case 'function':
-        return retry(failureCount, error);
-      default:
-        return failureCount < 4; // fallback
-    }
-  };
-
-  const session = useGetAuthSession({
-    query: {
-      retry: retrySessionQuery,
-    },
-  });
+  const session = useSession();
   const logout = useDeleteAuthSession({
     mutation: {
       onSettled: async () => {

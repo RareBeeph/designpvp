@@ -1,39 +1,22 @@
 'use client';
 
-import { useGetAuthSession } from '@/api/allauth';
 import { useProfilesList } from '@/api/backend';
-import { AccountCircle as UserIcon } from '@mui/icons-material';
 import { Box, Paper, Stack, Tab, Tabs, Typography } from '@mui/material';
 
+import { ProfileUserDisplay } from '@/components/Profile';
+
+import useSession from '@/hooks/useSession';
+
 export default function Profile() {
-  const session = useGetAuthSession();
+  const session = useSession();
   const profiles = useProfilesList();
-  const _currentProfile = profiles.data?.find(p => p.user.id == session.data?.data.user.id);
+  const currentProfile = profiles.data?.find(p => p.user.id == session.data?.data.user.id);
 
   return (
     <Stack direction="column">
       <Paper className="no-padding" sx={{ height: '15vh' }} />
       <Stack direction="column" sx={{ px: 2 }}>
-        <Stack direction="column" sx={{ position: 'relative' }}>
-          <Paper className="no-padding" sx={{ padding: 1 }}>
-            <Typography sx={{ ml: '132px' }} variant="h6">
-              Lorem ipsum
-            </Typography>
-          </Paper>
-          <Paper
-            className="no-padding"
-            sx={{ position: 'absolute', width: '100px', height: '100px', left: '16px' }}
-            elevation={0}
-          >
-            <UserIcon sx={{ width: '100px', height: '100px', left: 0, top: 0 }} />
-          </Paper>
-          <Box>
-            <Typography sx={{ ml: '132px' }}>
-              Lorem ipsum dolor sit amet <br /> consectetur adipisicing elit. <br /> Consequuntur
-              corporis nostrum <br /> maxime ipsam quia totam
-            </Typography>
-          </Box>
-        </Stack>
+        <ProfileUserDisplay userid={String(currentProfile?.id) ?? 'undefined'} />
         <Box>
           <Tabs value={0}>
             <Tab label="Profile" />

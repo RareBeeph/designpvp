@@ -48,6 +48,9 @@ export interface DjangoUser {
    * @pattern ^[\w.@+-]+$
    */
   username: string;
+  dateJoined?: string;
+  /** @nullable */
+  lastLogin?: string | null;
 }
 
 export interface Error401 {
@@ -2573,6 +2576,7 @@ export const getProfilesListQueryOptions = <
   TError = ErrorType<
     | ProfilesListErrorResponse400
     | ErrorResponse401
+    | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
@@ -2600,6 +2604,7 @@ export type ProfilesListQueryResult = NonNullable<Awaited<ReturnType<typeof prof
 export type ProfilesListQueryError = ErrorType<
   | ProfilesListErrorResponse400
   | ErrorResponse401
+  | ErrorResponse403
   | ErrorResponse405
   | ErrorResponse406
   | ErrorResponse415
@@ -2611,6 +2616,7 @@ export function useProfilesList<
   TError = ErrorType<
     | ProfilesListErrorResponse400
     | ErrorResponse401
+    | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
@@ -2636,6 +2642,7 @@ export function useProfilesList<
   TError = ErrorType<
     | ProfilesListErrorResponse400
     | ErrorResponse401
+    | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
@@ -2661,6 +2668,7 @@ export function useProfilesList<
   TError = ErrorType<
     | ProfilesListErrorResponse400
     | ErrorResponse401
+    | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
@@ -2679,6 +2687,7 @@ export function useProfilesList<
   TError = ErrorType<
     | ProfilesListErrorResponse400
     | ErrorResponse401
+    | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
@@ -2727,6 +2736,7 @@ export const getProfilesCreateMutationOptions = <
   TError = ErrorType<
     | ProfilesCreateErrorResponse400
     | ErrorResponse401
+    | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
@@ -2772,6 +2782,7 @@ export type ProfilesCreateMutationBody = BodyType<ProfileWriteRequest>;
 export type ProfilesCreateMutationError = ErrorType<
   | ProfilesCreateErrorResponse400
   | ErrorResponse401
+  | ErrorResponse403
   | ErrorResponse405
   | ErrorResponse406
   | ErrorResponse415
@@ -2782,6 +2793,7 @@ export const useProfilesCreate = <
   TError = ErrorType<
     | ProfilesCreateErrorResponse400
     | ErrorResponse401
+    | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
@@ -2827,6 +2839,7 @@ export const getProfilesRetrieveQueryOptions = <
   TError = ErrorType<
     | ProfilesRetrieveErrorResponse400
     | ErrorResponse401
+    | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
@@ -2858,6 +2871,7 @@ export type ProfilesRetrieveQueryResult = NonNullable<Awaited<ReturnType<typeof 
 export type ProfilesRetrieveQueryError = ErrorType<
   | ProfilesRetrieveErrorResponse400
   | ErrorResponse401
+  | ErrorResponse403
   | ErrorResponse404
   | ErrorResponse405
   | ErrorResponse406
@@ -2870,6 +2884,7 @@ export function useProfilesRetrieve<
   TError = ErrorType<
     | ProfilesRetrieveErrorResponse400
     | ErrorResponse401
+    | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
@@ -2897,6 +2912,7 @@ export function useProfilesRetrieve<
   TError = ErrorType<
     | ProfilesRetrieveErrorResponse400
     | ErrorResponse401
+    | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
@@ -2924,6 +2940,7 @@ export function useProfilesRetrieve<
   TError = ErrorType<
     | ProfilesRetrieveErrorResponse400
     | ErrorResponse401
+    | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
@@ -2944,6 +2961,7 @@ export function useProfilesRetrieve<
   TError = ErrorType<
     | ProfilesRetrieveErrorResponse400
     | ErrorResponse401
+    | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
@@ -2993,6 +3011,7 @@ export const getProfilesUpdateMutationOptions = <
   TError = ErrorType<
     | ProfilesUpdateErrorResponse400
     | ErrorResponse401
+    | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
@@ -3039,6 +3058,7 @@ export type ProfilesUpdateMutationBody = BodyType<ProfileWriteRequest>;
 export type ProfilesUpdateMutationError = ErrorType<
   | ProfilesUpdateErrorResponse400
   | ErrorResponse401
+  | ErrorResponse403
   | ErrorResponse404
   | ErrorResponse405
   | ErrorResponse406
@@ -3050,6 +3070,7 @@ export const useProfilesUpdate = <
   TError = ErrorType<
     | ProfilesUpdateErrorResponse400
     | ErrorResponse401
+    | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
@@ -3109,6 +3130,7 @@ export const getProfilesPartialUpdateMutationOptions = <
   TError = ErrorType<
     | ProfilesPartialUpdateErrorResponse400
     | ErrorResponse401
+    | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
@@ -3157,6 +3179,7 @@ export type ProfilesPartialUpdateMutationBody = BodyType<PatchedProfileWriteRequ
 export type ProfilesPartialUpdateMutationError = ErrorType<
   | ProfilesPartialUpdateErrorResponse400
   | ErrorResponse401
+  | ErrorResponse403
   | ErrorResponse404
   | ErrorResponse405
   | ErrorResponse406
@@ -3168,6 +3191,7 @@ export const useProfilesPartialUpdate = <
   TError = ErrorType<
     | ProfilesPartialUpdateErrorResponse400
     | ErrorResponse401
+    | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
@@ -3205,6 +3229,7 @@ export const getProfilesDestroyMutationOptions = <
   TError = ErrorType<
     | ProfilesDestroyErrorResponse400
     | ErrorResponse401
+    | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
@@ -3253,6 +3278,7 @@ export type ProfilesDestroyMutationResult = NonNullable<
 export type ProfilesDestroyMutationError = ErrorType<
   | ProfilesDestroyErrorResponse400
   | ErrorResponse401
+  | ErrorResponse403
   | ErrorResponse404
   | ErrorResponse405
   | ErrorResponse406
@@ -3264,6 +3290,7 @@ export const useProfilesDestroy = <
   TError = ErrorType<
     | ProfilesDestroyErrorResponse400
     | ErrorResponse401
+    | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
