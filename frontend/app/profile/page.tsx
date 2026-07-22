@@ -12,12 +12,20 @@ export default function Profile() {
   const profiles = useProfilesList();
   const currentProfile = profiles.data?.find(p => p.user.id == session.data?.data.user.id);
 
+  const bannerImageHeight = '15vh';
+  const bannerImageMinHeight = '100px';
+
   return (
     <Stack direction="column">
-      <Paper className="no-padding" sx={{ height: '15vh' }} />
+      <Paper
+        className="no-padding"
+        sx={{ height: bannerImageHeight, minHeight: bannerImageMinHeight }}
+      />
       <Stack direction="column" sx={{ px: 2 }}>
         <ProfileUserDisplay userid={String(currentProfile?.id) ?? 'undefined'} />
         <Box>
+          {' '}
+          {/* This will probably be a separate component later */}
           <Tabs value={0}>
             <Tab label="Profile" />
             <Tab label="Statistics" />
@@ -27,7 +35,6 @@ export default function Profile() {
           </Tabs>
           <Paper>
             <Typography>
-              {' '}
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Corrupti obcaecati
               voluptatum eos recusandae numquam. Delectus consectetur beatae natus in labore
               excepturi debitis qui eius facere, inventore mollitia recusandae, eum nisi.
@@ -35,6 +42,8 @@ export default function Profile() {
           </Paper>
         </Box>
         <Stack direction="row" sx={{ display: 'flex' }}>
+          {' '}
+          {/* This will probably be a separate component later */}
           <Paper sx={{ flex: 1 }}>
             <Typography> Links </Typography>
           </Paper>

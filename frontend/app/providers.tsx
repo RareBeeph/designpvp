@@ -28,13 +28,17 @@ function getQueryClient() {
   return browserQueryClient;
 }
 
+export const paddingExemptClassName = 'no-padding';
+export const defaultStackSpacing = { xs: 0.5, sm: 1.5, md: 2, xl: 2.5 };
+
 const darkTheme = createTheme({
   palette: { mode: 'dark' },
+  cssVariables: true,
   components: {
     MuiPaper: {
       styleOverrides: {
         root: ({ theme }) => ({
-          [':not(.MuiAppBar-root, .no-padding)']: {
+          [`:not(.MuiAppBar-root, .${paddingExemptClassName})`]: {
             padding: theme.spacing(2),
             [theme.breakpoints.up('xl')]: {
               padding: theme.spacing(2.5),
@@ -46,7 +50,7 @@ const darkTheme = createTheme({
         }),
       },
     },
-    MuiStack: { defaultProps: { spacing: { xs: 0.5, sm: 1.5, md: 2, xl: 2.5 } } },
+    MuiStack: { defaultProps: { spacing: defaultStackSpacing } },
   },
 });
 
