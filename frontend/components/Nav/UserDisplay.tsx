@@ -3,6 +3,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 
 import { getGetAuthSessionQueryKey, useDeleteAuthSession } from '@/api/allauth';
+import { getProfilesMeRetrieveQueryKey } from '@/api/backend';
 import { Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 
@@ -11,7 +12,7 @@ import { StyledButton } from '@/components/Styled';
 import { useBreakpoint } from '@/hooks';
 import useSession from '@/hooks/useSession';
 
-export default function UserDisplay() {
+export default function NavUserDisplay() {
   const queryClient = useQueryClient();
   const breakpoint = useBreakpoint();
   const router = useRouter();
@@ -47,6 +48,7 @@ export default function UserDisplay() {
             logout.mutate(undefined, {
               onSettled: () => {
                 queryClient.invalidateQueries({ queryKey: getGetAuthSessionQueryKey() });
+                queryClient.invalidateQueries({ queryKey: getProfilesMeRetrieveQueryKey() });
               },
             });
           }}

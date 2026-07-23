@@ -2,7 +2,7 @@
 import { useState } from 'react';
 
 import NavDrawer from './Drawer';
-import UserDisplay from './UserDisplay';
+import NavUserDisplay from './UserDisplay';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import { AppBar, Box, IconButton, Link, Toolbar } from '@mui/material';
 import { useSelectedLayoutSegments } from 'next/navigation';
@@ -35,7 +35,7 @@ export default function NavBar() {
           <Link variant={headerVariant} underline="none" color="inherit" href="/">
             DesignPVP
           </Link>
-          {!breakpoint.isXS && <UserDisplay />}
+          {!breakpoint.isXS && <NavUserDisplay />}
         </Toolbar>
       </AppBar>
       <NavDrawer open={drawerOpen} onClose={handleDrawerToggle} {...{ breadcrumbs }} />

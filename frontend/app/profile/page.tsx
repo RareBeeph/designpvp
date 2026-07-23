@@ -1,17 +1,10 @@
 'use client';
 
-import { useProfilesList } from '@/api/backend';
 import { Box, Paper, Stack, Tab, Tabs, Typography } from '@mui/material';
 
 import { ProfileUserDisplay } from '@/components/Profile';
 
-import useSession from '@/hooks/useSession';
-
 export default function Profile() {
-  const session = useSession();
-  const profiles = useProfilesList();
-  const currentProfile = profiles.data?.find(p => p.user.id == session.data?.data.user.id);
-
   const bannerImageHeight = '15vh';
   const bannerImageMinHeight = '100px';
 
@@ -22,9 +15,8 @@ export default function Profile() {
         sx={{ height: bannerImageHeight, minHeight: bannerImageMinHeight }}
       />
       <Stack direction="column" sx={{ px: 2 }}>
-        <ProfileUserDisplay userid={String(currentProfile?.id) ?? 'undefined'} />
+        <ProfileUserDisplay profileId="me" />
         <Box>
-          {' '}
           {/* This will probably be a separate component later */}
           <Tabs value={0}>
             <Tab label="Profile" />
@@ -42,7 +34,6 @@ export default function Profile() {
           </Paper>
         </Box>
         <Stack direction="row" sx={{ display: 'flex' }}>
-          {' '}
           {/* This will probably be a separate component later */}
           <Paper sx={{ flex: 1 }}>
             <Typography> Links </Typography>
