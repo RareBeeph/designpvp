@@ -54,8 +54,7 @@ export default function ProfileUserDisplay({
         <Stack direction="column" sx={{ flex: 4 }}>
           <Typography variant="h6">{profile?.user.username ?? 'n/a'}</Typography>
           <Typography>
-            Last Seen:{' '}
-            {profile?.user.lastLogin ? dayjs(profile?.user.lastLogin).toString() : 'undefined'}{' '}
+            Last Seen: (not implemented)
             <br />
             Joined:{' '}
             {profile?.user.dateJoined ?

@@ -49,8 +49,6 @@ export interface DjangoUser {
    */
   username: string;
   dateJoined?: string;
-  /** @nullable */
-  lastLogin?: string | null;
 }
 
 export interface Error401 {

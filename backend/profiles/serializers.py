@@ -10,7 +10,7 @@ from .models import Profile
 class DjangoUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "date_joined", "last_login"]
+        fields = ["id", "username", "date_joined"]
 
 
 class BaseProfileSerializer(serializers.ModelSerializer):

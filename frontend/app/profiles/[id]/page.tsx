@@ -1,5 +1,6 @@
 'use client';
 
+import { paddingExemptClassName } from '@/app/providers';
 import { Box, Paper, Stack, Tab, Tabs, Typography } from '@mui/material';
 import { useParams } from 'next/navigation';
 
@@ -14,7 +15,7 @@ export default function Profile() {
   return (
     <Stack direction="column">
       <Paper
-        className="no-padding"
+        className={paddingExemptClassName}
         sx={{ height: bannerImageHeight, minHeight: bannerImageMinHeight }}
       />
       <Stack direction="column" sx={{ px: 2 }}>
