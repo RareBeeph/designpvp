@@ -4,25 +4,27 @@ import { useState } from 'react';
 
 import { Add as AddIcon } from '@mui/icons-material';
 import { Button, Container, Fab, Modal, Stack } from '@mui/material';
-import { useParams } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import { pascalCase } from 'text-case';
 
 import { DataTable } from '@/components/Data';
 import { dataConfigs } from '@/components/Data';
+import { AnyConfig } from '@/components/Data/Configs/types';
 import { Padding } from '@/components/Styled';
 
 import { useBreakpoint } from '@/hooks';
 
-export default function ManageTable() {
+// Split out from the page so the config is guaranteed to exist by the time any of
+// its hooks are called - `config?.useList()` would call no hook at all for an
+// unknown table, changing the hook count between renders.
+function ManageTableContents({ config, table }: { config: AnyConfig; table: string }) {
   const breakpoint = useBreakpoint();
   const [open, setOpen] = useState(false);
-  const { table }: { table: string } = useParams();
-  const config = dataConfigs[table];
-  const listData = config?.useList().data ?? [];
+  const listData = config.useList().data ?? [];
 
   return (
     <Container disableGutters sx={{ paddingTop: 2 }}>
-      {config?.useCreate && (
+      {config.useCreate && (
         <Modal
           open={open}
           onClose={() => {
@@ -32,13 +34,13 @@ export default function ManageTable() {
         >
           <Stack direction="row" width="100%">
             <Padding flex={1} />
-            {config && <config.dataManagerForm mode="create" sx={{ flex: 2 }} />}
+            <config.dataManagerForm mode="create" sx={{ flex: 2 }} />
             <Padding flex={1} />
           </Stack>
         </Modal>
       )}
       <Stack>
-        {config?.useCreate && (
+        {config.useCreate && (
           <Stack direction="row" height={breakpoint.isXS ? 0 : 'auto'}>
             <Padding flex={1} />
             {!breakpoint.isXS ?
@@ -67,10 +69,19 @@ export default function ManageTable() {
         )}
         <Stack direction="row">
           <Padding flex={1} />
-          <DataTable data={listData} columns={config?.columns ?? []} sx={{ flex: 4 }} />
+          <DataTable data={listData} columns={config.columns} sx={{ flex: 4 }} />
           <Padding flex={1} />
         </Stack>
       </Stack>
     </Container>
   );
+}
+
+export default function ManageTable() {
+  const { table }: { table: string } = useParams();
+  const config = dataConfigs[table];
+
+  if (!config) notFound();
+
+  return <ManageTableContents config={config} table={table} key={table} />;
 }

@@ -45,7 +45,7 @@ const TeamsConfig: TableConfig<Team, TeamWriteRequest, TeamValues, TeamWrite> = 
   useCreate: useTeamsCreate,
   useUpdate: useTeamsUpdate,
   useDestroy: useTeamsDestroy,
-  formFields: ({ isSubmitting, values, mode, id }: FormFieldProps<TeamValues>) => {
+  FormFields: ({ isSubmitting, values, mode, id }: FormFieldProps<TeamValues>) => {
     return (
       <StyledForm
         header={mode == 'create' ? 'New Team' : `Editing Team ${id}`}

@@ -7,21 +7,48 @@ services:
       - /code/node_modules
       - /code/.next
       - ./frontend:/code
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:3000/"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
   backend:
     depends_on:
-      - database
-      - cache
+      database:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
     build:
       context: backend
       dockerfile: Dockerfile.local
     volumes:
       - ./backend:/code
+    # The container's CMD runs migrate/collectstatic before serving, so "running" is
+    # not the same as "ready". Without this, `compose up --wait` in CI can hand back
+    # control while the backend is still migrating.
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:3000/api/config/"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
   database:
     image: postgres:latest
     environment:
       - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
   cache:
     image: valkey/valkey:latest
+    healthcheck:
+      test: ["CMD-SHELL", "valkey-cli ping | grep -q PONG"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
   caddy:
     image: caddy:latest
     ports:

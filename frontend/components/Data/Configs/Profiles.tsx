@@ -54,7 +54,7 @@ const ProfilesConfig: TableConfig<Profile, ProfileWriteRequest, ProfileValues, P
   useCreate: undefined, // To create a profile, you should just Sign Up instead.
   useUpdate: useProfilesUpdate,
   useDestroy: useProfilesDestroy,
-  formFields: ({ isSubmitting, values, id }: FormFieldProps<ProfileValues>) => {
+  FormFields: ({ isSubmitting, values, id }: FormFieldProps<ProfileValues>) => {
     return (
       <StyledForm header={`Editing Profile ${id}`} isSubmitting={isSubmitting}>
         <StyledTextField name="user" disabled />

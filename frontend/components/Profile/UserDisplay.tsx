@@ -8,10 +8,15 @@ export default function ProfileUserDisplay({
   profileId,
   ...props
 }: { profileId?: number | 'me' } & BoxProps) {
-  const profileQuery =
-    profileId === 'me' ? useProfilesMeRetrieve() : (
-      useProfilesRetrieve(profileId ?? NaN, { query: { enabled: !isNaN(profileId ?? NaN) } })
-    );
+  // Both hooks must run on every render, so the one that isn't wanted is disabled
+  // rather than skipped - swapping which hook gets called breaks hook ordering.
+  const isMe = profileId === 'me';
+  const id = typeof profileId === 'number' ? profileId : NaN;
+
+  const meQuery = useProfilesMeRetrieve({ query: { enabled: isMe } });
+  const byIdQuery = useProfilesRetrieve(id, { query: { enabled: !isMe && !isNaN(id) } });
+
+  const profileQuery = isMe ? meQuery : byIdQuery;
   const profile =
     profileQuery.isSuccess && !profileQuery.isFetching ? profileQuery.data : undefined;
 

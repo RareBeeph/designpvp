@@ -13,6 +13,14 @@ jobs:
             service: frontend
             command: npm run lint
 
+          - name: Type Check (Frontend)
+            service: frontend
+            command: npm run typecheck
+
+          - name: Build (Frontend)
+            service: frontend
+            command: npm run build
+
           - name: Test (Frontend)
             service: frontend
             command: npm run test
@@ -20,6 +28,10 @@ jobs:
           - name: Lint (Backend)
             service: backend
             command: poetry run ruff check
+
+          - name: Format (Backend)
+            service: backend
+            command: poetry run ruff format --check
 
           - name: Type Check (Backend)
             service: backend
@@ -40,3 +52,26 @@ jobs:
 
       - name: ${{ matrix.task.name }}
         run: docker compose exec ${{ matrix.task.service }} ${{ matrix.task.command }}
+
+  # The generated API client is the seam between the two halves of the app, but it
+  # is committed by hand. Regenerate it against the live schema and fail if the
+  # result differs from what is checked in.
+  api-client-sync:
+    name: API Client In Sync
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Build and Spin Up Containers
+        run: docker compose up --build --wait
+
+      - name: Regenerate API Client
+        run: docker compose exec frontend npm run api:generate
+
+      - name: Check For Drift
+        run: |
+          if ! git diff --exit-code -- frontend/api/; then
+            echo "::error::frontend/api/ is out of date. Run 'docker compose exec frontend npm run api:generate' and commit the result."
+            exit 1
+          fi

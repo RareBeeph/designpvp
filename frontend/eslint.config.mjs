@@ -34,7 +34,6 @@ const eslintConfig = [
             '*.js',
             '*.mjs',
             '*.cjs',
-            '*/ChatWidget.js',
             'api/mutator/add-client.js', // temporary
           ],
         },
@@ -51,13 +50,19 @@ const eslintConfig = [
   },
   ...tseslint.configs.stylisticTypeChecked,
   jest.configs['flat/recommended'],
+
+  // These plugins used to be registered without ever enabling their rules, which
+  // meant things like conditional hook calls went unreported. Spread the presets
+  // first so the project's own overrides below still win.
+  reactPlugin.configs.flat.recommended,
+  reactPlugin.configs.flat['jsx-runtime'],
+  jsxA11yPlugin.flatConfigs.recommended,
+  reactHooksPlugin.configs.flat.recommended,
+  nextPlugin.configs['core-web-vitals'],
+
   prettierConfig,
   {
     plugins: {
-      react: reactPlugin,
-      'react-hooks': reactHooksPlugin,
-      'jsx-a11y': jsxA11yPlugin,
-      '@next/next': nextPlugin,
       prettier,
       'unused-imports': unusedImports,
       import: importPlugin,
@@ -144,9 +149,14 @@ const eslintConfig = [
     },
 
     settings: {
+      react: { version: 'detect' },
+      // import/no-relative-parent-imports silently bails on any import it cannot
+      // resolve, so the node resolver has to know about TS extensions or the rule
+      // never fires on a .ts/.tsx file.
       'import/resolver': {
         node: {
-          paths: './',
+          extensions: ['.js', '.jsx', '.mjs', '.cjs', '.ts', '.tsx'],
+          moduleDirectory: ['node_modules', '.'],
         },
       },
     },

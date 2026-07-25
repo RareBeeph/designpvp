@@ -32,7 +32,9 @@ export interface TableConfig<T, TRequest, TValues extends FormikValues, TWrite =
   useCreate?: () => UseMutationResult<TWrite, AnyError, { data: TRequest }, unknown>;
   useUpdate: () => UseMutationResult<TWrite, AnyError, { id: number; data: TRequest }, unknown>;
   useDestroy: () => UseMutationResult<void, AnyError, { id: number }, unknown>;
-  formFields: React.FC<FormFieldProps<TValues>>;
+  // Capitalised because it is a component: it is rendered as <config.FormFields />
+  // and calls hooks, which the rules-of-hooks lint can only verify by name.
+  FormFields: React.FC<FormFieldProps<TValues>>;
   initialValues: (instance?: T) => TValues;
   dataManagerForm: (props: PaperProps & ModeProps) => ReactNode;
 }

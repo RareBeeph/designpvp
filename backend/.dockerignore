@@ -1,0 +1,15 @@
+# Build/tool caches - never want these in the image, and they bust the build cache.
+__pycache__/
+*.py[cod]
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Produced inside the image by collectstatic.
+staticfiles/
+
+# Local-only.
+secrets.env
+schema.yml
+.venv/
+poetry.toml

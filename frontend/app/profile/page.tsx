@@ -1,6 +1,6 @@
 'use client';
 
-import { paddingExemptClassName } from '../providers';
+import { paddingExemptClassName } from '@/app/providers';
 import { Box, Paper, Stack, Tab, Tabs, Typography } from '@mui/material';
 
 import { ProfileUserDisplay } from '@/components/Profile';

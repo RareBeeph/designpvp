@@ -47,7 +47,7 @@ const EventsConfig: TableConfig<Event, EventRequest, EventValues> = {
   useCreate: useEventsCreate,
   useUpdate: useEventsUpdate,
   useDestroy: useEventsDestroy,
-  formFields: ({ isSubmitting, mode, id }: FormFieldProps<EventValues>) => {
+  FormFields: ({ isSubmitting, mode, id }: FormFieldProps<EventValues>) => {
     return (
       <StyledForm
         header={mode == 'create' ? 'New Event' : `Editing Event ${id}`}

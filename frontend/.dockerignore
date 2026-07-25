@@ -1,0 +1,10 @@
+# Installed inside the image; copying the host's would clobber it with the wrong
+# platform's binaries.
+node_modules/
+
+# Build output and caches.
+.next/
+out/
+coverage/
+*.tsbuildinfo
+.eslintcache

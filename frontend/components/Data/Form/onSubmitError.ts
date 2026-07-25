@@ -1,5 +1,6 @@
-import { AnyError } from '../Configs/types';
 import { FormikHelpers } from 'formik';
+
+import { AnyError } from '@/components/Data/Configs/types';
 
 export default function onSubmitError<TValues>(
   actions: FormikHelpers<TValues>,
