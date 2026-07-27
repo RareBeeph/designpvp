@@ -75,3 +75,26 @@ jobs:
             echo "::error::frontend/api/ is out of date. Run 'docker compose exec frontend npm run api:generate' and commit the result."
             exit 1
           fi
+
+  # Everything above runs against Dockerfile.local. The deployable images are built
+  # from a different Dockerfile with different dependencies, so they need their own
+  # job - otherwise the production frontend image can stop building entirely and
+  # every other check still goes green.
+  production-images:
+    strategy:
+      matrix:
+        image:
+          - name: Frontend
+            context: frontend
+
+          - name: Backend
+            context: backend
+
+    name: Production Image (${{ matrix.image.name }})
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Build ${{ matrix.image.context }}/Dockerfile
+        run: docker build -f ${{ matrix.image.context }}/Dockerfile ${{ matrix.image.context }}
