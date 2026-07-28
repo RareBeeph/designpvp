@@ -85,6 +85,10 @@ const eslintConfig = [
       //   add visual clutter to the codebase
       '@typescript-eslint/no-unnecessary-type-parameters': 'error',
 
+      // Thrown string literals carry no stack trace, so the error boundary has
+      //   nothing to report beyond the message itself.
+      '@typescript-eslint/only-throw-error': 'error',
+
       // next.js does not require importing React at the top of the components everytime
       'react/react-in-jsx-scope': 'off',
 

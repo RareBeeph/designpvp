@@ -64,7 +64,7 @@ const EventsConfig: TableConfig<Event, EventRequest, EventValues> = {
     starts: dayjs(instance?.starts ?? ''),
     ends: dayjs(instance?.ends ?? ''),
   }),
-  dataManagerForm: ({ ...props }) => <DataManagerForm config={EventsConfig} {...props} />,
+  dataManagerForm: props => <DataManagerForm config={EventsConfig} {...props} />,
 };
 
 export default EventsConfig;

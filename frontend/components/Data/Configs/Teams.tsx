@@ -60,7 +60,7 @@ const TeamsConfig: TableConfig<Team, TeamWriteRequest, TeamValues, TeamWrite> = 
     name: instance?.name ?? '',
     event: instance?.event.id.toString() ?? '',
   }),
-  dataManagerForm: ({ ...props }) => <DataManagerForm config={TeamsConfig} {...props} />,
+  dataManagerForm: props => <DataManagerForm config={TeamsConfig} {...props} />,
 };
 
 export default TeamsConfig;

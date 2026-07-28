@@ -2,7 +2,7 @@ import ProfileUserDisplay from './UserDisplay';
 import { paddingExemptClassName } from '@/app/providers';
 import { Box, Paper, Stack, Tab, Tabs, Typography } from '@mui/material';
 
-export default function ProfileBase({ id }: { id?: number }) {
+export default function ProfileBase({ id = 'me' }: { id?: number | 'me' }) {
   const bannerImageHeight = '15vh';
   const bannerImageMinHeight = '100px';
 
@@ -13,7 +13,7 @@ export default function ProfileBase({ id }: { id?: number }) {
         sx={{ height: bannerImageHeight, minHeight: bannerImageMinHeight }}
       />
       <Stack direction="column" sx={{ px: 2 }}>
-        <ProfileUserDisplay profileId={id ?? 'me'} />
+        <ProfileUserDisplay profileId={id} />
         <Box>
           {/* This will probably be a separate component later */}
           <Tabs value={0}>

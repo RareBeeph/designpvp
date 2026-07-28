@@ -8,6 +8,8 @@ export default function ProfileUserDisplay({
   profileId,
   ...props
 }: { profileId?: number | 'me' } & BoxProps) {
+  // Both hooks must run on every render, so the one that isn't wanted is disabled
+  // rather than skipped - swapping which hook gets called breaks hook ordering.
   const isMe = profileId === 'me';
   const id = typeof profileId === 'number' ? profileId : NaN;
 

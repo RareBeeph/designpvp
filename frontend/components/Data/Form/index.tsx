@@ -18,7 +18,7 @@ export default function DataManagerForm<T, TRequest, TValues extends FormikValue
   }) {
   switch (mode.name) {
     case 'create':
-      if (!config.useCreate) throw "Can't create that!";
+      if (!config.useCreate) throw new Error(`${config.name} cannot be created.`);
       return <CreateForm config={config} useCreate={config.useCreate} {...props} />;
     case 'update':
       return <UpdateForm config={config} id={mode.id} {...props} />;

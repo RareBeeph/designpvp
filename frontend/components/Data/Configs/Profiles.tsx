@@ -55,7 +55,7 @@ const ProfilesConfig: TableConfig<Profile, ProfileWriteRequest, ProfileValues, P
   useUpdate: useProfilesUpdate,
   useDestroy: useProfilesDestroy,
   FormFields: ({ isSubmitting, values, mode }: FormFieldProps<ProfileValues>) => {
-    if (mode.name === 'create') throw 'Cannot create a Profile outside of Sign Up.';
+    if (mode.name === 'create') throw new Error('Cannot create a Profile outside of Sign Up.');
 
     return (
       <StyledForm header={`Editing Profile ${mode.id}`} isSubmitting={isSubmitting}>
@@ -68,7 +68,7 @@ const ProfilesConfig: TableConfig<Profile, ProfileWriteRequest, ProfileValues, P
     user: instance?.user.username ?? '',
     teams: instance?.teams.map(t => t.id.toString()) ?? [],
   }),
-  dataManagerForm: ({ ...props }) => <DataManagerForm config={ProfilesConfig} {...props} />,
+  dataManagerForm: props => <DataManagerForm config={ProfilesConfig} {...props} />,
 };
 
 export default ProfilesConfig;
