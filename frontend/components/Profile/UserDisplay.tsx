@@ -4,6 +4,8 @@ import { AccountCircle as UserIcon } from '@mui/icons-material';
 import { Box, BoxProps, Paper, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 
+import { AnyError } from '@/components/Data/Configs/types';
+
 export default function ProfileUserDisplay({
   profileId,
   ...props
@@ -13,7 +15,14 @@ export default function ProfileUserDisplay({
   const isMe = profileId === 'me';
   const id = typeof profileId === 'number' ? profileId : NaN;
 
-  const meQuery = useProfilesMeRetrieve({ query: { enabled: isMe } });
+  // 403 (signed out) and 404 (signed in, but no profile row) are both settled answers, so
+  // retrying them just delays rendering the fallback
+  const retryUnlessAnswered = (failureCount: number, error: AnyError) =>
+    [403, 404].includes(error.response?.status ?? 0) ? false : failureCount < 3;
+
+  const meQuery = useProfilesMeRetrieve({
+    query: { enabled: isMe, retry: retryUnlessAnswered },
+  });
   const byIdQuery = useProfilesRetrieve(id, { query: { enabled: !isMe && !isNaN(id) } });
 
   const profileQuery = isMe ? meQuery : byIdQuery;
@@ -51,10 +60,17 @@ export default function ProfileUserDisplay({
       >
         <Paper
           className={paddingExemptClassName}
-          sx={{ flex: '1', ...pfpSizeLimits }}
+          sx={{ flex: '1', ...pfpSizeLimits, overflow: 'hidden' }}
           elevation={0} /* for color */
         >
-          <UserIcon sx={{ width: '100%', height: '100%' }} />
+          {profile?.avatar ?
+            <Box
+              component="img"
+              src={profile.avatar}
+              alt={`${profile.user.username}'s avatar`}
+              sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            />
+          : <UserIcon sx={{ width: '100%', height: '100%' }} />}
         </Paper>
         <Stack direction="column" sx={{ flex: 4 }}>
           <Typography variant="h6">{profile?.user.username ?? 'n/a'}</Typography>

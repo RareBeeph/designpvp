@@ -17,10 +17,14 @@ django-redis = "^6.0.0"
 django-allauth = {extras = ["headless-spec"], version = "^65.14.3"}
 pyyaml = "^6.0.3"
 drf-standardized-errors = "^0.15.0"
+whitenoise = {extras = ["brotli"], version = "^6.12.0"}
+django-storages = {extras = ["s3"], version = "^1.14.6"}
+pillow = "^12.3.0"
 
 [tool.poetry.group.types.dependencies]
 types-gunicorn = "^23.0.0.20251031"
 types-pyyaml = "^6.0.12.20250915"
+types-pillow = "^10.2.0.20240822"
 
 
 
