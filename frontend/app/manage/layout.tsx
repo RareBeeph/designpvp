@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
+
 import { useGetAuthSession } from '@/api/allauth';
 import { useRouter } from 'next/navigation';
 
@@ -11,8 +13,10 @@ export default function AdminLayout({
   const session = useGetAuthSession();
   const router = useRouter();
 
-  if ((session.isSuccess && !session.data?.data.user.is_staff) || session.error?.status == 401)
-    router.push('/'); // Nextjs complains that I don't finish rendering before pushing
+  useEffect(() => {
+    if ((session.isSuccess && !session.data?.data.user.is_staff) || session.error?.status == 401)
+      router.push('/'); // Nextjs complains that I don't finish rendering before pushing
+  }, [session.isSuccess, session.data?.data.user.is_staff, session.error?.status, router]);
 
   return <>{session.isSuccess && session.data?.data.user.is_staff ? children : undefined}</>;
 }

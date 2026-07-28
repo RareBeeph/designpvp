@@ -4,9 +4,9 @@ import { useBreakpoint } from '@/hooks';
 
 export default function StyledButton({ children, ...props }: ButtonProps) {
   const { isSmall } = useBreakpoint();
-  const size = (props.size ?? isSmall) ? 'medium' : 'large';
+  const defaultSize = isSmall ? 'medium' : 'large';
   return (
-    <Button variant="contained" size={size} {...props}>
+    <Button variant="contained" size={defaultSize} {...props}>
       {children}
     </Button>
   );

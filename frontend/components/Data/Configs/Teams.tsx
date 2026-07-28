@@ -45,10 +45,10 @@ const TeamsConfig: TableConfig<Team, TeamWriteRequest, TeamValues, TeamWrite> = 
   useCreate: useTeamsCreate,
   useUpdate: useTeamsUpdate,
   useDestroy: useTeamsDestroy,
-  FormFields: ({ isSubmitting, values, mode, id }: FormFieldProps<TeamValues>) => {
+  FormFields: ({ isSubmitting, values, mode }: FormFieldProps<TeamValues>) => {
     return (
       <StyledForm
-        header={mode == 'create' ? 'New Team' : `Editing Team ${id}`}
+        header={mode.name == 'create' ? 'New Team' : `Editing Team ${mode.id}`}
         isSubmitting={isSubmitting}
       >
         <StyledTextField name="name" />
@@ -60,9 +60,7 @@ const TeamsConfig: TableConfig<Team, TeamWriteRequest, TeamValues, TeamWrite> = 
     name: instance?.name ?? '',
     event: instance?.event.id.toString() ?? '',
   }),
-  dataManagerForm: ({ mode, id, ...props }) => (
-    <DataManagerForm config={TeamsConfig} mode={mode} id={id} {...props} />
-  ),
+  dataManagerForm: ({ ...props }) => <DataManagerForm config={TeamsConfig} {...props} />,
 };
 
 export default TeamsConfig;

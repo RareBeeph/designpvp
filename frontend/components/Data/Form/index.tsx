@@ -11,16 +11,16 @@ export default function DataManagerForm<T, TRequest, TValues extends FormikValue
   children: _children,
   config,
   mode,
-  id,
   ...props
 }: PaperProps &
   ModeProps & {
     config: TableConfig<T, TRequest, TValues, TWrite>;
   }) {
-  return (
-    config.useCreate && mode == 'create' ?
-      <CreateForm config={config} useCreate={config.useCreate} {...props} />
-    : id ? <UpdateForm config={config} id={id} {...props} />
-    : <p>This text should not appear.</p>
-  );
+  switch (mode.name) {
+    case 'create':
+      if (!config.useCreate) throw "Can't create that!";
+      return <CreateForm config={config} useCreate={config.useCreate} {...props} />;
+    case 'update':
+      return <UpdateForm config={config} id={mode.id} {...props} />;
+  }
 }

@@ -28,7 +28,7 @@ function UpdateTableEntryContents({
     <Stack rowGap={10} paddingTop={2}>
       <Stack direction="row" width="100%">
         <Padding flex={1} />
-        <config.dataManagerForm mode="update" sx={{ flex: 2 }} id={id} />
+        <config.dataManagerForm mode={{ name: 'update', id }} sx={{ flex: 2 }} />
         <Padding flex={1} />
       </Stack>
 

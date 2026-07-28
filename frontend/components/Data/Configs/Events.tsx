@@ -47,10 +47,10 @@ const EventsConfig: TableConfig<Event, EventRequest, EventValues> = {
   useCreate: useEventsCreate,
   useUpdate: useEventsUpdate,
   useDestroy: useEventsDestroy,
-  FormFields: ({ isSubmitting, mode, id }: FormFieldProps<EventValues>) => {
+  FormFields: ({ isSubmitting, mode }: FormFieldProps<EventValues>) => {
     return (
       <StyledForm
-        header={mode == 'create' ? 'New Event' : `Editing Event ${id}`}
+        header={mode.name == 'create' ? 'New Event' : `Editing Event ${mode.id}`}
         isSubmitting={isSubmitting}
       >
         <StyledTextField name="name" />
@@ -64,9 +64,7 @@ const EventsConfig: TableConfig<Event, EventRequest, EventValues> = {
     starts: dayjs(instance?.starts ?? ''),
     ends: dayjs(instance?.ends ?? ''),
   }),
-  dataManagerForm: ({ mode, id, ...props }) => (
-    <DataManagerForm config={EventsConfig} mode={mode} id={id} {...props} />
-  ),
+  dataManagerForm: ({ ...props }) => <DataManagerForm config={EventsConfig} {...props} />,
 };
 
 export default EventsConfig;

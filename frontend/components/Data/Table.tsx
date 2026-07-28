@@ -21,7 +21,7 @@ export default function DataTable({
   const pathName = usePathname();
 
   const tableProps = {
-    layoutMode: 'semantic' as 'semantic',
+    layoutMode: 'semantic' as const,
     muiTablePaperProps: {
       sx: {
         display: 'block',

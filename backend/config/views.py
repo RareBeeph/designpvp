@@ -10,7 +10,4 @@ from config.serializers import ConfigSerializer
 class ConfigView(APIView):
     @extend_schema(responses=ConfigSerializer)
     def get(self, request: Request) -> Response:
-        config: dict[str, bool] = {}
-        config["production"] = (bool)(settings.PRODUCTION)
-        serializer = ConfigSerializer(config)
-        return Response(serializer.data)
+        return Response({"production": settings.PRODUCTION})

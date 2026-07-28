@@ -9,7 +9,6 @@ export default function FormWrapper<T, TRequest, TValues extends FormikValues, T
   children: _children,
   config,
   mode,
-  id,
   onSubmit,
   initialValues,
   ready,
@@ -26,7 +25,7 @@ export default function FormWrapper<T, TRequest, TValues extends FormikValues, T
       <Paper>
         {ready && (
           <Formik initialValues={initialValues} onSubmit={onSubmit}>
-            {formikProps => <config.FormFields mode={mode} id={id} {...formikProps} />}
+            {formikProps => <config.FormFields mode={mode} {...formikProps} />}
           </Formik>
         )}
       </Paper>

@@ -22,6 +22,7 @@ export default function NavUserDisplay() {
     mutation: {
       onSettled: async () => {
         await queryClient.invalidateQueries({ queryKey: getGetAuthSessionQueryKey() });
+        await queryClient.invalidateQueries({ queryKey: getProfilesMeRetrieveQueryKey() });
       },
     },
   });
@@ -32,7 +33,7 @@ export default function NavUserDisplay() {
       (breakpoint.isXS ? 'Logged in as: ' : '') + (session.data?.data.user?.username ?? '.')
     : 'Not logged in';
 
-  const usernameVariant = breakpoint.isXS ? 'h6' : 'h6';
+  const usernameVariant = 'h6';
   const usernameSx =
     breakpoint.isXS ? { ml: 2, mr: 'auto', mt: 'auto', mb: 2 } : { ml: 'auto', mr: 2 };
 
@@ -45,12 +46,7 @@ export default function NavUserDisplay() {
       {session.isSuccess ?
         <StyledButton
           onClick={() => {
-            logout.mutate(undefined, {
-              onSettled: () => {
-                queryClient.invalidateQueries({ queryKey: getGetAuthSessionQueryKey() });
-                queryClient.invalidateQueries({ queryKey: getProfilesMeRetrieveQueryKey() });
-              },
-            });
+            logout.mutate();
           }}
         >
           Log out

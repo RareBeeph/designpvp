@@ -12,10 +12,12 @@ import { AnyError, TableConfig } from '@/components/Data/Configs/types';
 export default function CreateForm<T, TRequest, TValues extends FormikValues, TWrite = T>({
   children: _children,
   config,
+  closeModal,
   useCreate, // guarantee it exists
   ...props
 }: Omit<PaperProps, 'onSubmit'> & {
   config: TableConfig<T, TRequest, TValues, TWrite>;
+  closeModal?: () => void; // This kinda resembles onSubmit. Maybe I should fold them together instead of omitting that.
   useCreate: () => UseMutationResult<TWrite, AnyError, { data: TRequest }>;
 }) {
   const queryClient = useQueryClient();
@@ -25,12 +27,15 @@ export default function CreateForm<T, TRequest, TValues extends FormikValues, TW
     const request = config.parseRequest(data);
     if (!request) return;
 
-    create?.mutate(
+    create.mutate(
       {
         data: request,
       },
       {
-        onSuccess: () => config.invalidateQueries(queryClient, undefined),
+        onSuccess: () => {
+          config.invalidateQueries(queryClient, undefined);
+          closeModal?.();
+        },
         onError: newError => onSubmitError(actions, newError),
       },
     );
@@ -39,8 +44,7 @@ export default function CreateForm<T, TRequest, TValues extends FormikValues, TW
   return (
     <FormWrapper<T, TRequest, TValues, TWrite>
       config={config}
-      mode="create"
-      id={undefined}
+      mode={{ name: 'create' }}
       onSubmit={onSubmit}
       initialValues={config.initialValues()}
       ready

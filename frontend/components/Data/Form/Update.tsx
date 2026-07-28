@@ -46,8 +46,7 @@ export default function UpdateForm<T, TRequest, TValues extends FormikValues, TW
   return (
     <FormWrapper<T, TRequest, TValues, TWrite>
       config={config}
-      mode="update"
-      id={id}
+      mode={{ name: 'update', id }}
       onSubmit={onSubmit}
       initialValues={config.initialValues(thisEntry.data)}
       ready={!thisEntry?.isLoading && thisEntry.isSuccess}

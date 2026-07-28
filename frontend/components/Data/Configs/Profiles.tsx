@@ -54,9 +54,11 @@ const ProfilesConfig: TableConfig<Profile, ProfileWriteRequest, ProfileValues, P
   useCreate: undefined, // To create a profile, you should just Sign Up instead.
   useUpdate: useProfilesUpdate,
   useDestroy: useProfilesDestroy,
-  FormFields: ({ isSubmitting, values, id }: FormFieldProps<ProfileValues>) => {
+  FormFields: ({ isSubmitting, values, mode }: FormFieldProps<ProfileValues>) => {
+    if (mode.name === 'create') throw 'Cannot create a Profile outside of Sign Up.';
+
     return (
-      <StyledForm header={`Editing Profile ${id}`} isSubmitting={isSubmitting}>
+      <StyledForm header={`Editing Profile ${mode.id}`} isSubmitting={isSubmitting}>
         <StyledTextField name="user" disabled />
         <StyledSelectField name="teams" value={values.teams} data={useTeamsList().data ?? []} />
       </StyledForm>
@@ -66,9 +68,7 @@ const ProfilesConfig: TableConfig<Profile, ProfileWriteRequest, ProfileValues, P
     user: instance?.user.username ?? '',
     teams: instance?.teams.map(t => t.id.toString()) ?? [],
   }),
-  dataManagerForm: ({ mode, id, ...props }) => (
-    <DataManagerForm config={ProfilesConfig} mode={mode} id={id} {...props} />
-  ),
+  dataManagerForm: ({ ...props }) => <DataManagerForm config={ProfilesConfig} {...props} />,
 };
 
 export default ProfilesConfig;

@@ -21,8 +21,8 @@ export default function StyledSelectField({
 
   return (
     <Field
-      component={(SelectProps: SelectProps) => (
-        <Select size={isSmall ? 'small' : 'medium'} {...SelectProps} />
+      component={(selectProps: SelectProps) => (
+        <Select size={isSmall ? 'small' : 'medium'} {...selectProps} />
       )}
       name={name}
       value={value}

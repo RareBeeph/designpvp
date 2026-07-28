@@ -34,7 +34,11 @@ function ManageTableContents({ config, table }: { config: AnyConfig; table: stri
         >
           <Stack direction="row" width="100%">
             <Padding flex={1} />
-            <config.dataManagerForm mode="create" sx={{ flex: 2 }} />
+            <config.dataManagerForm
+              mode={{ name: 'create' }}
+              onSubmit={() => setOpen(false)}
+              sx={{ flex: 2 }}
+            />
             <Padding flex={1} />
           </Stack>
         </Modal>

@@ -7,8 +7,7 @@ import { PaperProps } from '@mui/material';
 import { FormikProps, FormikValues } from 'formik';
 
 export interface ModeProps {
-  mode: 'create' | 'update';
-  id?: string;
+  mode: { name: 'create' } | { name: 'update'; id: string };
 }
 
 export type FormFieldProps<TValues> = FormikProps<TValues> & ModeProps;
