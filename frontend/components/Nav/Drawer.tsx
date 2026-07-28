@@ -3,7 +3,6 @@ import { useState } from 'react';
 
 import { NavButton } from '.';
 import NavUserDisplay from './UserDisplay';
-import { useGetAuthSession } from '@/api/allauth';
 import {
   ChevronRight as ChevronRightIcon,
   Close as CloseIcon,
@@ -15,7 +14,7 @@ import { Box, Collapse, Drawer, DrawerProps, IconButton, List, Toolbar } from '@
 import { useRouter } from 'next/navigation';
 import { pascalCase } from 'text-case';
 
-import { useBreakpoint } from '@/hooks';
+import { useBreakpoint, useSession } from '@/hooks';
 
 // this sucks but it works for now
 const ROUTES = ['', 'login', 'signup'];
@@ -27,7 +26,7 @@ export default function NavDrawer({
   breadcrumbs,
   ...props
 }: DrawerProps & { breadcrumbs: string[] }) {
-  const authSession = useGetAuthSession();
+  const authSession = useSession();
   const router = useRouter();
   const breakpoint = useBreakpoint();
   const [collapseOpen, setCollapseOpen] = useState(true);
