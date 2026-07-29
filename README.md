@@ -1,3 +1,23 @@
+## Editor setup (VS Code)
+
+All tooling lives in the containers - there is no host-level dev setup. A host-side editor
+cannot lint or type-check this project: the Poetry venv and `mypy.ini` are in the `backend`
+container, and `node_modules` is an anonymous volume that only exists inside `frontend`.
+
+With the [Dev Containers][devcontainers] extension installed, open the repo and run
+**Dev Containers: Reopen in Container**. That builds one `devcontainer` service carrying both
+toolchains, mounts the whole repo at `/workspace`, and brings the rest of the stack up
+alongside it - so a single window covers backend and frontend, and closing it leaves the app
+running.
+
+The app is still served by the `backend` and `frontend` services on http://localhost:3000. The
+dev container serves nothing; it only hosts the editor's language servers.
+
+Its Node and Python are copied from the same base images the app services use, so versions
+cannot drift.
+
+[devcontainers]: https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers
+
 ## Development Fixtures
 
 The default state of the database after loading the "devsetup.json" fixture should be as follows:

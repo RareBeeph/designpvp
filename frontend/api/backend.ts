@@ -51,13 +51,6 @@ export interface DjangoUser {
   dateJoined?: string;
 }
 
-export interface Error401 {
-  code: ErrorCode401Enum;
-  detail: string;
-  /** @nullable */
-  attr: string | null;
-}
-
 export interface Error403 {
   code: ErrorCode403Enum;
   detail: string;
@@ -99,18 +92,6 @@ export interface Error500 {
   /** @nullable */
   attr: string | null;
 }
-
-/**
- * * `authentication_failed` - Authentication Failed
- * `not_authenticated` - Not Authenticated
- */
-export type ErrorCode401Enum = (typeof ErrorCode401Enum)[keyof typeof ErrorCode401Enum];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ErrorCode401Enum = {
-  authenticationFailed: 'authentication_failed',
-  notAuthenticated: 'not_authenticated',
-} as const;
 
 /**
  * * `permission_denied` - Permission Denied
@@ -171,11 +152,6 @@ export type ErrorCode500Enum = (typeof ErrorCode500Enum)[keyof typeof ErrorCode5
 export const ErrorCode500Enum = {
   error: 'error',
 } as const;
-
-export interface ErrorResponse401 {
-  type: ClientErrorEnum;
-  errors: Error401[];
-}
 
 export interface ErrorResponse403 {
   type: ClientErrorEnum;
@@ -1669,7 +1645,6 @@ export const getConfigRetrieveQueryOptions = <
   TData = Awaited<ReturnType<typeof configRetrieve>>,
   TError = ErrorType<
     | ConfigRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
@@ -1696,7 +1671,6 @@ export const getConfigRetrieveQueryOptions = <
 export type ConfigRetrieveQueryResult = NonNullable<Awaited<ReturnType<typeof configRetrieve>>>;
 export type ConfigRetrieveQueryError = ErrorType<
   | ConfigRetrieveErrorResponse400
-  | ErrorResponse401
   | ErrorResponse405
   | ErrorResponse406
   | ErrorResponse415
@@ -1707,7 +1681,6 @@ export function useConfigRetrieve<
   TData = Awaited<ReturnType<typeof configRetrieve>>,
   TError = ErrorType<
     | ConfigRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
@@ -1732,7 +1705,6 @@ export function useConfigRetrieve<
   TData = Awaited<ReturnType<typeof configRetrieve>>,
   TError = ErrorType<
     | ConfigRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
@@ -1757,7 +1729,6 @@ export function useConfigRetrieve<
   TData = Awaited<ReturnType<typeof configRetrieve>>,
   TError = ErrorType<
     | ConfigRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
@@ -1775,7 +1746,6 @@ export function useConfigRetrieve<
   TData = Awaited<ReturnType<typeof configRetrieve>>,
   TError = ErrorType<
     | ConfigRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
@@ -1814,7 +1784,6 @@ export const getEventsListQueryOptions = <
   TData = Awaited<ReturnType<typeof eventsList>>,
   TError = ErrorType<
     | EventsListErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
@@ -1842,7 +1811,6 @@ export const getEventsListQueryOptions = <
 export type EventsListQueryResult = NonNullable<Awaited<ReturnType<typeof eventsList>>>;
 export type EventsListQueryError = ErrorType<
   | EventsListErrorResponse400
-  | ErrorResponse401
   | ErrorResponse403
   | ErrorResponse405
   | ErrorResponse406
@@ -1854,7 +1822,6 @@ export function useEventsList<
   TData = Awaited<ReturnType<typeof eventsList>>,
   TError = ErrorType<
     | EventsListErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
@@ -1880,7 +1847,6 @@ export function useEventsList<
   TData = Awaited<ReturnType<typeof eventsList>>,
   TError = ErrorType<
     | EventsListErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
@@ -1906,7 +1872,6 @@ export function useEventsList<
   TData = Awaited<ReturnType<typeof eventsList>>,
   TError = ErrorType<
     | EventsListErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
@@ -1925,7 +1890,6 @@ export function useEventsList<
   TData = Awaited<ReturnType<typeof eventsList>>,
   TError = ErrorType<
     | EventsListErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
@@ -1975,7 +1939,6 @@ export const eventsCreate = (
 export const getEventsCreateMutationOptions = <
   TError = ErrorType<
     | EventsCreateErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
@@ -2021,7 +1984,6 @@ export type EventsCreateMutationResult = NonNullable<Awaited<ReturnType<typeof e
 export type EventsCreateMutationBody = BodyType<EventRequest>;
 export type EventsCreateMutationError = ErrorType<
   | EventsCreateErrorResponse400
-  | ErrorResponse401
   | ErrorResponse403
   | ErrorResponse405
   | ErrorResponse406
@@ -2032,7 +1994,6 @@ export type EventsCreateMutationError = ErrorType<
 export const useEventsCreate = <
   TError = ErrorType<
     | EventsCreateErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
@@ -2078,7 +2039,6 @@ export const getEventsRetrieveQueryOptions = <
   TData = Awaited<ReturnType<typeof eventsRetrieve>>,
   TError = ErrorType<
     | EventsRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -2110,7 +2070,6 @@ export const getEventsRetrieveQueryOptions = <
 export type EventsRetrieveQueryResult = NonNullable<Awaited<ReturnType<typeof eventsRetrieve>>>;
 export type EventsRetrieveQueryError = ErrorType<
   | EventsRetrieveErrorResponse400
-  | ErrorResponse401
   | ErrorResponse403
   | ErrorResponse404
   | ErrorResponse405
@@ -2123,7 +2082,6 @@ export function useEventsRetrieve<
   TData = Awaited<ReturnType<typeof eventsRetrieve>>,
   TError = ErrorType<
     | EventsRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -2151,7 +2109,6 @@ export function useEventsRetrieve<
   TData = Awaited<ReturnType<typeof eventsRetrieve>>,
   TError = ErrorType<
     | EventsRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -2179,7 +2136,6 @@ export function useEventsRetrieve<
   TData = Awaited<ReturnType<typeof eventsRetrieve>>,
   TError = ErrorType<
     | EventsRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -2200,7 +2156,6 @@ export function useEventsRetrieve<
   TData = Awaited<ReturnType<typeof eventsRetrieve>>,
   TError = ErrorType<
     | EventsRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -2251,7 +2206,6 @@ export const eventsUpdate = (
 export const getEventsUpdateMutationOptions = <
   TError = ErrorType<
     | EventsUpdateErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -2298,7 +2252,6 @@ export type EventsUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof e
 export type EventsUpdateMutationBody = BodyType<EventRequest>;
 export type EventsUpdateMutationError = ErrorType<
   | EventsUpdateErrorResponse400
-  | ErrorResponse401
   | ErrorResponse403
   | ErrorResponse404
   | ErrorResponse405
@@ -2310,7 +2263,6 @@ export type EventsUpdateMutationError = ErrorType<
 export const useEventsUpdate = <
   TError = ErrorType<
     | EventsUpdateErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -2371,7 +2323,6 @@ export const eventsPartialUpdate = (
 export const getEventsPartialUpdateMutationOptions = <
   TError = ErrorType<
     | EventsPartialUpdateErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -2420,7 +2371,6 @@ export type EventsPartialUpdateMutationResult = NonNullable<
 export type EventsPartialUpdateMutationBody = BodyType<PatchedEventRequest>;
 export type EventsPartialUpdateMutationError = ErrorType<
   | EventsPartialUpdateErrorResponse400
-  | ErrorResponse401
   | ErrorResponse403
   | ErrorResponse404
   | ErrorResponse405
@@ -2432,7 +2382,6 @@ export type EventsPartialUpdateMutationError = ErrorType<
 export const useEventsPartialUpdate = <
   TError = ErrorType<
     | EventsPartialUpdateErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -2470,7 +2419,6 @@ export const eventsDestroy = (id: number, options?: SecondParameter<typeof custo
 export const getEventsDestroyMutationOptions = <
   TError = ErrorType<
     | EventsDestroyErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -2517,7 +2465,6 @@ export type EventsDestroyMutationResult = NonNullable<Awaited<ReturnType<typeof 
 
 export type EventsDestroyMutationError = ErrorType<
   | EventsDestroyErrorResponse400
-  | ErrorResponse401
   | ErrorResponse403
   | ErrorResponse404
   | ErrorResponse405
@@ -2529,7 +2476,6 @@ export type EventsDestroyMutationError = ErrorType<
 export const useEventsDestroy = <
   TError = ErrorType<
     | EventsDestroyErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -2575,7 +2521,6 @@ export const getProfilesListQueryOptions = <
   TData = Awaited<ReturnType<typeof profilesList>>,
   TError = ErrorType<
     | ProfilesListErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
@@ -2603,7 +2548,6 @@ export const getProfilesListQueryOptions = <
 export type ProfilesListQueryResult = NonNullable<Awaited<ReturnType<typeof profilesList>>>;
 export type ProfilesListQueryError = ErrorType<
   | ProfilesListErrorResponse400
-  | ErrorResponse401
   | ErrorResponse403
   | ErrorResponse405
   | ErrorResponse406
@@ -2615,7 +2559,6 @@ export function useProfilesList<
   TData = Awaited<ReturnType<typeof profilesList>>,
   TError = ErrorType<
     | ProfilesListErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
@@ -2641,7 +2584,6 @@ export function useProfilesList<
   TData = Awaited<ReturnType<typeof profilesList>>,
   TError = ErrorType<
     | ProfilesListErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
@@ -2667,7 +2609,6 @@ export function useProfilesList<
   TData = Awaited<ReturnType<typeof profilesList>>,
   TError = ErrorType<
     | ProfilesListErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
@@ -2686,7 +2627,6 @@ export function useProfilesList<
   TData = Awaited<ReturnType<typeof profilesList>>,
   TError = ErrorType<
     | ProfilesListErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
@@ -2735,7 +2675,6 @@ export const profilesCreate = (
 export const getProfilesCreateMutationOptions = <
   TError = ErrorType<
     | ProfilesCreateErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
@@ -2781,7 +2720,6 @@ export type ProfilesCreateMutationResult = NonNullable<Awaited<ReturnType<typeof
 export type ProfilesCreateMutationBody = BodyType<ProfileWriteRequest>;
 export type ProfilesCreateMutationError = ErrorType<
   | ProfilesCreateErrorResponse400
-  | ErrorResponse401
   | ErrorResponse403
   | ErrorResponse405
   | ErrorResponse406
@@ -2792,7 +2730,6 @@ export type ProfilesCreateMutationError = ErrorType<
 export const useProfilesCreate = <
   TError = ErrorType<
     | ProfilesCreateErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
@@ -2838,7 +2775,6 @@ export const getProfilesRetrieveQueryOptions = <
   TData = Awaited<ReturnType<typeof profilesRetrieve>>,
   TError = ErrorType<
     | ProfilesRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -2870,7 +2806,6 @@ export const getProfilesRetrieveQueryOptions = <
 export type ProfilesRetrieveQueryResult = NonNullable<Awaited<ReturnType<typeof profilesRetrieve>>>;
 export type ProfilesRetrieveQueryError = ErrorType<
   | ProfilesRetrieveErrorResponse400
-  | ErrorResponse401
   | ErrorResponse403
   | ErrorResponse404
   | ErrorResponse405
@@ -2883,7 +2818,6 @@ export function useProfilesRetrieve<
   TData = Awaited<ReturnType<typeof profilesRetrieve>>,
   TError = ErrorType<
     | ProfilesRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -2911,7 +2845,6 @@ export function useProfilesRetrieve<
   TData = Awaited<ReturnType<typeof profilesRetrieve>>,
   TError = ErrorType<
     | ProfilesRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -2939,7 +2872,6 @@ export function useProfilesRetrieve<
   TData = Awaited<ReturnType<typeof profilesRetrieve>>,
   TError = ErrorType<
     | ProfilesRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -2960,7 +2892,6 @@ export function useProfilesRetrieve<
   TData = Awaited<ReturnType<typeof profilesRetrieve>>,
   TError = ErrorType<
     | ProfilesRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -3010,7 +2941,6 @@ export const profilesUpdate = (
 export const getProfilesUpdateMutationOptions = <
   TError = ErrorType<
     | ProfilesUpdateErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -3057,7 +2987,6 @@ export type ProfilesUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof
 export type ProfilesUpdateMutationBody = BodyType<ProfileWriteRequest>;
 export type ProfilesUpdateMutationError = ErrorType<
   | ProfilesUpdateErrorResponse400
-  | ErrorResponse401
   | ErrorResponse403
   | ErrorResponse404
   | ErrorResponse405
@@ -3069,7 +2998,6 @@ export type ProfilesUpdateMutationError = ErrorType<
 export const useProfilesUpdate = <
   TError = ErrorType<
     | ProfilesUpdateErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -3129,7 +3057,6 @@ export const profilesPartialUpdate = (
 export const getProfilesPartialUpdateMutationOptions = <
   TError = ErrorType<
     | ProfilesPartialUpdateErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -3178,7 +3105,6 @@ export type ProfilesPartialUpdateMutationResult = NonNullable<
 export type ProfilesPartialUpdateMutationBody = BodyType<PatchedProfileWriteRequest>;
 export type ProfilesPartialUpdateMutationError = ErrorType<
   | ProfilesPartialUpdateErrorResponse400
-  | ErrorResponse401
   | ErrorResponse403
   | ErrorResponse404
   | ErrorResponse405
@@ -3190,7 +3116,6 @@ export type ProfilesPartialUpdateMutationError = ErrorType<
 export const useProfilesPartialUpdate = <
   TError = ErrorType<
     | ProfilesPartialUpdateErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -3228,7 +3153,6 @@ export const profilesDestroy = (id: number, options?: SecondParameter<typeof cus
 export const getProfilesDestroyMutationOptions = <
   TError = ErrorType<
     | ProfilesDestroyErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -3277,7 +3201,6 @@ export type ProfilesDestroyMutationResult = NonNullable<
 
 export type ProfilesDestroyMutationError = ErrorType<
   | ProfilesDestroyErrorResponse400
-  | ErrorResponse401
   | ErrorResponse403
   | ErrorResponse404
   | ErrorResponse405
@@ -3289,7 +3212,6 @@ export type ProfilesDestroyMutationError = ErrorType<
 export const useProfilesDestroy = <
   TError = ErrorType<
     | ProfilesDestroyErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -3335,8 +3257,8 @@ export const getProfilesMeRetrieveQueryOptions = <
   TData = Awaited<ReturnType<typeof profilesMeRetrieve>>,
   TError = ErrorType<
     | ProfilesMeRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
@@ -3365,8 +3287,8 @@ export type ProfilesMeRetrieveQueryResult = NonNullable<
 >;
 export type ProfilesMeRetrieveQueryError = ErrorType<
   | ProfilesMeRetrieveErrorResponse400
-  | ErrorResponse401
   | ErrorResponse403
+  | ErrorResponse404
   | ErrorResponse405
   | ErrorResponse406
   | ErrorResponse415
@@ -3377,8 +3299,8 @@ export function useProfilesMeRetrieve<
   TData = Awaited<ReturnType<typeof profilesMeRetrieve>>,
   TError = ErrorType<
     | ProfilesMeRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
@@ -3403,8 +3325,8 @@ export function useProfilesMeRetrieve<
   TData = Awaited<ReturnType<typeof profilesMeRetrieve>>,
   TError = ErrorType<
     | ProfilesMeRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
@@ -3431,8 +3353,8 @@ export function useProfilesMeRetrieve<
   TData = Awaited<ReturnType<typeof profilesMeRetrieve>>,
   TError = ErrorType<
     | ProfilesMeRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
@@ -3450,8 +3372,8 @@ export function useProfilesMeRetrieve<
   TData = Awaited<ReturnType<typeof profilesMeRetrieve>>,
   TError = ErrorType<
     | ProfilesMeRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
@@ -3490,7 +3412,6 @@ export const getTeamsListQueryOptions = <
   TData = Awaited<ReturnType<typeof teamsList>>,
   TError = ErrorType<
     | TeamsListErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
@@ -3518,7 +3439,6 @@ export const getTeamsListQueryOptions = <
 export type TeamsListQueryResult = NonNullable<Awaited<ReturnType<typeof teamsList>>>;
 export type TeamsListQueryError = ErrorType<
   | TeamsListErrorResponse400
-  | ErrorResponse401
   | ErrorResponse403
   | ErrorResponse405
   | ErrorResponse406
@@ -3530,7 +3450,6 @@ export function useTeamsList<
   TData = Awaited<ReturnType<typeof teamsList>>,
   TError = ErrorType<
     | TeamsListErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
@@ -3556,7 +3475,6 @@ export function useTeamsList<
   TData = Awaited<ReturnType<typeof teamsList>>,
   TError = ErrorType<
     | TeamsListErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
@@ -3582,7 +3500,6 @@ export function useTeamsList<
   TData = Awaited<ReturnType<typeof teamsList>>,
   TError = ErrorType<
     | TeamsListErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
@@ -3601,7 +3518,6 @@ export function useTeamsList<
   TData = Awaited<ReturnType<typeof teamsList>>,
   TError = ErrorType<
     | TeamsListErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
@@ -3650,7 +3566,6 @@ export const teamsCreate = (
 export const getTeamsCreateMutationOptions = <
   TError = ErrorType<
     | TeamsCreateErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
@@ -3696,7 +3611,6 @@ export type TeamsCreateMutationResult = NonNullable<Awaited<ReturnType<typeof te
 export type TeamsCreateMutationBody = BodyType<TeamWriteRequest>;
 export type TeamsCreateMutationError = ErrorType<
   | TeamsCreateErrorResponse400
-  | ErrorResponse401
   | ErrorResponse403
   | ErrorResponse405
   | ErrorResponse406
@@ -3707,7 +3621,6 @@ export type TeamsCreateMutationError = ErrorType<
 export const useTeamsCreate = <
   TError = ErrorType<
     | TeamsCreateErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse405
     | ErrorResponse406
@@ -3753,7 +3666,6 @@ export const getTeamsRetrieveQueryOptions = <
   TData = Awaited<ReturnType<typeof teamsRetrieve>>,
   TError = ErrorType<
     | TeamsRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -3785,7 +3697,6 @@ export const getTeamsRetrieveQueryOptions = <
 export type TeamsRetrieveQueryResult = NonNullable<Awaited<ReturnType<typeof teamsRetrieve>>>;
 export type TeamsRetrieveQueryError = ErrorType<
   | TeamsRetrieveErrorResponse400
-  | ErrorResponse401
   | ErrorResponse403
   | ErrorResponse404
   | ErrorResponse405
@@ -3798,7 +3709,6 @@ export function useTeamsRetrieve<
   TData = Awaited<ReturnType<typeof teamsRetrieve>>,
   TError = ErrorType<
     | TeamsRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -3826,7 +3736,6 @@ export function useTeamsRetrieve<
   TData = Awaited<ReturnType<typeof teamsRetrieve>>,
   TError = ErrorType<
     | TeamsRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -3854,7 +3763,6 @@ export function useTeamsRetrieve<
   TData = Awaited<ReturnType<typeof teamsRetrieve>>,
   TError = ErrorType<
     | TeamsRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -3875,7 +3783,6 @@ export function useTeamsRetrieve<
   TData = Awaited<ReturnType<typeof teamsRetrieve>>,
   TError = ErrorType<
     | TeamsRetrieveErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -3925,7 +3832,6 @@ export const teamsUpdate = (
 export const getTeamsUpdateMutationOptions = <
   TError = ErrorType<
     | TeamsUpdateErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -3972,7 +3878,6 @@ export type TeamsUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof te
 export type TeamsUpdateMutationBody = BodyType<TeamWriteRequest>;
 export type TeamsUpdateMutationError = ErrorType<
   | TeamsUpdateErrorResponse400
-  | ErrorResponse401
   | ErrorResponse403
   | ErrorResponse404
   | ErrorResponse405
@@ -3984,7 +3889,6 @@ export type TeamsUpdateMutationError = ErrorType<
 export const useTeamsUpdate = <
   TError = ErrorType<
     | TeamsUpdateErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -4042,7 +3946,6 @@ export const teamsPartialUpdate = (
 export const getTeamsPartialUpdateMutationOptions = <
   TError = ErrorType<
     | TeamsPartialUpdateErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -4091,7 +3994,6 @@ export type TeamsPartialUpdateMutationResult = NonNullable<
 export type TeamsPartialUpdateMutationBody = BodyType<PatchedTeamWriteRequest>;
 export type TeamsPartialUpdateMutationError = ErrorType<
   | TeamsPartialUpdateErrorResponse400
-  | ErrorResponse401
   | ErrorResponse403
   | ErrorResponse404
   | ErrorResponse405
@@ -4103,7 +4005,6 @@ export type TeamsPartialUpdateMutationError = ErrorType<
 export const useTeamsPartialUpdate = <
   TError = ErrorType<
     | TeamsPartialUpdateErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -4141,7 +4042,6 @@ export const teamsDestroy = (id: number, options?: SecondParameter<typeof custom
 export const getTeamsDestroyMutationOptions = <
   TError = ErrorType<
     | TeamsDestroyErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405
@@ -4188,7 +4088,6 @@ export type TeamsDestroyMutationResult = NonNullable<Awaited<ReturnType<typeof t
 
 export type TeamsDestroyMutationError = ErrorType<
   | TeamsDestroyErrorResponse400
-  | ErrorResponse401
   | ErrorResponse403
   | ErrorResponse404
   | ErrorResponse405
@@ -4200,7 +4099,6 @@ export type TeamsDestroyMutationError = ErrorType<
 export const useTeamsDestroy = <
   TError = ErrorType<
     | TeamsDestroyErrorResponse400
-    | ErrorResponse401
     | ErrorResponse403
     | ErrorResponse404
     | ErrorResponse405

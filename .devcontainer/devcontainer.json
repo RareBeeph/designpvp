@@ -1,0 +1,89 @@
+{
+  // One container, whole repo, both toolchains. The app keeps being served by the `backend`
+  // and `frontend` services on http://localhost:3000 - this container only hosts the editor's
+  // language servers, which have to run here because the Poetry venv, mypy.ini,
+  // mypy_django_plugin and node_modules are all unreachable from the host.
+  "name": "designpvp",
+  "dockerComposeFile": ["../docker-compose.yml", "docker-compose.yml"],
+  "service": "devcontainer",
+  "workspaceFolder": "/workspace",
+
+  // Closing the window must not tear down postgres/valkey/caddy under a running app
+  "shutdownAction": "none",
+
+  // Only the frontend needs a post-create step - node_modules is a named volume, so it starts
+  // empty. Backend deps are baked into the image instead, because a Python venv cannot safely
+  // live anywhere under /workspace (see .devcontainer/Dockerfile).
+  "postCreateCommand": "cd /workspace/frontend && npm ci",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.mypy-type-checker",
+        "charliermarsh.ruff",
+        // No Prettier extension on purpose - prettier runs as an eslint rule
+        // (`prettier/prettier: error`), so eslint --fix is the formatter. A second formatter
+        // would fight it, and only eslint applies @trivago/prettier-plugin-sort-imports.
+        "dbaeumer.vscode-eslint"
+      ],
+      "settings": {
+        // --- Python / Django ------------------------------------------------------------
+        // The image's own Python - deps are installed into it directly, no virtualenv
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+
+        // Pylance runs Pyright, which does not support mypy plugins and so cannot see anything
+        // mypy_django_plugin synthesizes. Left on, it flags every reverse accessor
+        // (`user.profile`, from related_name) as an attribute error that mypy correctly
+        // accepts. This is not a fixable Pylance config - mypy is the single source of truth.
+        "python.analysis.typeCheckingMode": "off",
+
+        // The workspace root is the repo, so mypy.ini one level down has to be named
+        // explicitly. Absolute paths, because the container layout is fixed and extension
+        // settings do not reliably expand ${workspaceFolder} inside args arrays. sys.path is
+        // handled by MYPYPATH in docker-compose.yml, which covers whichever cwd the extension
+        // picks.
+        "mypy-type-checker.args": [
+          "--config-file=/workspace/backend/mypy.ini",
+          "--follow-untyped-imports"
+        ],
+        "mypy-type-checker.cwd": "/workspace/backend",
+        "mypy-type-checker.importStrategy": "fromEnvironment",
+        "mypy-type-checker.reportingScope": "workspace",
+
+        "ruff.importStrategy": "fromEnvironment",
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.formatOnSave": true,
+          "editor.codeActionsOnSave": {
+            "source.organizeImports.ruff": "explicit"
+          }
+        },
+
+        // --- Frontend -------------------------------------------------------------------
+        "eslint.workingDirectories": [
+          { "directory": "/workspace/frontend", "changeProcessCWD": true }
+        ],
+        "eslint.useFlatConfig": true,
+        "[typescript]": { "editor.formatOnSave": false },
+        "[typescriptreact]": { "editor.formatOnSave": false },
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        },
+
+        // The project's pinned TypeScript, so the editor and `npm run typecheck` agree
+        "typescript.tsdk": "frontend/node_modules/typescript/lib",
+        "typescript.enablePromptUseWorkspaceTsdk": true,
+
+        // --- Noise ----------------------------------------------------------------------
+        "files.exclude": {
+          "**/__pycache__": true,
+          "**/.mypy_cache": true,
+          "**/.pytest_cache": true,
+          "**/.next": true
+        }
+      }
+    }
+  }
+}

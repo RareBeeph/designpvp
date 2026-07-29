@@ -1,0 +1,33 @@
+# Overlay merged on top of the repo-root docker-compose.yml by devcontainer.json. It adds one
+# service that nothing else depends on, so the app stack is unchanged.
+#
+# Paths here are relative to the *project* directory - the directory of the first compose file
+# passed to `docker compose -f`, which is the repo root - not to this file.
+services:
+  devcontainer:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      # The whole repo, so one window covers both halves
+      - .:/workspace
+      # node_modules and .next stay in named volumes rather than on the host, matching how the
+      # frontend service already treats them. There is deliberately no volume for a Python
+      # venv - see the Dockerfile for why one must not exist inside this bind mount.
+      - devcontainer-node-modules:/workspace/frontend/node_modules
+      - devcontainer-next:/workspace/frontend/.next
+    environment:
+      # mypy_django_plugin imports backend.settings while type-checking. The editor may invoke
+      # mypy from the workspace root rather than from backend/, and --config-file alone does not
+      # put backend/ on sys.path - verified: without this it dies with
+      # "ModuleNotFoundError: No module named 'backend.settings'".
+      MYPYPATH: /workspace/backend
+    # No CMD: this container exists to host the editor's language servers
+    command: sleep infinity
+    depends_on:
+      - backend
+      - frontend
+
+volumes:
+  devcontainer-node-modules:
+  devcontainer-next:

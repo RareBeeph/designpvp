@@ -1,9 +1,12 @@
+from drf_spectacular.utils import extend_schema
+from drf_standardized_errors.openapi_serializers import ErrorResponse404Serializer
 from rest_framework import serializers, status, viewsets
 from rest_framework.decorators import action
-from rest_framework.request import Request
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from backend.permissions import IsStaffOrReadOnly
+from backend.request import AuthenticatedRequest
 
 from .models import Profile
 from .serializers import ProfileSerializer, ProfileWriteSerializer
@@ -18,15 +21,14 @@ class ProfileViewSet(viewsets.ModelViewSet):
             return ProfileWriteSerializer
         return ProfileSerializer
 
-    @action(detail=False, methods=["GET"])
-    def me(self, request: Request) -> Response:
-        if request.user.is_anonymous:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-        if request.user.id is None:
+    # 404 is declared explicitly because nothing in the operation implies it - `me` takes no
+    # path parameter, so drf-standardized-errors has no reason to expect one
+    @extend_schema(responses={200: ProfileSerializer, 404: ErrorResponse404Serializer})
+    @action(detail=False, methods=["GET"], permission_classes=[IsAuthenticated])
+    def me(self, request: AuthenticatedRequest) -> Response:
+        try:
+            profile = request.user.profile
+        except Profile.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        profile = request.user.profile
-        if profile is None:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-        return Response(ProfileSerializer(profile).data)
+        return Response(self.get_serializer(profile).data)
