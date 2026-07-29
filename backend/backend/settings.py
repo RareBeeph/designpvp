@@ -67,9 +67,6 @@ SECRET_KEY = prod_required_env(
     default="django-insecure-=c3mpuvz&l0f&x)^tuqg&vl4w15ae4gffugjy5(t)$x-$@s#sg",
 )
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = not PRODUCTION
-
 
 # Application definition
 

@@ -9,18 +9,18 @@ import { ModeProps, TableConfig } from '@/components/Data/Configs/types';
 
 export default function DataManagerForm<T, TRequest, TValues extends FormikValues, TWrite = T>({
   children: _children,
-  config,
   mode,
   ...props
 }: PaperProps &
   ModeProps & {
     config: TableConfig<T, TRequest, TValues, TWrite>;
+    onSuccess?: () => void;
   }) {
   switch (mode.name) {
     case 'create':
-      if (!config.useCreate) throw new Error(`${config.name} cannot be created.`);
-      return <CreateForm config={config} useCreate={config.useCreate} {...props} />;
+      if (!props.config.useCreate) throw new Error(`${props.config.name} cannot be created.`);
+      return <CreateForm useCreate={props.config.useCreate} {...props} />;
     case 'update':
-      return <UpdateForm config={config} id={mode.id} {...props} />;
+      return <UpdateForm id={mode.id} {...props} />;
   }
 }

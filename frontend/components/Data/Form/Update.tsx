@@ -12,11 +12,14 @@ import { TableConfig } from '@/components/Data/Configs/types';
 
 export default function UpdateForm<T, TRequest, TValues extends FormikValues, TWrite = T>({
   children: _children,
+  onSubmit: _onSubmit,
   config,
+  onSuccess,
   id,
   ...props
-}: Omit<PaperProps, 'onSubmit'> & {
+}: PaperProps & {
   id: string;
+  onSuccess?: () => void;
   config: TableConfig<T, TRequest, TValues, TWrite>;
 }) {
   const queryClient = useQueryClient();
@@ -36,6 +39,7 @@ export default function UpdateForm<T, TRequest, TValues extends FormikValues, TW
       {
         onSuccess: () => {
           config.invalidateQueries(queryClient, id ? parseInt(id) : undefined);
+          onSuccess?.();
           router.push('/manage/' + config.name);
         },
         onError: newError => onSubmitError(actions, newError),
@@ -45,12 +49,12 @@ export default function UpdateForm<T, TRequest, TValues extends FormikValues, TW
 
   return (
     <FormWrapper<T, TRequest, TValues, TWrite>
+      {...props}
       config={config}
       mode={{ name: 'update', id }}
       onSubmit={onSubmit}
       initialValues={config.initialValues(thisEntry.data)}
       ready={!thisEntry?.isLoading && thisEntry.isSuccess}
-      {...props}
     />
   );
 }

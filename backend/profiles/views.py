@@ -20,8 +20,13 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=["GET"])
     def me(self, request: Request) -> Response:
-        if request.user.id:
-            profile = Profile.objects.filter(user=request.user).first()
-            if profile:
-                return Response(ProfileSerializer(profile).data)
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        if request.user.is_anonymous:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        if request.user.id is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        profile = request.user.profile
+        if profile is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        return Response(ProfileSerializer(profile).data)

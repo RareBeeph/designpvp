@@ -35,7 +35,7 @@ export interface TableConfig<T, TRequest, TValues extends FormikValues, TWrite =
   // and calls hooks, which the rules-of-hooks lint can only verify by name.
   FormFields: React.FC<FormFieldProps<TValues>>;
   initialValues: (instance?: T) => TValues;
-  dataManagerForm: (props: PaperProps & ModeProps) => ReactNode;
+  dataManagerForm: (props: PaperProps & ModeProps & { onSuccess?: () => void }) => ReactNode;
 }
 
 export type AnyConfig = TableConfig<any, any, any, any>;

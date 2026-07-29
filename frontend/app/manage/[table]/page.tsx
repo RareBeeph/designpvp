@@ -36,7 +36,7 @@ function ManageTableContents({ config, table }: { config: AnyConfig; table: stri
             <Padding flex={1} />
             <config.dataManagerForm
               mode={{ name: 'create' }}
-              onSubmit={() => setOpen(false)}
+              onSuccess={() => setOpen(false)}
               sx={{ flex: 2 }}
             />
             <Padding flex={1} />
