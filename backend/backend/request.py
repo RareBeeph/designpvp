@@ -1,6 +1,12 @@
 from django.contrib.auth.models import User
 from rest_framework.request import Request
 
+from profiles.models import Profile
+
+
+class ProfiledUser(User):
+    profile: Profile
+
 
 class AuthenticatedRequest(Request):
     """
@@ -23,4 +29,4 @@ class AuthenticatedRequest(Request):
     `request: AuthenticatedRequest` in its class body, which covers `self.request`.
     """
 
-    user: User
+    user: ProfiledUser

@@ -26,6 +26,9 @@ class ProfileViewSet(viewsets.ModelViewSet):
     @extend_schema(responses={200: ProfileSerializer, 404: ErrorResponse404Serializer})
     @action(detail=False, methods=["GET"], permission_classes=[IsAuthenticated])
     def me(self, request: AuthenticatedRequest) -> Response:
+        if not hasattr(request.user, "profile"):
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
         try:
             profile = request.user.profile
         except Profile.DoesNotExist:
