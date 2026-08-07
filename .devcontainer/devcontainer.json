@@ -11,10 +11,12 @@
   // Closing the window must not tear down postgres/valkey/caddy under a running app
   "shutdownAction": "none",
 
-  // Only the frontend needs a post-create step - node_modules is a named volume, so it starts
-  // empty. Backend deps are baked into the image instead, because a Python venv cannot safely
-  // live anywhere under /workspace (see .devcontainer/Dockerfile).
-  "postCreateCommand": "cd /workspace/frontend && npm ci",
+  // Two post-create steps, both filling directories that start empty: node_modules is a named
+  // volume, and /workspace/typings is gitignored (see `python.analysis.stubPath` below - those
+  // stubs are for Pylance only and are deliberately not what mypy reads). Backend deps are
+  // baked into the image instead, because a Python venv cannot safely live anywhere under
+  // /workspace (see .devcontainer/Dockerfile).
+  "postCreateCommand": "cd /workspace/frontend && npm ci && pip install --target /workspace/typings django-types djangorestframework-types",
 
   "customizations": {
     "vscode": {
@@ -36,8 +38,29 @@
         // Pylance runs Pyright, which does not support mypy plugins and so cannot see anything
         // mypy_django_plugin synthesizes. Left on, it flags every reverse accessor
         // (`user.profile`, from related_name) as an attribute error that mypy correctly
-        // accepts. This is not a fixable Pylance config - mypy is the single source of truth.
+        // accepts. `stubPath` below fixes forward fields but cannot fix these, because a
+        // related_name accessor exists only in Django's runtime model registry and no static
+        // stub can know it. So mypy stays the single source of truth for diagnostics.
         "python.analysis.typeCheckingMode": "off",
+
+        // Stubs for Pylance ONLY. django-stubs types fields generically and leans on its mypy
+        // plugin to fill in the type parameters, so without the plugin Pyright resolves even a
+        // plain `team.name` to Unknown - hover is useless. `django-types` is a plugin-free fork
+        // that bakes the concrete types in, so Pyright reports `str`, `Event`, `User`.
+        //
+        // It cannot simply be installed: it ships the same `django-stubs/` directory name and
+        // no mypy plugin, so in site-packages it would clobber the real django-stubs and break
+        // mypy outright. Keeping it on a path only Pylance reads is what lets both exist -
+        // mypy resolves Django from site-packages plus MYPYPATH, neither of which is here.
+        //
+        // The repo root is load-bearing, not cosmetic. mypy runs as `mypy .` from
+        // /workspace/backend, so a typings/ under backend/ gets crawled as *source*: measured
+        // at 161 errors in vendored contrib/gis stubs and 738 files checked instead of 49.
+        // Up here it is simply out of reach.
+        //
+        // django-types tracks django-stubs at its own pace, so the two can disagree on a
+        // signature. mypy is right when they do.
+        "python.analysis.stubPath": "typings",
 
         // The workspace root is the repo, so mypy.ini one level down has to be named
         // explicitly. Absolute paths, because the container layout is fixed and extension

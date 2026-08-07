@@ -326,3 +326,8 @@ dist
 backend/staticfiles
 backend/schema.yml
 backend/secrets.env
+
+# Pylance-only Django stubs, installed by the dev container's postCreateCommand. Nothing in CI
+# reads them, so they do not need to be reproducible from a lockfile - and committing a few
+# thousand vendored .pyi files would bury real diffs.
+/typings
