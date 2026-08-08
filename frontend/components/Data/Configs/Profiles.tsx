@@ -14,6 +14,7 @@ import {
 } from '@/api/backend';
 
 import { DataManagerForm } from '@/components/Data';
+import { StyledFileField } from '@/components/Styled';
 import { StyledForm } from '@/components/Styled';
 import { StyledSelectField } from '@/components/Styled';
 import { StyledTextField } from '@/components/Styled';
@@ -21,6 +22,8 @@ import { StyledTextField } from '@/components/Styled';
 interface ProfileValues {
   user: string; // username
   teams: PrimaryKeyOption[];
+  // null means "leave whatever is already stored alone"; the request omits the key
+  avatar: File | null;
 }
 
 const ProfilesConfig: TableConfig<Profile, ProfileWriteRequest, ProfileValues, ProfileWrite> = {
@@ -49,6 +52,7 @@ const ProfilesConfig: TableConfig<Profile, ProfileWriteRequest, ProfileValues, P
     return {
       user: data.user,
       teams: data.teams.map(t => parseInt(t)),
+      ...(data.avatar ? { avatar: data.avatar } : {}),
     };
   },
   useCreate: undefined, // To create a profile, you should just Sign Up instead.
@@ -61,12 +65,14 @@ const ProfilesConfig: TableConfig<Profile, ProfileWriteRequest, ProfileValues, P
       <StyledForm header={`Editing Profile ${mode.id}`} isSubmitting={isSubmitting}>
         <StyledTextField name="user" disabled />
         <StyledSelectField name="teams" value={values.teams} data={useTeamsList().data ?? []} />
+        <StyledFileField name="avatar" label="Choose avatar" accept="image/*" />
       </StyledForm>
     );
   },
   initialValues: instance => ({
     user: instance?.user.username ?? '',
     teams: instance?.teams.map(t => t.id.toString()) ?? [],
+    avatar: null,
   }),
   dataManagerForm: props => <DataManagerForm config={ProfilesConfig} {...props} />,
 };
