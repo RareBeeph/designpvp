@@ -19,11 +19,26 @@ services:
         condition: service_healthy
       cache:
         condition: service_healthy
+      storage:
+        condition: service_healthy
+      storage-init:
+        condition: service_completed_successfully
     build:
       context: backend
       dockerfile: Dockerfile.local
     volumes:
       - ./backend:/code
+    environment:
+      # Django uploads over the compose network, but the URLs it hands out are fetched by
+      # the browser, which can't resolve `storage`. Hence the two different hosts. In
+      # production both point at R2 (endpoint) and its custom domain (public reads)
+      - DJANGO_MEDIA_ENDPOINT_URL=http://storage:9000
+      - DJANGO_MEDIA_CUSTOM_DOMAIN=localhost:9400/media
+      # DJANGO_MEDIA_URL_PROTOCOL is deliberately absent - settings.py derives it from
+      # PRODUCTION, so http: here and https: on a deploy both come for free
+      - DJANGO_MEDIA_BUCKET=media
+      - DJANGO_MEDIA_ACCESS_KEY=minioadmin
+      - DJANGO_MEDIA_SECRET_KEY=minioadmin
     # The container's CMD runs migrate/collectstatic before serving, so "running" is
     # not the same as "ready". Without this, `compose up --wait` in CI can hand back
     # control while the backend is still migrating.
@@ -55,4 +70,49 @@ services:
       - 3000:3000
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
-  # storage:
+  # Stands in for Cloudflare R2, so development and production run the same S3 code path.
+  # Note this is not a fidelity guarantee: MinIO is *more* S3-faithful than R2 is, so the
+  # STORAGES options in settings.py deliberately stay inside the subset R2 supports
+  storage:
+    # Pinned on purpose. MinIO is AGPL and the community build has churned - the admin
+    # console was stripped out during 2025 - so `latest` is a moving target in a way
+    # postgres and valkey are not
+    image: minio/minio:RELEASE.2025-09-07T16-13-09Z
+    command: server /data --console-address ":9001"
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+    ports:
+      # Published so the browser fetches media from a genuinely different origin to the
+      # app, exactly as it will in production. Django itself uploads to `storage:9000`
+      # over the compose network and never uses these.
+      #
+      # Deliberately not MinIO's default 9000/9001 on the host side: those are popular
+      # enough to collide with whatever else a developer happens to be running
+      - 9400:9000
+      # MinIO's own console, handy for inspecting objects by hand
+      - 9401:9001
+    volumes:
+      - storage-data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:9000/minio/health/live"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  # Creates the bucket and opens it for anonymous reads, matching the public R2 bucket
+  # production serves from. Runs to completion and exits; `backend` waits for that
+  storage-init:
+    image: minio/mc:RELEASE.2025-08-13T08-35-41Z
+    depends_on:
+      storage:
+        condition: service_healthy
+    entrypoint:
+      - sh
+      - -c
+      - |
+        mc alias set local http://storage:9000 minioadmin minioadmin &&
+        mc mb --ignore-existing local/media &&
+        mc anonymous set download local/media
+
+volumes:
+  storage-data:

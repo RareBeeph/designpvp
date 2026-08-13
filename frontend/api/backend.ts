@@ -777,6 +777,17 @@ export interface PatchedEventRequest {
   ends?: string;
 }
 
+/**
+ * The subset of fields a user may change on their *own* profile, used by the `me`
+action. `user` and `teams` are assigned elsewhere and stay read-only here, so a user
+cannot reassign themselves to another account or switch teams. `id` is already
+read-only on the base.
+ */
+export interface PatchedProfileSelfWriteRequest {
+  /** @nullable */
+  avatar?: Blob | null;
+}
+
 export interface PatchedProfileWriteRequest {
   /**
    * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
@@ -784,6 +795,8 @@ export interface PatchedProfileWriteRequest {
    */
   user?: string;
   teams?: number[];
+  /** @nullable */
+  avatar?: Blob | null;
 }
 
 export interface PatchedTeamWriteRequest {
@@ -799,6 +812,8 @@ export interface Profile {
   readonly id: number;
   user: DjangoUser;
   teams: Team[];
+  /** @nullable */
+  avatar?: string | null;
 }
 
 export interface ProfileWrite {
@@ -806,6 +821,8 @@ export interface ProfileWrite {
   /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
   user: string;
   teams: number[];
+  /** @nullable */
+  avatar?: string | null;
 }
 
 export interface ProfileWriteRequest {
@@ -815,12 +832,53 @@ export interface ProfileWriteRequest {
    */
   user: string;
   teams: number[];
+  /** @nullable */
+  avatar?: Blob | null;
+}
+
+export type ProfilesCreateAvatarErrorComponentAttr =
+  (typeof ProfilesCreateAvatarErrorComponentAttr)[keyof typeof ProfilesCreateAvatarErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesCreateAvatarErrorComponentAttr = {
+  avatar: 'avatar',
+} as const;
+
+/**
+ * * `empty` - empty
+ * `invalid` - invalid
+ * `invalid_image` - invalid_image
+ * `max_length` - max_length
+ * `no_name` - no_name
+ */
+export type ProfilesCreateAvatarErrorComponentCode =
+  (typeof ProfilesCreateAvatarErrorComponentCode)[keyof typeof ProfilesCreateAvatarErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesCreateAvatarErrorComponentCode = {
+  empty: 'empty',
+  invalid: 'invalid',
+  invalidImage: 'invalid_image',
+  maxLength: 'max_length',
+  noName: 'no_name',
+} as const;
+
+export interface ProfilesCreateAvatarErrorComponent {
+  attr: ProfilesCreateAvatarErrorComponentAttr;
+  /** * `empty` - empty
+   * `invalid` - invalid
+   * `invalid_image` - invalid_image
+   * `max_length` - max_length
+   * `no_name` - no_name */
+  code: ProfilesCreateAvatarErrorComponentCode;
+  detail: string;
 }
 
 export type ProfilesCreateError =
   | ProfilesCreateNonFieldErrorsErrorComponent
   | ProfilesCreateUserErrorComponent
-  | ProfilesCreateTeamsErrorComponent;
+  | ProfilesCreateTeamsErrorComponent
+  | ProfilesCreateAvatarErrorComponent;
 
 export type ProfilesCreateErrorResponse400 = ProfilesCreateValidationError | ParseErrorResponse;
 
@@ -943,12 +1001,139 @@ export type ProfilesDestroyErrorResponse400 = ParseErrorResponse;
 
 export type ProfilesListErrorResponse400 = ParseErrorResponse;
 
+export type ProfilesMePartialUpdateAvatarErrorComponentAttr =
+  (typeof ProfilesMePartialUpdateAvatarErrorComponentAttr)[keyof typeof ProfilesMePartialUpdateAvatarErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesMePartialUpdateAvatarErrorComponentAttr = {
+  avatar: 'avatar',
+} as const;
+
+/**
+ * * `empty` - empty
+ * `invalid` - invalid
+ * `invalid_image` - invalid_image
+ * `max_length` - max_length
+ * `no_name` - no_name
+ */
+export type ProfilesMePartialUpdateAvatarErrorComponentCode =
+  (typeof ProfilesMePartialUpdateAvatarErrorComponentCode)[keyof typeof ProfilesMePartialUpdateAvatarErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesMePartialUpdateAvatarErrorComponentCode = {
+  empty: 'empty',
+  invalid: 'invalid',
+  invalidImage: 'invalid_image',
+  maxLength: 'max_length',
+  noName: 'no_name',
+} as const;
+
+export interface ProfilesMePartialUpdateAvatarErrorComponent {
+  attr: ProfilesMePartialUpdateAvatarErrorComponentAttr;
+  /** * `empty` - empty
+   * `invalid` - invalid
+   * `invalid_image` - invalid_image
+   * `max_length` - max_length
+   * `no_name` - no_name */
+  code: ProfilesMePartialUpdateAvatarErrorComponentCode;
+  detail: string;
+}
+
+export type ProfilesMePartialUpdateError =
+  | ProfilesMePartialUpdateNonFieldErrorsErrorComponent
+  | ProfilesMePartialUpdateAvatarErrorComponent;
+
+export type ProfilesMePartialUpdateErrorResponse400 =
+  | ProfilesMePartialUpdateValidationError
+  | ParseErrorResponse;
+
+export type ProfilesMePartialUpdateNonFieldErrorsErrorComponentAttr =
+  (typeof ProfilesMePartialUpdateNonFieldErrorsErrorComponentAttr)[keyof typeof ProfilesMePartialUpdateNonFieldErrorsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesMePartialUpdateNonFieldErrorsErrorComponentAttr = {
+  nonFieldErrors: 'non_field_errors',
+} as const;
+
+/**
+ * * `invalid` - invalid
+ * `null` - null
+ */
+export type ProfilesMePartialUpdateNonFieldErrorsErrorComponentCode =
+  (typeof ProfilesMePartialUpdateNonFieldErrorsErrorComponentCode)[keyof typeof ProfilesMePartialUpdateNonFieldErrorsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesMePartialUpdateNonFieldErrorsErrorComponentCode = {
+  invalid: 'invalid',
+  null: 'null',
+} as const;
+
+export interface ProfilesMePartialUpdateNonFieldErrorsErrorComponent {
+  attr: ProfilesMePartialUpdateNonFieldErrorsErrorComponentAttr;
+  /** * `invalid` - invalid
+   * `null` - null */
+  code: ProfilesMePartialUpdateNonFieldErrorsErrorComponentCode;
+  detail: string;
+}
+
+export type ProfilesMePartialUpdateValidationErrorType =
+  (typeof ProfilesMePartialUpdateValidationErrorType)[keyof typeof ProfilesMePartialUpdateValidationErrorType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesMePartialUpdateValidationErrorType = {
+  validationError: 'validation_error',
+} as const;
+
+export interface ProfilesMePartialUpdateValidationError {
+  type: ProfilesMePartialUpdateValidationErrorType;
+  errors: ProfilesMePartialUpdateError[];
+}
+
 export type ProfilesMeRetrieveErrorResponse400 = ParseErrorResponse;
+
+export type ProfilesPartialUpdateAvatarErrorComponentAttr =
+  (typeof ProfilesPartialUpdateAvatarErrorComponentAttr)[keyof typeof ProfilesPartialUpdateAvatarErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesPartialUpdateAvatarErrorComponentAttr = {
+  avatar: 'avatar',
+} as const;
+
+/**
+ * * `empty` - empty
+ * `invalid` - invalid
+ * `invalid_image` - invalid_image
+ * `max_length` - max_length
+ * `no_name` - no_name
+ */
+export type ProfilesPartialUpdateAvatarErrorComponentCode =
+  (typeof ProfilesPartialUpdateAvatarErrorComponentCode)[keyof typeof ProfilesPartialUpdateAvatarErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesPartialUpdateAvatarErrorComponentCode = {
+  empty: 'empty',
+  invalid: 'invalid',
+  invalidImage: 'invalid_image',
+  maxLength: 'max_length',
+  noName: 'no_name',
+} as const;
+
+export interface ProfilesPartialUpdateAvatarErrorComponent {
+  attr: ProfilesPartialUpdateAvatarErrorComponentAttr;
+  /** * `empty` - empty
+   * `invalid` - invalid
+   * `invalid_image` - invalid_image
+   * `max_length` - max_length
+   * `no_name` - no_name */
+  code: ProfilesPartialUpdateAvatarErrorComponentCode;
+  detail: string;
+}
 
 export type ProfilesPartialUpdateError =
   | ProfilesPartialUpdateNonFieldErrorsErrorComponent
   | ProfilesPartialUpdateUserErrorComponent
-  | ProfilesPartialUpdateTeamsErrorComponent;
+  | ProfilesPartialUpdateTeamsErrorComponent
+  | ProfilesPartialUpdateAvatarErrorComponent;
 
 export type ProfilesPartialUpdateErrorResponse400 =
   | ProfilesPartialUpdateValidationError
@@ -1071,10 +1256,49 @@ export interface ProfilesPartialUpdateValidationError {
 
 export type ProfilesRetrieveErrorResponse400 = ParseErrorResponse;
 
+export type ProfilesUpdateAvatarErrorComponentAttr =
+  (typeof ProfilesUpdateAvatarErrorComponentAttr)[keyof typeof ProfilesUpdateAvatarErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesUpdateAvatarErrorComponentAttr = {
+  avatar: 'avatar',
+} as const;
+
+/**
+ * * `empty` - empty
+ * `invalid` - invalid
+ * `invalid_image` - invalid_image
+ * `max_length` - max_length
+ * `no_name` - no_name
+ */
+export type ProfilesUpdateAvatarErrorComponentCode =
+  (typeof ProfilesUpdateAvatarErrorComponentCode)[keyof typeof ProfilesUpdateAvatarErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ProfilesUpdateAvatarErrorComponentCode = {
+  empty: 'empty',
+  invalid: 'invalid',
+  invalidImage: 'invalid_image',
+  maxLength: 'max_length',
+  noName: 'no_name',
+} as const;
+
+export interface ProfilesUpdateAvatarErrorComponent {
+  attr: ProfilesUpdateAvatarErrorComponentAttr;
+  /** * `empty` - empty
+   * `invalid` - invalid
+   * `invalid_image` - invalid_image
+   * `max_length` - max_length
+   * `no_name` - no_name */
+  code: ProfilesUpdateAvatarErrorComponentCode;
+  detail: string;
+}
+
 export type ProfilesUpdateError =
   | ProfilesUpdateNonFieldErrorsErrorComponent
   | ProfilesUpdateUserErrorComponent
-  | ProfilesUpdateTeamsErrorComponent;
+  | ProfilesUpdateTeamsErrorComponent
+  | ProfilesUpdateAvatarErrorComponent;
 
 export type ProfilesUpdateErrorResponse400 = ProfilesUpdateValidationError | ParseErrorResponse;
 
@@ -1919,17 +2143,12 @@ export const eventsCreate = (
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
-  const formUrlEncoded = new URLSearchParams();
-  formUrlEncoded.append(`name`, eventRequest.name);
-  formUrlEncoded.append(`starts`, eventRequest.starts);
-  formUrlEncoded.append(`ends`, eventRequest.ends);
-
   return customInstance<Event>(
     {
       url: `/api/events/`,
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      data: formUrlEncoded,
+      headers: { 'Content-Type': 'application/json' },
+      data: eventRequest,
       signal,
     },
     options,
@@ -2187,17 +2406,12 @@ export const eventsUpdate = (
   eventRequest: BodyType<EventRequest>,
   options?: SecondParameter<typeof customInstance>,
 ) => {
-  const formUrlEncoded = new URLSearchParams();
-  formUrlEncoded.append(`name`, eventRequest.name);
-  formUrlEncoded.append(`starts`, eventRequest.starts);
-  formUrlEncoded.append(`ends`, eventRequest.ends);
-
   return customInstance<Event>(
     {
       url: `/api/events/${id}/`,
       method: 'PUT',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      data: formUrlEncoded,
+      headers: { 'Content-Type': 'application/json' },
+      data: eventRequest,
     },
     options,
   );
@@ -2298,23 +2512,12 @@ export const eventsPartialUpdate = (
   patchedEventRequest: BodyType<PatchedEventRequest>,
   options?: SecondParameter<typeof customInstance>,
 ) => {
-  const formUrlEncoded = new URLSearchParams();
-  if (patchedEventRequest.name !== undefined) {
-    formUrlEncoded.append(`name`, patchedEventRequest.name);
-  }
-  if (patchedEventRequest.starts !== undefined) {
-    formUrlEncoded.append(`starts`, patchedEventRequest.starts);
-  }
-  if (patchedEventRequest.ends !== undefined) {
-    formUrlEncoded.append(`ends`, patchedEventRequest.ends);
-  }
-
   return customInstance<Event>(
     {
       url: `/api/events/${id}/`,
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      data: formUrlEncoded,
+      headers: { 'Content-Type': 'application/json' },
+      data: patchedEventRequest,
     },
     options,
   );
@@ -2656,16 +2859,19 @@ export const profilesCreate = (
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
-  const formUrlEncoded = new URLSearchParams();
-  formUrlEncoded.append(`user`, profileWriteRequest.user);
-  profileWriteRequest.teams.forEach(value => formUrlEncoded.append(`teams`, value.toString()));
+  const formData = new FormData();
+  formData.append(`user`, profileWriteRequest.user);
+  profileWriteRequest.teams.forEach(value => formData.append(`teams`, value.toString()));
+  if (profileWriteRequest.avatar !== undefined && profileWriteRequest.avatar !== null) {
+    formData.append(`avatar`, profileWriteRequest.avatar);
+  }
 
   return customInstance<ProfileWrite>(
     {
       url: `/api/profiles/`,
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      data: formUrlEncoded,
+      headers: { 'Content-Type': 'multipart/form-data' },
+      data: formData,
       signal,
     },
     options,
@@ -2923,16 +3129,19 @@ export const profilesUpdate = (
   profileWriteRequest: BodyType<ProfileWriteRequest>,
   options?: SecondParameter<typeof customInstance>,
 ) => {
-  const formUrlEncoded = new URLSearchParams();
-  formUrlEncoded.append(`user`, profileWriteRequest.user);
-  profileWriteRequest.teams.forEach(value => formUrlEncoded.append(`teams`, value.toString()));
+  const formData = new FormData();
+  formData.append(`user`, profileWriteRequest.user);
+  profileWriteRequest.teams.forEach(value => formData.append(`teams`, value.toString()));
+  if (profileWriteRequest.avatar !== undefined && profileWriteRequest.avatar !== null) {
+    formData.append(`avatar`, profileWriteRequest.avatar);
+  }
 
   return customInstance<ProfileWrite>(
     {
       url: `/api/profiles/${id}/`,
       method: 'PUT',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      data: formUrlEncoded,
+      headers: { 'Content-Type': 'multipart/form-data' },
+      data: formData,
     },
     options,
   );
@@ -3033,22 +3242,26 @@ export const profilesPartialUpdate = (
   patchedProfileWriteRequest: BodyType<PatchedProfileWriteRequest>,
   options?: SecondParameter<typeof customInstance>,
 ) => {
-  const formUrlEncoded = new URLSearchParams();
+  const formData = new FormData();
   if (patchedProfileWriteRequest.user !== undefined) {
-    formUrlEncoded.append(`user`, patchedProfileWriteRequest.user);
+    formData.append(`user`, patchedProfileWriteRequest.user);
   }
   if (patchedProfileWriteRequest.teams !== undefined) {
-    patchedProfileWriteRequest.teams.forEach(value =>
-      formUrlEncoded.append(`teams`, value.toString()),
-    );
+    patchedProfileWriteRequest.teams.forEach(value => formData.append(`teams`, value.toString()));
+  }
+  if (
+    patchedProfileWriteRequest.avatar !== undefined &&
+    patchedProfileWriteRequest.avatar !== null
+  ) {
+    formData.append(`avatar`, patchedProfileWriteRequest.avatar);
   }
 
   return customInstance<ProfileWrite>(
     {
       url: `/api/profiles/${id}/`,
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      data: formUrlEncoded,
+      headers: { 'Content-Type': 'multipart/form-data' },
+      data: formData,
     },
     options,
   );
@@ -3397,6 +3610,121 @@ export function useProfilesMeRetrieve<
   return query;
 }
 
+export const profilesMePartialUpdate = (
+  patchedProfileSelfWriteRequest: BodyType<PatchedProfileSelfWriteRequest>,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  const formData = new FormData();
+  if (
+    patchedProfileSelfWriteRequest.avatar !== undefined &&
+    patchedProfileSelfWriteRequest.avatar !== null
+  ) {
+    formData.append(`avatar`, patchedProfileSelfWriteRequest.avatar);
+  }
+
+  return customInstance<Profile>(
+    {
+      url: `/api/profiles/me/`,
+      method: 'PATCH',
+      headers: { 'Content-Type': 'multipart/form-data' },
+      data: formData,
+    },
+    options,
+  );
+};
+
+export const getProfilesMePartialUpdateMutationOptions = <
+  TError = ErrorType<
+    | ProfilesMePartialUpdateErrorResponse400
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof profilesMePartialUpdate>>,
+    TError,
+    { data: BodyType<PatchedProfileSelfWriteRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof profilesMePartialUpdate>>,
+  TError,
+  { data: BodyType<PatchedProfileSelfWriteRequest> },
+  TContext
+> => {
+  const mutationKey = ['profilesMePartialUpdate'];
+  const { mutation: mutationOptions, request: requestOptions } =
+    options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+        options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof profilesMePartialUpdate>>,
+    { data: BodyType<PatchedProfileSelfWriteRequest> }
+  > = props => {
+    const { data } = props ?? {};
+
+    return profilesMePartialUpdate(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ProfilesMePartialUpdateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof profilesMePartialUpdate>>
+>;
+export type ProfilesMePartialUpdateMutationBody = BodyType<PatchedProfileSelfWriteRequest>;
+export type ProfilesMePartialUpdateMutationError = ErrorType<
+  | ProfilesMePartialUpdateErrorResponse400
+  | ErrorResponse403
+  | ErrorResponse404
+  | ErrorResponse405
+  | ErrorResponse406
+  | ErrorResponse415
+  | ErrorResponse500
+>;
+
+export const useProfilesMePartialUpdate = <
+  TError = ErrorType<
+    | ProfilesMePartialUpdateErrorResponse400
+    | ErrorResponse403
+    | ErrorResponse404
+    | ErrorResponse405
+    | ErrorResponse406
+    | ErrorResponse415
+    | ErrorResponse500
+  >,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof profilesMePartialUpdate>>,
+      TError,
+      { data: BodyType<PatchedProfileSelfWriteRequest> },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof profilesMePartialUpdate>>,
+  TError,
+  { data: BodyType<PatchedProfileSelfWriteRequest> },
+  TContext
+> => {
+  const mutationOptions = getProfilesMePartialUpdateMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
 export const teamsList = (
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -3547,16 +3875,12 @@ export const teamsCreate = (
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
-  const formUrlEncoded = new URLSearchParams();
-  formUrlEncoded.append(`name`, teamWriteRequest.name);
-  formUrlEncoded.append(`event`, teamWriteRequest.event.toString());
-
   return customInstance<TeamWrite>(
     {
       url: `/api/teams/`,
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      data: formUrlEncoded,
+      headers: { 'Content-Type': 'application/json' },
+      data: teamWriteRequest,
       signal,
     },
     options,
@@ -3814,16 +4138,12 @@ export const teamsUpdate = (
   teamWriteRequest: BodyType<TeamWriteRequest>,
   options?: SecondParameter<typeof customInstance>,
 ) => {
-  const formUrlEncoded = new URLSearchParams();
-  formUrlEncoded.append(`name`, teamWriteRequest.name);
-  formUrlEncoded.append(`event`, teamWriteRequest.event.toString());
-
   return customInstance<TeamWrite>(
     {
       url: `/api/teams/${id}/`,
       method: 'PUT',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      data: formUrlEncoded,
+      headers: { 'Content-Type': 'application/json' },
+      data: teamWriteRequest,
     },
     options,
   );
@@ -3924,20 +4244,12 @@ export const teamsPartialUpdate = (
   patchedTeamWriteRequest: BodyType<PatchedTeamWriteRequest>,
   options?: SecondParameter<typeof customInstance>,
 ) => {
-  const formUrlEncoded = new URLSearchParams();
-  if (patchedTeamWriteRequest.name !== undefined) {
-    formUrlEncoded.append(`name`, patchedTeamWriteRequest.name);
-  }
-  if (patchedTeamWriteRequest.event !== undefined) {
-    formUrlEncoded.append(`event`, patchedTeamWriteRequest.event.toString());
-  }
-
   return customInstance<TeamWrite>(
     {
       url: `/api/teams/${id}/`,
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      data: formUrlEncoded,
+      headers: { 'Content-Type': 'application/json' },
+      data: patchedTeamWriteRequest,
     },
     options,
   );

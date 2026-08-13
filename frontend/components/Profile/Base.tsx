@@ -1,6 +1,9 @@
 import ProfileUserDisplay from './UserDisplay';
 import { paddingExemptClassName } from '@/app/providers';
 import { Box, Paper, Stack, Tab, Tabs, Typography } from '@mui/material';
+import Link from 'next/link';
+
+import { StyledButton } from '@/components/Styled';
 
 export default function ProfileBase({ id = 'me' }: { id?: number | 'me' }) {
   const bannerImageHeight = '15vh';
@@ -14,6 +17,15 @@ export default function ProfileBase({ id = 'me' }: { id?: number | 'me' }) {
       />
       <Stack direction="column" sx={{ px: 2 }}>
         <ProfileUserDisplay profileId={id} />
+        {/* Only your own profile is editable, and `me` is the only id that is
+            guaranteed to be yours without fetching the session to compare */}
+        {id === 'me' && (
+          <Box sx={{ alignSelf: 'flex-end' }}>
+            <StyledButton component={Link} href="/profile/edit">
+              Edit Profile
+            </StyledButton>
+          </Box>
+        )}
         <Box>
           {/* This will probably be a separate component later */}
           <Tabs value={0}>
