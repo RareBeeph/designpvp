@@ -13,8 +13,7 @@ from typing import Any
 import pytest
 from rest_framework.test import APIClient
 
-MULTIPART = "multipart/form-data"
-JSON = "application/json"
+from backend.schema import JSON, MULTIPART
 
 
 @pytest.fixture

@@ -56,21 +56,19 @@ def _contains_binary(
     if schema.get("format") == "binary":
         return True
 
-    for key in ("items", "additionalProperties"):
-        nested = schema.get(key)
-        if isinstance(nested, dict) and _contains_binary(nested, components, seen):
-            return True
-
-    for nested in schema.get("properties", {}).values():
-        if _contains_binary(nested, components, seen):
-            return True
-
+    # every child subschema, flattened: `items` and `additionalProperties` each hold one,
+    # `properties` maps names to them, and the composition keywords hold lists of them.
+    # The isinstance guard below is what lets those shapes share a loop - it also earns
+    # its keep, because `additionalProperties` is as often a bool as a subschema
+    children = [schema.get("items"), schema.get("additionalProperties")]
+    children.extend(schema.get("properties", {}).values())
     for key in ("allOf", "oneOf", "anyOf"):
-        for nested in schema.get(key, []):
-            if _contains_binary(nested, components, seen):
-                return True
+        children.extend(schema.get(key, []))
 
-    return False
+    return any(
+        isinstance(child, dict) and _contains_binary(child, components, seen)
+        for child in children
+    )
 
 
 def order_request_content_types(
