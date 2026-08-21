@@ -54,7 +54,7 @@ def test_team_is_created_from_a_json_body(staff_client: APIClient) -> None:
 
 
 def test_team_reads_include_nested_event(staff_client: APIClient) -> None:
-    # Read case test of our (slightly) custom get_serializer_class deal
+    """Read case test of our (slightly) custom get_serializer_class deal."""
     now = timezone.now()
     event = Event.objects.create(name="Host Event", starts=now, ends=now)
     team = Team.objects.create(name="Red", event=event)
