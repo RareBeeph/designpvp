@@ -53,6 +53,17 @@ def test_team_is_created_from_a_json_body(staff_client: APIClient) -> None:
     assert Team.objects.get(name="Red").event == event
 
 
+def test_team_reads_include_nested_event(staff_client: APIClient) -> None:
+    """Read case test of our (slightly) custom get_serializer_class deal."""
+    now = timezone.now()
+    event = Event.objects.create(name="Host Event", starts=now, ends=now)
+    team = Team.objects.create(name="Red", event=event)
+
+    response = staff_client.get(f"/api/teams/{team.pk}/")
+    assert response.status_code == status.HTTP_200_OK
+    assert response.data["event"]["name"] == event.name
+
+
 def test_multipart_is_still_accepted(staff_client: APIClient) -> None:
     """
     Parser order only decides what the *schema* advertises first, not which parser handles
@@ -70,3 +81,26 @@ def test_multipart_is_still_accepted(staff_client: APIClient) -> None:
     )
 
     assert response.status_code == status.HTTP_201_CREATED
+
+
+def test_teams_are_readable_by_anonymous_users(db: None) -> None:
+    """True case test of the ReadOnly portion of our IsStaffOrReadOnly permission class."""
+    now = timezone.now()
+    event = Event.objects.create(name="Host Event", starts=now, ends=now)
+    team = Team.objects.create(name="Red", event=event)
+
+    response = APIClient().get("/api/teams/")
+    assert response.status_code == status.HTTP_200_OK
+    assert len(response.data) == Team.objects.count()
+    assert response.data[0]["name"] == team.name
+
+
+def test_teams_are_not_writeable_by_anonymous_users(db: None) -> None:
+    """False case test of the ReadOnly portion of our IsStaffOrReadOnly permission class."""
+    now = timezone.now()
+    event = Event.objects.create(name="Host Event", starts=now, ends=now)
+    response = APIClient().post(
+        "/api/teams/", {"name": "Red", "event": event.pk}, format="json"
+    )
+
+    assert response.status_code == status.HTTP_403_FORBIDDEN

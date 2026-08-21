@@ -105,6 +105,13 @@ def test_user_cannot_reassign_their_profile_to_another_account(
     assert profile.user.username == "member"
 
 
+def test_user_cannot_create_new_profiles(client: APIClient, profile: Profile) -> None:
+    assert (
+        client.post("/api/profiles/", {"user": profile.user.pk}, format="json").status_code
+        == status.HTTP_403_FORBIDDEN
+    )
+
+
 def test_anonymous_cannot_read_or_write_me(db: None) -> None:
     anonymous = APIClient()
 
