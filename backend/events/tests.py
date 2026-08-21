@@ -84,12 +84,19 @@ def test_multipart_is_still_accepted(staff_client: APIClient) -> None:
 
 
 def test_teams_are_readable_by_anonymous_users(db: None) -> None:
-    # True case test of the ReadOnly portion of our IsStaffOrReadOnly permission class
-    APIClient().get("/api/teams/").status_code == status.HTTP_200_OK
+    """True case test of the ReadOnly portion of our IsStaffOrReadOnly permission class."""
+    now = timezone.now()
+    event = Event.objects.create(name="Host Event", starts=now, ends=now)
+    team = Team.objects.create(name="Red", event=event)
+
+    response = APIClient().get("/api/teams/")
+    assert response.status_code == status.HTTP_200_OK
+    assert len(response.data) == 1
+    assert response.data[0]["name"] == team.name
 
 
 def test_teams_are_not_writeable_by_anonymous_users(db: None) -> None:
-    # False case test of the ReadOnly portion of our IsStaffOrReadOnly permission class
+    """False case test of the ReadOnly portion of our IsStaffOrReadOnly permission class."""
     now = timezone.now()
     event = Event.objects.create(name="Host Event", starts=now, ends=now)
     response = APIClient().post(
