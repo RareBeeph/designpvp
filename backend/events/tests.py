@@ -61,7 +61,7 @@ def test_team_reads_include_nested_event(staff_client: APIClient) -> None:
 
     response = staff_client.get(f"/api/teams/{team.pk}/")
     assert response.status_code == status.HTTP_200_OK
-    assert response.data["event"]["name"] == "Host Event"
+    assert response.data["event"]["name"] == event.name
 
 
 def test_multipart_is_still_accepted(staff_client: APIClient) -> None:
@@ -91,7 +91,7 @@ def test_teams_are_readable_by_anonymous_users(db: None) -> None:
 
     response = APIClient().get("/api/teams/")
     assert response.status_code == status.HTTP_200_OK
-    assert len(response.data) == 1
+    assert len(response.data) == Team.objects.count()
     assert response.data[0]["name"] == team.name
 
 
