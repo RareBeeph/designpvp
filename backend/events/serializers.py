@@ -12,6 +12,8 @@ class EventSerializer(serializers.ModelSerializer):
 
 class BaseTeamSerializer(serializers.ModelSerializer):
     class Meta:
+        # queryset = Team.objects.prefetch_related("profiles") # Include this when we add "profiles" to Team fields
+
         model = Team
         fields = ["id", "name", "event"]
         read_only_fields = ["id"]

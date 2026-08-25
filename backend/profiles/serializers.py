@@ -15,6 +15,8 @@ class DjangoUserSerializer(serializers.ModelSerializer):
 
 class BaseProfileSerializer(serializers.ModelSerializer):
     class Meta:
+        queryset = Profile.objects.prefetch_related("teams")
+
         model = Profile
         fields = ["id", "user", "teams", "avatar"]
         read_only_fields = ["id"]
