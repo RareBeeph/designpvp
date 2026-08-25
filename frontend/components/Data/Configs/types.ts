@@ -25,7 +25,15 @@ export interface TableConfig<T, TRequest, TValues extends FormikValues, TWrite =
   name: string;
   columns: MRT_ColumnDef<MRT_RowData>[];
   invalidateQueries: (queryClient: QueryClient, id?: number) => void;
-  useList: () => UseQueryResult<T[], AnyError>;
+  useList: () => UseQueryResult<
+    {
+      count: number;
+      next?: string | null;
+      previous?: string | null;
+      results: T[];
+    },
+    AnyError
+  >;
   useRetrieve: (id: number, options: { query: object }) => UseQueryResult<T, AnyError>;
   parseRequest: (data: TValues) => TRequest | undefined;
   useCreate?: () => UseMutationResult<TWrite, AnyError, { data: TRequest }, unknown>;

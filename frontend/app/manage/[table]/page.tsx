@@ -20,7 +20,7 @@ import { useBreakpoint } from '@/hooks';
 function ManageTableContents({ config, table }: { config: AnyConfig; table: string }) {
   const breakpoint = useBreakpoint();
   const [open, setOpen] = useState(false);
-  const listData = config.useList().data ?? [];
+  const listData = config.useList().data?.results ?? [];
 
   return (
     <Container disableGutters sx={{ paddingTop: 2 }}>

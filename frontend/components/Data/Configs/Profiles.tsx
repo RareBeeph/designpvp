@@ -64,7 +64,11 @@ const ProfilesConfig: TableConfig<Profile, ProfileWriteRequest, ProfileValues, P
     return (
       <StyledForm header={`Editing Profile ${mode.id}`} isSubmitting={isSubmitting}>
         <StyledTextField name="user" disabled />
-        <StyledSelectField name="teams" value={values.teams} data={useTeamsList().data ?? []} />
+        <StyledSelectField
+          name="teams"
+          value={values.teams}
+          data={useTeamsList().data?.results ?? []}
+        />
         <StyledFileField name="avatar" label="Choose avatar" accept="image/*" />
       </StyledForm>
     );
