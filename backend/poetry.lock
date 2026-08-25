@@ -511,6 +511,17 @@ docs = ["furo (>=2024.8.6)", "sphinx (>=5.0)", "sphinx-notfound-page"]
 testing = ["coverage[toml] (>=5.0a4)", "pytest (>=4.6.11)", "setuptools (>=71.0.0)"]
 
 [[package]]
+name = "django-querycount"
+version = "0.8.3"
+description = "Middleware that Prints the number of DB queries to the runserver console."
+optional = false
+python-versions = "*"
+groups = ["dev"]
+files = [
+    {file = "django-querycount-0.8.3.tar.gz", hash = "sha256:0782484e8a1bd29498fa0195a67106e47cdcc98fafe80cebb1991964077cb694"},
+]
+
+[[package]]
 name = "django-redis"
 version = "6.0.0"
 description = "Full featured redis cache backend for Django."
@@ -1781,4 +1792,4 @@ brotli = ["brotli"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.14.0"
-content-hash = "4477236b5e4bb612f4fd5d8211294fdeca3e6eb7e8e8c5ff81898ab55f62c6e0"
+content-hash = "1af0c2082fd9c7ea576aed3af0df32284a80ee711c77b7c5cdfd1d60ec1964d9"

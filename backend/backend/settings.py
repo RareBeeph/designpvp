@@ -103,6 +103,41 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
 ]
 
+
+# Development only: print how many SQL queries each request ran, and which of them it
+# repeated, via django-querycount. Registered here rather than in MIDDLEWARE above so it
+# cannot ship to production, where it isn't installed at all - the production image runs
+# `poetry install --without dev`. The middleware also switches itself off whenever DEBUG
+# is False, so the counts go quiet when development turns DEBUG off to exercise manifest
+# static or real error pages
+if not PRODUCTION:
+    # First in the chain, so the session and authentication queries are counted too
+    MIDDLEWARE.insert(0, "querycount.middleware.QueryCountMiddleware")
+
+    QUERYCOUNT = {
+        # This names the queries a request repeated, so an N+1 reads as itself rather than
+        # as a merely large number. The value is how many of the request's most-common
+        # queries to print, and the package prints that many whether or not they
+        # actually repeated, so it doubles as the noise dial
+        "DISPLAY_DUPLICATES": 2,
+        # Matched with re.match, so these are anchored at the start of the path already.
+        # Compose polls /api/config/ every 5 seconds for the backend healthcheck, and
+        # WhiteNoise serves the admin's static files without touching the database;
+        # left in, both would bury real requests under zero-query tables
+        "IGNORE_REQUEST_PATTERNS": [r"/api/config/", r"/static/"],
+        # The defaults (50 medium, 200 high) suit a view rendering a whole page. These
+        # endpoints mostly serialize one queryset, so colour the output at the point
+        # where a list route has plainly stopped being one query per relation
+        "THRESHOLDS": {
+            "MEDIUM": 10,
+            "HIGH": 25,
+            # Both required: a THRESHOLDS dict replaces the package's wholesale, and the
+            # middleware reads all four keys
+            "MIN_TIME_TO_LOG": 0,
+            "MIN_QUERY_COUNT_TO_LOG": 1,
+        },
+    }
+
 ROOT_URLCONF = "backend.urls"
 
 TEMPLATES = [
