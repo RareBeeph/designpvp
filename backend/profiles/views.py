@@ -14,7 +14,8 @@ from .serializers import ProfileSelfWriteSerializer, ProfileSerializer, ProfileW
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
-    queryset = Profile.objects.all()
+    # User is autoprefetched already, but doing it manually here turns a duplicate read into a distinct read lol
+    queryset = Profile.objects.prefetch_related("teams").select_related("user")
     permission_classes = [IsStaffOrReadOnly]
 
     def get_serializer_class(self) -> type[serializers.ModelSerializer]:

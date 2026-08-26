@@ -119,7 +119,7 @@ if not PRODUCTION:
         # as a merely large number. The value is how many of the request's most-common
         # queries to print, and the package prints that many whether or not they
         # actually repeated, so it doubles as the noise dial
-        "DISPLAY_DUPLICATES": 2,
+        "DISPLAY_DUPLICATES": 12,
         # Matched with re.match, so these are anchored at the start of the path already.
         # Compose polls /api/config/ every 5 seconds for the backend healthcheck, and
         # WhiteNoise serves the admin's static files without touching the database;
