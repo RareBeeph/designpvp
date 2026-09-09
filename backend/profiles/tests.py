@@ -48,7 +48,7 @@ def teams(db: None) -> tuple[Team, Team]:
 
 
 @pytest.fixture
-def manyTeams(db: None) -> list[Team]:
+def many_teams(db: None) -> list[Team]:
     now = timezone.now()
     event = Event.objects.create(name="Test Event", starts=now, ends=now)
     return [Team.objects.create(name=f"Red {idx}", event=event) for idx in range(20)]
@@ -192,7 +192,7 @@ def test_staff_can_still_change_teams_through_the_detail_route(
 
 
 @pytest.mark.parametrize(
-    "payload, expectedQueriesDiff",
+    "payload, expected_queries_diff",
     [
         pytest.param(lambda teams: [], -2, id="empty"),
         pytest.param(lambda teams: [str(team.pk) for team in teams], -1, id="add"),
@@ -202,15 +202,15 @@ def test_staff_can_still_change_teams_through_the_detail_route(
 )
 def test_write_requests_to_detail_route_query_related_teams_in_bulk(
     profile: Profile,
-    manyTeams: list[Team],
+    many_teams: list[Team],
     payload: Callable[[list[Team]], list[Team]],
-    expectedQueriesDiff: int,
+    expected_queries_diff: int,
 ) -> None:
     """
     Confirms that this many-to-many relation no longer suffers n+1 queries on the PATCH endpoint.
     (If it did, we might expect the "add" case to have something like 21 more queries than "empty")
     """
-    teamData = payload(manyTeams)
+    team_data = payload(many_teams)
 
     client = APIClient()
     client.force_authenticate(
@@ -218,19 +218,20 @@ def test_write_requests_to_detail_route_query_related_teams_in_bulk(
     )
 
     # Measure a baseline query count, in case that changes later
-    with CaptureQueriesContext(connection) as queriesBaseline:
+    with CaptureQueriesContext(connection) as queries_baseline:
         client.patch(
-            f"/api/profiles/{profile.pk}/", {"teams": [str(team.pk) for team in manyTeams[:5]]}
+            f"/api/profiles/{profile.pk}/",
+            {"teams": [str(team.pk) for team in many_teams[:5]]},
         )
 
     # Measure case query count
     with CaptureQueriesContext(connection) as queries:
         response = client.patch(
             f"/api/profiles/{profile.pk}/",
-            {"teams": teamData},  # Note: when teamData == [], multipart format ignores it
-            format="multipart" if len(teamData) > 0 else "json",
+            {"teams": team_data},  # Note: when team_data == [], multipart format ignores it
+            format="multipart" if len(team_data) > 0 else "json",
         )
 
     assert response.status_code == status.HTTP_200_OK
-    assert len(profile.teams.all()) == len(teamData)
-    assert len(queries) == len(queriesBaseline) + expectedQueriesDiff
+    assert len(profile.teams.all()) == len(team_data)
+    assert len(queries) == len(queries_baseline) + expected_queries_diff

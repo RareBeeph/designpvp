@@ -22,7 +22,8 @@ class BackendHeadlessAdapter(DefaultHeadlessAdapter):
         return dataclasses.make_dataclass("User", fields, bases=(dc,))
 
     def user_as_dataclass(self, user: AbstractUser) -> object:
-        UserDc = self.get_user_dataclass()
+        # PascalCase because this names a class, not an instance
+        UserDc = self.get_user_dataclass()  # noqa: N806
         kwargs = dataclasses.asdict(DefaultHeadlessAdapter(self).user_as_dataclass(user))
         kwargs.update({"is_staff": user.is_staff})
         return UserDc(**kwargs)
