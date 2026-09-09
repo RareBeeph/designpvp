@@ -11,10 +11,13 @@ The rules being pinned down:
 """
 
 import io
+from collections.abc import Callable
 
 import pytest
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.db import connection
+from django.test.utils import CaptureQueriesContext
 from django.utils import timezone
 from PIL import Image
 from rest_framework import status
@@ -42,6 +45,13 @@ def teams(db: None) -> tuple[Team, Team]:
         Team.objects.create(name="Red", event=event),
         Team.objects.create(name="Blue", event=event),
     )
+
+
+@pytest.fixture
+def manyTeams(db: None) -> list[Team]:
+    now = timezone.now()
+    event = Event.objects.create(name="Test Event", starts=now, ends=now)
+    return [Team.objects.create(name=f"Red {idx}", event=event) for idx in range(20)]
 
 
 @pytest.fixture
@@ -179,3 +189,48 @@ def test_staff_can_still_change_teams_through_the_detail_route(
 
     assert response.status_code == status.HTTP_200_OK
     assert list(profile.teams.all()) == [blue]
+
+
+@pytest.mark.parametrize(
+    "payload, expectedQueriesDiff",
+    [
+        pytest.param(lambda teams: [], -2, id="empty"),
+        pytest.param(lambda teams: [str(team.pk) for team in teams], -1, id="add"),
+        pytest.param(lambda teams: [str(teams[0].pk)], -1, id="remove"),
+        pytest.param(lambda teams: [str(team.pk) for team in teams[5:15]], 0, id="add-remove"),
+    ],
+)
+def test_write_requests_to_detail_route_query_related_teams_in_bulk(
+    profile: Profile,
+    manyTeams: list[Team],
+    payload: Callable[[list[Team]], list[Team]],
+    expectedQueriesDiff: int,
+) -> None:
+    """
+    Confirms that this many-to-many relation no longer suffers n+1 queries on the PATCH endpoint.
+    (If it did, we might expect the "add" case to have something like 21 more queries than "empty")
+    """
+    teamData = payload(manyTeams)
+
+    client = APIClient()
+    client.force_authenticate(
+        user=User.objects.create_user(username="staffer", password="pw", is_staff=True)
+    )
+
+    # Measure a baseline query count, in case that changes later
+    with CaptureQueriesContext(connection) as queriesBaseline:
+        client.patch(
+            f"/api/profiles/{profile.pk}/", {"teams": [str(team.pk) for team in manyTeams[:5]]}
+        )
+
+    # Measure case query count
+    with CaptureQueriesContext(connection) as queries:
+        response = client.patch(
+            f"/api/profiles/{profile.pk}/",
+            {"teams": teamData},  # Note: when teamData == [], multipart format ignores it
+            format="multipart" if len(teamData) > 0 else "json",
+        )
+
+    assert response.status_code == status.HTTP_200_OK
+    assert len(profile.teams.all()) == len(teamData)
+    assert len(queries) == len(queriesBaseline) + expectedQueriesDiff
