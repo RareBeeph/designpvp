@@ -11,14 +11,13 @@ The rules being pinned down:
 """
 
 import io
-from collections.abc import Callable
 
 import pytest
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.db import connection
-from django.test.utils import CaptureQueriesContext
 from django.utils import timezone
+from inline_snapshot import snapshot
+from inline_snapshot_django import snapshot_queries
 from PIL import Image
 from rest_framework import status
 from rest_framework.test import APIClient
@@ -191,47 +190,61 @@ def test_staff_can_still_change_teams_through_the_detail_route(
     assert list(profile.teams.all()) == [blue]
 
 
-@pytest.mark.parametrize(
-    "payload, expected_queries_diff",
-    [
-        pytest.param(lambda teams: [], -2, id="empty"),
-        pytest.param(lambda teams: [str(team.pk) for team in teams], -1, id="add"),
-        pytest.param(lambda teams: [str(teams[0].pk)], -1, id="remove"),
-        pytest.param(lambda teams: [str(team.pk) for team in teams[5:15]], 0, id="add-remove"),
-    ],
-)
+@pytest.mark.parametrize("count", [2, 5, 10, 20])
 def test_write_requests_to_detail_route_query_related_teams_in_bulk(
-    profile: Profile,
-    many_teams: list[Team],
-    payload: Callable[[list[Team]], list[Team]],
-    expected_queries_diff: int,
+    profile: Profile, many_teams: list[Team], count: int
 ) -> None:
     """
     Confirms that this many-to-many relation no longer suffers n+1 queries on the PATCH endpoint.
-    (If it did, we might expect the "add" case to have something like 21 more queries than "empty")
     """
-    team_data = payload(many_teams)
-
     client = APIClient()
     client.force_authenticate(
         user=User.objects.create_user(username="staffer", password="pw", is_staff=True)
     )
 
-    # Measure a baseline query count, in case that changes later
-    with CaptureQueriesContext(connection) as queries_baseline:
-        client.patch(
-            f"/api/profiles/{profile.pk}/",
-            {"teams": [str(team.pk) for team in many_teams[:5]]},
-        )
-
-    # Measure case query count
-    with CaptureQueriesContext(connection) as queries:
+    with snapshot_queries() as queries:
         response = client.patch(
             f"/api/profiles/{profile.pk}/",
-            {"teams": team_data},  # Note: when team_data == [], multipart format ignores it
-            format="multipart" if len(team_data) > 0 else "json",
+            {"teams": [str(team.pk) for team in many_teams[:count]]},
         )
 
     assert response.status_code == status.HTTP_200_OK
-    assert len(profile.teams.all()) == len(team_data)
-    assert len(queries) == len(queries_baseline) + expected_queries_diff
+    assert queries == snapshot(
+        [
+            "SELECT ... FROM profiles_profile INNER JOIN auth_user ON ... WHERE ... LIMIT ...",
+            "SELECT ... FROM events_team INNER JOIN profiles_profile_teams ON ... INNER JOIN events_event ON ... WHERE ... ORDER BY ... ASC",
+            "SELECT ... FROM events_team INNER JOIN events_event ON ... WHERE ... ORDER BY ... ASC",
+            "UPDATE profiles_profile SET ... = ... WHERE ...",
+            "SELECT ... FROM events_team INNER JOIN profiles_profile_teams ON ... INNER JOIN events_event ON ... WHERE ... ORDER BY ... ASC",
+            "DELETE FROM profiles_profile_teams WHERE ...",
+            "INSERT INTO profiles_profile_teams (...) SELECT * FROM UNNEST(...) ON CONFLICT DO NOTHING",
+            "SELECT ... FROM events_team INNER JOIN profiles_profile_teams ON ... INNER JOIN events_event ON ... WHERE ... ORDER BY ... ASC",
+        ]
+    )
+
+
+@pytest.mark.parametrize("count", [2, 5, 10, 20])
+def test_read_requests_to_detail_route_query_related_teams_in_bulk(
+    profile: Profile, many_teams: list[Team], count: int
+) -> None:
+    """
+    Confirms that this many-to-many relation no longer suffers n+1 queries on the GET profiles/pk endpoint.
+    """
+    client = APIClient()
+    client.force_authenticate(
+        user=User.objects.create_user(username="staffer", password="pw", is_staff=True)
+    )
+
+    profile.teams.set(many_teams[:count])
+
+    with snapshot_queries() as queries:
+        response = client.get(f"/api/profiles/{profile.pk}/")
+
+    assert response.status_code == status.HTTP_200_OK
+    assert queries == snapshot(
+        [
+            "SELECT ... FROM profiles_profile INNER JOIN auth_user ON ... WHERE ... LIMIT ...",
+            "SELECT ... FROM events_team INNER JOIN profiles_profile_teams ON ... INNER JOIN events_event ON ... WHERE ... ORDER BY ... ASC",
+            "SELECT ... FROM events_event WHERE ...",
+        ]
+    )

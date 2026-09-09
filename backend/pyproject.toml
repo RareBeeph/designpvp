@@ -21,6 +21,8 @@ whitenoise = {extras = ["brotli"], version = "^6.12.0"}
 django-storages = {extras = ["s3"], version = "^1.14.6"}
 pillow = "^12.3.0"
 django-auto-prefetch = "^1.14.0"
+inline-snapshot = "^0.35.4"
+inline-snapshot-django = "^1.4.0"
 
 [tool.poetry.group.types.dependencies]
 types-gunicorn = "^23.0.0.20251031"
