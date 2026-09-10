@@ -1,8 +1,9 @@
+import auto_prefetch
 from django.db import models
 
 
-class Event(models.Model):
-    class Meta:
+class Event(auto_prefetch.Model):
+    class Meta(auto_prefetch.Model.Meta):
         ordering = ["starts", "id"]
 
     name = models.CharField(max_length=50)
@@ -13,12 +14,12 @@ class Event(models.Model):
         return self.name
 
 
-class Team(models.Model):
-    class Meta:
+class Team(auto_prefetch.Model):
+    class Meta(auto_prefetch.Model.Meta):
         ordering = ["event", "name", "id"]
 
     name = models.CharField(max_length=50)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="teams")
+    event = auto_prefetch.ForeignKey(Event, on_delete=models.CASCADE, related_name="teams")
     # Membership lives on Profile.teams; a Team's members are reachable via the
     # reverse accessor `team.profiles`.
 

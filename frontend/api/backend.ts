@@ -737,6 +737,33 @@ export interface EventsUpdateValidationError {
   errors: EventsUpdateError[];
 }
 
+export interface PaginatedEventList {
+  count: number;
+  /** @nullable */
+  next?: string | null;
+  /** @nullable */
+  previous?: string | null;
+  results: Event[];
+}
+
+export interface PaginatedProfileList {
+  count: number;
+  /** @nullable */
+  next?: string | null;
+  /** @nullable */
+  previous?: string | null;
+  results: Profile[];
+}
+
+export interface PaginatedTeamList {
+  count: number;
+  /** @nullable */
+  next?: string | null;
+  /** @nullable */
+  previous?: string | null;
+  results: Team[];
+}
+
 export interface ParseError {
   code: ParseErrorCodeEnum;
   detail: string;
@@ -1852,6 +1879,27 @@ export const ValidationErrorEnum = {
   validationError: 'validation_error',
 } as const;
 
+export type EventsListParams = {
+  /**
+   * A page number within the paginated result set.
+   */
+  page?: number;
+};
+
+export type ProfilesListParams = {
+  /**
+   * A page number within the paginated result set.
+   */
+  page?: number;
+};
+
+export type TeamsListParams = {
+  /**
+   * A page number within the paginated result set.
+   */
+  page?: number;
+};
+
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 export const configRetrieve = (
@@ -1994,14 +2042,18 @@ export function useConfigRetrieve<
 }
 
 export const eventsList = (
+  params?: EventsListParams,
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
-  return customInstance<Event[]>({ url: `/api/events/`, method: 'GET', signal }, options);
+  return customInstance<PaginatedEventList>(
+    { url: `/api/events/`, method: 'GET', params, signal },
+    options,
+  );
 };
 
-export const getEventsListQueryKey = () => {
-  return [`/api/events/`] as const;
+export const getEventsListQueryKey = (params?: EventsListParams) => {
+  return [`/api/events/`, ...(params ? [params] : [])] as const;
 };
 
 export const getEventsListQueryOptions = <
@@ -2009,21 +2061,25 @@ export const getEventsListQueryOptions = <
   TError = ErrorType<
     | EventsListErrorResponse400
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
     | ErrorResponse500
   >,
->(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof eventsList>>, TError, TData>>;
-  request?: SecondParameter<typeof customInstance>;
-}) => {
+>(
+  params?: EventsListParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof eventsList>>, TError, TData>>;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getEventsListQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getEventsListQueryKey(params);
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof eventsList>>> = ({ signal }) =>
-    eventsList(requestOptions, signal);
+    eventsList(params, requestOptions, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof eventsList>>,
@@ -2036,6 +2092,7 @@ export type EventsListQueryResult = NonNullable<Awaited<ReturnType<typeof events
 export type EventsListQueryError = ErrorType<
   | EventsListErrorResponse400
   | ErrorResponse403
+  | ErrorResponse404
   | ErrorResponse405
   | ErrorResponse406
   | ErrorResponse415
@@ -2047,12 +2104,14 @@ export function useEventsList<
   TError = ErrorType<
     | EventsListErrorResponse400
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
     | ErrorResponse500
   >,
 >(
+  params: undefined | EventsListParams,
   options: {
     query: Partial<UseQueryOptions<Awaited<ReturnType<typeof eventsList>>, TError, TData>> &
       Pick<
@@ -2072,12 +2131,14 @@ export function useEventsList<
   TError = ErrorType<
     | EventsListErrorResponse400
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
     | ErrorResponse500
   >,
 >(
+  params?: EventsListParams,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof eventsList>>, TError, TData>> &
       Pick<
@@ -2097,12 +2158,14 @@ export function useEventsList<
   TError = ErrorType<
     | EventsListErrorResponse400
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
     | ErrorResponse500
   >,
 >(
+  params?: EventsListParams,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof eventsList>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
@@ -2115,19 +2178,21 @@ export function useEventsList<
   TError = ErrorType<
     | EventsListErrorResponse400
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
     | ErrorResponse500
   >,
 >(
+  params?: EventsListParams,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof eventsList>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getEventsListQueryOptions(options);
+  const queryOptions = getEventsListQueryOptions(params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;
@@ -2159,6 +2224,7 @@ export const getEventsCreateMutationOptions = <
   TError = ErrorType<
     | EventsCreateErrorResponse400
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
@@ -2204,6 +2270,7 @@ export type EventsCreateMutationBody = BodyType<EventRequest>;
 export type EventsCreateMutationError = ErrorType<
   | EventsCreateErrorResponse400
   | ErrorResponse403
+  | ErrorResponse404
   | ErrorResponse405
   | ErrorResponse406
   | ErrorResponse415
@@ -2214,6 +2281,7 @@ export const useEventsCreate = <
   TError = ErrorType<
     | EventsCreateErrorResponse400
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
@@ -2710,14 +2778,18 @@ export const useEventsDestroy = <
 };
 
 export const profilesList = (
+  params?: ProfilesListParams,
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
-  return customInstance<Profile[]>({ url: `/api/profiles/`, method: 'GET', signal }, options);
+  return customInstance<PaginatedProfileList>(
+    { url: `/api/profiles/`, method: 'GET', params, signal },
+    options,
+  );
 };
 
-export const getProfilesListQueryKey = () => {
-  return [`/api/profiles/`] as const;
+export const getProfilesListQueryKey = (params?: ProfilesListParams) => {
+  return [`/api/profiles/`, ...(params ? [params] : [])] as const;
 };
 
 export const getProfilesListQueryOptions = <
@@ -2725,21 +2797,25 @@ export const getProfilesListQueryOptions = <
   TError = ErrorType<
     | ProfilesListErrorResponse400
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
     | ErrorResponse500
   >,
->(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof profilesList>>, TError, TData>>;
-  request?: SecondParameter<typeof customInstance>;
-}) => {
+>(
+  params?: ProfilesListParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof profilesList>>, TError, TData>>;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getProfilesListQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getProfilesListQueryKey(params);
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof profilesList>>> = ({ signal }) =>
-    profilesList(requestOptions, signal);
+    profilesList(params, requestOptions, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof profilesList>>,
@@ -2752,6 +2828,7 @@ export type ProfilesListQueryResult = NonNullable<Awaited<ReturnType<typeof prof
 export type ProfilesListQueryError = ErrorType<
   | ProfilesListErrorResponse400
   | ErrorResponse403
+  | ErrorResponse404
   | ErrorResponse405
   | ErrorResponse406
   | ErrorResponse415
@@ -2763,12 +2840,14 @@ export function useProfilesList<
   TError = ErrorType<
     | ProfilesListErrorResponse400
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
     | ErrorResponse500
   >,
 >(
+  params: undefined | ProfilesListParams,
   options: {
     query: Partial<UseQueryOptions<Awaited<ReturnType<typeof profilesList>>, TError, TData>> &
       Pick<
@@ -2788,12 +2867,14 @@ export function useProfilesList<
   TError = ErrorType<
     | ProfilesListErrorResponse400
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
     | ErrorResponse500
   >,
 >(
+  params?: ProfilesListParams,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof profilesList>>, TError, TData>> &
       Pick<
@@ -2813,12 +2894,14 @@ export function useProfilesList<
   TError = ErrorType<
     | ProfilesListErrorResponse400
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
     | ErrorResponse500
   >,
 >(
+  params?: ProfilesListParams,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof profilesList>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
@@ -2831,19 +2914,21 @@ export function useProfilesList<
   TError = ErrorType<
     | ProfilesListErrorResponse400
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
     | ErrorResponse500
   >,
 >(
+  params?: ProfilesListParams,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof profilesList>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getProfilesListQueryOptions(options);
+  const queryOptions = getProfilesListQueryOptions(params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;
@@ -2882,6 +2967,7 @@ export const getProfilesCreateMutationOptions = <
   TError = ErrorType<
     | ProfilesCreateErrorResponse400
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
@@ -2927,6 +3013,7 @@ export type ProfilesCreateMutationBody = BodyType<ProfileWriteRequest>;
 export type ProfilesCreateMutationError = ErrorType<
   | ProfilesCreateErrorResponse400
   | ErrorResponse403
+  | ErrorResponse404
   | ErrorResponse405
   | ErrorResponse406
   | ErrorResponse415
@@ -2937,6 +3024,7 @@ export const useProfilesCreate = <
   TError = ErrorType<
     | ProfilesCreateErrorResponse400
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
@@ -3726,14 +3814,18 @@ export const useProfilesMePartialUpdate = <
 };
 
 export const teamsList = (
+  params?: TeamsListParams,
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
-  return customInstance<Team[]>({ url: `/api/teams/`, method: 'GET', signal }, options);
+  return customInstance<PaginatedTeamList>(
+    { url: `/api/teams/`, method: 'GET', params, signal },
+    options,
+  );
 };
 
-export const getTeamsListQueryKey = () => {
-  return [`/api/teams/`] as const;
+export const getTeamsListQueryKey = (params?: TeamsListParams) => {
+  return [`/api/teams/`, ...(params ? [params] : [])] as const;
 };
 
 export const getTeamsListQueryOptions = <
@@ -3741,21 +3833,25 @@ export const getTeamsListQueryOptions = <
   TError = ErrorType<
     | TeamsListErrorResponse400
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
     | ErrorResponse500
   >,
->(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof teamsList>>, TError, TData>>;
-  request?: SecondParameter<typeof customInstance>;
-}) => {
+>(
+  params?: TeamsListParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof teamsList>>, TError, TData>>;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getTeamsListQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getTeamsListQueryKey(params);
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof teamsList>>> = ({ signal }) =>
-    teamsList(requestOptions, signal);
+    teamsList(params, requestOptions, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof teamsList>>,
@@ -3768,6 +3864,7 @@ export type TeamsListQueryResult = NonNullable<Awaited<ReturnType<typeof teamsLi
 export type TeamsListQueryError = ErrorType<
   | TeamsListErrorResponse400
   | ErrorResponse403
+  | ErrorResponse404
   | ErrorResponse405
   | ErrorResponse406
   | ErrorResponse415
@@ -3779,12 +3876,14 @@ export function useTeamsList<
   TError = ErrorType<
     | TeamsListErrorResponse400
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
     | ErrorResponse500
   >,
 >(
+  params: undefined | TeamsListParams,
   options: {
     query: Partial<UseQueryOptions<Awaited<ReturnType<typeof teamsList>>, TError, TData>> &
       Pick<
@@ -3804,12 +3903,14 @@ export function useTeamsList<
   TError = ErrorType<
     | TeamsListErrorResponse400
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
     | ErrorResponse500
   >,
 >(
+  params?: TeamsListParams,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof teamsList>>, TError, TData>> &
       Pick<
@@ -3829,12 +3930,14 @@ export function useTeamsList<
   TError = ErrorType<
     | TeamsListErrorResponse400
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
     | ErrorResponse500
   >,
 >(
+  params?: TeamsListParams,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof teamsList>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
@@ -3847,19 +3950,21 @@ export function useTeamsList<
   TError = ErrorType<
     | TeamsListErrorResponse400
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
     | ErrorResponse500
   >,
 >(
+  params?: TeamsListParams,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof teamsList>>, TError, TData>>;
     request?: SecondParameter<typeof customInstance>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getTeamsListQueryOptions(options);
+  const queryOptions = getTeamsListQueryOptions(params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>;
@@ -3891,6 +3996,7 @@ export const getTeamsCreateMutationOptions = <
   TError = ErrorType<
     | TeamsCreateErrorResponse400
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415
@@ -3936,6 +4042,7 @@ export type TeamsCreateMutationBody = BodyType<TeamWriteRequest>;
 export type TeamsCreateMutationError = ErrorType<
   | TeamsCreateErrorResponse400
   | ErrorResponse403
+  | ErrorResponse404
   | ErrorResponse405
   | ErrorResponse406
   | ErrorResponse415
@@ -3946,6 +4053,7 @@ export const useTeamsCreate = <
   TError = ErrorType<
     | TeamsCreateErrorResponse400
     | ErrorResponse403
+    | ErrorResponse404
     | ErrorResponse405
     | ErrorResponse406
     | ErrorResponse415

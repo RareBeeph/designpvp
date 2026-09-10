@@ -1,7 +1,7 @@
 import os
 import uuid
 
-from django.db.models import Model
+from auto_prefetch import Model
 from django.utils.deconstruct import deconstructible
 
 

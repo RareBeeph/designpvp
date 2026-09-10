@@ -52,7 +52,11 @@ const TeamsConfig: TableConfig<Team, TeamWriteRequest, TeamValues, TeamWrite> = 
         isSubmitting={isSubmitting}
       >
         <StyledTextField name="name" />
-        <StyledSelectField name="event" value={values.event} data={useEventsList().data ?? []} />
+        <StyledSelectField
+          name="event"
+          value={values.event}
+          data={useEventsList().data?.results ?? []}
+        />
       </StyledForm>
     );
   },

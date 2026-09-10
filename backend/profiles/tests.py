@@ -16,6 +16,8 @@ import pytest
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils import timezone
+from inline_snapshot import snapshot
+from inline_snapshot_django import snapshot_queries
 from PIL import Image
 from rest_framework import status
 from rest_framework.test import APIClient
@@ -25,6 +27,7 @@ from events.models import Event, Team
 from .models import Profile
 
 ME_URL = "/api/profiles/me/"
+TEAM_COUNTS = [2, 5, 10, 20]
 
 
 def make_avatar(name: str = "avatar.png") -> SimpleUploadedFile:
@@ -42,6 +45,13 @@ def teams(db: None) -> tuple[Team, Team]:
         Team.objects.create(name="Red", event=event),
         Team.objects.create(name="Blue", event=event),
     )
+
+
+@pytest.fixture
+def many_teams(db: None) -> list[Team]:
+    now = timezone.now()
+    event = Event.objects.create(name="Test Event", starts=now, ends=now)
+    return [Team.objects.create(name=f"Red {idx}", event=event) for idx in range(20)]
 
 
 @pytest.fixture
@@ -63,6 +73,16 @@ def client(profile: Profile) -> APIClient:
     """A client signed in as a plain, non-staff user who owns `profile`."""
     api = APIClient()
     api.force_authenticate(user=profile.user)
+    return api
+
+
+@pytest.fixture
+def admin_client(db: None) -> APIClient:
+    """A client signed in as a staff user."""
+    api = APIClient()
+    api.force_authenticate(
+        user=User.objects.create_user(username="staffer", password="pw", is_staff=True)
+    )
     return api
 
 
@@ -158,7 +178,7 @@ def test_user_cannot_write_their_own_profile_through_the_detail_route(
 
 
 def test_staff_can_still_change_teams_through_the_detail_route(
-    profile: Profile, teams: tuple[Team, Team]
+    admin_client: APIClient, profile: Profile, teams: tuple[Team, Team]
 ) -> None:
     """
     Multipart because Profile carries an avatar, so `order_request_content_types` puts
@@ -166,12 +186,8 @@ def test_staff_can_still_change_teams_through_the_detail_route(
     value, which is why the team pk goes over the wire as text.
     """
     _, blue = teams
-    api = APIClient()
-    api.force_authenticate(
-        user=User.objects.create_user(username="staffer", password="pw", is_staff=True)
-    )
 
-    response = api.patch(
+    response = admin_client.patch(
         f"/api/profiles/{profile.pk}/",
         {"user": profile.user.username, "teams": [str(blue.pk)]},
         format="multipart",
@@ -179,3 +195,57 @@ def test_staff_can_still_change_teams_through_the_detail_route(
 
     assert response.status_code == status.HTTP_200_OK
     assert list(profile.teams.all()) == [blue]
+
+
+@pytest.mark.parametrize("count", TEAM_COUNTS)
+def test_write_requests_to_detail_route_query_related_teams_in_bulk(
+    admin_client: APIClient, profile: Profile, many_teams: list[Team], count: int
+) -> None:
+    """
+    Confirms that this many-to-many relation no longer suffers n+1 queries on the PATCH endpoint.
+    """
+    with snapshot_queries() as queries:
+        response = admin_client.patch(
+            f"/api/profiles/{profile.pk}/",
+            {"teams": [str(team.pk) for team in many_teams[:count]]},
+        )
+
+    assert response.status_code == status.HTTP_200_OK
+    assert queries == snapshot(
+        [
+            "SELECT ... FROM profiles_profile INNER JOIN auth_user ON ... WHERE ... LIMIT ...",
+            "SELECT ... FROM events_team INNER JOIN profiles_profile_teams ON ... INNER JOIN events_event ON ... WHERE ... ORDER BY ... ASC",
+            "SELECT ... FROM events_team INNER JOIN events_event ON ... WHERE ... ORDER BY ... ASC",
+            "UPDATE profiles_profile SET ... = ... WHERE ...",
+            "SELECT ... FROM events_team INNER JOIN profiles_profile_teams ON ... INNER JOIN events_event ON ... WHERE ... ORDER BY ... ASC",
+            "DELETE FROM profiles_profile_teams WHERE ...",
+            "INSERT INTO profiles_profile_teams (...) SELECT * FROM UNNEST(...) ON CONFLICT DO NOTHING",
+            "SELECT ... FROM events_team INNER JOIN profiles_profile_teams ON ... INNER JOIN events_event ON ... WHERE ... ORDER BY ... ASC",
+        ]
+    )
+
+
+@pytest.mark.parametrize("profile_count", range(1, len(TEAM_COUNTS) + 1))
+def test_read_requests_to_list_route_query_related_teams_in_bulk(
+    client: APIClient, many_teams: list[Team], profile_count: int
+) -> None:
+    """
+    Confirms that this many-to-many relation no longer suffers n+1 queries on the GET profiles endpoint.
+    """
+    for team_count in TEAM_COUNTS[:profile_count]:
+        user = User.objects.create_user(username=f"member {team_count}", password="pw")
+        profile = Profile.objects.create(user=user)
+        profile.teams.set(many_teams[:team_count])
+
+    with snapshot_queries() as queries:
+        response = client.get("/api/profiles/")
+
+    assert response.status_code == status.HTTP_200_OK
+    assert queries == snapshot(
+        [
+            "SELECT ... FROM profiles_profile",
+            "SELECT ... FROM profiles_profile INNER JOIN auth_user ON ... ORDER BY ... ASC LIMIT ...",
+            "SELECT ... FROM events_team INNER JOIN profiles_profile_teams ON ... INNER JOIN events_event ON ... WHERE ... ORDER BY ... ASC",
+            "SELECT ... FROM events_event WHERE ...",
+        ]
+    )

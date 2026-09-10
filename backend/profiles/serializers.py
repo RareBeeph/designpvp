@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
+from backend.fields import BulkPrimaryKeyRelatedField
 from events.models import Team
 from events.serializers import TeamSerializer
 
@@ -22,7 +23,7 @@ class BaseProfileSerializer(serializers.ModelSerializer):
 
 class ProfileWriteSerializer(BaseProfileSerializer):
     user = serializers.SlugRelatedField(queryset=User.objects.all(), slug_field="username")
-    teams = serializers.PrimaryKeyRelatedField(queryset=Team.objects.all(), many=True)
+    teams = BulkPrimaryKeyRelatedField(queryset=Team.objects.all(), many=True)
 
 
 class ProfileSelfWriteSerializer(BaseProfileSerializer):

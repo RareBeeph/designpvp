@@ -91,8 +91,8 @@ def test_teams_are_readable_by_anonymous_users(db: None) -> None:
 
     response = APIClient().get("/api/teams/")
     assert response.status_code == status.HTTP_200_OK
-    assert len(response.data) == Team.objects.count()
-    assert response.data[0]["name"] == team.name
+    assert response.data["count"] == Team.objects.count()
+    assert response.data["results"][0]["name"] == team.name
 
 
 def test_teams_are_not_writeable_by_anonymous_users(db: None) -> None:
