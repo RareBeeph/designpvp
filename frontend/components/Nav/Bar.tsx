@@ -7,6 +7,8 @@ import { Menu as MenuIcon } from '@mui/icons-material';
 import { AppBar, Box, IconButton, Link, Toolbar } from '@mui/material';
 import { useSelectedLayoutSegments } from 'next/navigation';
 
+import { Padding } from '@/components/Styled';
+
 import { useBreakpoint } from '@/hooks';
 
 export default function NavBar() {
@@ -35,6 +37,7 @@ export default function NavBar() {
           <Link variant={headerVariant} underline="none" color="inherit" href="/">
             DesignPVP
           </Link>
+          <Padding flex={1} />
           {!breakpoint.isXS && <NavUserDisplay />}
         </Toolbar>
       </AppBar>

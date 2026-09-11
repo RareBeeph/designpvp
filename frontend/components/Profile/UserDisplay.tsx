@@ -1,33 +1,15 @@
-import { useProfilesMeRetrieve, useProfilesRetrieve } from '@/api/backend';
 import { defaultStackSpacing, paddingExemptClassName } from '@/app/providers';
 import { AccountCircle as UserIcon } from '@mui/icons-material';
 import { Box, BoxProps, Paper, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 
-import { AnyError } from '@/components/Data/Configs/types';
+import { useGetProfile } from '@/hooks';
 
 export default function ProfileUserDisplay({
   profileId,
   ...props
 }: { profileId?: number | 'me' } & BoxProps) {
-  // Both hooks must run on every render, so the one that isn't wanted is disabled
-  // rather than skipped - swapping which hook gets called breaks hook ordering.
-  const isMe = profileId === 'me';
-  const id = typeof profileId === 'number' ? profileId : NaN;
-
-  // 403 (signed out) and 404 (signed in, but no profile row) are both settled answers, so
-  // retrying them just delays rendering the fallback
-  const retryUnlessAnswered = (failureCount: number, error: AnyError) =>
-    [403, 404].includes(error.response?.status ?? 0) ? false : failureCount < 3;
-
-  const meQuery = useProfilesMeRetrieve({
-    query: { enabled: isMe, retry: retryUnlessAnswered },
-  });
-  const byIdQuery = useProfilesRetrieve(id, { query: { enabled: !isMe && !isNaN(id) } });
-
-  const profileQuery = isMe ? meQuery : byIdQuery;
-  const profile =
-    profileQuery.isSuccess && !profileQuery.isFetching ? profileQuery.data : undefined;
+  const profile = useGetProfile(profileId);
 
   const pfpSizeLimits = {
     minWidth: '100px',
