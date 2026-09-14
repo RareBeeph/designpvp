@@ -37,8 +37,8 @@ services:
       # DJANGO_MEDIA_URL_PROTOCOL is deliberately absent - settings.py derives it from
       # PRODUCTION, so http: here and https: on a deploy both come for free
       - DJANGO_MEDIA_BUCKET=media
-      - DJANGO_MEDIA_ACCESS_KEY=minioadmin
-      - DJANGO_MEDIA_SECRET_KEY=minioadmin
+      - DJANGO_MEDIA_ACCESS_KEY=devaccesskey
+      - DJANGO_MEDIA_SECRET_KEY=devsecretkey
     # The container's CMD runs migrate/collectstatic before serving, so "running" is
     # not the same as "ready". Without this, `compose up --wait` in CI can hand back
     # control while the backend is still migrating.
@@ -71,38 +71,57 @@ services:
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
   # Stands in for Cloudflare R2, so development and production run the same S3 code path.
-  # Note this is not a fidelity guarantee: MinIO is *more* S3-faithful than R2 is, so the
-  # STORAGES options in settings.py deliberately stay inside the subset R2 supports
+  # Note this is not a fidelity guarantee: SeaweedFS implements a subset of S3 and R2
+  # implements a different subset, so the STORAGES options in settings.py deliberately stay
+  # inside what both support. What this container buys is that media is served from a
+  # separate origin over a real S3 client, so CORS, CSP and cache-header problems surface
+  # here rather than at deploy
   storage:
-    # Pinned on purpose. MinIO is AGPL and the community build has churned - the admin
-    # console was stripped out during 2025 - so `latest` is a moving target in a way
-    # postgres and valkey are not
-    image: minio/minio:RELEASE.2025-09-07T16-13-09Z
-    command: server /data --console-address ":9001"
-    environment:
-      - MINIO_ROOT_USER=minioadmin
-      - MINIO_ROOT_PASSWORD=minioadmin
+    # SeaweedFS replaced MinIO here
+    # Pinned on purpose, and one release behind: upstream tags weekly, so `latest` is a
+    # moving target in a way postgres and valkey are not
+    image: chrislusf/seaweedfs:4.46
+    # `server` runs master, volume, filer and the S3 gateway in one process, which is all a
+    # single-node development bucket needs. The S3 port is pinned to 9000 - the default is
+    # 8333 - so the endpoint URL below and the published port keep their old shape
+    command: >
+      server -dir=/data -s3 -s3.port=9000
+      -s3.config=/etc/seaweedfs/s3.json
+      -ip.bind=0.0.0.0
     ports:
       # Published so the browser fetches media from a genuinely different origin to the
       # app, exactly as it will in production. Django itself uploads to `storage:9000`
-      # over the compose network and never uses these.
-      #
-      # Deliberately not MinIO's default 9000/9001 on the host side: those are popular
-      # enough to collide with whatever else a developer happens to be running
+      # over the compose network and never uses these
       - 9400:9000
-      # MinIO's own console, handy for inspecting objects by hand
-      - 9401:9001
+      # The filer's file browser, which is what's left of MinIO's console: it lists objects
+      # under /buckets/media for inspecting uploads by hand
+      - 9401:8888
     volumes:
-      - storage-data:/data
+      # Deliberately not the old `storage-data` volume since that contains `minio` data
+      # that SeaweedFS cannot read
+      - seaweedfs-data:/data
+      - ./seaweedfs-s3.json:/etc/seaweedfs/s3.json:ro
     healthcheck:
-      test: ["CMD", "curl", "-fsS", "http://localhost:9000/minio/health/live"]
+      # Not the S3 port's /healthz: SeaweedFS parses that as a bucket name and 404s it
+      # (seaweedfs#8243). The master's healthz covers the cluster, and any HTTP status line
+      # off the S3 port proves the gateway is serving - an unauthenticated ListBuckets is a
+      # legitimate 403, so this cannot ask wget for a 2xx. That the gateway can also reach
+      # the filer is what `storage-init` proves, and backend waits on that too
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- http://localhost:9333/cluster/healthz >/dev/null && wget -S -qO /dev/null http://localhost:9000/ 2>&1 | grep -q 'HTTP/1.1'",
+        ]
       interval: 5s
       timeout: 5s
       retries: 20
-  # Creates the bucket and opens it for anonymous reads, matching the public R2 bucket
-  # production serves from. Runs to completion and exits; `backend` waits for that
+      start_period: 15s
+  # Creates the bucket that `storage` then serves. Runs to completion and exits; `backend`
+  # waits for that. Anonymous read comes from the `anonymous` identity in seaweedfs-s3.json
+  # rather than a per-bucket policy, so unlike MinIO's `mc anonymous set download` there is
+  # nothing to apply here afterwards
   storage-init:
-    image: minio/mc:RELEASE.2025-08-13T08-35-41Z
+    image: chrislusf/seaweedfs:4.46
     depends_on:
       storage:
         condition: service_healthy
@@ -110,9 +129,7 @@ services:
       - sh
       - -c
       - |
-        mc alias set local http://storage:9000 minioadmin minioadmin &&
-        mc mb --ignore-existing local/media &&
-        mc anonymous set download local/media
+        echo "s3.bucket.create -name media" | weed shell -master=storage:9333
 
 volumes:
-  storage-data:
+  seaweedfs-data:

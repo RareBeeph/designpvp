@@ -246,7 +246,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 # Caddy already proxies /static* to us, so this needs no routing change.
 #
 # Media is the opposite - user supplied, unbounded, and it has to outlive any one
-# container - so it goes to object storage: Cloudflare R2 in production, MinIO in
+# container - so it goes to object storage: Cloudflare R2 in production, SeaweedFS in
 # development. Both speak S3, and the options below stay inside the subset R2 actually
 # supports, so the two environments run the same code path
 STORAGES = {
@@ -257,19 +257,20 @@ STORAGES = {
             "endpoint_url": prod_required_env(
                 "DJANGO_MEDIA_ENDPOINT_URL", "http://storage:9000"
             ),
-            "access_key": prod_required_env("DJANGO_MEDIA_ACCESS_KEY", "minioadmin"),
-            "secret_key": prod_required_env("DJANGO_MEDIA_SECRET_KEY", "minioadmin"),
+            "access_key": prod_required_env("DJANGO_MEDIA_ACCESS_KEY", "devaccesskey"),
+            "secret_key": prod_required_env("DJANGO_MEDIA_SECRET_KEY", "devsecretkey"),
             # The host the *browser* fetches media from, which is not the host Django
-            # uploads to. In development MinIO is `storage:9000` on the compose network but
-            # `localhost:9000` from outside it; in production this is the R2 custom domain.
-            # A .r2.dev URL won't do - those are rate limited and not meant for real
+            # uploads to. In development the bucket is `storage:9000` on the compose network
+            # but `localhost:9400` from outside it; in production this is the R2 custom
+            # domain. A .r2.dev URL won't do - those are rate limited and not meant for real
             # traffic
             "custom_domain": prod_required_env(
                 "DJANGO_MEDIA_CUSTOM_DOMAIN", "localhost:9400/media"
             ),
-            # Local MinIO is plain HTTP and R2 behind its custom domain is always HTTPS, so
-            # this follows the deployment instead of being set by hand. Still overridable,
-            # for the odd case of a development or staging bucket that does terminate TLS.
+            # The local bucket is plain HTTP and R2 behind its custom domain is always
+            # HTTPS, so this follows the deployment instead of being set by hand. Still
+            # overridable, for the odd case of a development or staging bucket that does
+            # terminate TLS.
             #
             # Keyed on PRODUCTION rather than DEBUG: DEBUG gets switched off in development
             # to exercise manifest static or real error pages, and that must not start
@@ -288,8 +289,8 @@ STORAGES = {
             # django-storages defaults this to True, which would let one user overwrite
             # another's object by uploading a file of the same name. See backend.storage
             "file_overwrite": False,
-            # botocore >= 1.36 attaches CRC32 integrity checksums by default, which neither
-            # R2 nor MinIO accept. Without this, uploads fail against both
+            # botocore >= 1.36 attaches CRC32 integrity checksums by default, which R2
+            # rejects. Without this, uploads fail against it
             "client_config": Config(
                 request_checksum_calculation="when_required",
                 response_checksum_validation="when_required",

@@ -1,0 +1,18 @@
+{
+  "identities": [
+    {
+      "name": "backend",
+      "credentials": [
+        {
+          "accessKey": "devaccesskey",
+          "secretKey": "devsecretkey"
+        }
+      ],
+      "actions": ["Admin", "Read", "Write", "List", "Tagging"]
+    },
+    {
+      "name": "anonymous",
+      "actions": ["Read:media"]
+    }
+  ]
+}
