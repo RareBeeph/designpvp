@@ -11,12 +11,12 @@ export default function Padding({
 
   return (
     <Container
+      {...props}
+      disableGutters
       sx={{
         flex: breakpoint.isXS && !isXSExempt ? 0 : flex,
         ...props.sx,
       }}
-      disableGutters
-      {...props}
     />
   );
 }

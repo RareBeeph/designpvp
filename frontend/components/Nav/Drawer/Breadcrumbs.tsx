@@ -1,7 +1,14 @@
 import { useState } from 'react';
 
-import { default as CrumbButton } from './Button';
+import CrumbButton from './Button';
+import {
+  ChevronRight as ChevronRightIcon,
+  ExpandMore as ExpandMoreIcon,
+  Home as HomeIcon,
+  LastPage as LastPageIcon,
+} from '@mui/icons-material';
 import { Box, BoxProps, Collapse, List } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 import { useSession } from '@/hooks';
 
@@ -21,7 +28,14 @@ export default function NavDrawerBreadcrumbs({
   ...props
 }: BoxProps & { breadcrumbs: Crumbs }) {
   const authSession = useSession();
+  const router = useRouter();
   const [collapseOpen, setCollapseOpen] = useState(true);
+
+  // Moving to another page always reopens the dropdown, so the new page's subroutes show.
+  const navigate = (crumbs: Crumbs) => () => {
+    setCollapseOpen(true);
+    router.push(`/${crumbs.join('/')}`);
+  };
 
   // Determine which links are available to display, given user permissions.
   const availableRoutes =
@@ -37,20 +51,24 @@ export default function NavDrawerBreadcrumbs({
   const breadcrumbsSection = currentPage.slice(0, -1).map((_crumb, idx) => {
     const crumbs = currentPage.slice(0, idx + 1);
     return (
-      <CrumbButton
-        variant="breadcrumb"
-        crumbs={crumbs}
-        setCollapseOpen={setCollapseOpen}
-        key={idx}
-      />
+      <CrumbButton crumbs={crumbs} icon={<ExpandMoreIcon />} onClick={navigate(crumbs)} key={idx} />
     );
   });
 
-  // Determine whether the button for the current page should be a dropdown or not.
-  const currentVariant =
-    subroutes.length == 0 ? 'current-last'
-    : collapseOpen ? 'current-expanded'
-    : 'current-unexpanded';
+  // The current page's button is a dropdown toggle if it has subroutes, a link if not.
+  const hasSubroutes = subroutes.length > 0;
+  const currentButton = (
+    <CrumbButton
+      crumbs={currentPage}
+      icon={
+        !hasSubroutes ? <LastPageIcon />
+        : collapseOpen ?
+          <ExpandMoreIcon />
+        : <ChevronRightIcon />
+      }
+      onClick={hasSubroutes ? () => setCollapseOpen(!collapseOpen) : navigate(currentPage)}
+    />
+  );
 
   // Construct the dropdown for the subroutes of the current page.
   const subrouteDropdown = (
@@ -58,9 +76,9 @@ export default function NavDrawerBreadcrumbs({
       <List disablePadding>
         {subroutes.map((path, idx) => (
           <CrumbButton
-            variant="subroute"
             crumbs={path}
-            setCollapseOpen={setCollapseOpen}
+            icon={<ChevronRightIcon />}
+            onClick={navigate(path)}
             key={idx}
           />
         ))}
@@ -73,9 +91,9 @@ export default function NavDrawerBreadcrumbs({
     if (path.join('/') != currentPage.join('/')) {
       return (
         <CrumbButton
-          variant="sibling"
           crumbs={path}
-          setCollapseOpen={setCollapseOpen}
+          icon={<ChevronRightIcon />}
+          onClick={navigate(path)}
           key={`sibling${idx}`}
         />
       );
@@ -83,13 +101,7 @@ export default function NavDrawerBreadcrumbs({
 
     return (
       <div key={idx}>
-        {currentPage.length != 0 && (
-          <CrumbButton
-            variant={currentVariant}
-            crumbs={currentPage}
-            setCollapseOpen={setCollapseOpen}
-          />
-        )}
+        {currentPage.length != 0 && currentButton}
         {subrouteDropdown}
       </div>
     );
@@ -99,7 +111,7 @@ export default function NavDrawerBreadcrumbs({
   return (
     <Box {...props} sx={{ overflow: 'auto', ...props.sx }}>
       <List sx={{ padding: 0 }}>
-        <CrumbButton variant="home" crumbs={[]} setCollapseOpen={setCollapseOpen} />
+        <CrumbButton crumbs={[]} icon={<HomeIcon />} onClick={navigate([])} />
         {breadcrumbsSection}
         {siblingSection}
       </List>

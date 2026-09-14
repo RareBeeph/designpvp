@@ -29,11 +29,11 @@ export default function NavDrawer({
       slotProps={{
         paper: { className: paddingExemptClassName },
       }}
+      {...props}
       sx={{
         '& .MuiDrawer-paper': { width: breakpoint.isXS ? 1 : 320 }, // TODO: change
-        flexDirection: 'column',
+        ...props.sx,
       }}
-      {...props}
     >
       <Stack direction="column" flex={1} spacing={0}>
         {!breakpoint.isSmall && <Toolbar />} {/* Match spacing of nav bar */}

@@ -63,7 +63,7 @@ export default function AuthForm({
     );
 
   return (
-    <Stack sx={{ minWidth: 'max-content' }} {...props}>
+    <Stack {...props} sx={{ minWidth: 'max-content', ...props.sx }}>
       <Paper>
         <Formik initialValues={{ username: '', password: '' }} onSubmit={onSubmit}>
           {({ isSubmitting }) => {

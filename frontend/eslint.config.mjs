@@ -131,7 +131,19 @@ const eslintConfig = [
       // Prefer global imports with aliases (e.g. '@/components/StyledForm' rather than '../../StyledForm')
       'import/no-relative-parent-imports': 'error',
 
-      'no-restricted-syntax': ['off'],
+      // A trailing {...props} silently replaces any prop written before it, so
+      // `sx={{ pl: 2, ...props.sx }} {...props}` drops the pl it just merged.
+      // Spread first, then write the props that have to win. Purely syntactic,
+      // so it also fires on a deliberate caller-overridable default - reorder
+      // and let the explicit prop come last rather than disabling it
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'JSXAttribute[name.name=/^(sx|style|className|onClick)$/] ~ JSXSpreadAttribute',
+          message:
+            'This prop is written before {...props}, so a caller-supplied value silently replaces it. Put {...props} first.',
+        },
+      ],
       'react/jsx-filename-extension': [1, { extensions: ['.jsx', '.tsx'] }],
       'prettier/prettier': 'error',
       'react/jsx-props-no-spreading': ['off'],
