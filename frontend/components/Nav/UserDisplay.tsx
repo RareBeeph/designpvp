@@ -61,7 +61,7 @@ export default function NavUserDisplay() {
     <>
       {session.isSuccess ?
         <Link href="/profile/">{profilePaper}</Link>
-      : { profilePaper }}
+      : profilePaper}
 
       {session.isSuccess ?
         <StyledButton
