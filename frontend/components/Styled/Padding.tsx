@@ -2,11 +2,7 @@ import { Container, ContainerProps } from '@mui/material';
 
 import { useBreakpoint } from '@/hooks';
 
-export default function Padding({
-  flex,
-  isXSExempt,
-  ...props
-}: ContainerProps & { flex: number; isXSExempt?: boolean }) {
+export default function Padding({ flex, ...props }: ContainerProps & { flex: number }) {
   const breakpoint = useBreakpoint();
 
   return (
@@ -14,7 +10,7 @@ export default function Padding({
       {...props}
       disableGutters
       sx={{
-        flex: breakpoint.isXS && !isXSExempt ? 0 : flex,
+        flex: breakpoint.isXS ? 0 : flex,
         ...props.sx,
       }}
     />

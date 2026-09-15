@@ -3,10 +3,9 @@
 import NavDrawerBreadcrumbs from './Breadcrumbs';
 import { paddingExemptClassName } from '@/app/providers';
 import { Close as CloseIcon } from '@mui/icons-material';
-import { Drawer, DrawerProps, IconButton, Stack, Toolbar } from '@mui/material';
+import { Box, Drawer, DrawerProps, IconButton, Stack, Toolbar } from '@mui/material';
 
 import { NavUserDisplay } from '@/components/Nav';
-import { Padding } from '@/components/Styled';
 
 import { useBreakpoint } from '@/hooks';
 
@@ -51,12 +50,10 @@ export default function NavDrawer({
 
           <NavDrawerBreadcrumbs breadcrumbs={breadcrumbs} />
 
-          {breakpoint.isXS && <Padding flex={1} isXSExempt />}
+          {breakpoint.isXS && <Box sx={{ flex: 1 }} />}
           {breakpoint.isXS && <NavUserDisplay />}
         </Stack>
       </Stack>
     </Drawer>
   );
 }
-
-export { default as NavDrawerBreadcrumbs } from './Breadcrumbs';

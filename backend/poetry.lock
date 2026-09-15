@@ -723,6 +723,17 @@ release = ["flit", "keyring", "tbump"]
 test = ["tox", "tox-gh-actions"]
 
 [[package]]
+name = "drf-writable-nested"
+version = "0.7.2"
+description = "Writable nested helpers for django-rest-framework's serializers"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "drf_writable_nested-0.7.2-py3-none-any.whl", hash = "sha256:4a3d2737c1cbfafa690e30236b169112e5b23cfe3d288f3992b0651a1b828c4d"},
+]
+
+[[package]]
 name = "execnet"
 version = "2.1.1"
 description = "execnet: rapid multi-Python deployment"
@@ -1983,4 +1994,4 @@ brotli = ["brotli"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.14.0"
-content-hash = "8364dadfd6a385ce6156cd19f6776b2b63182cf42c9f74f481fe05b2af21ddf1"
+content-hash = "b0f6ba46818bed72e751b019078b8d25895b9c8b3977bd8684a518552071ca7e"

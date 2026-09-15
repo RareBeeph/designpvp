@@ -9,7 +9,7 @@ import { Paper, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import ProfilePicture from '@/components/Profile/Picture';
+import { ProfilePicture } from '@/components/Profile';
 import { StyledButton } from '@/components/Styled';
 
 import { useBreakpoint } from '@/hooks';
@@ -46,26 +46,22 @@ export default function NavUserDisplay() {
     maxHeight: '30px',
   };
 
+  const profilePaper = (
+    <Paper className={paddingExemptClassName} sx={{ margin: 1, padding: 1 }}>
+      <Stack direction="row">
+        <Typography variant={usernameVariant} sx={usernameSx}>
+          {currentUsername}
+        </Typography>
+        {session.isSuccess && <ProfilePicture profileId="me" sx={pfpSizeLimits} />}
+      </Stack>
+    </Paper>
+  );
+
   return (
     <>
       {session.isSuccess ?
-        <Link href="/profile/">
-          <Paper className={paddingExemptClassName} sx={{ margin: 1, padding: 1 }}>
-            <Stack direction="row">
-              <Typography variant={usernameVariant} sx={usernameSx}>
-                {currentUsername}
-              </Typography>
-
-              <ProfilePicture profileId="me" sx={{ ...pfpSizeLimits }} />
-            </Stack>
-          </Paper>
-        </Link>
-      : <Paper className={paddingExemptClassName} sx={{ margin: 1, padding: 1 }}>
-          <Typography variant={usernameVariant} sx={usernameSx}>
-            {currentUsername}
-          </Typography>
-        </Paper>
-      }
+        <Link href="/profile/">{profilePaper}</Link>
+      : { profilePaper }}
 
       {session.isSuccess ?
         <StyledButton

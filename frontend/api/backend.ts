@@ -24,6 +24,14 @@ import type {
 import { customInstance } from './mutator/custom-instance';
 import type { BodyType, ErrorType } from './mutator/custom-instance';
 
+export interface BaseEvent {
+  readonly id: number;
+  /** @maxLength 50 */
+  name: string;
+  starts: string;
+  ends: string;
+}
+
 /**
  * * `client_error` - Client Error
  */
@@ -189,9 +197,25 @@ export interface Event {
   name: string;
   starts: string;
   ends: string;
+  teams: Team[];
 }
 
-export interface EventRequest {
+/**
+ * Adds nested create feature
+ */
+export interface EventWrite {
+  readonly id: number;
+  /** @maxLength 50 */
+  name: string;
+  starts: string;
+  ends: string;
+  teams: TeamNestedWrite[];
+}
+
+/**
+ * Adds nested create feature
+ */
+export interface EventWriteRequest {
   /**
    * @minLength 1
    * @maxLength 50
@@ -199,6 +223,7 @@ export interface EventRequest {
   name: string;
   starts: string;
   ends: string;
+  teams: TeamNestedWriteRequest[];
 }
 
 export type EventsCreateEndsErrorComponentAttr =
@@ -246,7 +271,10 @@ export type EventsCreateError =
   | EventsCreateNonFieldErrorsErrorComponent
   | EventsCreateNameErrorComponent
   | EventsCreateStartsErrorComponent
-  | EventsCreateEndsErrorComponent;
+  | EventsCreateEndsErrorComponent
+  | EventsCreateTeamsNonFieldErrorsErrorComponent
+  | EventsCreateTeamsINDEXNonFieldErrorsErrorComponent
+  | EventsCreateTeamsINDEXNameErrorComponent;
 
 export type EventsCreateErrorResponse400 = EventsCreateValidationError | ParseErrorResponse;
 
@@ -303,7 +331,8 @@ export const EventsCreateNonFieldErrorsErrorComponentAttr = {
 } as const;
 
 /**
- * * `invalid` - invalid
+ * * `cannot_delete_protected` - cannot_delete_protected
+ * `invalid` - invalid
  * `null` - null
  */
 export type EventsCreateNonFieldErrorsErrorComponentCode =
@@ -311,13 +340,15 @@ export type EventsCreateNonFieldErrorsErrorComponentCode =
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EventsCreateNonFieldErrorsErrorComponentCode = {
+  cannotDeleteProtected: 'cannot_delete_protected',
   invalid: 'invalid',
   null: 'null',
 } as const;
 
 export interface EventsCreateNonFieldErrorsErrorComponent {
   attr: EventsCreateNonFieldErrorsErrorComponentAttr;
-  /** * `invalid` - invalid
+  /** * `cannot_delete_protected` - cannot_delete_protected
+   * `invalid` - invalid
    * `null` - null */
   code: EventsCreateNonFieldErrorsErrorComponentCode;
   detail: string;
@@ -361,6 +392,114 @@ export interface EventsCreateStartsErrorComponent {
    * `overflow` - overflow
    * `required` - required */
   code: EventsCreateStartsErrorComponentCode;
+  detail: string;
+}
+
+export type EventsCreateTeamsINDEXNameErrorComponentAttr =
+  (typeof EventsCreateTeamsINDEXNameErrorComponentAttr)[keyof typeof EventsCreateTeamsINDEXNameErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsCreateTeamsINDEXNameErrorComponentAttr = {
+  teamsINDEXname: 'teams.INDEX.name',
+} as const;
+
+/**
+ * * `blank` - blank
+ * `invalid` - invalid
+ * `max_length` - max_length
+ * `null` - null
+ * `null_characters_not_allowed` - null_characters_not_allowed
+ * `required` - required
+ * `surrogate_characters_not_allowed` - surrogate_characters_not_allowed
+ */
+export type EventsCreateTeamsINDEXNameErrorComponentCode =
+  (typeof EventsCreateTeamsINDEXNameErrorComponentCode)[keyof typeof EventsCreateTeamsINDEXNameErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsCreateTeamsINDEXNameErrorComponentCode = {
+  blank: 'blank',
+  invalid: 'invalid',
+  maxLength: 'max_length',
+  null: 'null',
+  nullCharactersNotAllowed: 'null_characters_not_allowed',
+  required: 'required',
+  surrogateCharactersNotAllowed: 'surrogate_characters_not_allowed',
+} as const;
+
+export interface EventsCreateTeamsINDEXNameErrorComponent {
+  attr: EventsCreateTeamsINDEXNameErrorComponentAttr;
+  /** * `blank` - blank
+   * `invalid` - invalid
+   * `max_length` - max_length
+   * `null` - null
+   * `null_characters_not_allowed` - null_characters_not_allowed
+   * `required` - required
+   * `surrogate_characters_not_allowed` - surrogate_characters_not_allowed */
+  code: EventsCreateTeamsINDEXNameErrorComponentCode;
+  detail: string;
+}
+
+export type EventsCreateTeamsINDEXNonFieldErrorsErrorComponentAttr =
+  (typeof EventsCreateTeamsINDEXNonFieldErrorsErrorComponentAttr)[keyof typeof EventsCreateTeamsINDEXNonFieldErrorsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsCreateTeamsINDEXNonFieldErrorsErrorComponentAttr = {
+  teamsINDEXnonFieldErrors: 'teams.INDEX.non_field_errors',
+} as const;
+
+/**
+ * * `invalid` - invalid
+ * `null` - null
+ * `required` - required
+ */
+export type EventsCreateTeamsINDEXNonFieldErrorsErrorComponentCode =
+  (typeof EventsCreateTeamsINDEXNonFieldErrorsErrorComponentCode)[keyof typeof EventsCreateTeamsINDEXNonFieldErrorsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsCreateTeamsINDEXNonFieldErrorsErrorComponentCode = {
+  invalid: 'invalid',
+  null: 'null',
+  required: 'required',
+} as const;
+
+export interface EventsCreateTeamsINDEXNonFieldErrorsErrorComponent {
+  attr: EventsCreateTeamsINDEXNonFieldErrorsErrorComponentAttr;
+  /** * `invalid` - invalid
+   * `null` - null
+   * `required` - required */
+  code: EventsCreateTeamsINDEXNonFieldErrorsErrorComponentCode;
+  detail: string;
+}
+
+export type EventsCreateTeamsNonFieldErrorsErrorComponentAttr =
+  (typeof EventsCreateTeamsNonFieldErrorsErrorComponentAttr)[keyof typeof EventsCreateTeamsNonFieldErrorsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsCreateTeamsNonFieldErrorsErrorComponentAttr = {
+  teamsnonFieldErrors: 'teams.non_field_errors',
+} as const;
+
+/**
+ * * `not_a_list` - not_a_list
+ * `null` - null
+ * `required` - required
+ */
+export type EventsCreateTeamsNonFieldErrorsErrorComponentCode =
+  (typeof EventsCreateTeamsNonFieldErrorsErrorComponentCode)[keyof typeof EventsCreateTeamsNonFieldErrorsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsCreateTeamsNonFieldErrorsErrorComponentCode = {
+  notAList: 'not_a_list',
+  null: 'null',
+  required: 'required',
+} as const;
+
+export interface EventsCreateTeamsNonFieldErrorsErrorComponent {
+  attr: EventsCreateTeamsNonFieldErrorsErrorComponentAttr;
+  /** * `not_a_list` - not_a_list
+   * `null` - null
+   * `required` - required */
+  code: EventsCreateTeamsNonFieldErrorsErrorComponentCode;
   detail: string;
 }
 
@@ -426,7 +565,10 @@ export type EventsPartialUpdateError =
   | EventsPartialUpdateNonFieldErrorsErrorComponent
   | EventsPartialUpdateNameErrorComponent
   | EventsPartialUpdateStartsErrorComponent
-  | EventsPartialUpdateEndsErrorComponent;
+  | EventsPartialUpdateEndsErrorComponent
+  | EventsPartialUpdateTeamsNonFieldErrorsErrorComponent
+  | EventsPartialUpdateTeamsINDEXNonFieldErrorsErrorComponent
+  | EventsPartialUpdateTeamsINDEXNameErrorComponent;
 
 export type EventsPartialUpdateErrorResponse400 =
   | EventsPartialUpdateValidationError
@@ -485,7 +627,8 @@ export const EventsPartialUpdateNonFieldErrorsErrorComponentAttr = {
 } as const;
 
 /**
- * * `invalid` - invalid
+ * * `cannot_delete_protected` - cannot_delete_protected
+ * `invalid` - invalid
  * `null` - null
  */
 export type EventsPartialUpdateNonFieldErrorsErrorComponentCode =
@@ -493,13 +636,15 @@ export type EventsPartialUpdateNonFieldErrorsErrorComponentCode =
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EventsPartialUpdateNonFieldErrorsErrorComponentCode = {
+  cannotDeleteProtected: 'cannot_delete_protected',
   invalid: 'invalid',
   null: 'null',
 } as const;
 
 export interface EventsPartialUpdateNonFieldErrorsErrorComponent {
   attr: EventsPartialUpdateNonFieldErrorsErrorComponentAttr;
-  /** * `invalid` - invalid
+  /** * `cannot_delete_protected` - cannot_delete_protected
+   * `invalid` - invalid
    * `null` - null */
   code: EventsPartialUpdateNonFieldErrorsErrorComponentCode;
   detail: string;
@@ -543,6 +688,114 @@ export interface EventsPartialUpdateStartsErrorComponent {
    * `overflow` - overflow
    * `required` - required */
   code: EventsPartialUpdateStartsErrorComponentCode;
+  detail: string;
+}
+
+export type EventsPartialUpdateTeamsINDEXNameErrorComponentAttr =
+  (typeof EventsPartialUpdateTeamsINDEXNameErrorComponentAttr)[keyof typeof EventsPartialUpdateTeamsINDEXNameErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsPartialUpdateTeamsINDEXNameErrorComponentAttr = {
+  teamsINDEXname: 'teams.INDEX.name',
+} as const;
+
+/**
+ * * `blank` - blank
+ * `invalid` - invalid
+ * `max_length` - max_length
+ * `null` - null
+ * `null_characters_not_allowed` - null_characters_not_allowed
+ * `required` - required
+ * `surrogate_characters_not_allowed` - surrogate_characters_not_allowed
+ */
+export type EventsPartialUpdateTeamsINDEXNameErrorComponentCode =
+  (typeof EventsPartialUpdateTeamsINDEXNameErrorComponentCode)[keyof typeof EventsPartialUpdateTeamsINDEXNameErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsPartialUpdateTeamsINDEXNameErrorComponentCode = {
+  blank: 'blank',
+  invalid: 'invalid',
+  maxLength: 'max_length',
+  null: 'null',
+  nullCharactersNotAllowed: 'null_characters_not_allowed',
+  required: 'required',
+  surrogateCharactersNotAllowed: 'surrogate_characters_not_allowed',
+} as const;
+
+export interface EventsPartialUpdateTeamsINDEXNameErrorComponent {
+  attr: EventsPartialUpdateTeamsINDEXNameErrorComponentAttr;
+  /** * `blank` - blank
+   * `invalid` - invalid
+   * `max_length` - max_length
+   * `null` - null
+   * `null_characters_not_allowed` - null_characters_not_allowed
+   * `required` - required
+   * `surrogate_characters_not_allowed` - surrogate_characters_not_allowed */
+  code: EventsPartialUpdateTeamsINDEXNameErrorComponentCode;
+  detail: string;
+}
+
+export type EventsPartialUpdateTeamsINDEXNonFieldErrorsErrorComponentAttr =
+  (typeof EventsPartialUpdateTeamsINDEXNonFieldErrorsErrorComponentAttr)[keyof typeof EventsPartialUpdateTeamsINDEXNonFieldErrorsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsPartialUpdateTeamsINDEXNonFieldErrorsErrorComponentAttr = {
+  teamsINDEXnonFieldErrors: 'teams.INDEX.non_field_errors',
+} as const;
+
+/**
+ * * `invalid` - invalid
+ * `null` - null
+ * `required` - required
+ */
+export type EventsPartialUpdateTeamsINDEXNonFieldErrorsErrorComponentCode =
+  (typeof EventsPartialUpdateTeamsINDEXNonFieldErrorsErrorComponentCode)[keyof typeof EventsPartialUpdateTeamsINDEXNonFieldErrorsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsPartialUpdateTeamsINDEXNonFieldErrorsErrorComponentCode = {
+  invalid: 'invalid',
+  null: 'null',
+  required: 'required',
+} as const;
+
+export interface EventsPartialUpdateTeamsINDEXNonFieldErrorsErrorComponent {
+  attr: EventsPartialUpdateTeamsINDEXNonFieldErrorsErrorComponentAttr;
+  /** * `invalid` - invalid
+   * `null` - null
+   * `required` - required */
+  code: EventsPartialUpdateTeamsINDEXNonFieldErrorsErrorComponentCode;
+  detail: string;
+}
+
+export type EventsPartialUpdateTeamsNonFieldErrorsErrorComponentAttr =
+  (typeof EventsPartialUpdateTeamsNonFieldErrorsErrorComponentAttr)[keyof typeof EventsPartialUpdateTeamsNonFieldErrorsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsPartialUpdateTeamsNonFieldErrorsErrorComponentAttr = {
+  teamsnonFieldErrors: 'teams.non_field_errors',
+} as const;
+
+/**
+ * * `not_a_list` - not_a_list
+ * `null` - null
+ * `required` - required
+ */
+export type EventsPartialUpdateTeamsNonFieldErrorsErrorComponentCode =
+  (typeof EventsPartialUpdateTeamsNonFieldErrorsErrorComponentCode)[keyof typeof EventsPartialUpdateTeamsNonFieldErrorsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsPartialUpdateTeamsNonFieldErrorsErrorComponentCode = {
+  notAList: 'not_a_list',
+  null: 'null',
+  required: 'required',
+} as const;
+
+export interface EventsPartialUpdateTeamsNonFieldErrorsErrorComponent {
+  attr: EventsPartialUpdateTeamsNonFieldErrorsErrorComponentAttr;
+  /** * `not_a_list` - not_a_list
+   * `null` - null
+   * `required` - required */
+  code: EventsPartialUpdateTeamsNonFieldErrorsErrorComponentCode;
   detail: string;
 }
 
@@ -606,7 +859,10 @@ export type EventsUpdateError =
   | EventsUpdateNonFieldErrorsErrorComponent
   | EventsUpdateNameErrorComponent
   | EventsUpdateStartsErrorComponent
-  | EventsUpdateEndsErrorComponent;
+  | EventsUpdateEndsErrorComponent
+  | EventsUpdateTeamsNonFieldErrorsErrorComponent
+  | EventsUpdateTeamsINDEXNonFieldErrorsErrorComponent
+  | EventsUpdateTeamsINDEXNameErrorComponent;
 
 export type EventsUpdateErrorResponse400 = EventsUpdateValidationError | ParseErrorResponse;
 
@@ -663,7 +919,8 @@ export const EventsUpdateNonFieldErrorsErrorComponentAttr = {
 } as const;
 
 /**
- * * `invalid` - invalid
+ * * `cannot_delete_protected` - cannot_delete_protected
+ * `invalid` - invalid
  * `null` - null
  */
 export type EventsUpdateNonFieldErrorsErrorComponentCode =
@@ -671,13 +928,15 @@ export type EventsUpdateNonFieldErrorsErrorComponentCode =
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EventsUpdateNonFieldErrorsErrorComponentCode = {
+  cannotDeleteProtected: 'cannot_delete_protected',
   invalid: 'invalid',
   null: 'null',
 } as const;
 
 export interface EventsUpdateNonFieldErrorsErrorComponent {
   attr: EventsUpdateNonFieldErrorsErrorComponentAttr;
-  /** * `invalid` - invalid
+  /** * `cannot_delete_protected` - cannot_delete_protected
+   * `invalid` - invalid
    * `null` - null */
   code: EventsUpdateNonFieldErrorsErrorComponentCode;
   detail: string;
@@ -721,6 +980,114 @@ export interface EventsUpdateStartsErrorComponent {
    * `overflow` - overflow
    * `required` - required */
   code: EventsUpdateStartsErrorComponentCode;
+  detail: string;
+}
+
+export type EventsUpdateTeamsINDEXNameErrorComponentAttr =
+  (typeof EventsUpdateTeamsINDEXNameErrorComponentAttr)[keyof typeof EventsUpdateTeamsINDEXNameErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsUpdateTeamsINDEXNameErrorComponentAttr = {
+  teamsINDEXname: 'teams.INDEX.name',
+} as const;
+
+/**
+ * * `blank` - blank
+ * `invalid` - invalid
+ * `max_length` - max_length
+ * `null` - null
+ * `null_characters_not_allowed` - null_characters_not_allowed
+ * `required` - required
+ * `surrogate_characters_not_allowed` - surrogate_characters_not_allowed
+ */
+export type EventsUpdateTeamsINDEXNameErrorComponentCode =
+  (typeof EventsUpdateTeamsINDEXNameErrorComponentCode)[keyof typeof EventsUpdateTeamsINDEXNameErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsUpdateTeamsINDEXNameErrorComponentCode = {
+  blank: 'blank',
+  invalid: 'invalid',
+  maxLength: 'max_length',
+  null: 'null',
+  nullCharactersNotAllowed: 'null_characters_not_allowed',
+  required: 'required',
+  surrogateCharactersNotAllowed: 'surrogate_characters_not_allowed',
+} as const;
+
+export interface EventsUpdateTeamsINDEXNameErrorComponent {
+  attr: EventsUpdateTeamsINDEXNameErrorComponentAttr;
+  /** * `blank` - blank
+   * `invalid` - invalid
+   * `max_length` - max_length
+   * `null` - null
+   * `null_characters_not_allowed` - null_characters_not_allowed
+   * `required` - required
+   * `surrogate_characters_not_allowed` - surrogate_characters_not_allowed */
+  code: EventsUpdateTeamsINDEXNameErrorComponentCode;
+  detail: string;
+}
+
+export type EventsUpdateTeamsINDEXNonFieldErrorsErrorComponentAttr =
+  (typeof EventsUpdateTeamsINDEXNonFieldErrorsErrorComponentAttr)[keyof typeof EventsUpdateTeamsINDEXNonFieldErrorsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsUpdateTeamsINDEXNonFieldErrorsErrorComponentAttr = {
+  teamsINDEXnonFieldErrors: 'teams.INDEX.non_field_errors',
+} as const;
+
+/**
+ * * `invalid` - invalid
+ * `null` - null
+ * `required` - required
+ */
+export type EventsUpdateTeamsINDEXNonFieldErrorsErrorComponentCode =
+  (typeof EventsUpdateTeamsINDEXNonFieldErrorsErrorComponentCode)[keyof typeof EventsUpdateTeamsINDEXNonFieldErrorsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsUpdateTeamsINDEXNonFieldErrorsErrorComponentCode = {
+  invalid: 'invalid',
+  null: 'null',
+  required: 'required',
+} as const;
+
+export interface EventsUpdateTeamsINDEXNonFieldErrorsErrorComponent {
+  attr: EventsUpdateTeamsINDEXNonFieldErrorsErrorComponentAttr;
+  /** * `invalid` - invalid
+   * `null` - null
+   * `required` - required */
+  code: EventsUpdateTeamsINDEXNonFieldErrorsErrorComponentCode;
+  detail: string;
+}
+
+export type EventsUpdateTeamsNonFieldErrorsErrorComponentAttr =
+  (typeof EventsUpdateTeamsNonFieldErrorsErrorComponentAttr)[keyof typeof EventsUpdateTeamsNonFieldErrorsErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsUpdateTeamsNonFieldErrorsErrorComponentAttr = {
+  teamsnonFieldErrors: 'teams.non_field_errors',
+} as const;
+
+/**
+ * * `not_a_list` - not_a_list
+ * `null` - null
+ * `required` - required
+ */
+export type EventsUpdateTeamsNonFieldErrorsErrorComponentCode =
+  (typeof EventsUpdateTeamsNonFieldErrorsErrorComponentCode)[keyof typeof EventsUpdateTeamsNonFieldErrorsErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsUpdateTeamsNonFieldErrorsErrorComponentCode = {
+  notAList: 'not_a_list',
+  null: 'null',
+  required: 'required',
+} as const;
+
+export interface EventsUpdateTeamsNonFieldErrorsErrorComponent {
+  attr: EventsUpdateTeamsNonFieldErrorsErrorComponentAttr;
+  /** * `not_a_list` - not_a_list
+   * `null` - null
+   * `required` - required */
+  code: EventsUpdateTeamsNonFieldErrorsErrorComponentCode;
   detail: string;
 }
 
@@ -794,7 +1161,10 @@ export interface ParseErrorResponse {
   errors: ParseError[];
 }
 
-export interface PatchedEventRequest {
+/**
+ * Adds nested create feature
+ */
+export interface PatchedEventWriteRequest {
   /**
    * @minLength 1
    * @maxLength 50
@@ -802,6 +1172,7 @@ export interface PatchedEventRequest {
   name?: string;
   starts?: string;
   ends?: string;
+  teams?: TeamNestedWriteRequest[];
 }
 
 /**
@@ -1458,7 +1829,21 @@ export interface Team {
   readonly id: number;
   /** @maxLength 50 */
   name: string;
-  event: Event;
+  event: BaseEvent;
+}
+
+export interface TeamNestedWrite {
+  readonly id: number;
+  /** @maxLength 50 */
+  name: string;
+}
+
+export interface TeamNestedWriteRequest {
+  /**
+   * @minLength 1
+   * @maxLength 50
+   */
+  name: string;
 }
 
 export interface TeamWrite {
@@ -2204,16 +2589,16 @@ export function useEventsList<
 }
 
 export const eventsCreate = (
-  eventRequest: BodyType<EventRequest>,
+  eventWriteRequest: BodyType<EventWriteRequest>,
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
-  return customInstance<Event>(
+  return customInstance<EventWrite>(
     {
       url: `/api/events/`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      data: eventRequest,
+      data: eventWriteRequest,
       signal,
     },
     options,
@@ -2235,14 +2620,14 @@ export const getEventsCreateMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof eventsCreate>>,
     TError,
-    { data: BodyType<EventRequest> },
+    { data: BodyType<EventWriteRequest> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof eventsCreate>>,
   TError,
-  { data: BodyType<EventRequest> },
+  { data: BodyType<EventWriteRequest> },
   TContext
 > => {
   const mutationKey = ['eventsCreate'];
@@ -2255,7 +2640,7 @@ export const getEventsCreateMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof eventsCreate>>,
-    { data: BodyType<EventRequest> }
+    { data: BodyType<EventWriteRequest> }
   > = props => {
     const { data } = props ?? {};
 
@@ -2266,7 +2651,7 @@ export const getEventsCreateMutationOptions = <
 };
 
 export type EventsCreateMutationResult = NonNullable<Awaited<ReturnType<typeof eventsCreate>>>;
-export type EventsCreateMutationBody = BodyType<EventRequest>;
+export type EventsCreateMutationBody = BodyType<EventWriteRequest>;
 export type EventsCreateMutationError = ErrorType<
   | EventsCreateErrorResponse400
   | ErrorResponse403
@@ -2293,7 +2678,7 @@ export const useEventsCreate = <
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof eventsCreate>>,
       TError,
-      { data: BodyType<EventRequest> },
+      { data: BodyType<EventWriteRequest> },
       TContext
     >;
     request?: SecondParameter<typeof customInstance>;
@@ -2302,7 +2687,7 @@ export const useEventsCreate = <
 ): UseMutationResult<
   Awaited<ReturnType<typeof eventsCreate>>,
   TError,
-  { data: BodyType<EventRequest> },
+  { data: BodyType<EventWriteRequest> },
   TContext
 > => {
   const mutationOptions = getEventsCreateMutationOptions(options);
@@ -2471,15 +2856,15 @@ export function useEventsRetrieve<
 
 export const eventsUpdate = (
   id: number,
-  eventRequest: BodyType<EventRequest>,
+  eventWriteRequest: BodyType<EventWriteRequest>,
   options?: SecondParameter<typeof customInstance>,
 ) => {
-  return customInstance<Event>(
+  return customInstance<EventWrite>(
     {
       url: `/api/events/${id}/`,
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      data: eventRequest,
+      data: eventWriteRequest,
     },
     options,
   );
@@ -2500,14 +2885,14 @@ export const getEventsUpdateMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof eventsUpdate>>,
     TError,
-    { id: number; data: BodyType<EventRequest> },
+    { id: number; data: BodyType<EventWriteRequest> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof eventsUpdate>>,
   TError,
-  { id: number; data: BodyType<EventRequest> },
+  { id: number; data: BodyType<EventWriteRequest> },
   TContext
 > => {
   const mutationKey = ['eventsUpdate'];
@@ -2520,7 +2905,7 @@ export const getEventsUpdateMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof eventsUpdate>>,
-    { id: number; data: BodyType<EventRequest> }
+    { id: number; data: BodyType<EventWriteRequest> }
   > = props => {
     const { id, data } = props ?? {};
 
@@ -2531,7 +2916,7 @@ export const getEventsUpdateMutationOptions = <
 };
 
 export type EventsUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof eventsUpdate>>>;
-export type EventsUpdateMutationBody = BodyType<EventRequest>;
+export type EventsUpdateMutationBody = BodyType<EventWriteRequest>;
 export type EventsUpdateMutationError = ErrorType<
   | EventsUpdateErrorResponse400
   | ErrorResponse403
@@ -2558,7 +2943,7 @@ export const useEventsUpdate = <
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof eventsUpdate>>,
       TError,
-      { id: number; data: BodyType<EventRequest> },
+      { id: number; data: BodyType<EventWriteRequest> },
       TContext
     >;
     request?: SecondParameter<typeof customInstance>;
@@ -2567,7 +2952,7 @@ export const useEventsUpdate = <
 ): UseMutationResult<
   Awaited<ReturnType<typeof eventsUpdate>>,
   TError,
-  { id: number; data: BodyType<EventRequest> },
+  { id: number; data: BodyType<EventWriteRequest> },
   TContext
 > => {
   const mutationOptions = getEventsUpdateMutationOptions(options);
@@ -2577,15 +2962,15 @@ export const useEventsUpdate = <
 
 export const eventsPartialUpdate = (
   id: number,
-  patchedEventRequest: BodyType<PatchedEventRequest>,
+  patchedEventWriteRequest: BodyType<PatchedEventWriteRequest>,
   options?: SecondParameter<typeof customInstance>,
 ) => {
-  return customInstance<Event>(
+  return customInstance<EventWrite>(
     {
       url: `/api/events/${id}/`,
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      data: patchedEventRequest,
+      data: patchedEventWriteRequest,
     },
     options,
   );
@@ -2606,14 +2991,14 @@ export const getEventsPartialUpdateMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof eventsPartialUpdate>>,
     TError,
-    { id: number; data: BodyType<PatchedEventRequest> },
+    { id: number; data: BodyType<PatchedEventWriteRequest> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof eventsPartialUpdate>>,
   TError,
-  { id: number; data: BodyType<PatchedEventRequest> },
+  { id: number; data: BodyType<PatchedEventWriteRequest> },
   TContext
 > => {
   const mutationKey = ['eventsPartialUpdate'];
@@ -2626,7 +3011,7 @@ export const getEventsPartialUpdateMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof eventsPartialUpdate>>,
-    { id: number; data: BodyType<PatchedEventRequest> }
+    { id: number; data: BodyType<PatchedEventWriteRequest> }
   > = props => {
     const { id, data } = props ?? {};
 
@@ -2639,7 +3024,7 @@ export const getEventsPartialUpdateMutationOptions = <
 export type EventsPartialUpdateMutationResult = NonNullable<
   Awaited<ReturnType<typeof eventsPartialUpdate>>
 >;
-export type EventsPartialUpdateMutationBody = BodyType<PatchedEventRequest>;
+export type EventsPartialUpdateMutationBody = BodyType<PatchedEventWriteRequest>;
 export type EventsPartialUpdateMutationError = ErrorType<
   | EventsPartialUpdateErrorResponse400
   | ErrorResponse403
@@ -2666,7 +3051,7 @@ export const useEventsPartialUpdate = <
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof eventsPartialUpdate>>,
       TError,
-      { id: number; data: BodyType<PatchedEventRequest> },
+      { id: number; data: BodyType<PatchedEventWriteRequest> },
       TContext
     >;
     request?: SecondParameter<typeof customInstance>;
@@ -2675,7 +3060,7 @@ export const useEventsPartialUpdate = <
 ): UseMutationResult<
   Awaited<ReturnType<typeof eventsPartialUpdate>>,
   TError,
-  { id: number; data: BodyType<PatchedEventRequest> },
+  { id: number; data: BodyType<PatchedEventWriteRequest> },
   TContext
 > => {
   const mutationOptions = getEventsPartialUpdateMutationOptions(options);

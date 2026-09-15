@@ -19,8 +19,7 @@ export default function useGetProfile(profileId?: number | 'me') {
   const byIdQuery = useProfilesRetrieve(id, { query: { enabled: !isMe && !isNaN(id) } });
 
   const profileQuery = isMe ? meQuery : byIdQuery;
-  const profile =
-    profileQuery.isSuccess && !profileQuery.isFetching ? profileQuery.data : undefined;
+  const profile = profileQuery.data;
 
   return profile;
 }

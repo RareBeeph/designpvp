@@ -1,5 +1,5 @@
+import ProfilePicture from './Picture';
 import { defaultStackSpacing, paddingExemptClassName } from '@/app/providers';
-import { AccountCircle as UserIcon } from '@mui/icons-material';
 import { Box, BoxProps, Paper, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 
@@ -45,14 +45,7 @@ export default function ProfileUserDisplay({
           sx={{ flex: '1', ...pfpSizeLimits, overflow: 'hidden' }}
           elevation={0} /* for color */
         >
-          {profile?.avatar ?
-            <Box
-              component="img"
-              src={profile.avatar}
-              alt={`${profile.user.username}'s avatar`}
-              sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-            />
-          : <UserIcon sx={{ width: '100%', height: '100%' }} />}
+          <ProfilePicture profileId={profileId} />
         </Paper>
         <Stack direction="column" sx={{ flex: 4 }}>
           <Typography variant="h6">{profile?.user.username ?? 'n/a'}</Typography>

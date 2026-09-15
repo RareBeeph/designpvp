@@ -15,8 +15,9 @@ export default function ProfilePicture({
         src={profile.avatar}
         alt={`${profile.user.username}'s avatar`}
         {...props}
+        sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', ...props.sx }}
       />
     : <Box {...props}>
-        <UserIcon sx={{ width: '100%', height: '100%' }} />
+        <UserIcon sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
       </Box>;
 }
