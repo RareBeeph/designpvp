@@ -209,7 +209,7 @@ export interface EventWrite {
   name: string;
   starts: string;
   ends: string;
-  teams: TeamNestedWrite[];
+  teams?: TeamNestedWrite[];
 }
 
 /**
@@ -223,7 +223,7 @@ export interface EventWriteRequest {
   name: string;
   starts: string;
   ends: string;
-  teams: TeamNestedWriteRequest[];
+  teams?: TeamNestedWriteRequest[];
 }
 
 export type EventsCreateEndsErrorComponentAttr =
@@ -450,7 +450,6 @@ export const EventsCreateTeamsINDEXNonFieldErrorsErrorComponentAttr = {
 /**
  * * `invalid` - invalid
  * `null` - null
- * `required` - required
  */
 export type EventsCreateTeamsINDEXNonFieldErrorsErrorComponentCode =
   (typeof EventsCreateTeamsINDEXNonFieldErrorsErrorComponentCode)[keyof typeof EventsCreateTeamsINDEXNonFieldErrorsErrorComponentCode];
@@ -459,14 +458,12 @@ export type EventsCreateTeamsINDEXNonFieldErrorsErrorComponentCode =
 export const EventsCreateTeamsINDEXNonFieldErrorsErrorComponentCode = {
   invalid: 'invalid',
   null: 'null',
-  required: 'required',
 } as const;
 
 export interface EventsCreateTeamsINDEXNonFieldErrorsErrorComponent {
   attr: EventsCreateTeamsINDEXNonFieldErrorsErrorComponentAttr;
   /** * `invalid` - invalid
-   * `null` - null
-   * `required` - required */
+   * `null` - null */
   code: EventsCreateTeamsINDEXNonFieldErrorsErrorComponentCode;
   detail: string;
 }
@@ -482,7 +479,6 @@ export const EventsCreateTeamsNonFieldErrorsErrorComponentAttr = {
 /**
  * * `not_a_list` - not_a_list
  * `null` - null
- * `required` - required
  */
 export type EventsCreateTeamsNonFieldErrorsErrorComponentCode =
   (typeof EventsCreateTeamsNonFieldErrorsErrorComponentCode)[keyof typeof EventsCreateTeamsNonFieldErrorsErrorComponentCode];
@@ -491,14 +487,12 @@ export type EventsCreateTeamsNonFieldErrorsErrorComponentCode =
 export const EventsCreateTeamsNonFieldErrorsErrorComponentCode = {
   notAList: 'not_a_list',
   null: 'null',
-  required: 'required',
 } as const;
 
 export interface EventsCreateTeamsNonFieldErrorsErrorComponent {
   attr: EventsCreateTeamsNonFieldErrorsErrorComponentAttr;
   /** * `not_a_list` - not_a_list
-   * `null` - null
-   * `required` - required */
+   * `null` - null */
   code: EventsCreateTeamsNonFieldErrorsErrorComponentCode;
   detail: string;
 }
@@ -746,7 +740,6 @@ export const EventsPartialUpdateTeamsINDEXNonFieldErrorsErrorComponentAttr = {
 /**
  * * `invalid` - invalid
  * `null` - null
- * `required` - required
  */
 export type EventsPartialUpdateTeamsINDEXNonFieldErrorsErrorComponentCode =
   (typeof EventsPartialUpdateTeamsINDEXNonFieldErrorsErrorComponentCode)[keyof typeof EventsPartialUpdateTeamsINDEXNonFieldErrorsErrorComponentCode];
@@ -755,14 +748,12 @@ export type EventsPartialUpdateTeamsINDEXNonFieldErrorsErrorComponentCode =
 export const EventsPartialUpdateTeamsINDEXNonFieldErrorsErrorComponentCode = {
   invalid: 'invalid',
   null: 'null',
-  required: 'required',
 } as const;
 
 export interface EventsPartialUpdateTeamsINDEXNonFieldErrorsErrorComponent {
   attr: EventsPartialUpdateTeamsINDEXNonFieldErrorsErrorComponentAttr;
   /** * `invalid` - invalid
-   * `null` - null
-   * `required` - required */
+   * `null` - null */
   code: EventsPartialUpdateTeamsINDEXNonFieldErrorsErrorComponentCode;
   detail: string;
 }
@@ -778,7 +769,6 @@ export const EventsPartialUpdateTeamsNonFieldErrorsErrorComponentAttr = {
 /**
  * * `not_a_list` - not_a_list
  * `null` - null
- * `required` - required
  */
 export type EventsPartialUpdateTeamsNonFieldErrorsErrorComponentCode =
   (typeof EventsPartialUpdateTeamsNonFieldErrorsErrorComponentCode)[keyof typeof EventsPartialUpdateTeamsNonFieldErrorsErrorComponentCode];
@@ -787,14 +777,12 @@ export type EventsPartialUpdateTeamsNonFieldErrorsErrorComponentCode =
 export const EventsPartialUpdateTeamsNonFieldErrorsErrorComponentCode = {
   notAList: 'not_a_list',
   null: 'null',
-  required: 'required',
 } as const;
 
 export interface EventsPartialUpdateTeamsNonFieldErrorsErrorComponent {
   attr: EventsPartialUpdateTeamsNonFieldErrorsErrorComponentAttr;
   /** * `not_a_list` - not_a_list
-   * `null` - null
-   * `required` - required */
+   * `null` - null */
   code: EventsPartialUpdateTeamsNonFieldErrorsErrorComponentCode;
   detail: string;
 }
@@ -1038,7 +1026,6 @@ export const EventsUpdateTeamsINDEXNonFieldErrorsErrorComponentAttr = {
 /**
  * * `invalid` - invalid
  * `null` - null
- * `required` - required
  */
 export type EventsUpdateTeamsINDEXNonFieldErrorsErrorComponentCode =
   (typeof EventsUpdateTeamsINDEXNonFieldErrorsErrorComponentCode)[keyof typeof EventsUpdateTeamsINDEXNonFieldErrorsErrorComponentCode];
@@ -1047,14 +1034,12 @@ export type EventsUpdateTeamsINDEXNonFieldErrorsErrorComponentCode =
 export const EventsUpdateTeamsINDEXNonFieldErrorsErrorComponentCode = {
   invalid: 'invalid',
   null: 'null',
-  required: 'required',
 } as const;
 
 export interface EventsUpdateTeamsINDEXNonFieldErrorsErrorComponent {
   attr: EventsUpdateTeamsINDEXNonFieldErrorsErrorComponentAttr;
   /** * `invalid` - invalid
-   * `null` - null
-   * `required` - required */
+   * `null` - null */
   code: EventsUpdateTeamsINDEXNonFieldErrorsErrorComponentCode;
   detail: string;
 }
@@ -1070,7 +1055,6 @@ export const EventsUpdateTeamsNonFieldErrorsErrorComponentAttr = {
 /**
  * * `not_a_list` - not_a_list
  * `null` - null
- * `required` - required
  */
 export type EventsUpdateTeamsNonFieldErrorsErrorComponentCode =
   (typeof EventsUpdateTeamsNonFieldErrorsErrorComponentCode)[keyof typeof EventsUpdateTeamsNonFieldErrorsErrorComponentCode];
@@ -1079,14 +1063,12 @@ export type EventsUpdateTeamsNonFieldErrorsErrorComponentCode =
 export const EventsUpdateTeamsNonFieldErrorsErrorComponentCode = {
   notAList: 'not_a_list',
   null: 'null',
-  required: 'required',
 } as const;
 
 export interface EventsUpdateTeamsNonFieldErrorsErrorComponent {
   attr: EventsUpdateTeamsNonFieldErrorsErrorComponentAttr;
   /** * `not_a_list` - not_a_list
-   * `null` - null
-   * `required` - required */
+   * `null` - null */
   code: EventsUpdateTeamsNonFieldErrorsErrorComponentCode;
   detail: string;
 }

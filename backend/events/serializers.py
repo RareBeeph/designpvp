@@ -39,7 +39,7 @@ class EventSerializer(BaseEventSerializer):
 
 
 class EventWriteSerializer(WritableNestedModelSerializer):
-    teams = TeamNestedWriteSerializer(many=True)
+    teams = TeamNestedWriteSerializer(many=True, default=[])
 
     class Meta(BaseEventSerializer.Meta):
         fields = BaseEventSerializer.Meta.fields + ["teams"]
