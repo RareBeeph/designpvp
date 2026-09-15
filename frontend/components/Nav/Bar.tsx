@@ -41,7 +41,7 @@ export default function NavBar() {
           {!breakpoint.isXS && <NavUserDisplay />}
         </Toolbar>
       </AppBar>
-      <NavDrawer open={drawerOpen} onClose={handleDrawerToggle} {...{ breadcrumbs }} />
+      <NavDrawer open={drawerOpen} onClose={handleDrawerToggle} breadcrumbs={breadcrumbs} />
     </Box>
   );
 }

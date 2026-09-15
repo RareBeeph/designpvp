@@ -143,6 +143,44 @@ const eslintConfig = [
           message:
             'This prop is written before {...props}, so a caller-supplied value silently replaces it. Put {...props} first.',
         },
+
+        // `[...[a, b]]` and `f(...[a, b])` build a throwaway array only to unpack it
+        // again. Write the elements or the arguments directly
+        {
+          selector: 'SpreadElement > ArrayExpression',
+          message: 'Spreading an array literal does nothing. Write the elements directly.',
+        },
+
+        // Same for `{ ...{ a: 1 } }`. A conditional spread (`...(cond ? { a } : {})`)
+        // is not matched, because the spread argument there is the ternary
+        {
+          selector: 'SpreadElement > ObjectExpression',
+          message: 'Spreading an object literal does nothing. Write the properties directly.',
+        },
+
+        // JSX spread is a separate node type, so the rule above does not reach
+        // `<C {...{ foo }} />`. That is just `foo={foo}` with extra steps
+        {
+          selector: 'JSXSpreadAttribute > ObjectExpression',
+          message: 'Spreading an object literal into JSX does nothing. Write the props directly.',
+        },
+
+        // `[...xs.map(f)]` re-copies an array that was already fresh. Restricted to a
+        // sole element, since `[x, ...xs.map(f)]` is real concatenation. Iterator
+        // methods (`set.values()`, `map.keys()`) are deliberately absent - spreading
+        // those is how you get an array out of them
+        {
+          selector:
+            'ArrayExpression[elements.length=1] > SpreadElement > CallExpression[callee.property.name=/^(map|filter|flatMap|slice|concat|toSorted|toReversed|toSpliced|split)$/]',
+          message:
+            'This call already returns a new array, so the spread and the surrounding [] do nothing. Use the call on its own.',
+        },
+        {
+          selector:
+            'ArrayExpression[elements.length=1] > SpreadElement > CallExpression[callee.object.name=/^(Object|Array)$/][callee.property.name=/^(keys|values|entries|from)$/]',
+          message:
+            'This call already returns a new array, so the spread and the surrounding [] do nothing. Use the call on its own.',
+        },
       ],
       'react/jsx-filename-extension': [1, { extensions: ['.jsx', '.tsx'] }],
       'prettier/prettier': 'error',

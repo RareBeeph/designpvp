@@ -86,37 +86,35 @@ const EventsConfig: TableConfig<Event, EventWriteRequest, EventValues, EventWrit
           name="teams"
           render={arrayHelpers =>
             values.teams.length > 0 ?
-              [
-                ...values.teams.map((_team, idx) => (
-                  <Accordion expanded={expanded === idx} onChange={handleChange(idx)} key={idx}>
-                    <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-                      <Typography component="span">{`Team #${idx + 1}`}</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <StyledTextField name={`teams.${idx}.name`} />
-                      <Stack direction="row">
-                        <Padding flex={1} />
-                        <StyledButton
-                          onClick={() => {
-                            arrayHelpers.remove(idx);
-                          }}
-                        >
-                          Remove Team
-                        </StyledButton>
-                        <StyledButton
-                          onClick={event => {
-                            arrayHelpers.insert(idx, '');
-                            handleChange(idx + 1)(event, true);
-                          }}
-                        >
-                          Add Team After
-                        </StyledButton>
-                        <Padding flex={1} />
-                      </Stack>
-                    </AccordionDetails>
-                  </Accordion>
-                )),
-              ]
+              values.teams.map((_team, idx) => (
+                <Accordion expanded={expanded === idx} onChange={handleChange(idx)} key={idx}>
+                  <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
+                    <Typography component="span">{`Team #${idx + 1}`}</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <StyledTextField name={`teams.${idx}.name`} />
+                    <Stack direction="row">
+                      <Padding flex={1} />
+                      <StyledButton
+                        onClick={() => {
+                          arrayHelpers.remove(idx);
+                        }}
+                      >
+                        Remove Team
+                      </StyledButton>
+                      <StyledButton
+                        onClick={event => {
+                          arrayHelpers.insert(idx, '');
+                          handleChange(idx + 1)(event, true);
+                        }}
+                      >
+                        Add Team After
+                      </StyledButton>
+                      <Padding flex={1} />
+                    </Stack>
+                  </AccordionDetails>
+                </Accordion>
+              ))
             : <Stack direction="row">
                 <Padding flex={1} />
                 <StyledButton
