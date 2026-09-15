@@ -134,12 +134,14 @@ const EventsConfig: TableConfig<Event, EventWriteRequest, EventValues, EventWrit
       </StyledForm>
     );
   },
-  initialValues: instance => ({
-    name: instance?.name ?? '',
-    starts: dayjs(instance?.starts ?? ''),
-    ends: dayjs(instance?.ends ?? ''),
-    teams: [],
-  }),
+  initialValues: instance => {
+    return {
+      name: instance?.name ?? '',
+      starts: dayjs(instance?.starts ?? ''),
+      ends: dayjs(instance?.ends ?? ''),
+      teams: instance?.teams ?? [],
+    };
+  },
   dataManagerForm: props => <DataManagerForm config={EventsConfig} {...props} />,
 };
 
