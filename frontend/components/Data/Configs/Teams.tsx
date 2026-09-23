@@ -1,8 +1,8 @@
 import { FormFieldProps, PrimaryKeyOption, TableConfig } from './types';
 import {
-  Team,
-  TeamWrite,
-  TeamWriteRequest,
+  TeamUnnested,
+  TeamUnnestedWrite,
+  TeamUnnestedWriteRequest,
   getTeamsListQueryKey,
   getTeamsRetrieveQueryKey,
   useEventsList,
@@ -23,7 +23,12 @@ interface TeamValues {
   event: PrimaryKeyOption;
 }
 
-const TeamsConfig: TableConfig<Team, TeamWriteRequest, TeamValues, TeamWrite> = {
+const TeamsConfig: TableConfig<
+  TeamUnnested,
+  TeamUnnestedWriteRequest,
+  TeamValues,
+  TeamUnnestedWrite
+> = {
   name: 'teams',
   columns: [
     { accessorKey: 'id', header: 'ID', size: 0, grow: true },

@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 from backend.fields import BulkPrimaryKeyRelatedField
 from events.models import Team
-from events.serializers import TeamSerializer
+from events.serializers import TeamUnnestedSerializer
 
 from .models import Profile
 
@@ -40,4 +40,4 @@ class ProfileSelfWriteSerializer(BaseProfileSerializer):
 
 class ProfileSerializer(BaseProfileSerializer):
     user = DjangoUserSerializer()
-    teams = TeamSerializer(many=True)
+    teams = TeamUnnestedSerializer(many=True)

@@ -24,14 +24,6 @@ import type {
 import { customInstance } from './mutator/custom-instance';
 import type { BodyType, ErrorType } from './mutator/custom-instance';
 
-export interface BaseEvent {
-  readonly id: number;
-  /** @maxLength 50 */
-  name: string;
-  starts: string;
-  ends: string;
-}
-
 /**
  * * `client_error` - Client Error
  */
@@ -191,17 +183,31 @@ export interface ErrorResponse500 {
   errors: Error500[];
 }
 
-export interface Event {
+/**
+ * Serializes an event, sans relations (forward or reverse)
+ */
+export interface EventNested {
   readonly id: number;
   /** @maxLength 50 */
   name: string;
   starts: string;
   ends: string;
-  teams: Team[];
 }
 
 /**
- * Adds nested create feature
+ * Includes the event's teams as nested objects for more informative reads.
+ */
+export interface EventUnnested {
+  readonly id: number;
+  /** @maxLength 50 */
+  name: string;
+  starts: string;
+  ends: string;
+  teams: TeamNested[];
+}
+
+/**
+ * Includes the event's teams as nested objects, to allow them to be created or updated during writes.
  */
 export interface EventWrite {
   readonly id: number;
@@ -213,7 +219,7 @@ export interface EventWrite {
 }
 
 /**
- * Adds nested create feature
+ * Includes the event's teams as nested objects, to allow them to be created or updated during writes.
  */
 export interface EventWriteRequest {
   /**
@@ -1086,13 +1092,13 @@ export interface EventsUpdateValidationError {
   errors: EventsUpdateError[];
 }
 
-export interface PaginatedEventList {
+export interface PaginatedEventUnnestedList {
   count: number;
   /** @nullable */
   next?: string | null;
   /** @nullable */
   previous?: string | null;
-  results: Event[];
+  results: EventUnnested[];
 }
 
 export interface PaginatedProfileList {
@@ -1104,13 +1110,13 @@ export interface PaginatedProfileList {
   results: Profile[];
 }
 
-export interface PaginatedTeamList {
+export interface PaginatedTeamUnnestedList {
   count: number;
   /** @nullable */
   next?: string | null;
   /** @nullable */
   previous?: string | null;
-  results: Team[];
+  results: TeamUnnested[];
 }
 
 export interface ParseError {
@@ -1144,7 +1150,7 @@ export interface ParseErrorResponse {
 }
 
 /**
- * Adds nested create feature
+ * Includes the event's teams as nested objects, to allow them to be created or updated during writes.
  */
 export interface PatchedEventWriteRequest {
   /**
@@ -1179,7 +1185,10 @@ export interface PatchedProfileWriteRequest {
   avatar?: Blob | null;
 }
 
-export interface PatchedTeamWriteRequest {
+/**
+ * Includes the team's event as a primary key for easier selection during writes.
+ */
+export interface PatchedTeamUnnestedWriteRequest {
   /**
    * @minLength 1
    * @maxLength 50
@@ -1191,7 +1200,7 @@ export interface PatchedTeamWriteRequest {
 export interface Profile {
   readonly id: number;
   user: DjangoUser;
-  teams: Team[];
+  teams: TeamUnnested[];
   /** @nullable */
   avatar?: string | null;
 }
@@ -1807,19 +1816,27 @@ export const ServerErrorEnum = {
   serverError: 'server_error',
 } as const;
 
-export interface Team {
+/**
+ * Serializes a team, sans relations (forward or reverse)
+ */
+export interface TeamNested {
   readonly id: number;
   /** @maxLength 50 */
   name: string;
-  event: BaseEvent;
 }
 
+/**
+ * Allows the team's id to be specified to avoid recreating it during a nested write.
+ */
 export interface TeamNestedWrite {
   readonly id: number;
   /** @maxLength 50 */
   name: string;
 }
 
+/**
+ * Allows the team's id to be specified to avoid recreating it during a nested write.
+ */
 export interface TeamNestedWriteRequest {
   /**
    * @minLength 1
@@ -1828,14 +1845,30 @@ export interface TeamNestedWriteRequest {
   name: string;
 }
 
-export interface TeamWrite {
+/**
+ * Includes the team's event as a nested object for more informative reads.
+ */
+export interface TeamUnnested {
+  readonly id: number;
+  /** @maxLength 50 */
+  name: string;
+  event: EventNested;
+}
+
+/**
+ * Includes the team's event as a primary key for easier selection during writes.
+ */
+export interface TeamUnnestedWrite {
   readonly id: number;
   /** @maxLength 50 */
   name: string;
   event: number;
 }
 
-export interface TeamWriteRequest {
+/**
+ * Includes the team's event as a primary key for easier selection during writes.
+ */
+export interface TeamUnnestedWriteRequest {
   /**
    * @minLength 1
    * @maxLength 50
@@ -2413,7 +2446,7 @@ export const eventsList = (
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
-  return customInstance<PaginatedEventList>(
+  return customInstance<PaginatedEventUnnestedList>(
     { url: `/api/events/`, method: 'GET', params, signal },
     options,
   );
@@ -2682,7 +2715,10 @@ export const eventsRetrieve = (
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
-  return customInstance<Event>({ url: `/api/events/${id}/`, method: 'GET', signal }, options);
+  return customInstance<EventUnnested>(
+    { url: `/api/events/${id}/`, method: 'GET', signal },
+    options,
+  );
 };
 
 export const getEventsRetrieveQueryKey = (id?: number) => {
@@ -4185,7 +4221,7 @@ export const teamsList = (
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
-  return customInstance<PaginatedTeamList>(
+  return customInstance<PaginatedTeamUnnestedList>(
     { url: `/api/teams/`, method: 'GET', params, signal },
     options,
   );
@@ -4343,16 +4379,16 @@ export function useTeamsList<
 }
 
 export const teamsCreate = (
-  teamWriteRequest: BodyType<TeamWriteRequest>,
+  teamUnnestedWriteRequest: BodyType<TeamUnnestedWriteRequest>,
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
-  return customInstance<TeamWrite>(
+  return customInstance<TeamUnnestedWrite>(
     {
       url: `/api/teams/`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      data: teamWriteRequest,
+      data: teamUnnestedWriteRequest,
       signal,
     },
     options,
@@ -4374,14 +4410,14 @@ export const getTeamsCreateMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof teamsCreate>>,
     TError,
-    { data: BodyType<TeamWriteRequest> },
+    { data: BodyType<TeamUnnestedWriteRequest> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof teamsCreate>>,
   TError,
-  { data: BodyType<TeamWriteRequest> },
+  { data: BodyType<TeamUnnestedWriteRequest> },
   TContext
 > => {
   const mutationKey = ['teamsCreate'];
@@ -4394,7 +4430,7 @@ export const getTeamsCreateMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof teamsCreate>>,
-    { data: BodyType<TeamWriteRequest> }
+    { data: BodyType<TeamUnnestedWriteRequest> }
   > = props => {
     const { data } = props ?? {};
 
@@ -4405,7 +4441,7 @@ export const getTeamsCreateMutationOptions = <
 };
 
 export type TeamsCreateMutationResult = NonNullable<Awaited<ReturnType<typeof teamsCreate>>>;
-export type TeamsCreateMutationBody = BodyType<TeamWriteRequest>;
+export type TeamsCreateMutationBody = BodyType<TeamUnnestedWriteRequest>;
 export type TeamsCreateMutationError = ErrorType<
   | TeamsCreateErrorResponse400
   | ErrorResponse403
@@ -4432,7 +4468,7 @@ export const useTeamsCreate = <
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof teamsCreate>>,
       TError,
-      { data: BodyType<TeamWriteRequest> },
+      { data: BodyType<TeamUnnestedWriteRequest> },
       TContext
     >;
     request?: SecondParameter<typeof customInstance>;
@@ -4441,7 +4477,7 @@ export const useTeamsCreate = <
 ): UseMutationResult<
   Awaited<ReturnType<typeof teamsCreate>>,
   TError,
-  { data: BodyType<TeamWriteRequest> },
+  { data: BodyType<TeamUnnestedWriteRequest> },
   TContext
 > => {
   const mutationOptions = getTeamsCreateMutationOptions(options);
@@ -4454,7 +4490,7 @@ export const teamsRetrieve = (
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
-  return customInstance<Team>({ url: `/api/teams/${id}/`, method: 'GET', signal }, options);
+  return customInstance<TeamUnnested>({ url: `/api/teams/${id}/`, method: 'GET', signal }, options);
 };
 
 export const getTeamsRetrieveQueryKey = (id?: number) => {
@@ -4610,15 +4646,15 @@ export function useTeamsRetrieve<
 
 export const teamsUpdate = (
   id: number,
-  teamWriteRequest: BodyType<TeamWriteRequest>,
+  teamUnnestedWriteRequest: BodyType<TeamUnnestedWriteRequest>,
   options?: SecondParameter<typeof customInstance>,
 ) => {
-  return customInstance<TeamWrite>(
+  return customInstance<TeamUnnestedWrite>(
     {
       url: `/api/teams/${id}/`,
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      data: teamWriteRequest,
+      data: teamUnnestedWriteRequest,
     },
     options,
   );
@@ -4639,14 +4675,14 @@ export const getTeamsUpdateMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof teamsUpdate>>,
     TError,
-    { id: number; data: BodyType<TeamWriteRequest> },
+    { id: number; data: BodyType<TeamUnnestedWriteRequest> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof teamsUpdate>>,
   TError,
-  { id: number; data: BodyType<TeamWriteRequest> },
+  { id: number; data: BodyType<TeamUnnestedWriteRequest> },
   TContext
 > => {
   const mutationKey = ['teamsUpdate'];
@@ -4659,7 +4695,7 @@ export const getTeamsUpdateMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof teamsUpdate>>,
-    { id: number; data: BodyType<TeamWriteRequest> }
+    { id: number; data: BodyType<TeamUnnestedWriteRequest> }
   > = props => {
     const { id, data } = props ?? {};
 
@@ -4670,7 +4706,7 @@ export const getTeamsUpdateMutationOptions = <
 };
 
 export type TeamsUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof teamsUpdate>>>;
-export type TeamsUpdateMutationBody = BodyType<TeamWriteRequest>;
+export type TeamsUpdateMutationBody = BodyType<TeamUnnestedWriteRequest>;
 export type TeamsUpdateMutationError = ErrorType<
   | TeamsUpdateErrorResponse400
   | ErrorResponse403
@@ -4697,7 +4733,7 @@ export const useTeamsUpdate = <
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof teamsUpdate>>,
       TError,
-      { id: number; data: BodyType<TeamWriteRequest> },
+      { id: number; data: BodyType<TeamUnnestedWriteRequest> },
       TContext
     >;
     request?: SecondParameter<typeof customInstance>;
@@ -4706,7 +4742,7 @@ export const useTeamsUpdate = <
 ): UseMutationResult<
   Awaited<ReturnType<typeof teamsUpdate>>,
   TError,
-  { id: number; data: BodyType<TeamWriteRequest> },
+  { id: number; data: BodyType<TeamUnnestedWriteRequest> },
   TContext
 > => {
   const mutationOptions = getTeamsUpdateMutationOptions(options);
@@ -4716,15 +4752,15 @@ export const useTeamsUpdate = <
 
 export const teamsPartialUpdate = (
   id: number,
-  patchedTeamWriteRequest: BodyType<PatchedTeamWriteRequest>,
+  patchedTeamUnnestedWriteRequest: BodyType<PatchedTeamUnnestedWriteRequest>,
   options?: SecondParameter<typeof customInstance>,
 ) => {
-  return customInstance<TeamWrite>(
+  return customInstance<TeamUnnestedWrite>(
     {
       url: `/api/teams/${id}/`,
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      data: patchedTeamWriteRequest,
+      data: patchedTeamUnnestedWriteRequest,
     },
     options,
   );
@@ -4745,14 +4781,14 @@ export const getTeamsPartialUpdateMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof teamsPartialUpdate>>,
     TError,
-    { id: number; data: BodyType<PatchedTeamWriteRequest> },
+    { id: number; data: BodyType<PatchedTeamUnnestedWriteRequest> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof teamsPartialUpdate>>,
   TError,
-  { id: number; data: BodyType<PatchedTeamWriteRequest> },
+  { id: number; data: BodyType<PatchedTeamUnnestedWriteRequest> },
   TContext
 > => {
   const mutationKey = ['teamsPartialUpdate'];
@@ -4765,7 +4801,7 @@ export const getTeamsPartialUpdateMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof teamsPartialUpdate>>,
-    { id: number; data: BodyType<PatchedTeamWriteRequest> }
+    { id: number; data: BodyType<PatchedTeamUnnestedWriteRequest> }
   > = props => {
     const { id, data } = props ?? {};
 
@@ -4778,7 +4814,7 @@ export const getTeamsPartialUpdateMutationOptions = <
 export type TeamsPartialUpdateMutationResult = NonNullable<
   Awaited<ReturnType<typeof teamsPartialUpdate>>
 >;
-export type TeamsPartialUpdateMutationBody = BodyType<PatchedTeamWriteRequest>;
+export type TeamsPartialUpdateMutationBody = BodyType<PatchedTeamUnnestedWriteRequest>;
 export type TeamsPartialUpdateMutationError = ErrorType<
   | TeamsPartialUpdateErrorResponse400
   | ErrorResponse403
@@ -4805,7 +4841,7 @@ export const useTeamsPartialUpdate = <
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof teamsPartialUpdate>>,
       TError,
-      { id: number; data: BodyType<PatchedTeamWriteRequest> },
+      { id: number; data: BodyType<PatchedTeamUnnestedWriteRequest> },
       TContext
     >;
     request?: SecondParameter<typeof customInstance>;
@@ -4814,7 +4850,7 @@ export const useTeamsPartialUpdate = <
 ): UseMutationResult<
   Awaited<ReturnType<typeof teamsPartialUpdate>>,
   TError,
-  { id: number; data: BodyType<PatchedTeamWriteRequest> },
+  { id: number; data: BodyType<PatchedTeamUnnestedWriteRequest> },
   TContext
 > => {
   const mutationOptions = getTeamsPartialUpdateMutationOptions(options);

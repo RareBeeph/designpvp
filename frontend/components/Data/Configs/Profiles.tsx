@@ -3,7 +3,7 @@ import {
   Profile,
   ProfileWrite,
   ProfileWriteRequest,
-  Team,
+  TeamNested,
   getProfilesListQueryKey,
   getProfilesRetrieveQueryKey,
   useProfilesDestroy,
@@ -37,7 +37,7 @@ const ProfilesConfig: TableConfig<Profile, ProfileWriteRequest, ProfileValues, P
       size: 0,
       grow: true,
       Cell: ({ cell }) => {
-        const value = cell.getValue<Team[]>();
+        const value = cell.getValue<TeamNested[]>();
         return value.length > 0 ? value.map(t => t.name).reduce((p, n) => `${p}, ${n}`) : '';
       },
     },

@@ -4,21 +4,23 @@ from backend.permissions import IsStaffOrReadOnly
 
 from .models import Event, Team
 from .serializers import (
-    EventSerializer,
+    EventUnnestedSerializer,
     EventWriteSerializer,
-    TeamSerializer,
-    TeamWriteSerializer,
+    TeamUnnestedSerializer,
+    TeamUnnestedWriteSerializer,
 )
 
 
 class EventViewSet(viewsets.ModelViewSet):
-    queryset = Event.objects.all()
+    # dang, guess not everything is auto-prefetched.
+    # makes sense in retrospect that reverse relations wouldn't be, though
+    queryset = Event.objects.all().prefetch_related("teams")
     permission_classes = [IsStaffOrReadOnly]
 
     def get_serializer_class(self) -> type[serializers.ModelSerializer]:
         if self.request.method in ["POST", "PUT", "PATCH"]:
             return EventWriteSerializer
-        return EventSerializer
+        return EventUnnestedSerializer
 
 
 class TeamViewSet(viewsets.ModelViewSet):
@@ -27,5 +29,5 @@ class TeamViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self) -> type[serializers.ModelSerializer]:
         if self.request.method in ["POST", "PUT", "PATCH"]:
-            return TeamWriteSerializer
-        return TeamSerializer
+            return TeamUnnestedWriteSerializer
+        return TeamUnnestedSerializer

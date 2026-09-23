@@ -2,10 +2,10 @@ import { useState } from 'react';
 
 import { FormFieldProps, TableConfig } from './types';
 import {
-  Event,
+  EventUnnested,
   EventWrite,
   EventWriteRequest,
-  Team,
+  TeamNested,
   TeamNestedWrite,
   getEventsListQueryKey,
   getEventsRetrieveQueryKey,
@@ -31,7 +31,7 @@ interface EventValues {
   teams: TeamNestedWrite[];
 }
 
-const EventsConfig: TableConfig<Event, EventWriteRequest, EventValues, EventWrite> = {
+const EventsConfig: TableConfig<EventUnnested, EventWriteRequest, EventValues, EventWrite> = {
   name: 'events',
   columns: [
     { accessorKey: 'id', header: 'ID', size: 0, grow: true },
@@ -44,7 +44,7 @@ const EventsConfig: TableConfig<Event, EventWriteRequest, EventValues, EventWrit
       size: 0,
       grow: true,
       Cell: ({ cell }) => {
-        const value = cell.getValue<Team[]>();
+        const value = cell.getValue<TeamNested[]>();
         return value.length > 0 ? value.map(t => t.name).reduce((p, n) => `${p}, ${n}`) : '';
       },
     },
@@ -88,7 +88,7 @@ const EventsConfig: TableConfig<Event, EventWriteRequest, EventValues, EventWrit
             values.teams.length > 0 ?
               values.teams.map((_team, idx) => (
                 <Accordion expanded={expanded === idx} onChange={handleChange(idx)} key={idx}>
-                  <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
+                  <AccordionSummary>
                     <Typography component="span">{`Team #${idx + 1}`}</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
@@ -104,7 +104,7 @@ const EventsConfig: TableConfig<Event, EventWriteRequest, EventValues, EventWrit
                       </StyledButton>
                       <StyledButton
                         onClick={event => {
-                          arrayHelpers.insert(idx, '');
+                          arrayHelpers.insert(idx, { name: '' } as TeamNestedWrite);
                           handleChange(idx + 1)(event, true);
                         }}
                       >
@@ -119,7 +119,7 @@ const EventsConfig: TableConfig<Event, EventWriteRequest, EventValues, EventWrit
                 <Padding flex={1} />
                 <StyledButton
                   onClick={() => {
-                    arrayHelpers.push('');
+                    arrayHelpers.push({ name: '' } as TeamNestedWrite);
                     handleChange(0);
                   }}
                 >

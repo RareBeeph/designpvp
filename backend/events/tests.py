@@ -9,8 +9,12 @@ too because the ordering hook is the only thing keeping these endpoints off it.
 import pytest
 from django.contrib.auth.models import User
 from django.utils import timezone
+from inline_snapshot import snapshot
+from inline_snapshot_django import snapshot_queries
 from rest_framework import status
 from rest_framework.test import APIClient
+
+from profiles.models import Profile
 
 from .models import Event, Team
 
@@ -104,3 +108,81 @@ def test_teams_are_not_writeable_by_anonymous_users(db: None) -> None:
     )
 
     assert response.status_code == status.HTTP_403_FORBIDDEN
+
+
+@pytest.mark.parametrize("event_count", [2, 5, 10, 20])
+def test_event_list_does_not_repeatedly_query_teams(
+    staff_client: APIClient, event_count: int
+) -> None:
+    """Ensure listing events avoids an n+1 queries issue."""
+
+    now = timezone.now()
+    for idx in range(event_count):
+        event = Event.objects.create(name=f"Test Event {idx}", starts=now, ends=now)
+        Team.objects.create(name=f"Test team {idx}", event=event)
+        Team.objects.create(name=f"Test second team {idx}", event=event)
+
+    with snapshot_queries() as queries:
+        response = staff_client.get("/api/events/")
+
+    assert response.status_code == status.HTTP_200_OK
+    assert queries == snapshot(
+        [
+            "SELECT ... FROM events_event",
+            "SELECT ... FROM events_event ORDER BY ... ASC LIMIT ...",
+            "SELECT ... FROM events_team INNER JOIN events_event ON ... WHERE ... ORDER BY ... ASC",
+        ]
+    )
+
+
+def test_event_write_does_not_recreate_team(staff_client: APIClient) -> None:
+    """kitchen sink test covering writable-nested behavior on patch"""
+
+    now = timezone.now()
+    event = Event.objects.create(name="Test Event", starts=now, ends=now)
+    team = Team.objects.create(name="Test team", event=event)  # to be renamed
+    team2 = Team.objects.create(name="Test team 2", event=event)  # to be sacrificed
+
+    event2 = Event.objects.create(
+        name="Test Event 2", starts=now, ends=now
+    )  # to field a bystander
+    team3 = Team.objects.create(name="Test team 3", event=event2)  # to stand by
+
+    user = User.objects.create_user(username="member", password="pw")
+    profile = Profile.objects.create(user=user)
+    profile.teams.set([team, team2, team3])  # to ensure relations are maintained
+
+    response = staff_client.patch(
+        f"/api/events/{event.id}/",
+        {
+            "teams": [
+                {
+                    "id": team.id,
+                    "name": "renamed",
+                },
+                {
+                    "name": "new without id",
+                },
+                {"id": -1, "name": "manual id"},
+            ],
+        },
+        format="json",
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+
+    # the three on `event` (`team2` has been destroyed), plus the one on `event2`
+    assert Team.objects.count() == 4
+
+    event.refresh_from_db()
+    assert event.teams.count() == 3
+    assert event.teams.get(name="renamed").id == team.id
+    assert event.teams.get(name="new without id")
+    # turns out the default behavior *doesn't* let you set this manually,
+    # i just messed around so hard i mixed myself up about it
+    assert event.teams.get(name="manual id").id != -1
+
+    profile.refresh_from_db()
+    assert profile.teams.count() == 2
+    assert profile.teams.get(name="renamed").id == team.id
+    assert profile.teams.get(name="Test team 3").id == team3.id
