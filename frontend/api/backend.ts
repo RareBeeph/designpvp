@@ -280,6 +280,7 @@ export type EventsCreateError =
   | EventsCreateEndsErrorComponent
   | EventsCreateTeamsNonFieldErrorsErrorComponent
   | EventsCreateTeamsINDEXNonFieldErrorsErrorComponent
+  | EventsCreateTeamsINDEXIdErrorComponent
   | EventsCreateTeamsINDEXNameErrorComponent;
 
 export type EventsCreateErrorResponse400 = EventsCreateValidationError | ParseErrorResponse;
@@ -398,6 +399,38 @@ export interface EventsCreateStartsErrorComponent {
    * `overflow` - overflow
    * `required` - required */
   code: EventsCreateStartsErrorComponentCode;
+  detail: string;
+}
+
+export type EventsCreateTeamsINDEXIdErrorComponentAttr =
+  (typeof EventsCreateTeamsINDEXIdErrorComponentAttr)[keyof typeof EventsCreateTeamsINDEXIdErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsCreateTeamsINDEXIdErrorComponentAttr = {
+  teamsINDEXid: 'teams.INDEX.id',
+} as const;
+
+/**
+ * * `invalid` - invalid
+ * `max_string_length` - max_string_length
+ * `null` - null
+ */
+export type EventsCreateTeamsINDEXIdErrorComponentCode =
+  (typeof EventsCreateTeamsINDEXIdErrorComponentCode)[keyof typeof EventsCreateTeamsINDEXIdErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsCreateTeamsINDEXIdErrorComponentCode = {
+  invalid: 'invalid',
+  maxStringLength: 'max_string_length',
+  null: 'null',
+} as const;
+
+export interface EventsCreateTeamsINDEXIdErrorComponent {
+  attr: EventsCreateTeamsINDEXIdErrorComponentAttr;
+  /** * `invalid` - invalid
+   * `max_string_length` - max_string_length
+   * `null` - null */
+  code: EventsCreateTeamsINDEXIdErrorComponentCode;
   detail: string;
 }
 
@@ -568,6 +601,7 @@ export type EventsPartialUpdateError =
   | EventsPartialUpdateEndsErrorComponent
   | EventsPartialUpdateTeamsNonFieldErrorsErrorComponent
   | EventsPartialUpdateTeamsINDEXNonFieldErrorsErrorComponent
+  | EventsPartialUpdateTeamsINDEXIdErrorComponent
   | EventsPartialUpdateTeamsINDEXNameErrorComponent;
 
 export type EventsPartialUpdateErrorResponse400 =
@@ -688,6 +722,38 @@ export interface EventsPartialUpdateStartsErrorComponent {
    * `overflow` - overflow
    * `required` - required */
   code: EventsPartialUpdateStartsErrorComponentCode;
+  detail: string;
+}
+
+export type EventsPartialUpdateTeamsINDEXIdErrorComponentAttr =
+  (typeof EventsPartialUpdateTeamsINDEXIdErrorComponentAttr)[keyof typeof EventsPartialUpdateTeamsINDEXIdErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsPartialUpdateTeamsINDEXIdErrorComponentAttr = {
+  teamsINDEXid: 'teams.INDEX.id',
+} as const;
+
+/**
+ * * `invalid` - invalid
+ * `max_string_length` - max_string_length
+ * `null` - null
+ */
+export type EventsPartialUpdateTeamsINDEXIdErrorComponentCode =
+  (typeof EventsPartialUpdateTeamsINDEXIdErrorComponentCode)[keyof typeof EventsPartialUpdateTeamsINDEXIdErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsPartialUpdateTeamsINDEXIdErrorComponentCode = {
+  invalid: 'invalid',
+  maxStringLength: 'max_string_length',
+  null: 'null',
+} as const;
+
+export interface EventsPartialUpdateTeamsINDEXIdErrorComponent {
+  attr: EventsPartialUpdateTeamsINDEXIdErrorComponentAttr;
+  /** * `invalid` - invalid
+   * `max_string_length` - max_string_length
+   * `null` - null */
+  code: EventsPartialUpdateTeamsINDEXIdErrorComponentCode;
   detail: string;
 }
 
@@ -856,6 +922,7 @@ export type EventsUpdateError =
   | EventsUpdateEndsErrorComponent
   | EventsUpdateTeamsNonFieldErrorsErrorComponent
   | EventsUpdateTeamsINDEXNonFieldErrorsErrorComponent
+  | EventsUpdateTeamsINDEXIdErrorComponent
   | EventsUpdateTeamsINDEXNameErrorComponent;
 
 export type EventsUpdateErrorResponse400 = EventsUpdateValidationError | ParseErrorResponse;
@@ -974,6 +1041,38 @@ export interface EventsUpdateStartsErrorComponent {
    * `overflow` - overflow
    * `required` - required */
   code: EventsUpdateStartsErrorComponentCode;
+  detail: string;
+}
+
+export type EventsUpdateTeamsINDEXIdErrorComponentAttr =
+  (typeof EventsUpdateTeamsINDEXIdErrorComponentAttr)[keyof typeof EventsUpdateTeamsINDEXIdErrorComponentAttr];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsUpdateTeamsINDEXIdErrorComponentAttr = {
+  teamsINDEXid: 'teams.INDEX.id',
+} as const;
+
+/**
+ * * `invalid` - invalid
+ * `max_string_length` - max_string_length
+ * `null` - null
+ */
+export type EventsUpdateTeamsINDEXIdErrorComponentCode =
+  (typeof EventsUpdateTeamsINDEXIdErrorComponentCode)[keyof typeof EventsUpdateTeamsINDEXIdErrorComponentCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const EventsUpdateTeamsINDEXIdErrorComponentCode = {
+  invalid: 'invalid',
+  maxStringLength: 'max_string_length',
+  null: 'null',
+} as const;
+
+export interface EventsUpdateTeamsINDEXIdErrorComponent {
+  attr: EventsUpdateTeamsINDEXIdErrorComponentAttr;
+  /** * `invalid` - invalid
+   * `max_string_length` - max_string_length
+   * `null` - null */
+  code: EventsUpdateTeamsINDEXIdErrorComponentCode;
   detail: string;
 }
 
@@ -1827,17 +1926,20 @@ export interface TeamNested {
 
 /**
  * Allows the team's id to be specified to avoid recreating it during a nested write.
+Includes validation checks to ensure it's still de facto read-only.
  */
 export interface TeamNestedWrite {
-  readonly id: number;
+  id?: number;
   /** @maxLength 50 */
   name: string;
 }
 
 /**
  * Allows the team's id to be specified to avoid recreating it during a nested write.
+Includes validation checks to ensure it's still de facto read-only.
  */
 export interface TeamNestedWriteRequest {
+  id?: number;
   /**
    * @minLength 1
    * @maxLength 50

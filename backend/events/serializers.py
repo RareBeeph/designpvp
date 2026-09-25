@@ -1,3 +1,5 @@
+from typing import Any
+
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 from rest_framework import serializers
 
@@ -49,12 +51,33 @@ class TeamUnnestedWriteSerializer(BaseTeamSerializer):
 
 
 class TeamNestedWriteSerializer(BaseTeamSerializer):
-    """Allows the team's id to be specified to avoid recreating it during a nested write."""
+    """
+    Allows the team's id to be specified to avoid recreating it during a nested write.
+    Includes validation checks to ensure it's still de facto read-only.
+    """
 
-    class Meta(BaseTeamSerializer.Meta):
-        read_only_fields = [
-            field for field in BaseTeamSerializer.Meta.read_only_fields if field != "id"
-        ]
+    # Literally only here so that create() receives the id in its validated_data.
+    # Otherwise it'd successfully create a new team, with auto-incremented id.
+    # Whereas we want to catch that case and throw a validation error.
+    id = serializers.IntegerField(required=False)
+
+    # It feels weird to be raising validation errors after validation,
+    # but I needed access to the team's event id which only populates then.
+    # It seems to work, in any case.
+    def update(self, instance: Team, validated_data: Any) -> Team:
+        event_id = validated_data.get("event").id
+
+        if instance.event.id != event_id:
+            # This error message is a white lie; it's really about changing a team's event.
+            # I just figured we don't necessarily want the error message for an action to vary
+            # based on whether the id you input already exists or not.
+            raise serializers.ValidationError({"id": "Changing a team's id is forbidden."})
+        return super().update(instance, validated_data)
+
+    def create(self, validated_data: dict) -> Team:
+        if "id" in validated_data.keys():
+            raise serializers.ValidationError({"id": "Changing a team's id is forbidden."})
+        return super().create(validated_data)
 
 
 class EventUnnestedSerializer(BaseEventSerializer):
@@ -73,3 +96,14 @@ class EventWriteSerializer(WritableNestedModelSerializer):
 
     class Meta(BaseEventSerializer.Meta):
         fields = BaseEventSerializer.Meta.fields + ["teams"]
+
+    # # Unused; I figured it'd be better if the validation was done on the nested serializer
+    # def validate_teams(self, value: [dict]) -> [dict]:
+    #     for team in value:
+    #         if "id" in team.keys() and not any(
+    #             [team["id"] == existing.id for existing in list(self.instance.teams.all())]
+    #         ):
+    #             raise serializers.ValidationError(
+    #                 "Nested writes to a team id not existing on event are forbidden."
+    #             )
+    #     return value

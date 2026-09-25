@@ -156,14 +156,8 @@ def test_event_write_does_not_recreate_team(staff_client: APIClient) -> None:
         f"/api/events/{event.id}/",
         {
             "teams": [
-                {
-                    "id": team.id,
-                    "name": "renamed",
-                },
-                {
-                    "name": "new without id",
-                },
-                {"id": -1, "name": "manual id"},
+                # Still team 1, just renamed to team 2 to try to trick the system
+                {"id": team.id, "name": "Test team 2"},
             ],
         },
         format="json",
@@ -171,18 +165,78 @@ def test_event_write_does_not_recreate_team(staff_client: APIClient) -> None:
 
     assert response.status_code == status.HTTP_200_OK
 
-    # the three on `event` (`team2` has been destroyed), plus the one on `event2`
-    assert Team.objects.count() == 4
+    # the two on `event` (`team2` has been destroyed), plus the one on `event2`
+    assert Team.objects.count() == 2
 
     event.refresh_from_db()
-    assert event.teams.count() == 3
-    assert event.teams.get(name="renamed").id == team.id
-    assert event.teams.get(name="new without id")
-    # turns out the default behavior *doesn't* let you set this manually,
-    # i just messed around so hard i mixed myself up about it
-    assert event.teams.get(name="manual id").id != -1
+    assert event.teams.count() == 1
+    assert event.teams.get(id=team.id).name == "Test team 2"
 
     profile.refresh_from_db()
     assert profile.teams.count() == 2
-    assert profile.teams.get(name="renamed").id == team.id
-    assert profile.teams.get(name="Test team 3").id == team3.id
+    assert profile.teams.get(id=team.id).name == "Test team 2"
+    assert profile.teams.get(id=team3.id).name == team3.name
+
+
+def test_event_write_can_create_team(staff_client: APIClient) -> None:
+    """Ensure it's possible to create a team while writing to an event, by not providing an id for the team."""
+
+    now = timezone.now()
+    event = Event.objects.create(name="Test Event", starts=now, ends=now)
+
+    response = staff_client.patch(
+        f"/api/events/{event.id}/",
+        {"teams": [{"name": "new without id"}]},
+        format="json",
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+
+    assert Team.objects.count() == 1
+
+    team = Team.objects.first()
+    assert team is not None
+    assert team.name == "new without id"
+
+
+def test_event_write_can_not_steal_team(staff_client: APIClient) -> None:
+    """Ensure it's impossible for an event write to move an existing team away from another event."""
+
+    now = timezone.now()
+    event = Event.objects.create(name="Test Event", starts=now, ends=now)
+    team = Team.objects.create(name="Test team", event=event)
+
+    thief_event = Event.objects.create(name="Thief", starts=now, ends=now)
+
+    response = staff_client.patch(
+        f"/api/events/{thief_event.id}/",
+        {"teams": [{"id": team.id, "name": team.name}]},
+        format="json",
+    )
+
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+    event.refresh_from_db()
+    assert event.teams.count() == 1
+
+    thief_event.refresh_from_db()
+    assert thief_event.teams.count() == 0
+
+
+def test_event_write_can_not_create_team_with_arbitrary_id(staff_client: APIClient) -> None:
+    """
+    Ensure it's impossible for an event write to create a team by trying to edit one which doesn't exist.
+    Together with test_event_write_can_not_steal_team, this ensures an event can only edit its own teams.
+    """
+
+    now = timezone.now()
+    event = Event.objects.create(name="Test Event", starts=now, ends=now)
+
+    response = staff_client.patch(
+        f"/api/events/{event.id}/",
+        {"teams": [{"id": -1, "name": "manual id"}]},
+        format="json",
+    )
+
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    assert Team.objects.count() == 0
