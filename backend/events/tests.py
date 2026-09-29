@@ -240,3 +240,18 @@ def test_event_write_can_not_create_team_with_arbitrary_id(staff_client: APIClie
 
     assert response.status_code == status.HTTP_400_BAD_REQUEST
     assert Team.objects.count() == 0
+
+
+def test_event_can_not_be_created_if_any_nested_team_is_invalid(
+    staff_client: APIClient,
+) -> None:
+    """Ensure all nested validation is performed before any portion of the nested write is executed."""
+
+    response = staff_client.post(
+        "/api/events/",
+        {"teams": [{"name": "valid create"}, {"id": -1, "name": "invalid"}]},
+        format="json",
+    )
+
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    assert Team.objects.count() == 0

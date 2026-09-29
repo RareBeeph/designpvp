@@ -1926,7 +1926,7 @@ export interface TeamNested {
 
 /**
  * Allows the team's id to be specified to avoid recreating it during a nested write.
-Includes validation checks to ensure it's still de facto read-only.
+Ensure proper validation checks are put in place on anything which uses this.
  */
 export interface TeamNestedWrite {
   id?: number;
@@ -1936,7 +1936,7 @@ export interface TeamNestedWrite {
 
 /**
  * Allows the team's id to be specified to avoid recreating it during a nested write.
-Includes validation checks to ensure it's still de facto read-only.
+Ensure proper validation checks are put in place on anything which uses this.
  */
 export interface TeamNestedWriteRequest {
   id?: number;
