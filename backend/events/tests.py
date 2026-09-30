@@ -249,9 +249,44 @@ def test_event_can_not_be_created_if_any_nested_team_is_invalid(
 
     response = staff_client.post(
         "/api/events/",
-        {"teams": [{"name": "valid create"}, {"id": -1, "name": "invalid"}]},
+        {
+            "name": "test event",
+            "starts": "2026-01-01T00:00:00Z",
+            "ends": "2026-02-01T00:00:00Z",
+            "teams": [{"name": "valid create"}, {"id": -1, "name": "invalid"}],
+        },
         format="json",
     )
 
     assert response.status_code == status.HTTP_400_BAD_REQUEST
     assert Team.objects.count() == 0
+
+
+def test_event_nested_write_accepts_final_of_duplicate_team_ids(
+    staff_client: APIClient,
+) -> None:
+    """Ensure that, if the same team id is provided multiple times when editing an event, we can predict which is accepted."""
+
+    now = timezone.now()
+    event = Event.objects.create(name="Test Event", starts=now, ends=now)
+    team = Team.objects.create(name="Test Team", event=event)
+
+    response = staff_client.patch(
+        f"/api/events/{event.id}/",
+        {
+            "teams": [
+                {"id": team.id, "name": "edit 1"},
+                {"id": team.id, "name": "edit 2"},
+                {"id": team.id, "name": "edit 3"},
+                {"id": team.id, "name": "edit 4"},
+                {"id": team.id, "name": "edit 5"},
+            ]
+        },
+        format="json",
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+    assert Team.objects.count() == 1
+
+    team.refresh_from_db()
+    assert team.name == "edit 5"

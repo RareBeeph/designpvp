@@ -76,14 +76,17 @@ class EventWriteSerializer(WritableNestedModelSerializer):
 
     def validate_teams(self, teams: list[dict]) -> list[dict]:
         errors: dict = {}
+        if self.instance is not None:
+            existing_ids = [existing.id for existing in list(self.instance.teams.all())]
+
+        def is_invalid(team: dict) -> bool:
+            if self.instance is None:
+                return "id" in team.keys()
+            else:
+                return "id" in team.keys() and team["id"] not in existing_ids
 
         for idx, team in enumerate(teams):
-            if "id" in team.keys() and (
-                self.instance is None
-                or not any(
-                    [team["id"] == existing.id for existing in list(self.instance.teams.all())]
-                )
-            ):
+            if is_invalid(team):
                 errors[idx] = {
                     "id": "Nested writes to an explicit team id not already on current event are forbidden."
                 }
